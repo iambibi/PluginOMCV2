@@ -37,7 +37,7 @@ public class TabList {
     public void updateTabList(Player player) {
         int visibleOnlinePlayers = 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.canSee(player) && !LimboManager.isInLimbo(player)) {
+            if (p.canSee(player) && !LimboManager.isInLimbo(player.getUniqueId())) {
                 visibleOnlinePlayers++;
             }
         }

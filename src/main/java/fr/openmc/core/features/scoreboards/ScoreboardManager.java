@@ -95,7 +95,7 @@ public class ScoreboardManager implements Listener {
 
         String displayName;
 
-        if (canShowLogo && LimboManager.isInLimbo(player)) {
+        if (canShowLogo && LimboManager.isInLimbo(player.getUniqueId())) {
             displayName = PlaceholderAPI.setPlaceholders(player, "%img_dream_openmc%");
         } else if (canShowLogo) {
             displayName = PlaceholderAPI.setPlaceholders(player, "%img_openmc%");
@@ -163,7 +163,7 @@ public class ScoreboardManager implements Listener {
             return;
         }
 
-        if (LimboManager.isInLimbo(player)) {
+        if (LimboManager.isInLimbo(player.getUniqueId())) {
             objective.getScore("§7").setScore(3);
             objective.getScore("§8Faites §1/limbo").setScore(2);
             objective.getScore("   ").setScore(1);

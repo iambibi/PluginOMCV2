@@ -17,14 +17,14 @@ import static fr.openmc.core.features.limbo.LimboManager.isInLimbo;
 public class LimboListener implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (LimboManager.isInLimbo((Player) event.getPlayer())) {
+        if (LimboManager.isInLimbo(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (isInLimbo((Player) event.getWhoClicked())) {
+        if (isInLimbo(event.getWhoClicked().getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -40,18 +40,16 @@ public class LimboListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (LimboManager.isInLimbo(event.getPlayer())) {
+        if (LimboManager.isInLimbo(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerQuitEvent event) {
-        if (LimboManager.isInLimbo(event.getPlayer())) {
+        if (LimboManager.isInLimbo(event.getPlayer().getUniqueId())) {
             Player player = event.getPlayer();
-            if (LimboManager.isInLimbo(player)) {
-                LimboManager.exitLimbo(player);
-            }
+            LimboManager.exitLimbo(player);
         }
     }
 
@@ -59,7 +57,7 @@ public class LimboListener implements Listener {
     public void onCommandInLimbo(PlayerCommandPreprocessEvent event) {
         ;
         Player player = event.getPlayer();
-        if (!LimboManager.isInLimbo(player)) return;
+        if (!LimboManager.isInLimbo(player.getUniqueId())) return;
 
         String message = event.getMessage().toLowerCase();
 

@@ -19,7 +19,7 @@ public class Limbo {
 
     @DefaultFor("~")
     public void sendPlayerLimbo(Player player) {
-        if (!LimboManager.isInLimbo(player)) return;
+        if (!LimboManager.isInLimbo(player.getUniqueId())) return;
 
         LimboManager.exitLimbo(player);
     }

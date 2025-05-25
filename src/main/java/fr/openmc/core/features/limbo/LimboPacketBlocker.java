@@ -20,7 +20,7 @@ public class LimboPacketBlocker {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 Player player = event.getPlayer();
-                if (!LimboManager.isInLimbo(player)) return;
+                if (!LimboManager.isInLimbo(player.getUniqueId())) return;
 
                 String command = event.getPacket().getStrings().read(0);
                 if (!command.equalsIgnoreCase("/limbo")) {
@@ -35,7 +35,7 @@ public class LimboPacketBlocker {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 Player player = event.getPlayer();
-                if (!LimboManager.isInLimbo(player)) return;
+                if (!LimboManager.isInLimbo(player.getUniqueId())) return;
                 event.setCancelled(true);
             }
         });
@@ -46,7 +46,7 @@ public class LimboPacketBlocker {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 Player player = event.getPlayer();
-                if (!LimboManager.isInLimbo(player)) return;
+                if (!LimboManager.isInLimbo(player.getUniqueId())) return;
                 event.setCancelled(true);
             }
         });
@@ -57,7 +57,7 @@ public class LimboPacketBlocker {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 Player player = event.getPlayer();
-                if (!LimboManager.isInLimbo(player)) return;
+                if (!LimboManager.isInLimbo(player.getUniqueId())) return;
                 event.setCancelled(true);
             }
         });
