@@ -13,9 +13,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
-public class TabListPacket {
+public class TablistPacket {
 
-    public TabListPacket(ProtocolManager protocolManager) {
+    public TablistPacket(ProtocolManager protocolManager) {
         // Supprimer les joueurs qui sont dans le Limbo dans le TAB
         protocolManager.addPacketListener(new PacketAdapter(OMCPlugin.getInstance(),
                 ListenerPriority.NORMAL, PacketType.Play.Server.PLAYER_INFO) {

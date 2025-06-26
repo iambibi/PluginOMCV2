@@ -25,6 +25,7 @@ public class TabList {
     public void updateHeaderFooter(Player player, String header, String footer) {
         try {
             if (protocolManager == null) return;
+
             PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.PLAYER_LIST_HEADER_FOOTER);
             packet.getChatComponents().write(0, WrappedChatComponent.fromText(header))
                     .write(1, WrappedChatComponent.fromText(footer));
@@ -42,8 +43,9 @@ public class TabList {
             }
         }
 
-        String header = PlaceholderAPI.setPlaceholders(player, "\n\n\n\n\n\n\n"+PlaceholderAPI.setPlaceholders(player, "%img_openmc%")+"\n\n  §eJoueurs en ligne §7: §6"+visibleOnlinePlayers+"§7/§e%server_max_players%  \n");
-        String footer = "\n§dplay.openmc.fr\n";
+        String header = PlaceholderAPI.setPlaceholders(player, "\n\n\n\n\n\n\n" + PlaceholderAPI.setPlaceholders(player, LimboManager.isInLimbo(player.getUniqueId()) ? "%img_dream_openmc%" : "%img_openmc%") + "\n");
+        String footer = LimboManager.isInLimbo(player.getUniqueId()) ? "\n§3rf.cmnepo.yaly\n" : "\n§dplay.openmc.fr\n";
+        ;
 
         updateHeaderFooter(player, header, footer);
     }

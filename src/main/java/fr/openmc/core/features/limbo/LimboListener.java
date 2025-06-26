@@ -15,9 +15,16 @@ import static fr.openmc.core.features.limbo.LimboManager.blockedPlayers;
 import static fr.openmc.core.features.limbo.LimboManager.isInLimbo;
 
 public class LimboListener implements Listener {
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        LimboManager.limboPlayers.remove(event.getPlayer().getUniqueId());
+        blockedPlayers.remove(event.getPlayer().getUniqueId());
+    }
+
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (LimboManager.isInLimbo(event.getPlayer().getUniqueId())) {
+        if (isInLimbo(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -40,16 +47,8 @@ public class LimboListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (LimboManager.isInLimbo(event.getPlayer().getUniqueId())) {
+        if (isInLimbo(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerInteract(PlayerQuitEvent event) {
-        if (LimboManager.isInLimbo(event.getPlayer().getUniqueId())) {
-            Player player = event.getPlayer();
-            LimboManager.exitLimbo(player);
         }
     }
 
@@ -57,7 +56,7 @@ public class LimboListener implements Listener {
     public void onCommandInLimbo(PlayerCommandPreprocessEvent event) {
         ;
         Player player = event.getPlayer();
-        if (!LimboManager.isInLimbo(player.getUniqueId())) return;
+        if (!isInLimbo(player.getUniqueId())) return;
 
         String message = event.getMessage().toLowerCase();
 
