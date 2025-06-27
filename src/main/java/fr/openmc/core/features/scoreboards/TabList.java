@@ -43,9 +43,8 @@ public class TabList {
             }
         }
 
-        String header = PlaceholderAPI.setPlaceholders(player, "\n\n\n\n\n\n\n" + PlaceholderAPI.setPlaceholders(player, LimboManager.isInLimbo(player.getUniqueId()) ? "%img_dream_openmc%" : "%img_openmc%") + "\n");
+        String header = PlaceholderAPI.setPlaceholders(player, "\n\n\n\n\n\n\n" + PlaceholderAPI.setPlaceholders(player, LimboManager.isInLimbo(player.getUniqueId()) ? "%img_dream_openmc%" : "%img_openmc%") + (LimboManager.isInLimbo(player.getUniqueId()) ? "" : "\n\n  §eJoueurs en ligne §7: §6" + visibleOnlinePlayers + "§7/§e%server_max_players%  \n"));
         String footer = LimboManager.isInLimbo(player.getUniqueId()) ? "\n§3rf.cmnepo.yaly\n" : "\n§dplay.openmc.fr\n";
-        ;
 
         updateHeaderFooter(player, header, footer);
     }

@@ -73,18 +73,6 @@ public class LimboPacketBlocker {
                 }
             }
         });
-        protocolManager.addPacketListener(new PacketAdapter(OMCPlugin.getInstance(),
-                ListenerPriority.HIGHEST,
-                PacketType.Play.Client.WINDOW_CLICK) {
-
-            @Override
-            public void onPacketReceiving(PacketEvent event) {
-                Player player = event.getPlayer();
-                if (LimboManager.isInLimbo(player.getUniqueId())) {
-                    event.setCancelled(true); // Bloque toute interaction
-                }
-            }
-        });
 
         protocolManager.addPacketListener(new PacketAdapter(OMCPlugin.getInstance(),
                 ListenerPriority.HIGHEST,
@@ -112,5 +100,36 @@ public class LimboPacketBlocker {
                 }
             }
         });
+
+        protocolManager.addPacketListener(new PacketAdapter(OMCPlugin.getInstance(),
+                ListenerPriority.HIGHEST,
+                PacketType.Play.Server.WINDOW_ITEMS,
+                PacketType.Play.Server.SET_SLOT,
+                PacketType.Play.Server.OPEN_WINDOW) {
+
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                Player player = event.getPlayer();
+
+                if (LimboManager.isInLimbo(player.getUniqueId())) {
+                    event.setCancelled(true);
+                }
+            }
+        });
+
+        protocolManager.addPacketListener(new PacketAdapter(OMCPlugin.getInstance(),
+                ListenerPriority.HIGHEST,
+                PacketType.Play.Client.WINDOW_CLICK) {
+
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                Player player = event.getPlayer();
+                if (LimboManager.isInLimbo(player.getUniqueId())) {
+                    event.setCancelled(true); // Bloque toute interaction
+                }
+            }
+        });
     }
+
+
 }

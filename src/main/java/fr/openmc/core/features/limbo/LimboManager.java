@@ -16,6 +16,7 @@ import com.sk89q.worldedit.math.transform.Transform;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.block.BlockState;
+import dev.lone.itemsadder.api.ItemsAdder;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.limbo.commands.Limbo;
@@ -78,7 +79,6 @@ public class LimboManager {
         new RespawnPacket(protocolManager);
         new ServerPositionPacket(protocolManager);
         new HealthPacket(protocolManager);
-        new ChunkPacket(protocolManager);
         new ServerPingPacket(protocolManager);
         new TablistPacket(protocolManager);
 
@@ -94,10 +94,10 @@ public class LimboManager {
         PlayerLimboData data = new PlayerLimboData(player);
         limboPlayers.put(player.getUniqueId(), data);
 
-        RespawnPacket.send(player);
-
         ScoreboardManager.removePlayerScoreboard(player);
         ScoreboardManager.createNewScoreboard(player);
+
+        RespawnPacket.send(player);
 
         sendLimboChunks(player, limboSpawn, () -> {
             Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
@@ -105,6 +105,7 @@ public class LimboManager {
 
                 ServerPositionPacket.send(player, limboSpawn);
                 blockedPlayers.add(player.getUniqueId());
+                ItemsAdder.applyResourcepack(player);
             }, 2L);
         });
     }
@@ -120,7 +121,6 @@ public class LimboManager {
         int centerX = location.getChunk().getX();
         int centerZ = location.getChunk().getZ();
 
-        // Envoyer un carré de 5x5 chunks autour du spawn
         for (int x = centerX - 2; x <= centerX + 2; x++) {
             for (int z = centerZ - 2; z <= centerZ + 2; z++) {
                 LevelChunk levelChunk = ((CraftWorld) limboWorld).getHandle().getChunk(x, z);
@@ -212,6 +212,9 @@ public class LimboManager {
                                     transformedVec.getZ() - min.getZ()
                             );
 
+                            if (!limboWorld.getBlockAt(target).getChunk().isLoaded()) {
+                                limboWorld.getBlockAt(target).getChunk().load();
+                            }
                             limboWorld.getBlockAt(target).setBlockData(blockData, false);
 
                         } catch (IllegalArgumentException e) {

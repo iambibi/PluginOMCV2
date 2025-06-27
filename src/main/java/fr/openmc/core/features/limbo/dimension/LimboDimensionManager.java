@@ -18,7 +18,7 @@ public class LimboDimensionManager {
         creator.hardcore(true);
         limboWorld = creator.createWorld();
 
-        limboSpawn = new Location(limboWorld, 222, 100, 222);
+        limboSpawn = new Location(limboWorld, 72, 100, 72);
 
         limboWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         limboWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
