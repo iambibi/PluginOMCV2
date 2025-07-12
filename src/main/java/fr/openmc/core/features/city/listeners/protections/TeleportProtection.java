@@ -16,7 +16,9 @@ public class TeleportProtection implements Listener {
             PlayerTeleportEvent.TeleportCause.COMMAND,
             PlayerTeleportEvent.TeleportCause.NETHER_PORTAL,
             PlayerTeleportEvent.TeleportCause.PLUGIN,
-            PlayerTeleportEvent.TeleportCause.SPECTATE
+            PlayerTeleportEvent.TeleportCause.SPECTATE,
+            PlayerTeleportEvent.TeleportCause.END_GATEWAY,
+            PlayerTeleportEvent.TeleportCause.EXIT_BED
     );
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
