@@ -16,11 +16,14 @@ import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -53,18 +56,6 @@ public class MascotsDamageListener implements Listener {
         if (BLOCKED_CAUSES.contains(cause)) {
             e.setCancelled(true);
             return;
-        }
-
-        if (e instanceof EntityDamageByEntityEvent entityDamageByEntityEvent &&
-                cause == EntityDamageEvent.DamageCause.PROJECTILE) {
-
-            Entity damager = entityDamageByEntityEvent.getDamager();
-            if (damager instanceof Projectile projectile) {
-                if (projectile.getShooter() instanceof Llama) {
-                    e.setCancelled(true);
-                    return;
-                }
-            }
         }
 
         City city = MascotUtils.getCityFromEntity(entity.getUniqueId());
@@ -100,7 +91,10 @@ public class MascotsDamageListener implements Listener {
 
         if (!MascotUtils.isMascot(damageEntity)) return;
 
-        if (!(damager instanceof Player player)) return;
+        if (!(damager instanceof Player player)) {
+            e.setCancelled(true);
+            return;
+        }
 
         PersistentDataContainer data = damageEntity.getPersistentDataContainer();
         String pdcCityUUID = data.get(MascotsManager.mascotsKey, PersistentDataType.STRING);
@@ -236,4 +230,22 @@ public class MascotsDamageListener implements Listener {
 
     }
 
+    @EventHandler
+    public void onMobTargetMascot(EntityTargetLivingEntityEvent event) {
+        LivingEntity target = event.getTarget();
+
+        if (target == null) return;
+        if (!MascotUtils.isMascot(target)) return;
+
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onMascotTarget(EntityTargetLivingEntityEvent event) {
+        Entity entity = event.getEntity();
+
+        if (MascotUtils.isMascot(entity)) {
+            event.setCancelled(true);
+        }
+    }
 }
