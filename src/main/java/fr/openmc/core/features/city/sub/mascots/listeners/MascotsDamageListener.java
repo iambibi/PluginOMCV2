@@ -16,9 +16,7 @@ import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -31,6 +29,17 @@ import java.util.Set;
 import static fr.openmc.core.features.city.sub.mascots.MascotsManager.DEAD_MASCOT_NAME;
 
 public class MascotsDamageListener implements Listener {
+    private static final Set<EntityDamageEvent.DamageCause> BLOCKED_CAUSES = Set.of(
+            EntityDamageEvent.DamageCause.SUFFOCATION,
+            EntityDamageEvent.DamageCause.FALLING_BLOCK,
+            EntityDamageEvent.DamageCause.LIGHTNING,
+            EntityDamageEvent.DamageCause.BLOCK_EXPLOSION,
+            EntityDamageEvent.DamageCause.ENTITY_EXPLOSION,
+            EntityDamageEvent.DamageCause.FIRE_TICK,
+            EntityDamageEvent.DamageCause.ENTITY_ATTACK,
+            EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK
+    );
+
     @EventHandler
     void onMascotDamageCaused(EntityDamageEvent e) {
         Entity entity = e.getEntity();
@@ -41,12 +50,21 @@ public class MascotsDamageListener implements Listener {
 
         EntityDamageEvent.DamageCause cause = e.getCause();
 
-        if (cause.equals(EntityDamageEvent.DamageCause.SUFFOCATION) || cause.equals(EntityDamageEvent.DamageCause.FALLING_BLOCK) ||
-                cause.equals(EntityDamageEvent.DamageCause.LIGHTNING) || cause.equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) ||
-                cause.equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) || cause.equals(EntityDamageEvent.DamageCause.FIRE_TICK) ||
-                cause.equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) || cause.equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) {
+        if (BLOCKED_CAUSES.contains(cause)) {
             e.setCancelled(true);
             return;
+        }
+
+        if (e instanceof EntityDamageByEntityEvent entityDamageByEntityEvent &&
+                cause == EntityDamageEvent.DamageCause.PROJECTILE) {
+
+            Entity damager = entityDamageByEntityEvent.getDamager();
+            if (damager instanceof Projectile projectile) {
+                if (projectile.getShooter() instanceof Llama) {
+                    e.setCancelled(true);
+                    return;
+                }
+            }
         }
 
         City city = MascotUtils.getCityFromEntity(entity.getUniqueId());
