@@ -46,6 +46,7 @@ public class MascotsDamageListener implements Listener {
                 cause.equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) || cause.equals(EntityDamageEvent.DamageCause.FIRE_TICK) ||
                 cause.equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) || cause.equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) {
             e.setCancelled(true);
+            return;
         }
 
         City city = MascotUtils.getCityFromEntity(entity.getUniqueId());
