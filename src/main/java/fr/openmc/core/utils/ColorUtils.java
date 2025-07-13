@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import java.util.HashMap;
 import java.util.Map;
 
+import static net.kyori.adventure.text.format.NamedTextColor.*;
+
 public class ColorUtils {
 
     private ColorUtils() {
@@ -14,16 +16,16 @@ public class ColorUtils {
 
     private static final Map<NamedTextColor, NamedTextColor> colorToReadable = new HashMap<>();
     static {
-        colorToReadable.put(NamedTextColor.BLACK, NamedTextColor.DARK_GRAY);
-        colorToReadable.put(NamedTextColor.DARK_BLUE, NamedTextColor.DARK_BLUE);
-        colorToReadable.put(NamedTextColor.DARK_GREEN, NamedTextColor.DARK_GREEN);
-        colorToReadable.put(NamedTextColor.DARK_AQUA, NamedTextColor.DARK_AQUA);
-        colorToReadable.put(NamedTextColor.DARK_RED, NamedTextColor.DARK_RED);
-        colorToReadable.put(NamedTextColor.DARK_PURPLE, NamedTextColor.DARK_PURPLE);
-        colorToReadable.put(NamedTextColor.GOLD, NamedTextColor.GOLD);
-        colorToReadable.put(NamedTextColor.GRAY, NamedTextColor.GRAY);
-        colorToReadable.put(NamedTextColor.DARK_GRAY, NamedTextColor.DARK_GRAY);
-        colorToReadable.put(NamedTextColor.BLUE, NamedTextColor.BLUE);
+        colorToReadable.put(BLACK, DARK_GRAY);
+        colorToReadable.put(DARK_BLUE, DARK_BLUE);
+        colorToReadable.put(DARK_GREEN, DARK_GREEN);
+        colorToReadable.put(DARK_AQUA, DARK_AQUA);
+        colorToReadable.put(DARK_RED, DARK_RED);
+        colorToReadable.put(DARK_PURPLE, DARK_PURPLE);
+        colorToReadable.put(GOLD, NamedTextColor.GOLD);
+        colorToReadable.put(GRAY, NamedTextColor.GRAY);
+        colorToReadable.put(DARK_GRAY, NamedTextColor.DARK_GRAY);
+        colorToReadable.put(BLUE, NamedTextColor.BLUE);
         colorToReadable.put(NamedTextColor.GREEN, NamedTextColor.GREEN);
         colorToReadable.put(NamedTextColor.AQUA, NamedTextColor.AQUA);
         colorToReadable.put(NamedTextColor.RED, NamedTextColor.RED);
@@ -41,8 +43,8 @@ public class ColorUtils {
 
     private static final Map<NamedTextColor, Material> colorToMaterial = new HashMap<>();
     static {
-        colorToMaterial.put(NamedTextColor.BLACK, Material.BLACK_WOOL);
-        colorToMaterial.put(NamedTextColor.DARK_BLUE, Material.BLUE_WOOL);
+        colorToMaterial.put(BLACK, Material.BLACK_WOOL);
+        colorToMaterial.put(DARK_BLUE, Material.BLUE_WOOL);
         colorToMaterial.put(NamedTextColor.DARK_GREEN, Material.GREEN_WOOL);
         colorToMaterial.put(NamedTextColor.DARK_AQUA, Material.CYAN_WOOL);
         colorToMaterial.put(NamedTextColor.DARK_RED, Material.RED_WOOL);
@@ -78,8 +80,8 @@ public class ColorUtils {
 
     private static final Map<NamedTextColor, String> colorToName = new HashMap<>();
     static {
-        colorToName.put(NamedTextColor.BLACK, "§0Noir");
-        colorToName.put(NamedTextColor.DARK_BLUE, "§1Bleu Foncé");
+        colorToName.put(BLACK, "§0Noir");
+        colorToName.put(DARK_BLUE, "§1Bleu Foncé");
         colorToName.put(NamedTextColor.DARK_GREEN, "§2Vert Foncé");
         colorToName.put(NamedTextColor.DARK_AQUA, "§3Aqua Foncé");
         colorToName.put(NamedTextColor.DARK_RED, "§4Rouge Foncé");
@@ -105,8 +107,8 @@ public class ColorUtils {
 
     private static final Map<NamedTextColor, String> colorCode = new HashMap<>();
     static {
-        colorCode.put(NamedTextColor.BLACK, "§0");
-        colorCode.put(NamedTextColor.DARK_BLUE, "§1");
+        colorCode.put(BLACK, "§0");
+        colorCode.put(DARK_BLUE, "§1");
         colorCode.put(NamedTextColor.DARK_GREEN, "§2");
         colorCode.put(NamedTextColor.DARK_AQUA, "§3");
         colorCode.put(NamedTextColor.DARK_RED, "§4");
@@ -130,4 +132,26 @@ public class ColorUtils {
         return colorCode.getOrDefault(color, "§f");
     }
 
+    private static final Map<NamedTextColor, int[]> COLOR_RGB_MAP = Map.ofEntries(
+            Map.entry(NamedTextColor.BLACK, new int[]{0, 0, 0}),
+            Map.entry(NamedTextColor.DARK_BLUE, new int[]{0, 0, 170}),
+            Map.entry(NamedTextColor.DARK_GREEN, new int[]{0, 170, 0}),
+            Map.entry(NamedTextColor.DARK_AQUA, new int[]{0, 170, 170}),
+            Map.entry(NamedTextColor.DARK_RED, new int[]{170, 0, 0}),
+            Map.entry(NamedTextColor.DARK_PURPLE, new int[]{170, 0, 170}),
+            Map.entry(NamedTextColor.GOLD, new int[]{255, 170, 0}),
+            Map.entry(NamedTextColor.GRAY, new int[]{170, 170, 170}),
+            Map.entry(NamedTextColor.DARK_GRAY, new int[]{85, 85, 85}),
+            Map.entry(NamedTextColor.BLUE, new int[]{85, 85, 255}),
+            Map.entry(NamedTextColor.GREEN, new int[]{85, 255, 85}),
+            Map.entry(NamedTextColor.AQUA, new int[]{85, 255, 255}),
+            Map.entry(NamedTextColor.RED, new int[]{255, 85, 85}),
+            Map.entry(NamedTextColor.LIGHT_PURPLE, new int[]{255, 85, 255}),
+            Map.entry(NamedTextColor.YELLOW, new int[]{255, 255, 85}),
+            Map.entry(NamedTextColor.WHITE, new int[]{255, 255, 255})
+    );
+
+    public static int[] getRGBFromNamedTextColor(NamedTextColor color) {
+        return COLOR_RGB_MAP.getOrDefault(color, new int[]{255, 255, 255});
+    }
 }
