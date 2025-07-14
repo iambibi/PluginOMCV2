@@ -144,7 +144,7 @@ public class ParticleUtils {
                     double z = minLocation.getZ() + random.nextDouble() * (maxLocation.getZ() - minLocation.getZ());
 
                     Location base = new Location(world, x, y, z);
-                    spawnRisingDustParticle(base, color1, 1.0f, 15, 1);
+                    spawnRisingDustParticle(regionId, world, base, color1, 1.0f, 15, 1);
                 }
 
                 for (int i = 0; i < amountPer2Tick; i++) {
@@ -153,13 +153,19 @@ public class ParticleUtils {
                     double z = minLocation.getZ() + random.nextDouble() * (maxLocation.getZ() - minLocation.getZ());
 
                     Location base = new Location(world, x, y, z);
-                    spawnRisingDustParticle(base, color2, 1.0f, 15, 1);
+                    spawnRisingDustParticle(regionId, world, base, color2, 1.0f, 15, 1);
                 }
             }
         }.runTaskTimerAsynchronously(OMCPlugin.getInstance(), 0L, 2L);
     }
 
-    public static void spawnRisingDustParticle(Location origin, Color color, float size, int steps, int count) {
+    public static void spawnRisingDustParticle(String regionId, World world, Location origin, Color color, float size, int steps, int count) {
+        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+        if (regionManager == null) return;
+
+        ProtectedRegion region = regionManager.getRegion(regionId);
+        if (region == null) return;
+
         Vec3 current = new Vec3(origin.getX(), origin.getY(), origin.getZ());
         Vec3 step = new Vec3(0, 0.10, 0);
 
@@ -179,7 +185,10 @@ public class ParticleUtils {
                 }
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (!player.getWorld().equals(origin.getWorld())) continue;
+                    if (!player.getWorld().equals(world)) continue;
+
+                    if (!region.contains(BukkitAdapter.asBlockVector(player.getLocation()))) continue;
+
                     if (player.getLocation().distanceSquared(origin) > 100 * 100) continue;
 
                     ServerPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
