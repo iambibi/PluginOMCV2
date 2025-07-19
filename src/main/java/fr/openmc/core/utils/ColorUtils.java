@@ -22,16 +22,16 @@ public class ColorUtils {
         colorToReadable.put(DARK_AQUA, DARK_AQUA);
         colorToReadable.put(DARK_RED, DARK_RED);
         colorToReadable.put(DARK_PURPLE, DARK_PURPLE);
-        colorToReadable.put(GOLD, NamedTextColor.GOLD);
-        colorToReadable.put(GRAY, NamedTextColor.GRAY);
-        colorToReadable.put(DARK_GRAY, NamedTextColor.DARK_GRAY);
-        colorToReadable.put(BLUE, NamedTextColor.BLUE);
-        colorToReadable.put(NamedTextColor.GREEN, NamedTextColor.GREEN);
-        colorToReadable.put(NamedTextColor.AQUA, NamedTextColor.AQUA);
-        colorToReadable.put(NamedTextColor.RED, NamedTextColor.RED);
-        colorToReadable.put(NamedTextColor.LIGHT_PURPLE, NamedTextColor.LIGHT_PURPLE);
-        colorToReadable.put(NamedTextColor.YELLOW, NamedTextColor.GOLD);
-        colorToReadable.put(NamedTextColor.WHITE, NamedTextColor.GRAY);
+        colorToReadable.put(GOLD, GOLD);
+        colorToReadable.put(GRAY, GRAY);
+        colorToReadable.put(DARK_GRAY, DARK_GRAY);
+        colorToReadable.put(BLUE, BLUE);
+        colorToReadable.put(GREEN, GREEN);
+        colorToReadable.put(AQUA, AQUA);
+        colorToReadable.put(RED, RED);
+        colorToReadable.put(LIGHT_PURPLE, LIGHT_PURPLE);
+        colorToReadable.put(YELLOW, GOLD);
+        colorToReadable.put(WHITE, GRAY);
     }
 
     /**
@@ -45,20 +45,20 @@ public class ColorUtils {
     static {
         colorToMaterial.put(BLACK, Material.BLACK_WOOL);
         colorToMaterial.put(DARK_BLUE, Material.BLUE_WOOL);
-        colorToMaterial.put(NamedTextColor.DARK_GREEN, Material.GREEN_WOOL);
-        colorToMaterial.put(NamedTextColor.DARK_AQUA, Material.CYAN_WOOL);
-        colorToMaterial.put(NamedTextColor.DARK_RED, Material.RED_WOOL);
-        colorToMaterial.put(NamedTextColor.DARK_PURPLE, Material.PURPLE_WOOL);
-        colorToMaterial.put(NamedTextColor.GOLD, Material.ORANGE_WOOL);
-        colorToMaterial.put(NamedTextColor.GRAY, Material.LIGHT_GRAY_WOOL);
-        colorToMaterial.put(NamedTextColor.DARK_GRAY, Material.GRAY_WOOL);
-        colorToMaterial.put(NamedTextColor.BLUE, Material.LIGHT_BLUE_WOOL);
-        colorToMaterial.put(NamedTextColor.GREEN, Material.LIME_WOOL);
-        colorToMaterial.put(NamedTextColor.AQUA, Material.CYAN_WOOL);
-        colorToMaterial.put(NamedTextColor.RED, Material.RED_WOOL);
-        colorToMaterial.put(NamedTextColor.LIGHT_PURPLE, Material.MAGENTA_WOOL);
-        colorToMaterial.put(NamedTextColor.YELLOW, Material.YELLOW_WOOL);
-        colorToMaterial.put(NamedTextColor.WHITE, Material.WHITE_WOOL);
+        colorToMaterial.put(DARK_GREEN, Material.GREEN_WOOL);
+        colorToMaterial.put(DARK_AQUA, Material.CYAN_WOOL);
+        colorToMaterial.put(DARK_RED, Material.RED_WOOL);
+        colorToMaterial.put(DARK_PURPLE, Material.PURPLE_WOOL);
+        colorToMaterial.put(GOLD, Material.ORANGE_WOOL);
+        colorToMaterial.put(GRAY, Material.LIGHT_GRAY_WOOL);
+        colorToMaterial.put(DARK_GRAY, Material.GRAY_WOOL);
+        colorToMaterial.put(BLUE, Material.LIGHT_BLUE_WOOL);
+        colorToMaterial.put(GREEN, Material.LIME_WOOL);
+        colorToMaterial.put(AQUA, Material.CYAN_WOOL);
+        colorToMaterial.put(RED, Material.RED_WOOL);
+        colorToMaterial.put(LIGHT_PURPLE, Material.MAGENTA_WOOL);
+        colorToMaterial.put(YELLOW, Material.YELLOW_WOOL);
+        colorToMaterial.put(WHITE, Material.WHITE_WOOL);
     }
 
     /**
@@ -82,20 +82,20 @@ public class ColorUtils {
     static {
         colorToName.put(BLACK, "§0Noir");
         colorToName.put(DARK_BLUE, "§1Bleu Foncé");
-        colorToName.put(NamedTextColor.DARK_GREEN, "§2Vert Foncé");
-        colorToName.put(NamedTextColor.DARK_AQUA, "§3Aqua Foncé");
-        colorToName.put(NamedTextColor.DARK_RED, "§4Rouge Foncé");
-        colorToName.put(NamedTextColor.DARK_PURPLE, "§5Violet");
-        colorToName.put(NamedTextColor.GOLD, "§6Orange");
-        colorToName.put(NamedTextColor.GRAY, "§7Gris");
-        colorToName.put(NamedTextColor.DARK_GRAY, "§8Gris Foncé");
-        colorToName.put(NamedTextColor.BLUE, "§9Bleu");
-        colorToName.put(NamedTextColor.GREEN, "§aVert Clair");
-        colorToName.put(NamedTextColor.AQUA, "§bBleu Clair");
-        colorToName.put(NamedTextColor.RED, "§cRouge");
-        colorToName.put(NamedTextColor.LIGHT_PURPLE, "§dRose");
-        colorToName.put(NamedTextColor.YELLOW, "§eJaune");
-        colorToName.put(NamedTextColor.WHITE, "§fBlanc");
+        colorToName.put(DARK_GREEN, "§2Vert Foncé");
+        colorToName.put(DARK_AQUA, "§3Aqua Foncé");
+        colorToName.put(DARK_RED, "§4Rouge Foncé");
+        colorToName.put(DARK_PURPLE, "§5Violet");
+        colorToName.put(GOLD, "§6Orange");
+        colorToName.put(GRAY, "§7Gris");
+        colorToName.put(DARK_GRAY, "§8Gris Foncé");
+        colorToName.put(BLUE, "§9Bleu");
+        colorToName.put(GREEN, "§aVert Clair");
+        colorToName.put(AQUA, "§bBleu Clair");
+        colorToName.put(RED, "§cRouge");
+        colorToName.put(LIGHT_PURPLE, "§dRose");
+        colorToName.put(YELLOW, "§eJaune");
+        colorToName.put(WHITE, "§fBlanc");
     }
 
     /**
@@ -109,20 +109,20 @@ public class ColorUtils {
     static {
         colorCode.put(BLACK, "§0");
         colorCode.put(DARK_BLUE, "§1");
-        colorCode.put(NamedTextColor.DARK_GREEN, "§2");
-        colorCode.put(NamedTextColor.DARK_AQUA, "§3");
-        colorCode.put(NamedTextColor.DARK_RED, "§4");
-        colorCode.put(NamedTextColor.DARK_PURPLE, "§5");
-        colorCode.put(NamedTextColor.GOLD, "§6");
-        colorCode.put(NamedTextColor.GRAY, "§7");
-        colorCode.put(NamedTextColor.DARK_GRAY, "§8");
-        colorCode.put(NamedTextColor.BLUE, "§9");
-        colorCode.put(NamedTextColor.GREEN, "§a");
-        colorCode.put(NamedTextColor.AQUA, "§b");
-        colorCode.put(NamedTextColor.RED, "§c");
-        colorCode.put(NamedTextColor.LIGHT_PURPLE, "§d");
-        colorCode.put(NamedTextColor.YELLOW, "§e");
-        colorCode.put(NamedTextColor.WHITE, "§f");
+        colorCode.put(DARK_GREEN, "§2");
+        colorCode.put(DARK_AQUA, "§3");
+        colorCode.put(DARK_RED, "§4");
+        colorCode.put(DARK_PURPLE, "§5");
+        colorCode.put(GOLD, "§6");
+        colorCode.put(GRAY, "§7");
+        colorCode.put(DARK_GRAY, "§8");
+        colorCode.put(BLUE, "§9");
+        colorCode.put(GREEN, "§a");
+        colorCode.put(AQUA, "§b");
+        colorCode.put(RED, "§c");
+        colorCode.put(LIGHT_PURPLE, "§d");
+        colorCode.put(YELLOW, "§e");
+        colorCode.put(WHITE, "§f");
     };
 
     /**
@@ -133,22 +133,22 @@ public class ColorUtils {
     }
 
     private static final Map<NamedTextColor, int[]> COLOR_RGB_MAP = Map.ofEntries(
-            Map.entry(NamedTextColor.BLACK, new int[]{0, 0, 0}),
-            Map.entry(NamedTextColor.DARK_BLUE, new int[]{0, 0, 170}),
-            Map.entry(NamedTextColor.DARK_GREEN, new int[]{0, 170, 0}),
-            Map.entry(NamedTextColor.DARK_AQUA, new int[]{0, 170, 170}),
-            Map.entry(NamedTextColor.DARK_RED, new int[]{170, 0, 0}),
-            Map.entry(NamedTextColor.DARK_PURPLE, new int[]{170, 0, 170}),
-            Map.entry(NamedTextColor.GOLD, new int[]{255, 170, 0}),
-            Map.entry(NamedTextColor.GRAY, new int[]{170, 170, 170}),
-            Map.entry(NamedTextColor.DARK_GRAY, new int[]{85, 85, 85}),
-            Map.entry(NamedTextColor.BLUE, new int[]{85, 85, 255}),
-            Map.entry(NamedTextColor.GREEN, new int[]{85, 255, 85}),
-            Map.entry(NamedTextColor.AQUA, new int[]{85, 255, 255}),
-            Map.entry(NamedTextColor.RED, new int[]{255, 85, 85}),
-            Map.entry(NamedTextColor.LIGHT_PURPLE, new int[]{255, 85, 255}),
-            Map.entry(NamedTextColor.YELLOW, new int[]{255, 255, 85}),
-            Map.entry(NamedTextColor.WHITE, new int[]{255, 255, 255})
+            Map.entry(BLACK, new int[]{0, 0, 0}),
+            Map.entry(DARK_BLUE, new int[]{0, 0, 170}),
+            Map.entry(DARK_GREEN, new int[]{0, 170, 0}),
+            Map.entry(DARK_AQUA, new int[]{0, 170, 170}),
+            Map.entry(DARK_RED, new int[]{170, 0, 0}),
+            Map.entry(DARK_PURPLE, new int[]{170, 0, 170}),
+            Map.entry(GOLD, new int[]{255, 170, 0}),
+            Map.entry(GRAY, new int[]{170, 170, 170}),
+            Map.entry(DARK_GRAY, new int[]{85, 85, 85}),
+            Map.entry(BLUE, new int[]{85, 85, 255}),
+            Map.entry(GREEN, new int[]{85, 255, 85}),
+            Map.entry(AQUA, new int[]{85, 255, 255}),
+            Map.entry(RED, new int[]{255, 85, 85}),
+            Map.entry(LIGHT_PURPLE, new int[]{255, 85, 255}),
+            Map.entry(YELLOW, new int[]{255, 255, 85}),
+            Map.entry(WHITE, new int[]{255, 255, 255})
     );
 
     public static int[] getRGBFromNamedTextColor(NamedTextColor color) {
