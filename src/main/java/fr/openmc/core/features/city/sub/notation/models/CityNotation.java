@@ -4,10 +4,10 @@ import com.j256.ormlite.field.DatabaseField;
 import fr.openmc.core.utils.DateUtils;
 import lombok.Getter;
 
+@Getter
 public class CityNotation {
     @DatabaseField(id = true, columnName = "uuid")
-    @Getter
-    private String UUID;
+    private String cityUUID;
     @DatabaseField
     private String weekStr;
     @DatabaseField(defaultValue = "0", columnName = "architectural")
@@ -21,10 +21,11 @@ public class CityNotation {
         // required for ORMLite
     }
 
-    public CityNotation(String uuid, double noteArchitectural, double noteCoherence) {
-        this.UUID = uuid;
+    public CityNotation(String uuid, double noteArchitectural, double noteCoherence, String description) {
+        this.cityUUID = uuid;
         this.noteArchitectural = noteArchitectural;
         this.noteCoherence = noteCoherence;
         this.weekStr = DateUtils.getWeekFormat();
+        this.description = description;
     }
 }
