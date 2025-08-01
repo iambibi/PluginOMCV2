@@ -4,6 +4,9 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import fr.openmc.core.CommandsManager;
+import fr.openmc.core.features.city.sub.notation.commands.AdminNotationCommands;
+import fr.openmc.core.features.city.sub.notation.commands.NotationCommands;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 
 import java.sql.SQLException;
@@ -18,6 +21,10 @@ public class NotationManager {
 
     public NotationManager() {
         loadNotations();
+        CommandsManager.getHandler().register(
+                new NotationCommands(),
+                new AdminNotationCommands()
+        );
     }
 
     public static void init_db(ConnectionSource connectionSource) throws SQLException {

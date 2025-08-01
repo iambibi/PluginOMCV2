@@ -902,6 +902,9 @@ public class City {
      * @return The CityNotation object representing the city's notation for the specified week, or null if not found.
      */
     public CityNotation getNotationOfWeek(String weekStr) {
+        if (!NotationManager.notationPerWeek.containsKey(weekStr)) {
+            return null;
+        }
         return NotationManager.notationPerWeek.get(weekStr).stream()
                 .filter(notation -> notation.getCityUUID().equals(cityUUID))
                 .findFirst()
