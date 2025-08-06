@@ -5,6 +5,9 @@ import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.NotationNote;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 import fr.openmc.core.utils.dialog.ButtonType;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.registry.data.dialog.ActionButton;
 import io.papermc.paper.registry.data.dialog.DialogBase;
@@ -126,6 +129,7 @@ public class NotationEditionDialog {
                                             if (finalCityEditIndex + 1 < cities.size()) {
                                                 NotationEditionDialog.send(player, weekStr, cities, finalCityEditIndex + 1);
                                             } else {
+                                                MessagesManager.sendMessage(player, Component.text("Les notations pour le " + weekStr + "ont été totalement faites"), Prefix.STAFF, MessageType.SUCCESS, false);
                                                 player.closeInventory();
                                             }
                                         },

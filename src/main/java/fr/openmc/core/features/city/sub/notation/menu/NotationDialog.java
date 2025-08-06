@@ -19,6 +19,8 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -115,10 +117,16 @@ public class NotationDialog {
     }
 
     public static Component getHoverTotal(CityNotation notation) {
-        return Component.text("Détails")
-                .append(Component.newline())
-                .append(Component.text("Architecture " + notation.getNoteArchitectural()))
-                .append(Component.text("Cohérence " + notation.getNoteCoherence()));
+        return Component.text("§6§lDétails")
+                .appendNewline()
+                .append(Component.text("§8Architecture " + notation.getNoteArchitectural()))
+                .appendNewline()
+                .append(Component.text("§8Cohérence " + notation.getNoteCoherence()))
+                .appendNewline()
+                .appendNewline()
+                .append(Component.text("§3§lJustification de la note"))
+                .appendNewline()
+                .append(Component.text(notation.getDescription())).color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, true);
     }
 
     public static Component getHoverCoherence() {
@@ -128,6 +136,7 @@ public class NotationDialog {
 
     public static Component getHoverArchitectural() {
         return Component.text("Note générale qui comprends, la diversité des blocs utilisées, l'architecture des builds ainsi que la végétation.")
+                .appendNewline()
                 .append(Component.text("Note sur " + NotationNote.NOTE_ARCHITECTURAL.getMaxNote() + " points"));
     }
 }

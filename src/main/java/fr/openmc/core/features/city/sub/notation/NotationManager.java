@@ -10,10 +10,7 @@ import fr.openmc.core.features.city.sub.notation.commands.NotationCommands;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class NotationManager {
@@ -68,9 +65,23 @@ public class NotationManager {
     public static void createOrUpdateNotation(CityNotation notation) {
         try {
             notationDao.createOrUpdate(notation);
+
             String weekStr = notation.getWeekStr();
-            notationPerWeek.computeIfAbsent(weekStr, k -> new java.util.ArrayList<>()).add(notation);
-            cityNotations.computeIfAbsent(weekStr, k -> new java.util.ArrayList<>()).add(notation);
+
+            notationPerWeek.compute(weekStr, (k, list) -> {
+                if (list == null) list = new ArrayList<>();
+                list.removeIf(n -> Objects.equals(n.getCityUUID(), notation.getCityUUID()));
+                list.add(notation);
+                return list;
+            });
+
+            cityNotations.compute(weekStr, (k, list) -> {
+                if (list == null) list = new ArrayList<>();
+                list.removeIf(n -> Objects.equals(n.getCityUUID(), notation.getCityUUID()));
+                list.add(notation);
+                return list;
+            });
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
