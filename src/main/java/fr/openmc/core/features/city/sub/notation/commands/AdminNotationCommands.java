@@ -1,7 +1,13 @@
 package fr.openmc.core.features.city.sub.notation.commands;
 
+import fr.openmc.api.input.DialogInput;
+import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.notation.menu.NotationEditionDialog;
 import fr.openmc.core.utils.DateUtils;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
@@ -10,7 +16,20 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 public class AdminNotationCommands {
     @Command({"admcity notation"})
     @CommandPermission("omc.admins.commands.admcity.notation")
-    public void notation(Player sender) {
-        NotationEditionDialog.send(sender, DateUtils.getNextWeekFormat(), null); //todo: sort all edited notation from all city
+    public void editNotations(Player sender) {
+        String exempleTip = "Exemple : cette semaine on est le " + DateUtils.getWeekFormat() + " et la semaine prochaine " + DateUtils.getNextWeekFormat();
+        DialogInput.send(sender, Component.text("Entrer le format de la semaine (" + exempleTip + ")"),
+                7, weekStr -> {
+                    if (weekStr == null || weekStr.isEmpty()) {
+                        MessagesManager.sendMessage(sender, Component.text("Sasie fausse ! " + exempleTip), Prefix.STAFF, MessageType.ERROR, false);
+                        return;
+                    }
+
+                    try {
+                        NotationEditionDialog.send(sender, weekStr, CityManager.getCities().stream().toList(), null);
+                    } catch (Exception e) {
+                        MessagesManager.sendMessage(sender, Component.text("Erreur lors de l'ouverture du menu"), Prefix.STAFF, MessageType.ERROR, false);
+                    }
+                });
     }
 }

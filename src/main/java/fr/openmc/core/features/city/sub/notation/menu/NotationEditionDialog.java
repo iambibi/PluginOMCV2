@@ -1,6 +1,7 @@
 package fr.openmc.core.features.city.sub.notation.menu;
 
 import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.NotationNote;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 import fr.openmc.core.utils.dialog.ButtonType;
@@ -24,7 +25,10 @@ import java.util.List;
 
 public class NotationEditionDialog {
 
-    public static void send(Player player, String weekStr, City city) {
+    public static void send(Player player, String weekStr, List<City> cities, Integer cityEditIndex) {
+
+        cityEditIndex = cityEditIndex == null ? 0 : cityEditIndex;
+        City cityEdited = cities.get(cityEditIndex);
 
         List<DialogBody> body = new ArrayList<>();
 
@@ -38,10 +42,10 @@ public class NotationEditionDialog {
 
                             playerClicked.closeInventory();
 
-                            Location warpLocation = city.getLaw().getWarp();
+                            Location warpLocation = cityEdited.getLaw().getWarp();
 
                             if (warpLocation == null) {
-                                playerClicked.teleportAsync(city.getMascot().getEntity().getLocation());
+                                playerClicked.teleportAsync(cityEdited.getMascot().getEntity().getLocation());
                                 return;
                             }
 
@@ -92,8 +96,9 @@ public class NotationEditionDialog {
         );
 
 
+        Integer finalCityEditIndex = cityEditIndex;
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(Component.text("Classement des Notations Semaine " + weekStr + " - Edition de la ville : " + city.getName()))
+                .base(DialogBase.builder(Component.text("Classement des Notations Semaine " + weekStr + " - Edition de la ville : " + cityEdited.getName() + " (" + (finalCityEditIndex + 1) + "/" + cities.size() + ")"))
                         .body(body)
                         .inputs(inputs)
                         .canCloseWithEscape(true)
@@ -102,7 +107,27 @@ public class NotationEditionDialog {
                 .type(DialogType.confirmation(
                         ActionButton.builder(Component.text(ButtonType.SAVE.getLabel()))
                                 .action(DialogAction.customClick((response, audience) -> {
-                                            player.closeInventory();
+                                            float noteArchitectural = response.getFloat("input_note_architectural");
+                                            float noteCoherence = response.getFloat("input_note_architectural");
+                                            String description = response.getText("input_description");
+
+                                            System.out.println(description);
+
+                                            CityNotation cityNotation = new CityNotation(
+                                                    cityEdited.getUUID(),
+                                                    noteArchitectural,
+                                                    noteCoherence,
+                                                    description,
+                                                    weekStr
+                                            );
+
+                                            NotationManager.createOrUpdateNotation(cityNotation);
+
+                                            if (finalCityEditIndex + 1 < cities.size()) {
+                                                NotationEditionDialog.send(player, weekStr, cities, finalCityEditIndex + 1);
+                                            } else {
+                                                player.closeInventory();
+                                            }
                                         },
                                         ClickCallback.Options.builder().build()
                                 ))

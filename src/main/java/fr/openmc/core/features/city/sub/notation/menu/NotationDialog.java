@@ -2,7 +2,12 @@ package fr.openmc.core.features.city.sub.notation.menu;
 
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.CityType;
+import fr.openmc.core.features.city.menu.list.CityListDetailsMenu;
+import fr.openmc.core.features.city.sub.notation.NotationManager;
+import fr.openmc.core.features.city.sub.notation.NotationNote;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
+import fr.openmc.core.utils.PaddingUtils;
 import fr.openmc.core.utils.dialog.ButtonType;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.registry.data.dialog.ActionButton;
@@ -10,25 +15,31 @@ import io.papermc.paper.registry.data.dialog.DialogBase;
 import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.openmc.core.utils.InputUtils.MAX_LENGTH_CITY;
+
 public class NotationDialog {
-
     public static void send(Player player, String weekStr) {
-
         List<DialogBody> body = new ArrayList<>();
-
-        body.add(lineEdition(CityManager.getPlayerCity(player.getUniqueId()), weekStr));
 
         String[] parts = weekStr.split("-");
 
         int yearNumber = Integer.parseInt(parts[0]);
         int weekNumber = Integer.parseInt(parts[1]);
+
+        body.add(lineCityNotationHeader(CityManager.getPlayerCity(player.getUniqueId()), weekStr));
+
+        for (CityNotation notation : NotationManager.getSortedNotationForWeek(weekStr)) {
+            body.add(lineCityNotation(CityManager.getCity(notation.getCityUUID()), weekStr));
+        }
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(Component.text("Classement des Notations - Semaine " + weekNumber + " de " + yearNumber))
@@ -36,13 +47,8 @@ public class NotationDialog {
                         .canCloseWithEscape(true)
                         .build()
                 )
-                .type(DialogType.confirmation(
-                        ActionButton.builder(Component.text(ButtonType.SAVE.getLabel()))
-                                .action(DialogAction.customClick((response, audience) -> {
-
-                                }, ClickCallback.Options.builder().build()))
-                                .build(),
-                        ActionButton.builder(Component.text(ButtonType.CANCEL.getLabel()))
+                .type(DialogType.notice(
+                        ActionButton.builder(Component.text(ButtonType.BACK.getLabel()))
                                 .action(DialogAction.customClick((response, audience) -> {
                                     player.closeInventory();
                                 }, ClickCallback.Options.builder().build()))
@@ -53,11 +59,75 @@ public class NotationDialog {
         player.showDialog(dialog);
     }
 
-    public static DialogBody lineEdition(City city, String weekStr) {
-        CityNotation notation = city.getNotationOfWeek(weekStr);
-        return DialogBody.plainMessage(Component.text(city.getName() + " ").hoverEvent(
-                Component.text("Cliquez pour éditer la notation de la ville " + city.getName() + " pour la semaine " + weekStr)
-        ));
+    public static DialogBody lineCityNotationHeader(City city, String weekStr) {
+        Component header = Component.text(PaddingUtils.format("Ville", MAX_LENGTH_CITY)).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Arch.", 8)).hoverEvent(getHoverArchitectural())).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Coh.", 8)).hoverEvent(getHoverCoherence())).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Total", 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))));
+        header.font(Key.key("mono"));
 
+        return DialogBody.plainMessage(
+                header,
+                500
+        );
+    }
+
+    public static DialogBody lineCityNotation(City city, String weekStr) {
+        CityNotation notation = city.getNotationOfWeek(weekStr);
+
+        String cityName = city.getName();
+
+        String centeredCityName = PaddingUtils.format(cityName, MAX_LENGTH_CITY);
+
+        Component hoverCityName = Component.text("§7Niveau de la mascotte : §c" + city.getMascot().getLevel())
+                .append(Component.newline())
+                .append(Component.text("§7Status : " + (city.getType() == CityType.WAR ? "§cGuerre" : "§aPaix")))
+                .append(Component.newline())
+                .append(Component.text("§7Membres : §2" + city.getMembers().size()));
+
+        Component base = Component.text(centeredCityName + " | ").hoverEvent(hoverCityName)
+                .clickEvent(ClickEvent.callback(audience -> {
+                    if (!(audience instanceof Player player)) return;
+                    new CityListDetailsMenu(player, city).open();
+                }));
+
+        if (notation != null) {
+            String arch = String.format("%.2f/30", notation.getNoteArchitectural());
+            String coh = String.format("%.2f/30", notation.getNoteCoherence());
+            String total = String.format("%.2f/60", notation.getNoteArchitectural() + notation.getNoteCoherence());
+
+            base = base
+                    .append(Component.text(PaddingUtils.format(arch, 8)).hoverEvent(getHoverArchitectural()))
+                    .append(Component.text(" | "))
+                    .append(Component.text(PaddingUtils.format(coh, 8)).hoverEvent(getHoverCoherence())
+                            .append(Component.text(" | "))
+                            .append(Component.text(PaddingUtils.format(total, 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr)))));
+        } else {
+            base = base.append(Component.text("Aucune notation"));
+        }
+
+        base.font(Key.key("mono"));
+
+        return DialogBody.plainMessage(
+                base,
+                500
+        );
+    }
+
+    public static Component getHoverTotal(CityNotation notation) {
+        return Component.text("Détails")
+                .append(Component.newline())
+                .append(Component.text("Architecture " + notation.getNoteArchitectural()))
+                .append(Component.text("Cohérence " + notation.getNoteCoherence()));
+    }
+
+    public static Component getHoverCoherence() {
+        return Component.text("Note générale qui comprends, la cohérence des constructions entre elles, l'harmonie des couleurs, la transitition entre 2 thèmes, ect...")
+                .append(Component.text("Note sur " + NotationNote.NOTE_COHERENCE.getMaxNote() + " points"));
+    }
+
+    public static Component getHoverArchitectural() {
+        return Component.text("Note générale qui comprends, la diversité des blocs utilisées, l'architecture des builds ainsi que la végétation.")
+                .append(Component.text("Note sur " + NotationNote.NOTE_ARCHITECTURAL.getMaxNote() + " points"));
     }
 }

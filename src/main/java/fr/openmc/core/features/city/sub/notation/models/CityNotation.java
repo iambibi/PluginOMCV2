@@ -2,7 +2,6 @@ package fr.openmc.core.features.city.sub.notation.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import fr.openmc.core.utils.DateUtils;
 import lombok.Getter;
 
 @DatabaseTable(tableName = "city_notation")
@@ -23,11 +22,11 @@ public class CityNotation {
         // required for ORMLite
     }
 
-    public CityNotation(String uuid, double noteArchitectural, double noteCoherence, String description) {
+    public CityNotation(String uuid, double noteArchitectural, double noteCoherence, String description, String weekStr) {
         this.cityUUID = uuid;
         this.noteArchitectural = noteArchitectural;
         this.noteCoherence = noteCoherence;
-        this.weekStr = DateUtils.getWeekFormat();
+        this.weekStr = weekStr;
         this.description = description;
     }
 }
