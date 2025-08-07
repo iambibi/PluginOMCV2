@@ -12,9 +12,12 @@ import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import static fr.openmc.core.features.city.sub.notation.NotationManager.calculateAllCityScore;
+import static fr.openmc.core.features.city.sub.notation.NotationManager.giveReward;
+
 
 public class AdminNotationCommands {
-    @Command({"admcity notation"})
+    @Command({"admcity notation edit"})
     @CommandPermission("omc.admins.commands.admcity.notation")
     public void editNotations(Player sender) {
         String exempleTip = "Exemple : cette semaine on est le " + DateUtils.getWeekFormat() + " et la semaine prochaine " + DateUtils.getNextWeekFormat();
@@ -31,5 +34,14 @@ public class AdminNotationCommands {
                         MessagesManager.sendMessage(sender, Component.text("Erreur lors de l'ouverture du menu"), Prefix.STAFF, MessageType.ERROR, false);
                     }
                 });
+    }
+
+    @Command({"admcity notation publish"})
+    @CommandPermission("omc.admins.commands.admcity.notation")
+    public void publishNotations(Player sender) {
+        String weekStr = DateUtils.getWeekFormat();
+        calculateAllCityScore(weekStr);
+
+        giveReward(weekStr);
     }
 }

@@ -114,10 +114,10 @@ public class NotationEditionDialog {
                                             float noteCoherence = response.getFloat("input_note_architectural");
                                             String description = response.getText("input_description");
 
-                                            System.out.println(description);
-
                                             CityNotation cityNotation = new CityNotation(
                                                     cityEdited.getUUID(),
+                                                    null,
+                                                    null,
                                                     noteArchitectural,
                                                     noteCoherence,
                                                     description,

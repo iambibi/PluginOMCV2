@@ -918,7 +918,7 @@ public class City {
      * @return The CityNotation object representing the city's notation for the specified week, or null if not found.
      */
     public void setNotationOfWeek(String weekStr, double architecturalNote, double coherenceNote, String description) {
-        NotationManager.createOrUpdateNotation(new CityNotation(cityUUID, architecturalNote, coherenceNote, description, weekStr));
+        NotationManager.createOrUpdateNotation(new CityNotation(cityUUID, null, null, architecturalNote, coherenceNote, description, weekStr));
     }
 
     // ==================== City Milestone Methods ====================

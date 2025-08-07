@@ -44,7 +44,7 @@ public class NotationDialog {
         }
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(Component.text("Classement des Notations - Semaine " + weekNumber + " de " + yearNumber))
+                .base(DialogBase.builder(Component.text("Classement des Villes - Semaine " + weekNumber + " de " + yearNumber))
                         .body(body)
                         .canCloseWithEscape(true)
                         .build()
@@ -63,6 +63,8 @@ public class NotationDialog {
 
     public static DialogBody lineCityNotationHeader(City city, String weekStr) {
         Component header = Component.text(PaddingUtils.format("Ville", MAX_LENGTH_CITY)).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Activ.", 8)).hoverEvent(getHoverActivity())).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Econo.", 8)).hoverEvent(getHoverEconomy())).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Arch.", 8)).hoverEvent(getHoverArchitectural())).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Coh.", 8)).hoverEvent(getHoverCoherence())).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Total", 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))));
@@ -96,7 +98,7 @@ public class NotationDialog {
         if (notation != null) {
             String arch = String.format("%.2f/30", notation.getNoteArchitectural());
             String coh = String.format("%.2f/30", notation.getNoteCoherence());
-            String total = String.format("%.2f/60", notation.getNoteArchitectural() + notation.getNoteCoherence());
+            String total = String.format("%.2f/60", notation.getTotalNote());
 
             base = base
                     .append(Component.text(PaddingUtils.format(arch, 8)).hoverEvent(getHoverArchitectural()))
@@ -119,6 +121,10 @@ public class NotationDialog {
     public static Component getHoverTotal(CityNotation notation) {
         return Component.text("§6§lDétails")
                 .appendNewline()
+                .append(Component.text("§8Activité " + notation.getNoteActivity()))
+                .appendNewline()
+                .append(Component.text("§8Economie " + notation.getNoteEconomy()))
+                .appendNewline()
                 .append(Component.text("§8Architecture " + notation.getNoteArchitectural()))
                 .appendNewline()
                 .append(Component.text("§8Cohérence " + notation.getNoteCoherence()))
@@ -129,13 +135,24 @@ public class NotationDialog {
                 .append(Component.text(notation.getDescription())).color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, true);
     }
 
+    public static Component getHoverActivity() {
+        return Component.text("Note allant de 0 à " + NotationNote.NOTE_ACTIVITY.getMaxNote() + " points, qui comprends, le nombre de joueurs actifs dans la ville par le temps de jeu d'une ville")
+                .append(Component.text("Note sur " + NotationNote.NOTE_ACTIVITY.getMaxNote() + " points"));
+    }
+
+    public static Component getHoverEconomy() {
+        return Component.text("Note qui comprends, la richesse de la ville et le PIB par habitant de la ville.")
+                .appendNewline()
+                .append(Component.text("Note sur " + NotationNote.NOTE_PIB.getMaxNote() + " points"));
+    }
+
     public static Component getHoverCoherence() {
-        return Component.text("Note générale qui comprends, la cohérence des constructions entre elles, l'harmonie des couleurs, la transitition entre 2 thèmes, ect...")
+        return Component.text("Note de cohérence qui comprends, la cohérence des constructions entre elles, l'harmonie des couleurs, la transitition entre 2 thèmes, ect...")
                 .append(Component.text("Note sur " + NotationNote.NOTE_COHERENCE.getMaxNote() + " points"));
     }
 
     public static Component getHoverArchitectural() {
-        return Component.text("Note générale qui comprends, la diversité des blocs utilisées, l'architecture des builds ainsi que la végétation.")
+        return Component.text("Note d'architecture qui comprends, la diversité des blocs utilisées, l'architecture des builds ainsi que la végétation.")
                 .appendNewline()
                 .append(Component.text("Note sur " + NotationNote.NOTE_ARCHITECTURAL.getMaxNote() + " points"));
     }

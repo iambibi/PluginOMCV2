@@ -4,8 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum NotationNote {
-    NOTE_ARCHITECTURAL(30),
-    NOTE_COHERENCE(5);
+    NOTE_ARCHITECTURAL(40),
+    NOTE_COHERENCE(10),
+
+    NOTE_ACTIVITY(5),
+
+    NOTE_PIB(15);
     private final int maxNote;
 
 
