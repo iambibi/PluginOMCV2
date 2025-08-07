@@ -101,13 +101,17 @@ public class NotationDialog {
             String arch = String.format("%.2f/30", notation.getNoteArchitectural());
             String coh = String.format("%.2f/30", notation.getNoteCoherence());
             String total = String.format("%.2f/60", notation.getTotalNote());
+            String money = String.format("%.1f", notation.getMoney());
 
             base = base
                     .append(Component.text(PaddingUtils.format(arch, 8)).hoverEvent(getHoverArchitectural()))
                     .append(Component.text(" | "))
                     .append(Component.text(PaddingUtils.format(coh, 8)).hoverEvent(getHoverCoherence())
                             .append(Component.text(" | "))
-                            .append(Component.text(PaddingUtils.format(total, 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr)))));
+                            .append(Component.text(PaddingUtils.format(total, 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))))
+                            .append(Component.text(" | "))
+                            .append(Component.text(PaddingUtils.format(money, 8))));
+
         } else {
             base = base.append(Component.text("Aucune notation"));
         }
