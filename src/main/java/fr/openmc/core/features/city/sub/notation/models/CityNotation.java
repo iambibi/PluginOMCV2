@@ -21,6 +21,8 @@ public class CityNotation {
     private double noteArchitectural;
     @DatabaseField(defaultValue = "0", columnName = "coherence")
     private double noteCoherence;
+    @DatabaseField(defaultValue = "0", columnName = "money")
+    private double money;
     @DatabaseField
     private String description;
 

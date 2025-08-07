@@ -67,7 +67,9 @@ public class NotationDialog {
                 .append(Component.text(PaddingUtils.format("Econo.", 8)).hoverEvent(getHoverEconomy())).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Arch.", 8)).hoverEvent(getHoverArchitectural())).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Coh.", 8)).hoverEvent(getHoverCoherence())).append(Component.text(" | "))
-                .append(Component.text(PaddingUtils.format("Total", 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))));
+                .append(Component.text(PaddingUtils.format("Total", 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))))
+                .append(Component.text(PaddingUtils.format("Argent", 8)));
+
         header.font(Key.key("mono"));
 
         return DialogBody.plainMessage(

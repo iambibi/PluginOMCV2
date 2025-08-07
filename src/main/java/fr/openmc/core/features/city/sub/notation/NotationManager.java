@@ -36,7 +36,6 @@ public class NotationManager {
 
 
     private static Dao<CityNotation, String> notationDao;
-    private static Dao<ActivityTimePlayed, String> activityTimePlayedDao;
 
     public NotationManager() {
         loadNotations();
@@ -53,15 +52,13 @@ public class NotationManager {
         notationDao = DaoManager.createDao(connectionSource, CityNotation.class);
 
         TableUtils.createTableIfNotExists(connectionSource, ActivityTimePlayed.class);
-        activityTimePlayedDao = DaoManager.createDao(connectionSource, ActivityTimePlayed.class);
+        Dao<ActivityTimePlayed, String> activityTimePlayedDao = DaoManager.createDao(connectionSource, ActivityTimePlayed.class);
 
         activityTimePlayedDao.queryForAll()
-                .forEach(activityTimePlayed -> {
-                    activityNotation.put(
-                            UUID.fromString(activityTimePlayed.getPlayerUUID()),
-                            activityTimePlayed.getTimeOnWeekStart()
-                    );
-                });
+                .forEach(activityTimePlayed -> activityNotation.put(
+                        UUID.fromString(activityTimePlayed.getPlayerUUID()),
+                        activityTimePlayed.getTimeOnWeekStart()
+                ));
     }
 
     public static void loadNotations() {
@@ -206,7 +203,10 @@ public class NotationManager {
 
     public static double calculateReward(CityNotation notation) {
         double points = notation.getTotalNote();
-        return points * (45000.0 / 70.0);
+
+        double money = points * (45000.0 / 70.0);
+        notation.setMoney(money);
+        return money;
     }
 
     public static void giveReward(String weekStr) {
