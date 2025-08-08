@@ -46,15 +46,6 @@ public class NotationEditionDialog {
 
                             playerClicked.closeInventory();
 
-                            Location warpLocation = cityEdited.getLaw().getWarp();
-
-                            if (warpLocation == null) {
-                                playerClicked.teleportAsync(cityEdited.getMascot().getEntity().getLocation());
-                                return;
-                            }
-
-                            playerClicked.teleportAsync(warpLocation);
-
                             MessagesManager.sendMessage(player, Component.text("Vous avez été téléporté à la ville " + cityEdited.getName() + ". Cliquez sur le message pour continuer l'édition.")
                                             .clickEvent(ClickEvent.callback((audience1) -> {
                                                 if (!(audience instanceof Player playerClicked1)) {
@@ -64,6 +55,16 @@ public class NotationEditionDialog {
                                                 send(playerClicked1, weekStr, cities, finalCityEditIndex1);
                                             })),
                                     Prefix.STAFF, MessageType.SUCCESS, false);
+
+                            Location warpLocation = cityEdited.getLaw().getWarp();
+
+                            if (warpLocation == null) {
+                                playerClicked.teleportAsync(cityEdited.getMascot().getEntity().getLocation());
+
+                                return;
+                            }
+
+                            playerClicked.teleportAsync(warpLocation);
                         }
                         )))),
                 false,

@@ -29,6 +29,9 @@ import java.util.List;
 import static fr.openmc.core.utils.InputUtils.MAX_LENGTH_CITY;
 
 public class NotationDialog {
+    private final static String FONT = "minecraft:mono";
+    private final static int LENGTH_CASE = 9;
+
     public static void send(Player player, String weekStr) {
         List<DialogBody> body = new ArrayList<>();
 
@@ -64,17 +67,17 @@ public class NotationDialog {
     public static DialogBody lineCityNotationHeader(City city, String weekStr) {
         Component header = Component.text(PaddingUtils.format("Ville", MAX_LENGTH_CITY)).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Activ.", 8)).hoverEvent(getHoverActivity())).append(Component.text(" | "))
-                .append(Component.text(PaddingUtils.format("Econo.", 8)).hoverEvent(getHoverEconomy())).append(Component.text(" | "))
-                .append(Component.text(PaddingUtils.format("Arch.", 8)).hoverEvent(getHoverArchitectural())).append(Component.text(" | "))
-                .append(Component.text(PaddingUtils.format("Coh.", 8)).hoverEvent(getHoverCoherence())).append(Component.text(" | "))
-                .append(Component.text(PaddingUtils.format("Total", 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr)))).append(Component.text(" | "))
-                .append(Component.text(PaddingUtils.format("Argent", 8)));
+                .append(Component.text(PaddingUtils.format("Econo.", LENGTH_CASE)).hoverEvent(getHoverEconomy())).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Arch.", LENGTH_CASE)).hoverEvent(getHoverArchitectural())).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Coh.", LENGTH_CASE)).hoverEvent(getHoverCoherence())).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Total", LENGTH_CASE)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr)))).append(Component.text(" | "))
+                .append(Component.text(PaddingUtils.format("Argent", LENGTH_CASE)));
 
-        header.font(Key.key("mono"));
+        header.font(Key.key(FONT));
 
         return DialogBody.plainMessage(
                 header,
-                500
+                600
         );
     }
 
@@ -89,7 +92,9 @@ public class NotationDialog {
                 .append(Component.newline())
                 .append(Component.text("§7Status : " + (city.getType() == CityType.WAR ? "§cGuerre" : "§aPaix")))
                 .append(Component.newline())
-                .append(Component.text("§7Membres : §2" + city.getMembers().size()));
+                .append(Component.text("§7Membres : §2" + city.getMembers().size()))
+                .append(Component.newline())
+                .append(Component.text("§eCliquez ici pour avoir plus d'info sur la ville"));
 
         Component base = Component.empty();
 
@@ -102,29 +107,29 @@ public class NotationDialog {
             String money = String.format("%.1f", notation.getMoney());
 
             base = base
-                    .append(Component.text(centeredCityName)).hoverEvent(hoverCityName)
-                    .clickEvent(ClickEvent.callback(audience -> {
-                        if (!(audience instanceof Player player)) return;
-                        new CityListDetailsMenu(player, city).open();
-                    }))
+                    .append(Component.text(centeredCityName).hoverEvent(hoverCityName)
+                            .clickEvent(ClickEvent.callback(audience -> {
+                                if (!(audience instanceof Player player)) return;
+                                new CityListDetailsMenu(player, city).open();
+                            })))
                     .append(Component.text(" | "))
                     .append(Component.text(PaddingUtils.format(activity, 8)).hoverEvent(getHoverActivity()))
                     .append(Component.text(" | "))
-                    .append(Component.text(PaddingUtils.format(eco, 8)).hoverEvent(getHoverEconomy()))
+                    .append(Component.text(PaddingUtils.format(eco, LENGTH_CASE)).hoverEvent(getHoverEconomy()))
                     .append(Component.text(" | "))
-                    .append(Component.text(PaddingUtils.format(arch, 8)).hoverEvent(getHoverArchitectural()))
+                    .append(Component.text(PaddingUtils.format(arch, LENGTH_CASE)).hoverEvent(getHoverArchitectural()))
                     .append(Component.text(" | "))
-                    .append(Component.text(PaddingUtils.format(coh, 8)).hoverEvent(getHoverCoherence()))
+                    .append(Component.text(PaddingUtils.format(coh, LENGTH_CASE)).hoverEvent(getHoverCoherence()))
                     .append(Component.text(" | "))
-                    .append(Component.text(PaddingUtils.format(total, 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))))
+                    .append(Component.text(PaddingUtils.format(total, LENGTH_CASE)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))))
                     .append(Component.text(" | "))
-                    .append(Component.text("§6 +" + PaddingUtils.format(money, 8)));
+                    .append(Component.text("§6 +" + PaddingUtils.format(money, LENGTH_CASE)));
 
         } else {
             base = base.append(Component.text("Aucune notation"));
         }
 
-        base.font(Key.key("mono"));
+        base.font(Key.key(FONT));
 
         return DialogBody.plainMessage(
                 base,
