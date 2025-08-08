@@ -8,9 +8,9 @@ import fr.openmc.api.menulib.utils.StaticSlots;
 import fr.openmc.core.features.corporation.company.Company;
 import fr.openmc.core.features.corporation.manager.CompanyManager;
 import fr.openmc.core.features.economy.EconomyManager;
+import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.api.ItemsAdderApi;
 import fr.openmc.core.utils.api.PapiApi;
-import fr.openmc.core.items.CustomItemRegistry;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -67,7 +67,7 @@ public class CompanySearchMenu extends PaginatedMenu {
                             "§7■ Marchants : §f" + company.getMerchants().size(),
                             "§7■ Cliquez pour voir les informations de l'enreprise"
                     ));
-                }).setNextMenu(new CompanyMenu(getOwner(), company, true));
+                }).setOnClick(inventoryClickEvent -> new CompanyMenu(getOwner(), company, true).open());
             } else {
                 companyItem = new ItemBuilder(this, company.getHead(), itemMeta -> {
                     itemMeta.setDisplayName("§e" + company.getName());
@@ -106,7 +106,7 @@ public class CompanySearchMenu extends PaginatedMenu {
                         "§7■ Marchants : §f" + CompanyManager.getCompany(getOwner().getUniqueId()).getMerchants().size(),
                         "§7■ Cliquez pour voir les informations de l'entreprise"
                 ));
-            }).setNextMenu(new CompanyMenu(getOwner(), CompanyManager.getCompany(getOwner().getUniqueId()), true)));
+            }).setOnClick(inventoryClickEvent -> new CompanyMenu(getOwner(), CompanyManager.getCompany(getOwner().getUniqueId()), true).open()));
         }
         return map;
     }

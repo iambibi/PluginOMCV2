@@ -8,9 +8,9 @@ import fr.openmc.api.menulib.utils.StaticSlots;
 import fr.openmc.core.features.corporation.company.Company;
 import fr.openmc.core.features.corporation.data.TransactionData;
 import fr.openmc.core.features.economy.EconomyManager;
+import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.api.ItemsAdderApi;
 import fr.openmc.core.utils.api.PapiApi;
-import fr.openmc.core.items.CustomItemRegistry;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -90,7 +90,7 @@ public class CompanyBankTransactionsMenu extends PaginatedMenu {
         ItemBuilder nextPageButton = new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_next_orange").getBest(), itemMeta -> itemMeta.setDisplayName("§aPage suivante"));
         if ((getPage() == 0 && isLastPage()) || company.getShops().isEmpty()) {
             buttons.put(48, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_back_orange").getBest(), itemMeta -> itemMeta.setDisplayName("§cRetour"))
-                    .setNextMenu(new CompanyMenu(getOwner(), company, false)));
+                    .setOnClick(inventoryClickEvent -> new CompanyMenu(getOwner(), company, false).open()));
             buttons.put(50, nextPageButton);
         } else {
             buttons.put(48, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_back_orange").getBest(), itemMeta -> itemMeta.setDisplayName("§cPage précédente"))

@@ -147,7 +147,7 @@ public class MainWarMenu extends PaginatedMenu {
         map.put(53, new ItemBuilder(this, Material.BOOK, itemMeta -> {
             itemMeta.displayName(Component.text("§r§aPlus d'info !"));
             itemMeta.lore(loreInfo);
-        }).setNextMenu(new MoreInfoMenu(getOwner())));
+        }).setOnClick(inventoryClickEvent -> new MoreInfoMenu(getOwner()).open()));
 
         return map;
     }

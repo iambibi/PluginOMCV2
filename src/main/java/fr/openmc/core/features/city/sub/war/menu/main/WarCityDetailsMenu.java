@@ -53,8 +53,8 @@ public class WarCityDetailsMenu extends Menu {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getContent() {
-        Map<Integer, ItemStack> map = new HashMap<>();
+    public @NotNull Map<Integer, ItemBuilder> getContent() {
+        Map<Integer, ItemBuilder> map = new HashMap<>();
         Player player = getOwner();
 
         Mayor mayor = city.getMayor();

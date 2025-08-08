@@ -71,8 +71,8 @@ public class CityMenu extends Menu {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getContent() {
-        Map<Integer, ItemStack> inventory = new HashMap<>();
+    public @NotNull Map<Integer, ItemBuilder> getContent() {
+        Map<Integer, ItemBuilder> inventory = new HashMap<>();
         Player player = getOwner();
 
 		City city = CityManager.getPlayerCity(player.getUniqueId());
@@ -159,7 +159,7 @@ public class CityMenu extends Menu {
 
         Mascot mascot = city.getMascot();
 
-        Supplier<ItemStack> mascotItemSupplier = () -> {
+        Supplier<ItemBuilder> mascotItemSupplier = () -> {
             LivingEntity mob;
             List<Component> loreMascots;
             if (mascot != null) {
@@ -261,7 +261,7 @@ public class CityMenu extends Menu {
             menu.open();
         }));
 
-            Supplier<ItemStack> electionItemSupplier = () -> {
+        Supplier<ItemBuilder> electionItemSupplier = () -> {
                 List<Component> loreElections = List.of();
                 if (city.getElectionType() == ElectionType.ELECTION) {
                     if (MayorManager.phaseMayor == 2) {
@@ -352,7 +352,7 @@ public class CityMenu extends Menu {
         }
         String finalType = typeStr;
 
-        Supplier<ItemStack> typeItemSupplier = () -> {
+        Supplier<ItemBuilder> typeItemSupplier = () -> {
 
             List<Component> lore = new ArrayList<>();
             lore.add(Component.text("§7Votre ville est en §5" + finalType));

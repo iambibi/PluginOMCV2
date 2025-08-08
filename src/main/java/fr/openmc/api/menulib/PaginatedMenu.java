@@ -1,6 +1,7 @@
 package fr.openmc.api.menulib;
 
 import fr.openmc.api.menulib.utils.InventorySize;
+import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.ItemUtils;
 import fr.openmc.api.menulib.utils.StaticSlots;
 import lombok.Getter;
@@ -95,11 +96,10 @@ public abstract class PaginatedMenu extends Menu {
 	 * {@link ItemStack} objects representing the items displayed in the menu for the current page.
 	 */
 	@Override
-	@NotNull
-	public final Map<Integer, ItemStack> getContent() {
-		Map<Integer, ItemStack> map = new HashMap<>();
+	public final @NotNull Map<Integer, ItemBuilder> getContent() {
+		Map<Integer, ItemBuilder> map = new HashMap<>();
 		for (Integer staticSlot : getStaticSlots()) {
-			map.put(staticSlot, ItemUtils.createItem(" ", getBorderMaterial() == null ? Material.AIR : getBorderMaterial()));
+			map.put(staticSlot, new ItemBuilder(this, ItemUtils.createItem(" ", getBorderMaterial() == null ? Material.AIR : getBorderMaterial())));
 		}
 		List<Integer> staticSlots = StaticSlots.removeRecurringIntegers(getStaticSlots(), getInventorySize().getSize());
 		int maxItems = getInventorySize().getSize() - staticSlots.size();
@@ -110,7 +110,7 @@ public abstract class PaginatedMenu extends Menu {
 		for (int i = 0; i < getInventory().getSize(); i++) {
 			if (! staticSlots.contains(i)) {
 				if (index + maxItems * page < getItems().size()) {
-					map.put(i, getItems().get(index + maxItems * page));
+					map.put(i, new ItemBuilder(this, getItems().get(index + maxItems * page)));
 					index++;
 				}
 			}
@@ -119,7 +119,7 @@ public abstract class PaginatedMenu extends Menu {
 		if (getButtons() != null) {
 			getButtons().forEach((integer, itemStack) -> {
 				if (staticSlots.contains(integer)) {
-					map.put(integer, itemStack);
+					map.put(integer, new ItemBuilder(this, itemStack));
 				}
 			});
 		}

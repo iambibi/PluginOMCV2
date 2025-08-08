@@ -21,7 +21,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -51,8 +50,8 @@ public class CityBankMenu extends Menu {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getContent() {
-        Map<Integer, ItemStack> inventory = new HashMap<>();
+    public @NotNull Map<Integer, ItemBuilder> getContent() {
+        Map<Integer, ItemBuilder> inventory = new HashMap<>();
         Player player = getOwner();
 
         City city = CityManager.getPlayerCity(player.getUniqueId());
@@ -86,7 +85,7 @@ public class CityBankMenu extends Menu {
 
         if (city.hasPermission(player.getUniqueId(), CPermission.MONEY_BALANCE)) {
 
-            Supplier<ItemStack> interestItemSupplier = () -> {
+            Supplier<ItemBuilder> interestItemSupplier = () -> {
                 return new ItemBuilder(this, Material.GOLD_BLOCK, itemMeta -> {
                     itemMeta.itemName(Component.text("§6L'Argent de votre Ville"));
                     itemMeta.lore(List.of(
@@ -134,7 +133,7 @@ public class CityBankMenu extends Menu {
                     Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
             ));
 
-        }).setOnClick(inventoryClickEvent -> {
+        }, true).setOnClick(inventoryClickEvent -> {
             new CityMenu(player).open();
         }));
 

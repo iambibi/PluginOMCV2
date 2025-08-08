@@ -47,8 +47,8 @@ public class AdminShopCategoryMenu extends Menu {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getContent() {
-        Map<Integer, ItemStack> content = new HashMap<>();
+    public @NotNull Map<Integer, ItemBuilder> getContent() {
+        Map<Integer, ItemBuilder> content = new HashMap<>();
 
         Map<String, ShopItem> categoryItems = AdminShopManager.getCategoryItems(categoryId);
 

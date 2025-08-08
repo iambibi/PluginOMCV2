@@ -62,8 +62,8 @@ public class CityListDetailsMenu extends Menu {
 	}
 	
 	@Override
-	public @NotNull Map<Integer, ItemStack> getContent() {
-		Map<Integer, ItemStack> map = new HashMap<>();
+	public @NotNull Map<Integer, ItemBuilder> getContent() {
+		Map<Integer, ItemBuilder> map = new HashMap<>();
 
 		List<Component> loreOwner = new ArrayList<>();
 
@@ -140,7 +140,7 @@ public class CityListDetailsMenu extends Menu {
 									Component.text("§e§lCLIQUEZ ICI POUR VOIR LES MEMBRES")
 							)
 					);
-				}).setNextMenu(new CityPlayerListMenu(getOwner(), city)));
+				}).setOnClick(inventoryClickEvent -> new CityPlayerListMenu(getOwner(), city).open()));
 
 		map.put(26, new ItemBuilder(this, new ItemStack(city.getType().equals(CityType.WAR) ? Material.RED_BANNER : Material.GREEN_BANNER),
 				itemMeta -> itemMeta.displayName(Component.text("§eType : " + (city.getType().equals(CityType.WAR) ? "§cGuerre" : "§aPaix")))));

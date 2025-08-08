@@ -58,8 +58,8 @@ public class MayorMandateMenu extends Menu {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getContent() {
-        Map<Integer, ItemStack> inventory = new HashMap<>();
+    public @NotNull Map<Integer, ItemBuilder> getContent() {
+        Map<Integer, ItemBuilder> inventory = new HashMap<>();
         Player player = getOwner();
 
         City city = CityManager.getPlayerCity(player.getUniqueId());
@@ -171,7 +171,7 @@ public class MayorMandateMenu extends Menu {
         inventory.put(52, new ItemBuilder(this, Material.BOOK, itemMeta -> {
             itemMeta.displayName(Component.text("§r§aPlus d'info !"));
             itemMeta.lore(loreInfo);
-        }).setNextMenu(new MoreInfoMenu(getOwner())));
+        }).setOnClick(inventoryClickEvent -> new MoreInfoMenu(getOwner()).open()));
 
         return inventory;
     }

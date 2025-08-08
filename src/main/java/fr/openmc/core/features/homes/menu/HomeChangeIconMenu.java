@@ -93,7 +93,7 @@ public class HomeChangeIconMenu extends PaginatedMenu {
         Map<Integer, ItemStack> map = new HashMap<>();
 
         map.put(45, new ItemBuilder(this, Objects.requireNonNull(CustomItemRegistry.getByName("_iainternal:icon_back_orange")).getBest(),
-                itemMeta -> itemMeta.displayName(Component.text("§7Retour"))).setBackButton());
+                itemMeta -> itemMeta.displayName(Component.text("§7Retour")), true));
 
         map.put(48, new ItemBuilder(this, MailboxMenuManager.previousPageBtn()).setPreviousPageButton());
         map.put(49, new ItemBuilder(this, MailboxMenuManager.cancelBtn()).setCloseButton());
