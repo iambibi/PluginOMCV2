@@ -2,6 +2,7 @@ package fr.openmc.core.features.city.sub.notation.commands;
 
 import fr.openmc.api.input.DialogInput;
 import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.menu.NotationEditionDialog;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.messages.MessageType;
@@ -40,8 +41,17 @@ public class AdminNotationCommands {
     @CommandPermission("omc.admins.commands.admcity.notation")
     public void publishNotations(Player sender) {
         String weekStr = DateUtils.getWeekFormat();
+
+        if (!NotationManager.notationPerWeek.containsKey(weekStr)) {
+            MessagesManager.sendMessage(sender, Component.text("Vous devez faire /admcity notation edit et éditez la semaine " + weekStr), Prefix.STAFF, MessageType.ERROR, false);
+            return;
+        }
+
         calculateAllCityScore(weekStr);
 
         giveReward(weekStr);
+
+        MessagesManager.sendMessage(sender, Component.text("La semaine " + weekStr + " a été publié, les notes d'économies et d'activité ainsi que les gains ont été calculé et donné"), Prefix.STAFF, MessageType.ERROR, false);
+
     }
 }

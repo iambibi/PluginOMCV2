@@ -16,4 +16,12 @@ public enum NotationNote {
     NotationNote(int maxNote) {
         this.maxNote = maxNote;
     }
+
+    public static double getMaxTotalNote() {
+        double maxTotalNote = 0;
+        for (NotationNote value : NotationNote.values()) {
+            maxTotalNote += value.getMaxNote();
+        }
+        return maxTotalNote;
+    }
 }

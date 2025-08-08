@@ -13,9 +13,9 @@ public class CityNotation {
     private String cityUUID;
     @DatabaseField
     private String weekStr;
-    @DatabaseField(defaultValue = "null", columnName = "economy")
+    @DatabaseField(defaultValue = "0", columnName = "economy")
     private Double noteEconomy;
-    @DatabaseField(defaultValue = "null", columnName = "activity")
+    @DatabaseField(defaultValue = "0", columnName = "activity")
     private Double noteActivity;
     @DatabaseField(defaultValue = "0", columnName = "architectural")
     private double noteArchitectural;
@@ -30,10 +30,8 @@ public class CityNotation {
         // required for ORMLite
     }
 
-    public CityNotation(String uuid, Double noteEconomy, Double noteActivity, double noteArchitectural, double noteCoherence, String description, String weekStr) {
+    public CityNotation(String uuid, double noteArchitectural, double noteCoherence, String description, String weekStr) {
         this.cityUUID = uuid;
-        this.noteEconomy = noteEconomy;
-        this.noteActivity = noteActivity;
         this.noteArchitectural = noteArchitectural;
         this.noteCoherence = noteCoherence;
         this.weekStr = weekStr;

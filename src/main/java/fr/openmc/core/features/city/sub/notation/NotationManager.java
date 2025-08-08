@@ -45,6 +45,27 @@ public class NotationManager {
         );
 
         scheduleMidnightTask();
+
+        Bukkit.getScheduler().runTaskTimer(
+                OMCPlugin.getInstance(),
+                () -> {
+                    notationPerWeek.forEach((weekStr, notations) -> {
+                        Bukkit.getLogger().info("Updating notations for week: " + weekStr);
+                        notations.forEach(notation -> {
+                            Bukkit.getLogger().info(notation.getCityUUID() + " - Activity: " + notation.getNoteActivity() + ", Economy: " + notation.getNoteEconomy() +
+                                    ", Architectural: " + notation.getNoteArchitectural() + ", Coherence: " + notation.getNoteCoherence());
+                        });
+                    });
+
+                    cityNotations.forEach((cityUUID, notations) -> {
+                        Bukkit.getLogger().info("City: " + cityUUID + " has " + notations.size() + " notations.");
+                        notations.forEach(notation -> {
+                            Bukkit.getLogger().info("Notation for city " + cityUUID + ": " + notation.getWeekStr() + " - Total Note: " + notation.getTotalNote());
+                        });
+                    });
+                },
+                0L, 100L
+        );
     }
 
     public static void init_db(ConnectionSource connectionSource) throws SQLException {
@@ -80,13 +101,17 @@ public class NotationManager {
     }
 
     public static void saveNotations() {
-        notationPerWeek.forEach((weekStr, notations) -> notations.forEach(notation -> {
-                    try {
-                        notationDao.createOrUpdate(notation);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                })
+        notationPerWeek.forEach((weekStr, notations) -> {
+                    System.out.println(weekStr);
+                    notations.forEach(notation -> {
+                        System.out.println(notation.getCityUUID() + " - " + notation.getNoteActivity() + ", " + notation.getNoteEconomy() + ", " + notation.getNoteArchitectural() + ", " + notation.getNoteCoherence());
+                        try {
+                            notationDao.createOrUpdate(notation);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
         );
     }
 
@@ -188,17 +213,23 @@ public class NotationManager {
     }
 
     public static void calculateAllCityScore(String weekStr) {
-        notationPerWeek.get(weekStr).forEach((notations) -> {
+        List<CityNotation> notationsCopy = new ArrayList<>(notationPerWeek.get(weekStr));
+
+        for (CityNotation notations : notationsCopy) {
             City city = CityManager.getCity(notations.getCityUUID());
+
             notations.setNoteActivity(getActivityScore(city));
 
-            notations.setNoteEconomy(getEconomyScore(city, getMaxPib(cityNotations.get(weekStr).stream()
-                    .map(CityNotation::getCityUUID)
-                    .map(CityManager::getCity)
-                    .collect(Collectors.toList()))));
+            notations.setNoteEconomy(Math.floor(getEconomyScore(
+                    city,
+                    getMaxPib(cityNotations.get(weekStr).stream()
+                            .map(CityNotation::getCityUUID)
+                            .map(CityManager::getCity)
+                            .collect(Collectors.toList()))
+            )));
 
             createOrUpdateNotation(notations);
-        });
+        }
     }
 
     public static double calculateReward(CityNotation notation) {

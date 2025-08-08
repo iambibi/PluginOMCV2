@@ -35,6 +35,7 @@ public class NotationEditionDialog {
 
         List<DialogBody> body = new ArrayList<>();
 
+        Integer finalCityEditIndex1 = cityEditIndex;
         body.add(DialogBody.item(
                 ItemStack.of(Material.ENDER_PEARL),
                 DialogBody.plainMessage(Component.text("Se téléporter a la ville en question.").clickEvent(
@@ -53,6 +54,16 @@ public class NotationEditionDialog {
                             }
 
                             playerClicked.teleportAsync(warpLocation);
+
+                            MessagesManager.sendMessage(player, Component.text("Vous avez été téléporté à la ville " + cityEdited.getName() + ". Cliquez sur le message pour continuer l'édition.")
+                                            .clickEvent(ClickEvent.callback((audience1) -> {
+                                                if (!(audience instanceof Player playerClicked1)) {
+                                                    return;
+                                                }
+
+                                                send(playerClicked1, weekStr, cities, finalCityEditIndex1);
+                                            })),
+                                    Prefix.STAFF, MessageType.SUCCESS, false);
                         }
                         )))),
                 false,
@@ -116,8 +127,6 @@ public class NotationEditionDialog {
 
                                             CityNotation cityNotation = new CityNotation(
                                                     cityEdited.getUUID(),
-                                                    null,
-                                                    null,
                                                     noteArchitectural,
                                                     noteCoherence,
                                                     description,
@@ -129,7 +138,7 @@ public class NotationEditionDialog {
                                             if (finalCityEditIndex + 1 < cities.size()) {
                                                 NotationEditionDialog.send(player, weekStr, cities, finalCityEditIndex + 1);
                                             } else {
-                                                MessagesManager.sendMessage(player, Component.text("Les notations pour le " + weekStr + "ont été totalement faites"), Prefix.STAFF, MessageType.SUCCESS, false);
+                                                MessagesManager.sendMessage(player, Component.text("Les notations pour le " + weekStr + " ont été totalement faites"), Prefix.STAFF, MessageType.SUCCESS, false);
                                                 player.closeInventory();
                                             }
                                         },
@@ -146,12 +155,5 @@ public class NotationEditionDialog {
         );
 
         player.showDialog(dialog);
-    }
-
-    public static DialogBody lineEdition(City city, String weekStr) {
-        CityNotation notation = city.getNotationOfWeek(weekStr);
-        return DialogBody.plainMessage(Component.text(city.getName() + " ").hoverEvent(
-                Component.text("Cliquez pour éditer la notation de la ville " + city.getName() + " pour la semaine " + weekStr)
-        ));
     }
 }

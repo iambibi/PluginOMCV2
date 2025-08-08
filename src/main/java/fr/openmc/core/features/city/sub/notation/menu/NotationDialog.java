@@ -67,7 +67,7 @@ public class NotationDialog {
                 .append(Component.text(PaddingUtils.format("Econo.", 8)).hoverEvent(getHoverEconomy())).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Arch.", 8)).hoverEvent(getHoverArchitectural())).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Coh.", 8)).hoverEvent(getHoverCoherence())).append(Component.text(" | "))
-                .append(Component.text(PaddingUtils.format("Total", 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))))
+                .append(Component.text(PaddingUtils.format("Total", 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr)))).append(Component.text(" | "))
                 .append(Component.text(PaddingUtils.format("Argent", 8)));
 
         header.font(Key.key("mono"));
@@ -91,26 +91,34 @@ public class NotationDialog {
                 .append(Component.newline())
                 .append(Component.text("§7Membres : §2" + city.getMembers().size()));
 
-        Component base = Component.text(centeredCityName + " | ").hoverEvent(hoverCityName)
-                .clickEvent(ClickEvent.callback(audience -> {
-                    if (!(audience instanceof Player player)) return;
-                    new CityListDetailsMenu(player, city).open();
-                }));
+        Component base = Component.empty();
 
         if (notation != null) {
-            String arch = String.format("%.2f/30", notation.getNoteArchitectural());
-            String coh = String.format("%.2f/30", notation.getNoteCoherence());
-            String total = String.format("%.2f/60", notation.getTotalNote());
+            String activity = String.format("%.2f/" + NotationNote.NOTE_ACTIVITY.getMaxNote(), notation.getNoteActivity());
+            String eco = String.format("%.2f/" + NotationNote.NOTE_PIB.getMaxNote(), notation.getNoteEconomy());
+            String arch = String.format("%.2f/" + NotationNote.NOTE_ARCHITECTURAL.getMaxNote(), notation.getNoteArchitectural());
+            String coh = String.format("%.2f/" + NotationNote.NOTE_COHERENCE.getMaxNote(), notation.getNoteCoherence());
+            String total = String.format("%.2f/%.0f", notation.getTotalNote(), NotationNote.getMaxTotalNote());
             String money = String.format("%.1f", notation.getMoney());
 
             base = base
+                    .append(Component.text(centeredCityName)).hoverEvent(hoverCityName)
+                    .clickEvent(ClickEvent.callback(audience -> {
+                        if (!(audience instanceof Player player)) return;
+                        new CityListDetailsMenu(player, city).open();
+                    }))
+                    .append(Component.text(" | "))
+                    .append(Component.text(PaddingUtils.format(activity, 8)).hoverEvent(getHoverActivity()))
+                    .append(Component.text(" | "))
+                    .append(Component.text(PaddingUtils.format(eco, 8)).hoverEvent(getHoverEconomy()))
+                    .append(Component.text(" | "))
                     .append(Component.text(PaddingUtils.format(arch, 8)).hoverEvent(getHoverArchitectural()))
                     .append(Component.text(" | "))
-                    .append(Component.text(PaddingUtils.format(coh, 8)).hoverEvent(getHoverCoherence())
-                            .append(Component.text(" | "))
-                            .append(Component.text(PaddingUtils.format(total, 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))))
-                            .append(Component.text(" | "))
-                            .append(Component.text(PaddingUtils.format(money, 8))));
+                    .append(Component.text(PaddingUtils.format(coh, 8)).hoverEvent(getHoverCoherence()))
+                    .append(Component.text(" | "))
+                    .append(Component.text(PaddingUtils.format(total, 8)).hoverEvent(getHoverTotal(city.getNotationOfWeek(weekStr))))
+                    .append(Component.text(" | "))
+                    .append(Component.text("§6 +" + PaddingUtils.format(money, 8)));
 
         } else {
             base = base.append(Component.text("Aucune notation"));
@@ -143,23 +151,24 @@ public class NotationDialog {
 
     public static Component getHoverActivity() {
         return Component.text("Note allant de 0 à " + NotationNote.NOTE_ACTIVITY.getMaxNote() + " points, qui comprends, le nombre de joueurs actifs dans la ville par le temps de jeu d'une ville")
-                .append(Component.text("Note sur " + NotationNote.NOTE_ACTIVITY.getMaxNote() + " points"));
+                .appendNewline()
+                .append(Component.text("Note sur §3" + NotationNote.NOTE_ACTIVITY.getMaxNote() + " §fpoints"));
     }
 
     public static Component getHoverEconomy() {
         return Component.text("Note qui comprends, la richesse de la ville et le PIB par habitant de la ville.")
                 .appendNewline()
-                .append(Component.text("Note sur " + NotationNote.NOTE_PIB.getMaxNote() + " points"));
+                .append(Component.text("Note sur §3" + NotationNote.NOTE_PIB.getMaxNote() + " §fpoints"));
     }
 
     public static Component getHoverCoherence() {
         return Component.text("Note de cohérence qui comprends, la cohérence des constructions entre elles, l'harmonie des couleurs, la transitition entre 2 thèmes, ect...")
-                .append(Component.text("Note sur " + NotationNote.NOTE_COHERENCE.getMaxNote() + " points"));
+                .append(Component.text("Note sur §3" + NotationNote.NOTE_COHERENCE.getMaxNote() + " §fpoints"));
     }
 
     public static Component getHoverArchitectural() {
         return Component.text("Note d'architecture qui comprends, la diversité des blocs utilisées, l'architecture des builds ainsi que la végétation.")
                 .appendNewline()
-                .append(Component.text("Note sur " + NotationNote.NOTE_ARCHITECTURAL.getMaxNote() + " points"));
+                .append(Component.text("Note sur §3" + NotationNote.NOTE_ARCHITECTURAL.getMaxNote() + " §fpoints"));
     }
 }
