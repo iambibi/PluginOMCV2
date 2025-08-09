@@ -24,6 +24,10 @@ import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.features.city.sub.mayor.ElectionType;
 import fr.openmc.core.features.city.sub.mayor.actions.MayorCommandAction;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
+import fr.openmc.core.features.city.sub.notation.NotationNote;
+import fr.openmc.core.features.city.sub.notation.menu.NotationDialog;
+import fr.openmc.core.features.city.sub.notation.models.CityNotation;
+import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.messages.MessageType;
@@ -156,6 +160,25 @@ public class CityMenu extends Menu {
                 menu.open();
             }
         }));
+
+        CityNotation notation = city.getNotationOfWeek(DateUtils.getWeekFormat());
+        if (notation != null) {
+            List<Component> loreNotation = new ArrayList<>() {
+                {
+                    add(Component.text("§7Notation de la Ville : §9" + notation.getTotalNote() + "§7/§9" + NotationNote.getMaxTotalNote()));
+                    add(Component.text("§7Argent reporté : §6" + notation.getMoney() + EconomyManager.getEconomyIcon()));
+                    add(Component.empty());
+                    add(Component.text("§e§lCLIQUEZ ICI POUR VOIR LA NOTATION"));
+                }
+            };
+
+            inventory.put(5, new ItemBuilder(this, Material.DIAMOND, itemMeta -> {
+                itemMeta.itemName(Component.text("§3La Notation de Votre Ville"));
+                itemMeta.lore(loreNotation);
+            }).setOnClick(inventoryClickEvent -> {
+                NotationDialog.send(player, DateUtils.getWeekFormat());
+            }));
+        }
 
         Mascot mascot = city.getMascot();
 
