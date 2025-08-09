@@ -172,7 +172,6 @@ public final class MenuLib implements Listener {
 			Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
 				if (!(e.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof Menu)) {
 					Player player = (Player) e.getPlayer();
-					System.out.println("clearHistory");
 					MenuLib.clearHistory(player);
 				}
 			}, 1L);

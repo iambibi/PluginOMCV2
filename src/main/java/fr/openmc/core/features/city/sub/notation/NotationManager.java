@@ -106,9 +106,7 @@ public class NotationManager {
 
     public static void saveNotations() {
         notationPerWeek.forEach((weekStr, notations) -> {
-                    System.out.println(weekStr);
                     notations.forEach(notation -> {
-                        System.out.println(notation.getCityUUID() + " - " + notation.getNoteActivity() + ", " + notation.getNoteEconomy() + ", " + notation.getNoteArchitectural() + ", " + notation.getNoteCoherence());
                         try {
                             notationDao.createOrUpdate(notation);
                         } catch (SQLException e) {
