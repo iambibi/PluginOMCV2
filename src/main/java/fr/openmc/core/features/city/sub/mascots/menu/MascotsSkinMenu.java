@@ -3,7 +3,6 @@ package fr.openmc.core.features.city.sub.mascots.menu;
 import fr.openmc.api.menulib.Menu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
-import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.ItemUtils;
@@ -81,8 +80,8 @@ public class MascotsSkinMenu extends Menu {
 
         map.put(18, new ItemBuilder(this, Material.ARROW, meta -> {
             meta.displayName(Component.text("§aRetour"));
-            meta.lore(List.of(Component.text("§7Retourner au menu de votre mascotte")));
-        }).setOnClick(event -> new CityMenu(getOwner()).open()));
+            meta.lore(List.of(Component.text("§7Retourner au Menu Précédent")));
+        }, true));
 
         return map;
     }

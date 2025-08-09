@@ -100,7 +100,7 @@ public class HomeConfigMenu extends Menu {
                 itemMeta.lore(List.of(Component.text("§7■ §cClique §4gauche §cpour supprimer votre home")));
             }).setOnClick(inventoryClickEvent -> new HomeDeleteConfirmMenu(getOwner(), home).open()));
 
-        content.put(36, new ItemBuilder(this, MailboxMenuManager.previousPageBtn()).setOnClick(inventoryClickEvent -> new HomeMenu(player).open()));
+        content.put(36, new ItemBuilder(this, MailboxMenuManager.previousPageBtn(), true));
         content.put(44, new ItemBuilder(this, MailboxMenuManager.cancelBtn()).setCloseButton());
 
         return content;

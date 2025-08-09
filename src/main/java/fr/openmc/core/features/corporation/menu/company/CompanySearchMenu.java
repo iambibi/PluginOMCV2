@@ -55,7 +55,7 @@ public class CompanySearchMenu extends PaginatedMenu {
     }
 
     @Override
-    public @NotNull List<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
         List<ItemStack> items = new ArrayList<>();
         for (Company company : CompanyManager.getCompanies()) {
             ItemStack companyItem;
@@ -89,8 +89,8 @@ public class CompanySearchMenu extends PaginatedMenu {
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtons() {
-        Map<Integer, ItemStack> map = new HashMap<>();
+    public Map<Integer, ItemBuilder> getButtons() {
+        Map<Integer, ItemBuilder> map = new HashMap<>();
         map.put(49, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_cancel").getBest(), itemMeta -> itemMeta.setDisplayName("§7Fermer"))
                 .setCloseButton());
         map.put(48, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_back_orange").getBest(), itemMeta -> itemMeta.setDisplayName("§cPage précédente"))

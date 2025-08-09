@@ -118,10 +118,7 @@ public class PersonalBankDepositMenu extends Menu {
                     Component.text("§7Vous allez retourner au Menu de votre banque"),
                     Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
             ));
-        }).setOnClick(inventoryClickEvent -> {
-            PersonalBankMenu menu = new PersonalBankMenu(player);
-            menu.open();
-        }));
+        }, true));
 
         return inventory;
     }

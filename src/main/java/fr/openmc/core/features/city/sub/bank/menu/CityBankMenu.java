@@ -8,7 +8,6 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
-import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.features.economy.BankManager;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.DateUtils;
@@ -129,13 +128,11 @@ public class CityBankMenu extends Menu {
         inventory.put(18, new ItemBuilder(this, Material.ARROW, itemMeta -> {
             itemMeta.itemName(Component.text("§aRetour"));
             itemMeta.lore(List.of(
-                    Component.text("§7Vous allez retourner au menu des villes"),
+                    Component.text("§7Vous allez retourner au Menu Précédent"),
                     Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
             ));
 
-        }, true).setOnClick(inventoryClickEvent -> {
-            new CityMenu(player).open();
-        }));
+        }, true));
 
         return inventory;
     }

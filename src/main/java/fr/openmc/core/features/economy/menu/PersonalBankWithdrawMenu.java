@@ -120,9 +120,7 @@ public class PersonalBankWithdrawMenu extends Menu {
                     Component.text("§7Vous allez retourner au Menu de votre Banque"),
                     Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
             ));
-        }).setOnClick(inventoryClickEvent -> {
-            new PersonalBankMenu(player).open();
-        }));
+        }, true));
 
         return inventory;
     }

@@ -76,7 +76,7 @@ public class HomeChangeIconMenu extends PaginatedMenu {
     }
 
     @Override
-    public @NotNull List<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
         Player player = getOwner();
 
         if (!searchQuery.isEmpty()) return HomeIconCacheManager.searchIcons(searchQuery, this, home, player);
@@ -89,8 +89,8 @@ public class HomeChangeIconMenu extends PaginatedMenu {
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtons() {
-        Map<Integer, ItemStack> map = new HashMap<>();
+    public Map<Integer, ItemBuilder> getButtons() {
+        Map<Integer, ItemBuilder> map = new HashMap<>();
 
         map.put(45, new ItemBuilder(this, Objects.requireNonNull(CustomItemRegistry.getByName("_iainternal:icon_back_orange")).getBest(),
                 itemMeta -> itemMeta.displayName(Component.text("§7Retour")), true));

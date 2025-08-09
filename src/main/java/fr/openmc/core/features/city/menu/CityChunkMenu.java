@@ -198,11 +198,8 @@ public class CityChunkMenu extends Menu {
         if (playerCity != null) {
             inventory.put(45, new ItemBuilder(this, Material.ARROW, itemMeta -> {
                 itemMeta.displayName(Component.text("§aRetour"));
-                itemMeta.lore(List.of(Component.text("§7Retourner au menu des villes")));
-            }).setOnClick(event -> {
-                CityMenu menu = new CityMenu(player);
-                menu.open();
-            }));
+                itemMeta.lore(List.of(Component.text("§7Retourner au menu précédent")));
+            }, true));
 
             if (hasFreeClaimAvailable) {
                 inventory.put(49, new ItemBuilder(this, Material.GOLD_BLOCK, itemMeta -> {

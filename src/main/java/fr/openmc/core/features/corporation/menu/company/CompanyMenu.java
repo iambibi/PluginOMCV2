@@ -55,7 +55,7 @@ public class CompanyMenu extends PaginatedMenu {
     }
 
     @Override
-    public @NotNull List<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
         Set<UUID> merchants = company.getMerchants().keySet();
         List<ItemStack> items = new ArrayList<>();
         for (UUID merchant : merchants) {
@@ -72,8 +72,8 @@ public class CompanyMenu extends PaginatedMenu {
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtons() {
-        Map<Integer, ItemStack> buttons = new HashMap<>();
+    public Map<Integer, ItemBuilder> getButtons() {
+        Map<Integer, ItemBuilder> buttons = new HashMap<>();
 
         ItemBuilder closeButton = new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_cancel").getBest(), itemMeta -> itemMeta.setDisplayName("§7Fermer")).setCloseButton();
         ItemBuilder backButton = new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_back_orange").getBest(), itemMeta -> itemMeta.setDisplayName("§7Retour"), true);
@@ -86,7 +86,7 @@ public class CompanyMenu extends PaginatedMenu {
         buttons.put(50, new ItemBuilder(this,  CustomItemRegistry.getByName("_iainternal:icon_next_orange").getBest(), itemMeta -> itemMeta.setDisplayName("§aPage suivante"))
                 .setNextPageButton());
 
-        ItemStack ownerItem;
+        ItemBuilder ownerItem;
 
         if (company.getOwner().isPlayer()) {
             ownerItem = new ItemBuilder(this, company.getHead(), itemMeta -> {

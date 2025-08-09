@@ -10,7 +10,6 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
-import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.features.city.sub.mascots.MascotsLevels;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.items.CustomItemRegistry;
@@ -253,11 +252,8 @@ public class MascotMenu extends Menu {
 
         map.put(18, new ItemBuilder(this, Material.ARROW, itemMeta -> {
             itemMeta.displayName(Component.text("§aRetour"));
-            itemMeta.lore(List.of(Component.text("§7Retourner au menu des villes")));
-        }).setOnClick(event -> {
-            CityMenu menu = new CityMenu(player);
-            menu.open();
-        }));
+            itemMeta.lore(List.of(Component.text("§7Retourner au Menu Précédent")));
+        }, true));
 
         if (city.isImmune()) {
             Supplier<ItemBuilder> immunityItemSupplier = () -> {

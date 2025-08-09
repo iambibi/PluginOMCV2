@@ -11,9 +11,7 @@ import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.actions.CityKickAction;
 import fr.openmc.core.features.city.conditions.CityKickCondition;
 import fr.openmc.core.features.city.menu.CitizensPermsMenu;
-import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
-import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -60,7 +58,6 @@ public class CityPlayerGestionMenu extends Menu {
 
         boolean hasPermissionKick = city.hasPermission(player.getUniqueId(), CPermission.KICK);
         boolean hasPermissionPerms = city.hasPermission(player.getUniqueId(), CPermission.PERMS);
-
 
         List<Component> loreKick;
 
@@ -138,19 +135,10 @@ public class CityPlayerGestionMenu extends Menu {
         inventory.put(18, new ItemBuilder(this, Material.ARROW, itemMeta -> {
             itemMeta.itemName(Component.text("§aRetour"));
             itemMeta.lore(List.of(
-                    Component.text("§7Vous allez retourner au Menu de votre Ville"),
+                    Component.text("§7Vous allez retourner au menu précédent"),
                     Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
             ));
-        }).setOnClick(inventoryClickEvent -> {
-            City cityCheck = CityManager.getPlayerCity(player.getUniqueId());
-            if (cityCheck == null) {
-                MessagesManager.sendMessage(player, MessagesManager.Message.PLAYERNOCITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);
-                return;
-            }
-
-            CityPlayerListMenu menu = new CityPlayerListMenu(player);
-            menu.open();
-        }));
+        }, true));
 
         return inventory;
     }

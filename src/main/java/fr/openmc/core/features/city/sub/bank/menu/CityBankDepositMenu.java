@@ -153,13 +153,10 @@ public class CityBankDepositMenu extends Menu {
         inventory.put(18, new ItemBuilder(this, Material.ARROW, itemMeta -> {
             itemMeta.itemName(Component.text("§aRetour"));
             itemMeta.lore(List.of(
-                    Component.text("§7Vous allez retourner au Menu de la Banque de votre ville"),
+                    Component.text("§7Vous allez retourner au Menu Précédent"),
                     Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
             ));
-        }).setOnClick(inventoryClickEvent -> {
-            CityBankMenu menu = new CityBankMenu(player);
-            menu.open();
-        }));
+        }, true));
 
         return inventory;
     }

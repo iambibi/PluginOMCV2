@@ -8,7 +8,6 @@ import fr.openmc.api.menulib.utils.MenuUtils;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
-import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.ItemUtils;
 import fr.openmc.core.utils.messages.MessageType;
@@ -91,11 +90,8 @@ public class MascotsDeadMenu extends Menu {
 
         map.put(18, new ItemBuilder(this, Material.ARROW, itemMeta -> {
             itemMeta.displayName(Component.text("§aRetour"));
-            itemMeta.lore(List.of(Component.text("§7Retourner au menu des villes")));
-        }).setOnClick(event -> {
-            CityMenu menu = new CityMenu(player);
-            menu.open();
-        }));
+            itemMeta.lore(List.of(Component.text("§7Retourner au Menu Précédent")));
+        }, true));
 
         return map;
     }

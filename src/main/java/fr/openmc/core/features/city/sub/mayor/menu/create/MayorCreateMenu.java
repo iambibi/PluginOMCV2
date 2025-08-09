@@ -107,10 +107,7 @@ public class MayorCreateMenu extends Menu {
                         Component.text("§7Vous allez retourner au Menu des Elections"),
                         Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
                 ));
-            }).setOnClick(inventoryClickEvent -> {
-                MayorElectionMenu menu = new MayorElectionMenu(player);
-                menu.open();
-            }));
+            }, true));
         } else if (type == MenuType.CANDIDATE) {
             canConfirmPerk = perk2 != null && perk3 != null;
 

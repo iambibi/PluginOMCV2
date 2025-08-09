@@ -73,6 +73,20 @@ public class ItemBuilder extends ItemStack {
 	}
 
 	/**
+	 * Constructs an {@code ItemBuilder} with the specified {@link Menu} and {@link ItemStack}.
+	 * This constructor initializes the {@code ItemBuilder} to create items with the given menu and item,
+	 * while not applying any additional customizations to the {@link ItemMeta}.
+	 *
+	 * @param itemMenu The {@link Menu} that this item will be associated with. This parameter represents
+	 *                 the context in which the item will exist, such as an inventory or menu framework.
+	 * @param item     The {@link ItemStack} defining the base item configuration. It includes the material,
+	 *                 amount, and current metadata of the item.
+	 */
+	public ItemBuilder(Menu itemMenu, ItemStack item, boolean isBackButton) {
+		this(itemMenu, item, null, isBackButton);
+	}
+
+	/**
 	 * Constructs an {@code ItemBuilder} with the specified {@link Menu}, {@link Material},
 	 * and an {@link Consumer} for customizing the {@link ItemMeta}.
 	 * This constructor initializes the {@code ItemBuilder} with a menu, a material to define the base item,

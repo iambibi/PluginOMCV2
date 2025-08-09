@@ -3,7 +3,6 @@ package fr.openmc.core.features.city.sub.mayor.menu.create;
 import fr.openmc.api.menulib.Menu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
-import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.models.MayorCandidate;
@@ -91,10 +90,7 @@ public class MayorModifyMenu extends Menu {
                     Component.text("§7Vous allez retourner au Menu de votre ville"),
                     Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
             ));
-        }).setOnClick(inventoryClickEvent -> {
-            CityMenu menu = new CityMenu(player);
-            menu.open();
-        }));
+        }, true));
 
         return inventory;
     }

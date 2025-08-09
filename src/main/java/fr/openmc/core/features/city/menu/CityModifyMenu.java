@@ -173,20 +173,9 @@ public class CityModifyMenu extends Menu {
         inventory.put(18, new ItemBuilder(this, Material.ARROW, itemMeta -> {
             itemMeta.itemName(Component.text("§aRetour"));
             itemMeta.lore(List.of(
-                    Component.text("§7Vous allez retourner au Menu de votre Ville"),
-                    Component.empty(),
-                    Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
+                    Component.text("§e§lCLIQUEZ ICI POUR RETOURNER")
             ));
-        }).setOnClick(inventoryClickEvent -> {
-            City cityCheck = CityManager.getPlayerCity(player.getUniqueId());
-            if (cityCheck == null) {
-                MessagesManager.sendMessage(player, MessagesManager.Message.PLAYERNOCITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);
-                return;
-            }
-
-            CityMenu menu = new CityMenu(player);
-            menu.open();
-        }));
+        }, true));
 
         return inventory;
     }

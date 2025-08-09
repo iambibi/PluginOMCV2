@@ -79,7 +79,7 @@ public class AdminShopCategoryMenu extends Menu {
 
         ItemBuilder backButton = new ItemBuilder(this, CustomItemRegistry.getByName("omc_menus:refuse_btn").getBest(), meta -> {
             meta.displayName(Component.text("§aRetour au menu principal"));
-        });
+        }, true);
 
         backButton.setItemId("back")
                 .setOnClick(event -> {

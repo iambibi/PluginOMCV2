@@ -145,8 +145,7 @@ public class CityListDetailsMenu extends Menu {
 		map.put(26, new ItemBuilder(this, new ItemStack(city.getType().equals(CityType.WAR) ? Material.RED_BANNER : Material.GREEN_BANNER),
 				itemMeta -> itemMeta.displayName(Component.text("§eType : " + (city.getType().equals(CityType.WAR) ? "§cGuerre" : "§aPaix")))));
 		map.put(18, new ItemBuilder(this, CustomStack.getInstance("_iainternal:icon_back_orange").getItemStack(),
-				itemMeta -> itemMeta.displayName(Component.text("§eRetour")))
-				.setOnClick(inventoryClickEvent -> new CityListMenu(getOwner()).open()));
+				itemMeta -> itemMeta.displayName(Component.text("§eRetour")), true));
 		return map;
 	}
 
