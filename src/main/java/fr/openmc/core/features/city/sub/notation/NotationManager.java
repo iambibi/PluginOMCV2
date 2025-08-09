@@ -10,6 +10,7 @@ import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.notation.commands.AdminNotationCommands;
 import fr.openmc.core.features.city.sub.notation.commands.NotationCommands;
+import fr.openmc.core.features.city.sub.notation.listeners.PlayerJoinListener;
 import fr.openmc.core.features.city.sub.notation.models.ActivityTimePlayed;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 import fr.openmc.core.features.economy.EconomyManager;
@@ -42,6 +43,9 @@ public class NotationManager {
         CommandsManager.getHandler().register(
                 new NotationCommands(),
                 new AdminNotationCommands()
+        );
+        OMCPlugin.registerEvents(
+                new PlayerJoinListener()
         );
 
         scheduleMidnightTask();
