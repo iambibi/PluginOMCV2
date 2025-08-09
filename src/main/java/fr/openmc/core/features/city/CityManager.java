@@ -70,7 +70,8 @@ public class CityManager implements Listener {
 		        new CityChatCommand(),
 		        new CityPermsCommands(),
                 new CityChestCommand(),
-		        new CityRankCommands()
+                new CityRankCommands(),
+                new CityTopCommands()
         );
 
         OMCPlugin.registerEvents(
