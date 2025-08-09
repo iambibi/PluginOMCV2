@@ -131,19 +131,22 @@ public final class MenuLib implements Listener {
 
 			e.setCancelled(true);
 			menu.onInventoryClick(e);
-			
+
+			ItemBuilder itemClicked = menu.getContent().get(e.getSlot());
+
+			if (itemClicked != null && itemClicked.isBackButton()) {
+				Player player = (Player) e.getWhoClicked();
+				Menu previous = MenuLib.popAndGetPreviousMenu(player);
+				if (previous != null) {
+					previous.open();
+				}
+				return;
+			}
+
 			try {
 				itemClickEvents.forEach((menu1, itemStackConsumerMap) -> {
 					if (menu1.equals(menu)) {
 						itemStackConsumerMap.forEach((itemBuilder, inventoryClickEventConsumer) -> {
-							if (itemBuilder.isBackButton()) {
-								Player player = (Player) e.getWhoClicked();
-								Menu previous = MenuLib.popAndGetPreviousMenu(player);
-								if (previous != null) {
-									previous.open();
-								}
-								return;
-							}
 							if (itemBuilder.equals(e.getCurrentItem())) {
 								inventoryClickEventConsumer.accept(e);
 							}
@@ -169,6 +172,7 @@ public final class MenuLib implements Listener {
 			Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
 				if (!(e.getPlayer().getOpenInventory().getTopInventory().getHolder() instanceof Menu)) {
 					Player player = (Player) e.getPlayer();
+					System.out.println("clearHistory");
 					MenuLib.clearHistory(player);
 				}
 			}, 1L);

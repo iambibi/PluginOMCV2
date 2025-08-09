@@ -110,7 +110,10 @@ public class PerkChoiceMenu extends PaginatedMenu {
         Map<Integer, ItemBuilder> map = new HashMap<>();
         map.put(49, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_cancel").getBest(), itemMeta -> {
             itemMeta.displayName(Component.text("§7Revenir en arrière"));
-        }, true));
+        }).setOnClick(inventoryClickEvent -> {
+            new MayorCreateMenu(getOwner(), perk1, perk2, perk3, type).open();
+        }));
+
         map.put(48, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_back_orange").getBest(), itemMeta -> {
             itemMeta.displayName(Component.text("§cPage précédente"));
         }).setPreviousPageButton());

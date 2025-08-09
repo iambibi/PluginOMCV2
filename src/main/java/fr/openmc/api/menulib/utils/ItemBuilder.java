@@ -56,6 +56,7 @@ public class ItemBuilder extends ItemStack {
 	 */
 	public ItemBuilder(Menu itemMenu, Material material, boolean isBackButton) {
 		this(itemMenu, material, null, isBackButton);
+		this.backButton = isBackButton;
 	}
 	
 	/**
@@ -84,6 +85,7 @@ public class ItemBuilder extends ItemStack {
 	 */
 	public ItemBuilder(Menu itemMenu, ItemStack item, boolean isBackButton) {
 		this(itemMenu, item, null, isBackButton);
+		this.backButton = isBackButton;
 	}
 
 	/**
