@@ -39,7 +39,12 @@ public class NoCityMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des villes - Aucune";
+        return "Menu des Villes - Aucune";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

@@ -128,9 +128,14 @@ public class CityListMenu extends PaginatedMenu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Liste des villes";
+		return "Menu des listes des Villes";
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getSlot() > 44) return;

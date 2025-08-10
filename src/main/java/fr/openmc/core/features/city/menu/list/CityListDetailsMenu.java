@@ -48,9 +48,14 @@ public class CityListDetailsMenu extends Menu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Détails de la ville " + city.getName();
+		return "Menu de détails de la Ville " + city.getName();
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public @NotNull InventorySize getInventorySize() {
 		return InventorySize.NORMAL;

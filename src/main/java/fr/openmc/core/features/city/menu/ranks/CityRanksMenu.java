@@ -32,7 +32,12 @@ public class CityRanksMenu extends PaginatedMenu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Grades de la ville";
+		return "Menu de la Ville - Grades";
+	}
+
+	@Override
+	public String getTexture() {
+		return null;
 	}
 
 	@Override

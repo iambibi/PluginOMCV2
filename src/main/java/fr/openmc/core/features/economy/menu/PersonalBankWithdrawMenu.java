@@ -32,7 +32,12 @@ public class PersonalBankWithdrawMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des Banques - Banque Personel";
+        return "Menu des Banques - Retirer";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

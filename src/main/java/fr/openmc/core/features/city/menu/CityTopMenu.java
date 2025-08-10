@@ -146,7 +146,12 @@ public class CityTopMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
-        return "Classement des Villes";
+        return "Menu des Classement des Villes";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

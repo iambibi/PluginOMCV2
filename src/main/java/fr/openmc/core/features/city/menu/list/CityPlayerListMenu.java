@@ -91,7 +91,12 @@ public class CityPlayerListMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
-        return "Détails des membres de " + city.getName();
+        return "Menu des détails des Membres de " + city.getName();
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

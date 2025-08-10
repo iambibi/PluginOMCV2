@@ -53,6 +53,11 @@ public class HomeMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
+        return "Menu des Homes";
+    }
+
+    @Override
+    public String getTexture() {
         return PlaceholderAPI.setPlaceholders(this.getOwner(), "§r§f%img_offset_-8%%img_omc_homes_menus_home%");
     }
 

@@ -30,9 +30,14 @@ public class CityRankAssignMenu extends Menu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Assigner un grade";
+		return "Menu des Villes - Assigner un grade";
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public @NotNull InventorySize getInventorySize() {
 		return InventorySize.SMALL;

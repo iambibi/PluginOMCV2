@@ -52,6 +52,13 @@ public abstract class Menu implements InventoryHolder {
 	 */
 	@NotNull
 	public abstract String getName();
+
+	/**
+	 * Retrieves the textures of the menu.
+	 *
+	 * @return A non-null {@link String} representing the name of the menu
+	 */
+	public abstract String getTexture();
 	
 	/**
 	 * Retrieves the size of the inventory for the menu.

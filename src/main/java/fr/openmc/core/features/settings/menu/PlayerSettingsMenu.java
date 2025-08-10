@@ -94,6 +94,11 @@ public class PlayerSettingsMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
+        return "Menu des Paramètres";
+    }
+
+    @Override
+    public String getTexture() {
         return "§r" + PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-8%%img_settings%");
     }
 

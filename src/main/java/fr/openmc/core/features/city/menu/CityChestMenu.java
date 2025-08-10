@@ -153,7 +153,12 @@ public class CityChestMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
-        return "Coffre de " + this.city.getName() + " - Page " + this.page;
+        return "Menu du Coffre de " + this.city.getName() + " - Page " + this.page;
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

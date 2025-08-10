@@ -35,7 +35,12 @@ public class CityBankWithdrawMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Banque de Ville - Retirer";
+        return "Menu de la banque de Ville - Retirer";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

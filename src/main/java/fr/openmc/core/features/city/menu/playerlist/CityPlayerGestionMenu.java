@@ -35,7 +35,12 @@ public class CityPlayerGestionMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des villes - Modifier un Joueur";
+        return "Menu des Villes - Modifier un Joueur";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

@@ -40,9 +40,14 @@ public class CityRankDetailsMenu extends Menu {
 	
 	@Override
 	public @NotNull String getName() {
-		return city.isRankExists(rank) ? "Détails du grade " + rank.getName() : "Créer le grade  " + rank.getName();
+		return city.isRankExists(rank) ? "Menu des détails du grade " + rank.getName() : "Menu de création du grade  " + rank.getName();
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public @NotNull InventorySize getInventorySize() {
 		return InventorySize.NORMAL;

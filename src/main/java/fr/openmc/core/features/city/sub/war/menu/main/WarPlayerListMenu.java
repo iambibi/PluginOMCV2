@@ -111,7 +111,12 @@ public class WarPlayerListMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu de Guerre  - Membres";
+        return "Menu de Guerre - Membres";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

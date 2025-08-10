@@ -101,9 +101,14 @@ public class CityRankMemberMenu extends PaginatedMenu {
 
 	@Override
 	public @NotNull String getName() {
-		return "Liste des membres - Grades";
+		return "Menu du choix des membres - Grades";
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public void onInventoryClick(InventoryClickEvent e) {
 	

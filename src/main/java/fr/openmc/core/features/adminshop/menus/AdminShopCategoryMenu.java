@@ -30,6 +30,11 @@ public class AdminShopCategoryMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
+        return "Menu d'une catégorie de l'adminshop ";
+    }
+
+    @Override
+    public String getTexture() {
         return PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-11%%img_adminshop_items%");
     }
 

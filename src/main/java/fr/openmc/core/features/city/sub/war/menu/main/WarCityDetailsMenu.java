@@ -39,7 +39,12 @@ public class WarCityDetailsMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu de guerre - " + city.getName();
+        return "Menu de Guerre - Details de " + city.getName();
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

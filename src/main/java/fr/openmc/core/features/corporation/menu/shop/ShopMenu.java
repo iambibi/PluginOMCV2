@@ -13,8 +13,6 @@ import fr.openmc.core.features.corporation.shops.ShopItem;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.ItemUtils;
-import fr.openmc.core.utils.api.ItemsAdderApi;
-import fr.openmc.core.utils.api.PapiApi;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -53,8 +51,12 @@ public class ShopMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        if (PapiApi.hasPAPI() && ItemsAdderApi.hasItemAdder()) {// sell_shop_menu
-//            if (shop.getOwner().isCompany()){
+        return "Menu du shop " + shop.getName();
+    }
+
+    @Override
+    public String getTexture() {
+        //            if (shop.getOwner().isCompany()){
 //                Company company = shop.getOwner().getCompany();
 //                if (company.getAllMembers().contains(getOwner().getUniqueId())){
 //                    return PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-11%%img_shop_menu%");
@@ -62,10 +64,7 @@ public class ShopMenu extends Menu {
 //            }
 //            if (!shop.isOwner(getOwner().getUniqueId()))
 //                return PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-11%%img_sell_shop_menu%");
-            return PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-11%%img_shop_menu%");
-        } else {
-            return shop.getName();
-        }
+        return PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-11%%img_shop_menu%");
     }
 
     @Override

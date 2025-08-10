@@ -102,7 +102,12 @@ public class WarChooseSizeMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des guerres - Séléction";
+        return "Menu des Guerres - Séléction";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

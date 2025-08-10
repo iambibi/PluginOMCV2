@@ -32,7 +32,12 @@ public class MilestoneMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "§7Progression - " + milestone.getName();
+        return "Menu des Milestones - " + milestone.getName();
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

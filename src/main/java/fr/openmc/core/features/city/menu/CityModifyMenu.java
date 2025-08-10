@@ -39,7 +39,12 @@ public class CityModifyMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des villes - Modifier";
+        return "Menu des Villes - Modifier";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

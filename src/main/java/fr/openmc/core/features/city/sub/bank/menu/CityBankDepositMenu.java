@@ -35,7 +35,12 @@ public class CityBankDepositMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Banque de Ville - Remplir";
+        return "Menu de la banque de Ville - Remplir";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

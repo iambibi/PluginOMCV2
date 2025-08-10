@@ -58,6 +58,11 @@ public class QuestsMenu extends Menu {
     }
 
     public @NotNull String getName() {
+        return "Menu des Quêtes";
+    }
+
+    @Override
+    public String getTexture() {
         return PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-25%%img_quests_menu%");
     }
 

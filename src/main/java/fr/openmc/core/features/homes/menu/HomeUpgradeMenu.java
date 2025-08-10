@@ -25,6 +25,11 @@ public class HomeUpgradeMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
+        return "Menu des Homes - Amélioration";
+    }
+
+    @Override
+    public String getTexture() {
         return PlaceholderAPI.setPlaceholders(this.getOwner(), "§r§f%img_offset_-8%%img_omc_homes_menus_home_upgrade%");
     }
 

@@ -32,7 +32,12 @@ public class PersonalBankDepositMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des banques - Banque Personel";
+        return "Menu des Banques - Deposer";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

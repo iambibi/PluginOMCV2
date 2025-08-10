@@ -198,6 +198,11 @@ public class CityPlayerListMenu extends PaginatedMenu {
     }
 
     @Override
+    public String getTexture() {
+        return null;
+    }
+
+    @Override
     public void onInventoryClick(InventoryClickEvent inventoryClickEvent) {
         //empty
     }

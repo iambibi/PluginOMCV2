@@ -56,7 +56,12 @@ public class MascotMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "§cMascotte (niv. " + city.getMascot().getLevel() + ")";
+        return "Menu des §cMascotte (niv. " + city.getMascot().getLevel() + ")";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

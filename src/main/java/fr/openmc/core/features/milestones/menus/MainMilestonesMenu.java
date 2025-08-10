@@ -28,6 +28,11 @@ public class MainMilestonesMenu extends Menu {
     }
 
     @Override
+    public String getTexture() {
+        return null;
+    }
+
+    @Override
     public @NotNull InventorySize getInventorySize() {
         return InventorySize.LARGE;
     }

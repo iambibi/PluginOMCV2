@@ -154,7 +154,12 @@ public class MainWarMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des guerres";
+        return "Menu des Guerres";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

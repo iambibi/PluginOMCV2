@@ -41,6 +41,11 @@ public class ConfirmMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
+        return "Menu de Confirmation de l'AdminShop";
+    }
+
+    @Override
+    public String getTexture() {
         return "§f" + PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-11%%img_adminshop%");
     }
 

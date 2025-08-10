@@ -24,7 +24,12 @@ public class MoreInfoMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des guerres - Plus d'info";
+        return "Menu des Guerres - Plus d'info";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override
