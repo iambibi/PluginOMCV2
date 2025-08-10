@@ -396,14 +396,12 @@ public class LeaderboardManager {
                         totalRemoveLines += ((Long) week.get("d")).intValue();
                     }
 
-                    if (totalNetLines > 0) {
-                        statsList.add(new AbstractMap.SimpleEntry<>(login, new ContributorStats(totalAddLines, totalRemoveLines)));
-                    }
+                    statsList.add(new AbstractMap.SimpleEntry<>(login, new ContributorStats(totalAddLines, totalRemoveLines)));
                 }
 
                 // Tri et affichage du classement
                 statsList.sort((e1, e2) ->
-                        Integer.compare(e2.getValue().getNetLines(), e1.getValue().getNetLines())
+                        Integer.compare(e2.getValue().getTotalLines(), e1.getValue().getTotalLines())
                 );
 
                 githubContributorsMap.clear();
