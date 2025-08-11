@@ -561,7 +561,7 @@ public class CityManager implements Listener {
                 permissionsDao.delete(permissionsDelete.prepare());
                 
                 DeleteBuilder<CityRank, String> ranksDelete = ranksDao.deleteBuilder();
-                ranksDelete.where().eq("city", city.getUUID());
+                ranksDelete.where().eq("city_uuid", city.getUUID());
                 ranksDao.delete(ranksDelete.prepare());
 
                 DeleteBuilder<DBCityClaim, String> claimsDelete = claimsDao.deleteBuilder();
