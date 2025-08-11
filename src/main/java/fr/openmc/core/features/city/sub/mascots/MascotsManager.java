@@ -72,6 +72,7 @@ public class MascotsManager {
                 new MascotImmuneListener(),
                 new MascotsTargetListener()
         );
+        new MascotsSoundListener();
 
         CommandsManager.getHandler().register(
                 new AdminMascotsCommands()
@@ -188,7 +189,6 @@ public class MascotsManager {
             exception.printStackTrace();
         }
 
-        System.out.println(mob.getHealth() + " " + mob.getMaxHealth());
         mob.customName(Component.text(PLACEHOLDER_MASCOT_NAME.formatted(
                 city.getName(),
                 mob.getHealth(),
