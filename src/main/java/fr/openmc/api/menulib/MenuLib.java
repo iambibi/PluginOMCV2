@@ -13,10 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -92,8 +89,26 @@ public final class MenuLib implements Listener {
 
 	public static Menu getCurrentLastMenu(Player player) {
 		Deque<Menu> history = menuHistory.get(player);
-		if (history == null || history.isEmpty()) return null;
+		System.out.println("Menu history for player " + player.getName() + ": " + history);
+		if (history == null || history.isEmpty()) {
+			return null;
+		}
+
 		return history.peek();
+	}
+
+	public static Menu getLastMenu(Player player) {
+		Deque<Menu> history = menuHistory.get(player);
+		System.out.println("Menu history for player " + player.getName() + ": " + history);
+		if (history == null || history.isEmpty() || history.size() < 2) {
+			return null;
+		}
+
+		Iterator<Menu> iterator = history.iterator();
+
+		iterator.next();
+
+		return iterator.next();
 	}
 
 	public static Menu popAndGetPreviousMenu(Player player) {

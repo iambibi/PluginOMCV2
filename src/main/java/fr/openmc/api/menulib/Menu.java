@@ -117,15 +117,6 @@ public abstract class Menu implements InventoryHolder {
 
 	public abstract List<Integer> getTakableSlot();
 
-
-	@NotNull
-	public final Inventory getInventory(boolean useTexture) {
-		String title = useTexture && getTexture() != null && !getTexture().isEmpty()
-				? getTexture()
-				: getName();
-		return Bukkit.createInventory(this, getInventorySize().getSize(), Component.text(title));
-	}
-
 	/**
 	 * Opens the menu for the owner player. If the menu specifies a required permission,
 	 * the method checks if the owner has the necessary permission. If not, a "no permission"
@@ -149,11 +140,12 @@ public abstract class Menu implements InventoryHolder {
 				MenuLib.pushMenu(owner, this);
 			}
 
-			Inventory inventory = getInventory(getTexture() != null && !getTexture().isEmpty());
+			Inventory inventory = getInventory();
 
 			getContent().forEach((slot, item) -> {
 				setItem(owner, inventory, slot, item);
 			});
+
 			owner.openInventory(inventory);
 		} catch (Exception e) {
 			MessagesManager.sendMessage(owner, Component.text("§cUne Erreur est survenue, veuillez contacter le Staff"), Prefix.OPENMC, MessageType.ERROR, false);
@@ -170,7 +162,7 @@ public abstract class Menu implements InventoryHolder {
 				itemMeta.displayName(Component.text("§aRetour"));
 				itemMeta.lore(List.of(
 						Component.text("§7Vous allez retourner au §a" +
-								(MenuLib.getCurrentLastMenu(player) != null ? MenuLib.getCurrentLastMenu(player).getName() : "Menu Précédent") + "§7."),
+								(MenuLib.getLastMenu(player) != null ? MenuLib.getLastMenu(player).getName() : "Menu Précédent") + "§7."),
 						Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
 				));
 			}, true);
@@ -222,7 +214,10 @@ public abstract class Menu implements InventoryHolder {
 	@NotNull
 	@Override
 	public final Inventory getInventory() {
-		return Bukkit.createInventory(this, getInventorySize().getSize(), Component.text(getName()));
+		String title = (getTexture() != null && !getTexture().isEmpty()) && getTexture() != null && !getTexture().isEmpty()
+				? getTexture()
+				: getName();
+		return Bukkit.createInventory(this, getInventorySize().getSize(), Component.text(title));
 	}
 
 }
