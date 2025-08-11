@@ -111,6 +111,7 @@ public class MilestoneMenu extends Menu {
             );
         }
 
+        content.put(45, new ItemBuilder(this, Material.ARROW, true));
 
         content.put(53, new ItemBuilder(this, Material.BARRIER, meta ->
                 meta.displayName(Component.text("§cFermer"))).setCloseButton());
