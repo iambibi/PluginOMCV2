@@ -139,7 +139,7 @@ public class ItemBuilder extends ItemStack {
 	public ItemBuilder(Menu itemMenu, ItemStack item, Consumer<ItemMeta> itemMeta) {
 		super(item);
 		this.itemMenu = itemMenu;
-		meta = getItemMeta();
+		meta = item.getItemMeta();
 		if (itemMeta != null) {
 			itemMeta.accept(meta);
 		}

@@ -116,9 +116,9 @@ public abstract class PaginatedMenu extends Menu {
 		}
 		
 		if (getButtons() != null) {
-			getButtons().forEach((integer, itemStack) -> {
+			getButtons().forEach((integer, itemBuilder) -> {
 				if (staticSlots.contains(integer)) {
-					map.put(integer, new ItemBuilder(this, itemStack));
+					map.put(integer, new ItemBuilder(this, itemBuilder, itemBuilder.isBackButton()));
 				}
 			});
 		}

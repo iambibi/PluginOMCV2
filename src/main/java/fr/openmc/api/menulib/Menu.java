@@ -158,7 +158,7 @@ public abstract class Menu implements InventoryHolder {
 		if (item.isBackButton() && !MenuLib.hasPreviousMenu(player)) return;
 
 		if (item.isBackButton()) {
-			item = new ItemBuilder(this, item.getType(), itemMeta -> {
+			item = new ItemBuilder(this, item, itemMeta -> {
 				itemMeta.displayName(Component.text("§aRetour"));
 				itemMeta.lore(List.of(
 						Component.text("§7Vous allez retourner au §a" +
