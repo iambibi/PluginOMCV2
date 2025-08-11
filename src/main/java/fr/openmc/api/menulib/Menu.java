@@ -56,7 +56,7 @@ public abstract class Menu implements InventoryHolder {
 	/**
 	 * Retrieves the textures of the menu.
 	 *
-	 * @return A non-null {@link String} representing the name of the menu
+	 * @return A {@link String} representing the texture of the menu
 	 */
 	public abstract String getTexture();
 	
@@ -116,7 +116,16 @@ public abstract class Menu implements InventoryHolder {
 	 */
 
 	public abstract List<Integer> getTakableSlot();
-	
+
+
+	@NotNull
+	public final Inventory getInventory(boolean useTexture) {
+		String title = useTexture && getTexture() != null && !getTexture().isEmpty()
+				? getTexture()
+				: getName();
+		return Bukkit.createInventory(this, getInventorySize().getSize(), Component.text(title));
+	}
+
 	/**
 	 * Opens the menu for the owner player. If the menu specifies a required permission,
 	 * the method checks if the owner has the necessary permission. If not, a "no permission"
@@ -140,7 +149,8 @@ public abstract class Menu implements InventoryHolder {
 				MenuLib.pushMenu(owner, this);
 			}
 
-			Inventory inventory = getInventory();
+			Inventory inventory = getInventory(getTexture() != null && !getTexture().isEmpty());
+
 			getContent().forEach((slot, item) -> {
 				setItem(owner, inventory, slot, item);
 			});
@@ -154,6 +164,18 @@ public abstract class Menu implements InventoryHolder {
 
 	public final void setItem(Player player, Inventory inventory, int slot, ItemBuilder item) {
 		if (item.isBackButton() && !MenuLib.hasPreviousMenu(player)) return;
+
+		if (item.isBackButton()) {
+			item = new ItemBuilder(this, item.getType(), itemMeta -> {
+				itemMeta.displayName(Component.text("§aRetour"));
+				itemMeta.lore(List.of(
+						Component.text("§7Vous allez retourner au §a" +
+								(MenuLib.getCurrentLastMenu(player) != null ? MenuLib.getCurrentLastMenu(player).getName() : "Menu Précédent") + "§7."),
+						Component.text("§e§lCLIQUEZ ICI POUR CONFIRMER")
+				));
+			}, true);
+		}
+
 		inventory.setItem(slot, item);
 	}
 	
