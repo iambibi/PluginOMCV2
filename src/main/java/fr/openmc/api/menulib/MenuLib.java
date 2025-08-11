@@ -89,7 +89,7 @@ public final class MenuLib implements Listener {
 
 	public static Menu getCurrentLastMenu(Player player) {
 		Deque<Menu> history = menuHistory.get(player);
-		System.out.println("Menu history for player " + player.getName() + ": " + history);
+
 		if (history == null || history.isEmpty()) {
 			return null;
 		}
@@ -99,7 +99,7 @@ public final class MenuLib implements Listener {
 
 	public static Menu getLastMenu(Player player) {
 		Deque<Menu> history = menuHistory.get(player);
-		System.out.println("Menu history for player " + player.getName() + ": " + history);
+
 		if (history == null || history.isEmpty() || history.size() < 2) {
 			return null;
 		}
