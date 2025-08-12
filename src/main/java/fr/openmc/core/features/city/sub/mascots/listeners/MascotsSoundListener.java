@@ -6,7 +6,6 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.reflect.accessors.FieldAccessor;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
@@ -30,10 +29,6 @@ public class MascotsSoundListener {
             @Override
             public void onPacketSending(PacketEvent event) {
                 PacketContainer packet = event.getPacket();
-
-                for (FieldAccessor fuield : packet.getStructures().getFields()) {
-                    System.out.println(fuield.getField().getType().getName() + " " + fuield.getField().getName());
-                }
 
                 String soundName = packet.getSoundEffects().read(0).toString();
                 String[] splitedSound = soundName.split("\\.");

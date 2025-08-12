@@ -72,7 +72,9 @@ public class MascotsManager {
                 new MascotImmuneListener(),
                 new MascotsTargetListener()
         );
-        new MascotsSoundListener();
+        if (!OMCPlugin.isUnitTestVersion()) {
+            new MascotsSoundListener();
+        }
 
         CommandsManager.getHandler().register(
                 new AdminMascotsCommands()
