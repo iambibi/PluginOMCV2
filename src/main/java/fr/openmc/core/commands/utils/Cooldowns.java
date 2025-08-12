@@ -17,6 +17,16 @@ public class Cooldowns {
     @Description("Permet d'avoir la liste des cooldowns")
     @CommandPermission("omc.commands.cooldowns")
     public void cooldowns(Player sender) {
+        if (DynamicCooldownManager.getCooldowns(sender.getUniqueId().toString()) == null) {
+            MessagesManager.sendMessage(
+                    sender,
+                    Component.text("§cAucun cooldown actif"),
+                    Prefix.OPENMC,
+                    MessageType.INFO,
+                    true
+            );
+            return;
+        }
 
         MessagesManager.sendMessage(
                 sender,
