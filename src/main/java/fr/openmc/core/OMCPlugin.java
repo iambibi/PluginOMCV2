@@ -18,6 +18,7 @@ import fr.openmc.core.features.displays.holograms.HologramLoader;
 import fr.openmc.core.features.displays.scoreboards.ScoreboardManager;
 import fr.openmc.core.features.economy.BankManager;
 import fr.openmc.core.features.economy.EconomyManager;
+import fr.openmc.core.features.graves.GraveManager;
 import fr.openmc.core.features.homes.HomesManager;
 import fr.openmc.core.features.homes.icons.HomeIconCacheManager;
 import fr.openmc.core.features.leaderboards.LeaderboardManager;
@@ -103,6 +104,7 @@ public class OMCPlugin extends JavaPlugin {
         new CompanyManager();// laisser apres Economy Manager
         new ContestManager();
         new PrivateMessageManager();
+        new GraveManager();
         
         new MotdUtils();
         new TranslationManager(new File(this.getDataFolder(), "translations"), "fr");
