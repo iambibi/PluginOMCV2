@@ -72,7 +72,7 @@ public class NotationManager {
 //        );
     }
 
-    public static void init_db(ConnectionSource connectionSource) throws SQLException {
+    public static void initDB(ConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, CityNotation.class);
         notationDao = DaoManager.createDao(connectionSource, CityNotation.class);
 
