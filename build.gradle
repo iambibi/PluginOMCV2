@@ -43,6 +43,9 @@ repositories {
         url "https://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
     maven {
+        url "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
         url "https://repo.dmulloy2.net/repository/public/"
     }
     maven {
@@ -58,9 +61,13 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.6'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.9'
+    compileOnly "com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit"
     compileOnly 'com.github.dmulloy2:ProtocolLib:5.3.0'
     compileOnly 'de.oliver:FancyNpcs:2.5.0'
 
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.55"))
+    // Ref: https://github.com/IntellectualSites/bom
+    implementation "com.flowpowered:flow-nbt:1.0.0"
     implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'com.github.Revxrsal.Lamp:common:3.2.1'
     implementation 'com.github.Revxrsal.Lamp:bukkit:3.2.1'
@@ -72,7 +79,6 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.34'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-    testImplementation 'com.sk89q.worldedit:worldedit-bukkit:7.2.9'
     testImplementation 'org.slf4j:slf4j-simple:2.0.16'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

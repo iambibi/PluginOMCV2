@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class CloudChunkGenerator {
+    public static final int MIN_HEIGHT_CLOUD = 120;
+    public static final int MAX_HEIGHT_CLOUD = 124;
 
     public static final FastNoiseLite cloudNoise = new FastNoiseLite();
 
@@ -17,7 +19,7 @@ public class CloudChunkGenerator {
     }
 
     public static void generateBlock(@NotNull Random random, int chunkX, int chunkZ, ChunkGenerator.ChunkData chunkData, int x, int y, int z) {
-        if (y >= 120 && y <= 124) {
+        if (y >= MIN_HEIGHT_CLOUD && y <= MAX_HEIGHT_CLOUD) {
             // noise principal pour la densité des nuages
             float cloudNoiseValue = cloudNoise.GetNoise(
                     (x + (chunkX * 16)) * 0.8f,

@@ -27,107 +27,111 @@ public class StructureUtils {
      * @throws IOException Exception thrown if the NBT file is formatted incorrectly.
      */
     public static void placeStructure(File file, Location target, boolean mirrorX, boolean mirrorZ) throws IOException {
-        try {
-            StructureUtils.tryPlacingStructure(file, target, mirrorX, mirrorZ);
-        } catch (IOException e) {
-            OMCPlugin.getInstance().getLogger().severe("Failed to place structure: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    public static void tryPlacingStructure(File file, Location target, boolean mirrorX, boolean mirrorZ) throws IOException {
-        NBTInputStream input = new NBTInputStream(new FileInputStream(file));
-
-        Tag baseCompound = input.readTag();
-        int[] size;
-
-        if (!baseCompound.getType().equals(TagType.TAG_COMPOUND))
-            throw new IOException("NBT File does not start in a Compound Tag");
-        CompoundMap compound = ((CompoundTag) baseCompound).getValue();
-
-        if (!compound.containsKey("size")) throw new IOException("NBT File does not start contain a size");
-        Tag sizeTag = compound.get("size");
-        if (!sizeTag.getType().equals(TagType.TAG_LIST)) throw new IOException("size is not a List Tag");
-        ListTag sizeList = (ListTag) sizeTag;
-        if (!(sizeList.getElementType().equals(IntTag.class)))
-            throw new IOException("size List Tag is not of type Int Tag");
-        if (sizeList.getValue().size() != 3) throw new IOException("size List Tag is not of type size 3");
-        size = new int[]{((IntTag) sizeList.getValue().get(0)).getValue(), ((IntTag) sizeList.getValue().get(1)).getValue(), ((IntTag) sizeList.getValue().get(2)).getValue()};
-
-        if (!compound.containsKey("palette")) throw new IOException("NBT File does not start contain a palette");
-        Tag paletteTag = compound.get("palette");
-        if (!paletteTag.getType().equals(TagType.TAG_LIST)) throw new IOException("palette is not a List Tag");
-        ListTag paletteList = (ListTag) paletteTag;
-        if (!(paletteList.getElementType().equals(CompoundTag.class)))
-            throw new IOException("palette List Tag is not of type Compound Tag");
-
-        BlockData[] states = new BlockData[paletteList.getValue().size()];
-        for (int stateNum = 0; stateNum < states.length; stateNum++) {
-            Object oTag = paletteList.getValue().get(stateNum);
-            CompoundMap blockTag = ((CompoundTag) oTag).getValue();
-            StringBuilder blockStateString = new StringBuilder();
-
-            if (!blockTag.keySet().contains("Name")) throw new IOException("palette state does not have a name.");
-            blockStateString.append(blockTag.get("Name").getValue()); //String now looks like "minecraft:log"
-
-            if (blockTag.keySet().contains("Properties")) {
-                blockStateString.append("[");
-                if (!blockTag.get("Properties").getType().equals(TagType.TAG_COMPOUND))
-                    throw new IOException("palette block properties is not a Compound Tag");
-                CompoundMap properties = ((CompoundTag) blockTag.get("Properties")).getValue();
-
-                Set<Map.Entry<String, Tag<?>>> properySet = properties.entrySet();
-                Iterator<Map.Entry<String, Tag<?>>> propertyIterator = properySet.iterator();
-                for (int p = 0; p < properySet.size(); p++) {
-                    if (p > 0) blockStateString.append(",");
-                    Tag property = propertyIterator.next().getValue();
-                    blockStateString.append(property.getName()).append("=").append(property.getValue());
-                }
-                blockStateString.append("]");
-            } //If the block had properties, it now looks like "minecraft:log[axis=z]
-
-            states[stateNum] = Bukkit.createBlockData(blockStateString.toString());
-        }
-
-        if (!compound.containsKey("blocks")) throw new IOException("NBT File does not start contain a blocks list");
-        Tag blocksTag = compound.get("blocks");
-        if (!blocksTag.getType().equals(TagType.TAG_LIST)) throw new IOException("Blocks is not a List Tag");
-        ListTag blocksList = (ListTag) blocksTag;
-        if (!(blocksList.getElementType().equals(CompoundTag.class)))
-            throw new IOException("Blocks List Tag is not of type Compound Tag");
-
-        List<Block> blocks = new ArrayList<>();
-        for (Object oTag : blocksList.getValue()) {
-            CompoundMap blockTag = ((CompoundTag) oTag).getValue();
-            if (!blockTag.containsKey("pos")) throw new IOException("Blocks list does not contain a pos tag");
-            Tag posTag = blockTag.get("pos");
-            if (!posTag.getType().equals(TagType.TAG_LIST)) throw new IOException("pos is not a List Tag");
-            ListTag posListTag = (ListTag) posTag;
-            if (!(posListTag.getElementType().equals(IntTag.class)))
-                throw new IOException("pos List Tag is not of type Int Tag");
-            List posList = posListTag.getValue();
-            if (posListTag.getValue().size() != 3) throw new IOException("pos List Tag is not of size 3");
-            int x = ((IntTag) posList.get(0)).getValue();
-            int y = ((IntTag) posList.get(1)).getValue();
-            int z = ((IntTag) posList.get(2)).getValue();
-
-            if (mirrorX) x = (size[0] - 1) - x;
-            if (mirrorZ) z = (size[2] - 1) - z;
-
-            if (!blockTag.containsKey("state")) throw new IOException("Blocks list does not contain a state tag.");
-            Tag stateTag = blockTag.get("state");
-            if (!stateTag.getType().equals(TagType.TAG_INT)) throw new IOException("state is not a Int Tag");
-            IntTag stateIntTag = (IntTag) stateTag;
-            if (stateIntTag.getValue() > states.length) throw new IOException("Invalid state");
-            Block block = new Location(target.getWorld(), target.getX() + x, target.getY() + y, target.getZ() + z).getBlock();
-
-            if (!block.getType().isAir() && block.getType().isSolid()) {
-                continue;
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
+            NBTInputStream input = null;
+            try {
+                input = new NBTInputStream(new FileInputStream(file));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
-            block.setBlockData(states[stateIntTag.getValue()], false);
-            blocks.add(block);
-        }
+            Tag baseCompound = null;
+            try {
+                baseCompound = input.readTag();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            int[] size;
+
+            if (!baseCompound.getType().equals(TagType.TAG_COMPOUND)) return;
+            CompoundMap compound = ((CompoundTag) baseCompound).getValue();
+
+            if (!compound.containsKey("size")) return;
+            Tag sizeTag = compound.get("size");
+            if (!sizeTag.getType().equals(TagType.TAG_LIST)) return;
+            ListTag sizeList = (ListTag) sizeTag;
+            if (!(sizeList.getElementType().equals(IntTag.class)))
+                return;
+            if (sizeList.getValue().size() != 3) return;
+            size = new int[]{((IntTag) sizeList.getValue().get(0)).getValue(), ((IntTag) sizeList.getValue().get(1)).getValue(), ((IntTag) sizeList.getValue().get(2)).getValue()};
+
+            if (!compound.containsKey("palette")) return;
+            Tag paletteTag = compound.get("palette");
+            if (!paletteTag.getType().equals(TagType.TAG_LIST)) return;
+            ListTag paletteList = (ListTag) paletteTag;
+            if (!(paletteList.getElementType().equals(CompoundTag.class)))
+                return;
+
+            BlockData[] states = new BlockData[paletteList.getValue().size()];
+            for (int stateNum = 0; stateNum < states.length; stateNum++) {
+                Object oTag = paletteList.getValue().get(stateNum);
+                CompoundMap blockTag = ((CompoundTag) oTag).getValue();
+                StringBuilder blockStateString = new StringBuilder();
+
+                if (!blockTag.keySet().contains("Name")) return;
+                blockStateString.append(blockTag.get("Name").getValue()); //String now looks like "minecraft:log"
+
+                if (blockTag.keySet().contains("Properties")) {
+                    blockStateString.append("[");
+                    if (!blockTag.get("Properties").getType().equals(TagType.TAG_COMPOUND))
+                        return;
+                    CompoundMap properties = ((CompoundTag) blockTag.get("Properties")).getValue();
+
+                    Set<Map.Entry<String, Tag<?>>> properySet = properties.entrySet();
+                    Iterator<Map.Entry<String, Tag<?>>> propertyIterator = properySet.iterator();
+                    for (int p = 0; p < properySet.size(); p++) {
+                        if (p > 0) blockStateString.append(",");
+                        Tag property = propertyIterator.next().getValue();
+                        blockStateString.append(property.getName()).append("=").append(property.getValue());
+                    }
+                    blockStateString.append("]");
+                } //If the block had properties, it now looks like "minecraft:log[axis=z]
+
+                states[stateNum] = Bukkit.createBlockData(blockStateString.toString());
+            }
+
+            if (!compound.containsKey("blocks")) return;
+            Tag blocksTag = compound.get("blocks");
+            if (!blocksTag.getType().equals(TagType.TAG_LIST)) return;
+            ListTag blocksList = (ListTag) blocksTag;
+            if (!(blocksList.getElementType().equals(CompoundTag.class)))
+                return;
+
+            List<Block> blocks = new ArrayList<>();
+            for (Object oTag : blocksList.getValue()) {
+                CompoundMap blockTag = ((CompoundTag) oTag).getValue();
+                if (!blockTag.containsKey("pos")) return;
+                Tag posTag = blockTag.get("pos");
+                if (!posTag.getType().equals(TagType.TAG_LIST)) return;
+                ListTag posListTag = (ListTag) posTag;
+                if (!(posListTag.getElementType().equals(IntTag.class)))
+                    return;
+                List posList = posListTag.getValue();
+                if (posListTag.getValue().size() != 3) return;
+                int x = ((IntTag) posList.get(0)).getValue();
+                int y = ((IntTag) posList.get(1)).getValue();
+                int z = ((IntTag) posList.get(2)).getValue();
+
+                if (mirrorX) x = (size[0] - 1) - x;
+                if (mirrorZ) z = (size[2] - 1) - z;
+
+                if (!blockTag.containsKey("state")) return;
+                Tag stateTag = blockTag.get("state");
+                if (!stateTag.getType().equals(TagType.TAG_INT)) return;
+                IntTag stateIntTag = (IntTag) stateTag;
+                if (stateIntTag.getValue() > states.length) return;
+                Block block = new Location(target.getWorld(), target.getX() + x, target.getY() + y, target.getZ() + z).getBlock();
+
+                if (!block.getType().isAir() && block.getType().isSolid()) {
+                    continue;
+                }
+
+                Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
+                    block.setBlockData(states[stateIntTag.getValue()], false);
+                    blocks.add(block);
+                });
+            }
+        });
     }
 
     /**
