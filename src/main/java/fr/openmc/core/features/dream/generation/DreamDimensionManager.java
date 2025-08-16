@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.biomes.*;
+import fr.openmc.core.features.dream.generation.populators.RockPopulator;
 import org.bukkit.*;
 
 import java.util.Random;
@@ -22,6 +23,13 @@ public class DreamDimensionManager {
         new CloudChunkGenerator();
         new GlaciteCaveChunkGenerator();
 
+        // ** POPULATOR **
+        try {
+            new RockPopulator();
+        } catch (Exception e) {
+            plugin.getLogger().severe("Failed to load rock populator: " + e.getMessage());
+            e.printStackTrace();
+        }
         init();
     }
 
@@ -35,6 +43,8 @@ public class DreamDimensionManager {
         creator.generator(new DreamChunkGenerator());
         creator.environment(World.Environment.NORMAL);
         World dream = creator.createWorld();
+
+        dream.getPopulators().add(new RockPopulator());
 
         dream.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         dream.setGameRule(GameRule.DO_WEATHER_CYCLE, false);

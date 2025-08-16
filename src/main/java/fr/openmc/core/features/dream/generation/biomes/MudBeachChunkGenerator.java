@@ -5,13 +5,16 @@ import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Random;
 
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.CAVE_MATERIALS;
+import static fr.openmc.core.features.dream.generation.biomes.PlainsChunkGenerator.PLAINS_SURFACE_MATERIAL;
 
 public class MudBeachChunkGenerator {
     public static final int MIN_HEIGHT_MUD = 34;
-    private static final Material SURFACE_MATERIAL = Material.MUD;
+    public static final int MAX_HEIGHT_MUD = 64;
+
+    private static final Material BEACH_SURFACE_MATERIAL = Material.MUD;
 
     public static final FastNoiseLite terrainNoise = new FastNoiseLite();
     public static final FastNoiseLite detailNoise = new FastNoiseLite();
@@ -37,8 +40,10 @@ public class MudBeachChunkGenerator {
             double function = .1 * Math.pow(distanceToSurface, 2) - 1; // A second grade polynomial offset to the noise max and min (1, -1).
 
             if (noise3 > Math.min(function, -.3)) {
-                if (distanceToSurface < 6 && y > MIN_HEIGHT_MUD) {
-                    chunkData.setBlock(x, y, z, SURFACE_MATERIAL);
+                if (y == MAX_HEIGHT_MUD) {
+                    chunkData.setBlock(x, y, z, random.nextBoolean() ? BEACH_SURFACE_MATERIAL : PLAINS_SURFACE_MATERIAL);
+                } else if (distanceToSurface < 6 && y > MIN_HEIGHT_MUD) {
+                    chunkData.setBlock(x, y, z, BEACH_SURFACE_MATERIAL);
                 } else {
                     chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));
                 }

@@ -2,18 +2,16 @@ package fr.openmc.core.features.dream.generation.biomes;
 
 import fr.openmc.core.utils.FastNoiseLite;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Random;
 
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.CAVE_MATERIALS;
 
 public class PlainsChunkGenerator {
 
-    private static final Material SURFACE_MATERIAL = Material.SCULK;
+    public static final Material PLAINS_SURFACE_MATERIAL = Material.SCULK;
 
     public static final FastNoiseLite terrainNoise = new FastNoiseLite();
     public static final FastNoiseLite detailNoise = new FastNoiseLite();
@@ -40,7 +38,7 @@ public class PlainsChunkGenerator {
             if (noise3 > Math.min(function, -.3)) {
                 // Set sculk if the block closest to the surface.
                 if (distanceToSurface < 3 && y > 63) {
-                    chunkData.setBlock(x, y, z, SURFACE_MATERIAL);
+                    chunkData.setBlock(x, y, z, PLAINS_SURFACE_MATERIAL);
                 } else {
                     chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));
                 }
