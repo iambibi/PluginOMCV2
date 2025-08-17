@@ -37,7 +37,7 @@ public class PlainsTreePopulator extends BlockPopulator {
         if (!world.getBiome(loc).equals(Biome.PLAINS)) return;
 
         try {
-            StructureUtils.placeStructure(StructureUtils.getStructureFile("omc_dream", TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))), loc, random.nextBoolean(), random.nextBoolean());
+            StructureUtils.placeStructureOnGround(StructureUtils.getStructureFile("omc_dream", TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))), loc, random.nextBoolean(), random.nextBoolean());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

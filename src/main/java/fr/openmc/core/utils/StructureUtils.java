@@ -15,6 +15,37 @@ import java.util.*;
 
 public class StructureUtils {
 
+    public static void placeStructureOnGround(File file, Location target, boolean mirrorX, boolean mirrorZ) throws IOException {
+        NBTInputStream input = new NBTInputStream(new FileInputStream(file));
+        Tag baseCompound = input.readTag();
+        if (!baseCompound.getType().equals(TagType.TAG_COMPOUND)) return;
+        CompoundMap compound = ((CompoundTag) baseCompound).getValue();
+
+        if (!compound.containsKey("size")) return;
+        ListTag sizeList = (ListTag) compound.get("size");
+
+        int structureGroundY = 0;
+        if (compound.containsKey("blocks")) {
+            ListTag blocksList = (ListTag) compound.get("blocks");
+            int minY = Integer.MAX_VALUE;
+            for (Object oTag : blocksList.getValue()) {
+                CompoundMap blockTag = ((CompoundTag) oTag).getValue();
+                ListTag posListTag = (ListTag) blockTag.get("pos");
+                int y = ((IntTag) posListTag.getValue().get(1)).getValue();
+                minY = Math.min(minY, y);
+            }
+            structureGroundY = minY;
+        }
+
+        int terrainGroundY = target.getWorld().getHighestBlockYAt(target);
+
+        int offset = terrainGroundY - structureGroundY;
+        Location adjustedTarget = target.clone();
+        adjustedTarget.setY(offset);
+
+        placeStructure(file, adjustedTarget, mirrorX, mirrorZ);
+    }
+
     /**
      * The function that places a structure into a world from an NBT file. You can generate this file using the in-game
      * <a href="https://minecraft.gamepedia.com/Structure_Block">MC Structure Block docs</a>
