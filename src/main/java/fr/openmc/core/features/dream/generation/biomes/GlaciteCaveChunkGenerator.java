@@ -1,14 +1,15 @@
 package fr.openmc.core.features.dream.generation.biomes;
 
 import fr.openmc.core.utils.FastNoiseLite;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import static fr.openmc.core.features.dream.generation.DreamChunkGenerator.FLOOR_MATERIAL;
 import static fr.openmc.core.features.dream.generation.biomes.MudBeachChunkGenerator.MIN_HEIGHT_MUD;
@@ -34,14 +35,14 @@ public class GlaciteCaveChunkGenerator {
     private static final FastNoiseLite noiseA = new FastNoiseLite();
     private static final FastNoiseLite noiseB = new FastNoiseLite();
 
-    static {
-        // Bruit A
+    public GlaciteCaveChunkGenerator(long seed) {
+        noiseA.SetSeed((int) seed);
         noiseA.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noiseA.SetFractalType(FastNoiseLite.FractalType.Ridged);
         noiseA.SetFrequency(0.006f);
         noiseA.SetFractalOctaves(3);
 
-        // Bruit B
+        noiseB.SetSeed((int) seed);
         noiseB.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noiseB.SetFractalType(FastNoiseLite.FractalType.Ridged);
         noiseB.SetFrequency(0.006f);

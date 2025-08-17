@@ -19,9 +19,11 @@ public class MudBeachChunkGenerator {
     public static final FastNoiseLite terrainNoise = new FastNoiseLite();
     public static final FastNoiseLite detailNoise = new FastNoiseLite();
 
-    public MudBeachChunkGenerator() {
+    public MudBeachChunkGenerator(long seed) {
         // Set frequencies
+        terrainNoise.SetSeed((int) seed);
         terrainNoise.SetFrequency(0.003f);
+        detailNoise.SetSeed((int) seed);
         detailNoise.SetFrequency(0.05f);
 
         // Add fractals

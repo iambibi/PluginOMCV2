@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.Random;
 
 public class CloudCastleStructure extends BlockPopulator {
-    private static final double CLOUD_CASTLE_PROBABILITY = 0.01;
+    private static final double CLOUD_CASTLE_PROBABILITY = 0.001;
 
     public static final String schemCloudCastleName = "cloud_castle";
 

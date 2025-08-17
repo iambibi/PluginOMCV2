@@ -1,14 +1,14 @@
 package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.features.dream.generation.biomes.*;
-import fr.openmc.core.utils.FastNoiseLite;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Random;
 
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT;
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT;
@@ -17,8 +17,18 @@ import static org.bukkit.block.Biome.FOREST;
 
 public class DreamChunkGenerator extends ChunkGenerator {
     public static final Material FLOOR_MATERIAL = Material.BEDROCK;
+    private final DreamBiomeProvider biomeProvider;
+
+    public DreamChunkGenerator(long seed) {
+        this.biomeProvider = new DreamBiomeProvider(seed);
+    }
 
     /* https://www.spigotmc.org/threads/545616/ */
+
+    @Override
+    public BiomeProvider getDefaultBiomeProvider(WorldInfo worldInfo) {
+        return biomeProvider;
+    }
 
     @Override
     public boolean shouldGenerateCaves() {

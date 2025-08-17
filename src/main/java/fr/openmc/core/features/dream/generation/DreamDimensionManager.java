@@ -19,13 +19,6 @@ public class DreamDimensionManager {
     public DreamDimensionManager() {
         this.plugin = OMCPlugin.getInstance();
 
-        // ** BIOMES REGISTER **
-        new SoulForestChunkGenerator();
-        new PlainsChunkGenerator();
-        new MudBeachChunkGenerator();
-        new CloudChunkGenerator();
-        new GlaciteCaveChunkGenerator();
-
         // ** STRUCTURES SCHEMATICS REGISTER **
         SchematicsUtils.extractSchematic(CloudCastleStructure.schemCloudCastleName);
 
@@ -38,9 +31,20 @@ public class DreamDimensionManager {
 
     public void createDimension() {
         WorldCreator creator = new WorldCreator("world_dream");
-        creator.biomeProvider(new DreamBiomeProvider(createSeed()));
-        creator.generator(new DreamChunkGenerator());
+        long seed = createSeed();
+
+        // ** BIOMES REGISTER **
+        new SoulForestChunkGenerator(seed);
+        new PlainsChunkGenerator(seed);
+        new MudBeachChunkGenerator(seed);
+        new CloudChunkGenerator(seed);
+        new GlaciteCaveChunkGenerator(seed);
+
+        creator.seed(seed);
+        creator.generator(new DreamChunkGenerator(seed));
         creator.environment(World.Environment.NORMAL);
+
+        System.out.println(creator.seed());
         World dream = creator.createWorld();
 
         // ** POPULATORS REGISTER **

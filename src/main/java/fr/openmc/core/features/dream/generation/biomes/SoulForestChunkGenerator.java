@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Random;
 
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.CAVE_MATERIALS;
 
@@ -16,9 +16,11 @@ public class SoulForestChunkGenerator {
     public static final FastNoiseLite terrainNoise = new FastNoiseLite();
     public static final FastNoiseLite detailNoise = new FastNoiseLite();
 
-    public SoulForestChunkGenerator() {
+    public SoulForestChunkGenerator(long seed) {
         // Set frequencies
+        terrainNoise.SetSeed((int) seed);
         terrainNoise.SetFrequency(0.003f);
+        detailNoise.SetSeed((int) seed);
         detailNoise.SetFrequency(0.05f);
 
         // Add fractals
