@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator.MIN_HEIGHT_CLOUD;
 import static fr.openmc.core.features.dream.generation.biomes.MudBeachChunkGenerator.MAX_HEIGHT_MUD;
+import static fr.openmc.core.features.dream.generation.biomes.MudBeachChunkGenerator.MIN_HEIGHT_MUD;
 
 public class DreamBiomeProvider extends BiomeProvider {
     private final PerlinNoiseGenerator noiseGenerator;
@@ -27,8 +29,16 @@ public class DreamBiomeProvider extends BiomeProvider {
 
     @Override
     public Biome getBiome(WorldInfo worldInfo, int x, int y, int z) {
-        if (y <= MAX_HEIGHT_MUD) {
+        if (y >= MIN_HEIGHT_CLOUD) {
+            return Biome.THE_VOID;
+        }
+
+        if (y <= MAX_HEIGHT_MUD && y > MIN_HEIGHT_MUD) {
             return Biome.BEACH;
+        }
+
+        if (y <= MIN_HEIGHT_MUD) {
+            return Biome.DEEP_DARK;
         }
 
         double noise = 0;

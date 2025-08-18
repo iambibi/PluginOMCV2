@@ -2,11 +2,8 @@ package fr.openmc.core.features.dream.generation.effects;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
-import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
-import fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator;
 import fr.openmc.core.utils.ParticleUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
@@ -26,6 +23,8 @@ public class BiomeParticleManager {
             put(Biome.FOREST, Particle.SCULK_SOUL);
             put(Biome.PLAINS, Particle.TRIAL_SPAWNER_DETECTION_OMINOUS);
             put(Biome.BEACH, Particle.ASH);
+            put(Biome.DEEP_DARK, Particle.SNOWFLAKE);
+            put(Biome.THE_VOID, Particle.SMALL_GUST);
         }
     };
     private static final Particle cloudParticles = Particle.SMALL_GUST;
@@ -48,19 +47,7 @@ public class BiomeParticleManager {
                 return;
             }
 
-            Location location = player.getLocation();
-
-            if (CloudChunkGenerator.MIN_HEIGHT_CLOUD < location.getY()) {
-                ParticleUtils.sendRandomCubeParticles(player, cloudParticles, PARTICLE_RADIUS, 50);
-                return;
-            }
-
             Biome biome = player.getLocation().getBlock().getBiome();
-
-            if (GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT > location.getY() && biome.equals(Biome.BEACH)) {
-                ParticleUtils.sendRandomCubeParticles(player, glaciteParticles, PARTICLE_RADIUS, 50);
-                return;
-            }
 
             if (biomeParticles.containsKey(biome)) {
                 ParticleUtils.sendRandomCubeParticles(player, biomeParticles.get(biome), PARTICLE_RADIUS, 50);
