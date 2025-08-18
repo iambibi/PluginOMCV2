@@ -34,7 +34,7 @@ public class CommandRequirement implements EventCityRequirement {
     }
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getIcon(City city) {
         return ItemStack.of(Material.COMMAND_BLOCK, amountRequired);
     }
 
