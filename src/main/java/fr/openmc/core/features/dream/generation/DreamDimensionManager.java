@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.biomes.*;
+import fr.openmc.core.features.dream.generation.populators.forest.PillarPopulator;
 import fr.openmc.core.features.dream.generation.populators.mud.RockPopulator;
 import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopulator;
 import fr.openmc.core.features.dream.generation.structures.cloud.CloudCastleStructure;
@@ -50,6 +51,7 @@ public class DreamDimensionManager {
         // ** POPULATORS REGISTER **
         dream.getPopulators().add(new RockPopulator());
         dream.getPopulators().add(new PlainsTreePopulator());
+        dream.getPopulators().add(new PillarPopulator());
 
         // ** STRUCTURES POPULATORS REGISTER **
         dream.getPopulators().add(new CloudCastleStructure());

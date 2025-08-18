@@ -11,7 +11,7 @@ import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGe
 
 public class SoulForestChunkGenerator {
 
-    private static final Material SURFACE_MATERIAL = Material.SCULK;
+    public static final Material FOREST_SURFACE_MATERIAL = Material.SCULK;
 
     public static final FastNoiseLite terrainNoise = new FastNoiseLite();
     public static final FastNoiseLite detailNoise = new FastNoiseLite();
@@ -39,7 +39,7 @@ public class SoulForestChunkGenerator {
 
             if (noise3 > Math.min(function, -.3)) {
                 if (distanceToSurface < 3 && y > 63) {
-                    chunkData.setBlock(x, y, z, SURFACE_MATERIAL);
+                    chunkData.setBlock(x, y, z, FOREST_SURFACE_MATERIAL);
                 } else {
                     chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));
                 }

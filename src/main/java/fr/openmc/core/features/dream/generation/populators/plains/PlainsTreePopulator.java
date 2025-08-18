@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static fr.openmc.core.features.dream.generation.biomes.PlainsChunkGenerator.PLAINS_SURFACE_MATERIAL;
 
 
 public class PlainsTreePopulator extends BlockPopulator {
@@ -37,9 +40,32 @@ public class PlainsTreePopulator extends BlockPopulator {
         if (!world.getBiome(loc).equals(Biome.PLAINS)) return;
 
         try {
-            StructureUtils.placeStructureOnGround(StructureUtils.getStructureFile("omc_dream", TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))), loc, random.nextBoolean(), random.nextBoolean());
+            StructureUtils.placeStructure(StructureUtils.getStructureFile("omc_dream", TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))), loc, false, false);
+            generateSoilUnder(loc, 10, 7);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void generateSoilUnder(Location base, int radius, int depth) {
+        World world = base.getWorld();
+        int x = base.getBlockX();
+        int z = base.getBlockZ();
+        int y = base.getBlockY();
+
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                double dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist <= radius) {
+                    for (int dy = 0; dy > -depth; dy--) {
+                        Block b = world.getBlockAt(x + dx, y + dy, z + dz);
+
+                        if (!b.getType().isAir() && b.getType().isSolid()) break;
+
+                        b.setType(PLAINS_SURFACE_MATERIAL);
+                    }
+                }
+            }
         }
     }
 }
