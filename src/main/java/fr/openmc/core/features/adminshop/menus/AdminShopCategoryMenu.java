@@ -30,7 +30,7 @@ public class AdminShopCategoryMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu d'une catégorie de l'adminshop ";
+        return "Menu d'une catégorie de l'adminshop";
     }
 
     @Override

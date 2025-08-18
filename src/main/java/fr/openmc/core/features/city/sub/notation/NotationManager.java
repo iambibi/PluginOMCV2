@@ -49,27 +49,6 @@ public class NotationManager {
         );
 
         scheduleMidnightTask();
-
-//        Bukkit.getScheduler().runTaskTimer(
-//                OMCPlugin.getInstance(),
-//                () -> {
-//                    notationPerWeek.forEach((weekStr, notations) -> {
-//                        Bukkit.getLogger().info("Updating notations for week: " + weekStr);
-//                        notations.forEach(notation -> {
-//                            Bukkit.getLogger().info(notation.getCityUUID() + " - Activity: " + notation.getNoteActivity() + ", Economy: " + notation.getNoteEconomy() +
-//                                    ", Architectural: " + notation.getNoteArchitectural() + ", Coherence: " + notation.getNoteCoherence());
-//                        });
-//                    });
-//
-//                    cityNotations.forEach((cityUUID, notations) -> {
-//                        Bukkit.getLogger().info("City: " + cityUUID + " has " + notations.size() + " notations.");
-//                        notations.forEach(notation -> {
-//                            Bukkit.getLogger().info("Notation for city " + cityUUID + ": " + notation.getWeekStr() + " - Total Note: " + notation.getTotalNote());
-//                        });
-//                    });
-//                },
-//                0L, 100L
-//        );
     }
 
     public static void initDB(ConnectionSource connectionSource) throws SQLException {
@@ -95,9 +74,9 @@ public class NotationManager {
 
                 String weekStr = notation.getWeekStr();
 
-                cityNotations.computeIfAbsent(cityUUID, k -> new java.util.ArrayList<>()).add(notation);
+                cityNotations.computeIfAbsent(cityUUID, k -> new ArrayList<>()).add(notation);
 
-                notationPerWeek.computeIfAbsent(weekStr, k -> new java.util.ArrayList<>()).add(notation);
+                notationPerWeek.computeIfAbsent(weekStr, k -> new ArrayList<>()).add(notation);
             });
         } catch (SQLException e) {
             e.printStackTrace();

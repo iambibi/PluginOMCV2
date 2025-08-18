@@ -48,7 +48,7 @@ public class DatabaseManager {
             String password = config.getString("database.password");
             connectionSource = new JdbcPooledConnectionSource(databaseUrl, username, password);
 
-            NotationManager.init_db(connectionSource);
+            NotationManager.initDB(connectionSource);
             MayorManager.init_db(connectionSource);
             MilestonesManager.init_db(connectionSource);
             BankManager.init_db(connectionSource);

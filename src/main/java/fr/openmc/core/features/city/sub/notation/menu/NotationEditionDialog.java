@@ -73,9 +73,9 @@ public class NotationEditionDialog {
                 16
         ));
 
-        List<io.papermc.paper.registry.data.dialog.input.DialogInput> inputs = new ArrayList<>();
+        List<DialogInput> inputs = new ArrayList<>();
 
-        inputs.add(io.papermc.paper.registry.data.dialog.input.DialogInput
+        inputs.add(DialogInput
                 .numberRange("input_note_architectural",
                         Component.text("Note Architectural").hoverEvent(
                                 Component.text("Note sur " + NotationNote.NOTE_ARCHITECTURAL.getMaxNote() + " points")
@@ -87,7 +87,7 @@ public class NotationEditionDialog {
                 .build()
         );
 
-        inputs.add(io.papermc.paper.registry.data.dialog.input.DialogInput
+        inputs.add(DialogInput
                 .numberRange("input_note_coherence",
                         Component.text("Note Coherence").hoverEvent(
                                 Component.text("Note sur " + NotationNote.NOTE_COHERENCE.getMaxNote() + " points")
@@ -100,7 +100,7 @@ public class NotationEditionDialog {
         );
 
 
-        inputs.add(io.papermc.paper.registry.data.dialog.input.DialogInput
+        inputs.add(DialogInput
                 .text("input_description",
                         Component.text("Justification de la note").hoverEvent(
                                 Component.text("Une justification de la note est obligatoire")
