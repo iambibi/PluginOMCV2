@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 public interface CityRequirement {
     boolean isDone(City city);
 
+    String getScope();
+
     ItemStack getIcon();
 
     Component getName();

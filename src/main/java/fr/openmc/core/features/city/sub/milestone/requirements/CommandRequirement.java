@@ -1,12 +1,17 @@
 package fr.openmc.core.features.city.sub.milestone.requirements;
 
 import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.milestone.EventCityRequirement;
+import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Objects;
 
 public class CommandRequirement implements EventCityRequirement {
 
@@ -20,7 +25,12 @@ public class CommandRequirement implements EventCityRequirement {
 
     @Override
     public boolean isDone(City city) {
-        return false; //todo: CityStatistics
+        return Objects.requireNonNull(CityStatisticsManager.getStat(city.getUUID(), getScope())).asInt() >= amountRequired;
+    }
+
+    @Override
+    public String getScope() {
+        return "command_" + command;
     }
 
     @Override
@@ -30,7 +40,7 @@ public class CommandRequirement implements EventCityRequirement {
 
     @Override
     public Component getName() {
-        return Component.text("Exécuter " + amountRequired + " " + command);
+        return Component.text("Exécuter " + amountRequired + " fois " + command);
     }
 
     @Override
@@ -45,6 +55,14 @@ public class CommandRequirement implements EventCityRequirement {
         String cmd = e.getMessage().split(" ")[0].substring(1).toLowerCase();
         if (!cmd.equals(command)) return;
 
-        // todo: CityStatistics +1 in the amount of commands "command" executed
+        Player player = e.getPlayer();
+        City playerCity = CityManager.getPlayerCity(player.getUniqueId());
+
+        if (playerCity == null) return;
+
+        if (Objects.requireNonNull(CityStatisticsManager.getStat(playerCity.getUUID(), getScope())).asInt() >= amountRequired)
+            return;
+
+        CityStatisticsManager.increment(playerCity.getUUID(), getScope(), 1);
     }
 }

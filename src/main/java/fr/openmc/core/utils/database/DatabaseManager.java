@@ -8,6 +8,7 @@ import fr.openmc.core.features.analytics.AnalyticsManager;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
+import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.features.contest.managers.ContestManager;
 import fr.openmc.core.features.corporation.manager.CompanyManager;
 import fr.openmc.core.features.economy.BankManager;
@@ -63,6 +64,7 @@ public class DatabaseManager {
             CityManager.init_db(connectionSource);
             MascotsManager.init_db(connectionSource);
             PlayerSettingsManager.init_db(connectionSource);
+            CityStatisticsManager.initDB(connectionSource);
         } catch (SQLException e) {
             OMCPlugin.getInstance().getLogger().severe("Impossible d'initialiser la base de données");
             throw new RuntimeException(e);
