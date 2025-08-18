@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.biomes.*;
+import fr.openmc.core.features.dream.generation.effects.BiomeParticleListener;
 import fr.openmc.core.features.dream.generation.populators.forest.PillarPopulator;
 import fr.openmc.core.features.dream.generation.populators.mud.RockPopulator;
 import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopulator;
@@ -15,6 +16,7 @@ import java.util.Random;
 
 public class DreamDimensionManager {
 
+    public static final String DIMENSION_NAME = "world_dream";
     private final OMCPlugin plugin;
 
     public DreamDimensionManager() {
@@ -23,6 +25,10 @@ public class DreamDimensionManager {
         // ** STRUCTURES SCHEMATICS REGISTER **
         SchematicsUtils.extractSchematic(CloudCastleStructure.schemCloudCastleName);
 
+        // ** DIMENSION INIT **
+        OMCPlugin.registerEvents(
+                new BiomeParticleListener()
+        );
         init();
     }
 
@@ -31,7 +37,7 @@ public class DreamDimensionManager {
     }
 
     public void createDimension() {
-        WorldCreator creator = new WorldCreator("world_dream");
+        WorldCreator creator = new WorldCreator(DIMENSION_NAME);
         long seed = createSeed();
 
         // ** BIOMES REGISTER **

@@ -29,7 +29,12 @@ public class ParticleUtils {
 
     @Getter
     public enum ParticleNms {
-        CHERRY_LEAVES(ParticleTypes.CHERRY_LEAVES);
+        CHERRY_LEAVES(ParticleTypes.CHERRY_LEAVES),
+        SMALL_GUST(ParticleTypes.SMALL_GUST),
+        SNOWFLAKE(ParticleTypes.SNOWFLAKE),
+        SCULK_SOUL(ParticleTypes.SCULK_SOUL),
+        TRIAL_SPAWNER_DETECTION_OMINOUS(ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS),
+        ASH(ParticleTypes.ASH);
         // mettez les particules NMS que vous souhaitez utiliser ici
 
         private final ParticleOptions particleType;
@@ -38,6 +43,25 @@ public class ParticleUtils {
             this.particleType = particleType;
         }
 
+    }
+
+    public static void sendCubeParticles(Player player, Particle particle, double radius, double step) {
+        Location center = player.getLocation();
+
+        for (double x = -radius; x <= radius; x += step) {
+            for (double y = -radius; y <= radius; y += step) {
+                for (double z = -radius; z <= radius; z += step) {
+                    int faces = 0;
+                    if (Math.abs(x) == radius) faces++;
+                    if (Math.abs(y) == radius) faces++;
+                    if (Math.abs(z) == radius) faces++;
+                    if (faces < 2) continue;
+
+                    Location loc = center.clone().add(x, y, z);
+                    sendParticlePacket(player, particle, loc);
+                }
+            }
+        }
     }
 
     public static void spawnParticlesInRegion(String regionId, World world, Particle particle, Integer amountPer2Tick, Integer maxHeight) {
