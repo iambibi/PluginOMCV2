@@ -27,8 +27,6 @@ public class BiomeParticleManager {
             put(Biome.THE_VOID, Particle.SMALL_GUST);
         }
     };
-    private static final Particle cloudParticles = Particle.SMALL_GUST;
-    private static final Particle glaciteParticles = Particle.SNOWFLAKE;
 
     // ** CONST **
     private static final int PARTICLE_RADIUS = 8;
