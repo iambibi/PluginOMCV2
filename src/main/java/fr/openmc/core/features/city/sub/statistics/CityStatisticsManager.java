@@ -10,11 +10,13 @@ import org.bukkit.Bukkit;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CityStatisticsManager {
 
-    public static HashMap<String, CityStatistics> cityStatistics = new HashMap<>(); // cityUUID -> CityStatistics
+    public static HashMap<String, Set<CityStatistics>> cityStatistics = new HashMap<>(); // cityUUID -> CityStatistics
     private static Dao<CityStatistics, String> statisticsDao;
 
     public CityStatisticsManager() {
@@ -30,7 +32,9 @@ public class CityStatisticsManager {
         try {
             List<CityStatistics> statistics = statisticsDao.queryForAll();
 
-            statistics.forEach(statistic -> cityStatistics.put(statistic.getCityUUID(), statistic));
+            statistics.forEach(statistic -> {
+                cityStatistics.computeIfAbsent(statistic.getCityUUID(), k -> new HashSet<>()).add(statistic);
+            });
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,62 +43,78 @@ public class CityStatisticsManager {
     public static void saveCityStatistics() {
         cityStatistics.forEach(
                 (city, statistics) -> {
-                    try {
-                        statisticsDao.createOrUpdate(statistics);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    statistics.forEach(stat -> {
+                        try {
+                            statisticsDao.createOrUpdate(stat);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 });
     }
 
-    public static CityStatistics getOrCreate(String cityUUID) {
-        return cityStatistics.computeIfAbsent(cityUUID, CityStatistics::new);
+    public static Set<CityStatistics> getOrCreate(String cityUUID) {
+        return cityStatistics.computeIfAbsent(cityUUID, k -> new HashSet<>());
     }
 
     public static void setStat(String cityUUID, String scope, Object value) {
-        CityStatistics stats = getOrCreate(cityUUID);
-        stats.setScope(scope);
-        stats.setValue(value);
+        Set<CityStatistics> stats = getOrCreate(cityUUID);
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            try {
-                statisticsDao.createOrUpdate(stats);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        for (CityStatistics stat : stats) {
+            if (!stat.getScope().equals(scope)) return;
+
+            stat.setScope(scope);
+            stat.setValue(value);
+
+            Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
+                try {
+                    statisticsDao.createOrUpdate(stat);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     public static Object getStatValue(String cityUUID, String scope) {
-        CityStatistics stats = cityStatistics.get(cityUUID);
-        if (stats != null && scope.equals(stats.getScope())) {
-            return stats.getValue();
+        Set<CityStatistics> stats = cityStatistics.get(cityUUID);
+
+        for (CityStatistics stat : stats) {
+            if (stat != null && scope.equals(stat.getScope())) {
+                return stat.getValue();
+            }
         }
+
         return null;
     }
 
     public static CityStatistics getStat(String cityUUID, String scope) {
-        CityStatistics stats = cityStatistics.get(cityUUID);
-        if (stats != null && scope.equals(stats.getScope())) {
-            return stats;
+        Set<CityStatistics> stats = cityStatistics.get(cityUUID);
+
+        for (CityStatistics stat : stats) {
+            if (stat != null && scope.equals(stat.getScope())) {
+                return stat;
+            }
         }
         return null;
     }
 
 
     public static void increment(String cityUUID, String scope, long amount) {
-        CityStatistics stats = getOrCreate(cityUUID);
-        if (!scope.equals(stats.getScope())) stats.setScope(scope);
+        Set<CityStatistics> stats = getOrCreate(cityUUID);
+        for (CityStatistics stat : stats) {
+            if (!scope.equals(stat.getScope())) stat.setScope(scope);
 
-        long current = stats.asLong();
-        stats.setValue(current + amount);
+            long current = stat.asLong();
+            stat.setValue(current + amount);
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            try {
-                statisticsDao.createOrUpdate(stats);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+            Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
+                try {
+                    statisticsDao.createOrUpdate(stat);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 }

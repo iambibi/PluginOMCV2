@@ -9,9 +9,9 @@ public interface CityRequirement {
 
     String getScope();
 
-    ItemStack getIcon();
+    ItemStack getIcon(City city);
 
-    Component getName();
+    Component getName(City city);
 
     Component getDescription();
 }

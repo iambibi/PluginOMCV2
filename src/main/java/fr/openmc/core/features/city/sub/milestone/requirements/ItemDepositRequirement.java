@@ -31,12 +31,12 @@ public class ItemDepositRequirement implements CityRequirement {
     }
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getIcon(City city) {
         return itemType;
     }
 
     @Override
-    public Component getName() {
+    public Component getName(City city) {
         return Component.text("Déposer " + amountRequired + " ").append(ItemUtils.getItemTranslation(itemType));
     }
 

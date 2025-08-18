@@ -39,7 +39,7 @@ public class CommandRequirement implements EventCityRequirement {
     }
 
     @Override
-    public Component getName() {
+    public Component getName(City city) {
         return Component.text("Exécuter " + amountRequired + " fois " + command);
     }
 
