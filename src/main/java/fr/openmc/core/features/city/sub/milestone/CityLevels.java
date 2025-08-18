@@ -20,6 +20,7 @@ public enum CityLevels {
                     new CommandRequirement("/city create", 1)
             )
     ),
+
     ;
 
     private final Component name;

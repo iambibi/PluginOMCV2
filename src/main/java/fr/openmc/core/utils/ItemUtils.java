@@ -45,6 +45,16 @@ public class ItemUtils {
         return getItemTranslation(new ItemStack(material));
     }
 
+    public static boolean isSimilar(ItemStack item1, ItemStack item2) {
+        CustomStack customItem = CustomStack.byItemStack(item1);
+        if (customItem != null) {
+            CustomStack customIs = CustomStack.byItemStack(item2);
+            return customIs != null && customIs.getId().equals(customItem.getId());
+        } else {
+            return item2.getType().equals(item1.getType());
+        }
+    }
+
     /**
      * Découpe un nombre d'item en packet de 64
      * @param items Votre ItemStack
@@ -82,7 +92,7 @@ public class ItemUtils {
         int numberitemtostack = 0;
 
         for (ItemStack stack : inventory.getStorageContents()) {
-            if (stack != null && stack.isSimilar(item)) {
+            if (stack != null && isSimilar(stack, item)) {
                 numberitemtostack = 64 - stack.getAmount();
             }
         }
@@ -119,7 +129,7 @@ public class ItemUtils {
 
         Inventory inventory = player.getInventory();
         for (ItemStack stack : inventory.getStorageContents()) {
-            if (stack == null || !item.isSimilar(stack))
+            if (stack == null || !isSimilar(item, stack))
                 continue;
 
             if (stack.getAmount() != stackSize)
@@ -163,20 +173,11 @@ public class ItemUtils {
         if (amount <= 0) return false;
 
         int totalItems = 0;
-        CustomStack customItem = CustomStack.byItemStack(item);
 
         for (ItemStack is : player.getInventory().getContents()) {
             if (is == null) continue;
 
-            boolean matches;
-            if (customItem != null) {
-                CustomStack customIs = CustomStack.byItemStack(is);
-                matches = customIs != null && customIs.getId().equals(customItem.getId());
-            } else {
-                matches = is.getType().equals(item.getType());
-            }
-
-            if (matches) {
+            if (isSimilar(is, item)) {
                 totalItems += is.getAmount();
                 if (totalItems >= amount) return true;
             }
@@ -230,7 +231,7 @@ public class ItemUtils {
                 matches = stack.getType().equals(item.getType());
             }
 
-            if (matches) {
+            if (isSimilar(stack, item)) {
                 int stackAmount = stack.getAmount();
                 if (stackAmount <= remaining) {
                     player.getInventory().setItem(i, null);

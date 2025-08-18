@@ -19,7 +19,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.BLAZE_POWDER),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.MILITARY
     ),
     IMPOT(
             2,
@@ -30,7 +31,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.GOLD_BLOCK),
             PerkType.EVENT,
-            3 * 24 * 60 * 60 * 1000L // 3 jours
+            3 * 24 * 60 * 60 * 1000L, // 3 jours
+            PerkCategory.ECONOMIC
     ),
     MINER(
             3,
@@ -40,7 +42,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.GOLDEN_PICKAXE),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.AGRICULTURAL
     ),
     FRUIT_DEMON(
             4,
@@ -51,7 +54,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.CHORUS_FRUIT),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.MILITARY
     ),
     BUISNESS_MAN(
             5,
@@ -62,7 +66,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.DIAMOND),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.ECONOMIC
     ),
     IRON_BLOOD(
             6,
@@ -73,7 +78,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.IRON_BLOCK),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.MILITARY
     ),
     CITY_HUNTER(
             7,
@@ -84,7 +90,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.BOW),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.STRATEGY
     ),
     AYWENITER(
             8,
@@ -94,7 +101,8 @@ public enum Perks {
             ),
             CustomItemRegistry.getByName("omc_items:aywenite").getBest(),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.AGRICULTURAL
     ),
     GPS_TRACKER(
             9,
@@ -105,7 +113,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.COMPASS),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.STRATEGY
     ),
     SYMBIOSIS(
             10,
@@ -116,7 +125,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.SCULK_CATALYST),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.MILITARY
     ),
     AGRICULTURAL_ESSOR(
             11,
@@ -126,7 +136,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.NETHERITE_HOE),
             PerkType.EVENT,
-            24 * 60 * 60 * 1000L // 1 jour
+            24 * 60 * 60 * 1000L, // 1 jour
+            PerkCategory.AGRICULTURAL
     ),
     MINERAL_RUSH(
             12,
@@ -137,7 +148,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.DIAMOND_PICKAXE),
             PerkType.EVENT,
-            24 * 60 * 60 * 1000L // 1 jour
+            24 * 60 * 60 * 1000L, // 1 jour
+            PerkCategory.AGRICULTURAL
     ),
     MILITARY_DISSUASION(
             13,
@@ -148,7 +160,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.IRON_GOLEM_SPAWN_EGG),
             PerkType.EVENT,
-            25 * 60 * 1000L // 25 minutes
+            25 * 60 * 1000L, // 25 minutes
+            PerkCategory.STRATEGY
     ),
     IDYLLIC_RAIN(
             14,
@@ -158,7 +171,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.GHAST_TEAR),
             PerkType.EVENT,
-            24 * 60 * 60 * 1000L // 1 jour
+            24 * 60 * 60 * 1000L, // 1 jour
+            PerkCategory.ECONOMIC
     ),
     MASCOTS_FRIENDLY(
             15,
@@ -169,7 +183,8 @@ public enum Perks {
             ),
             ItemStack.of(Material.SADDLE),
             PerkType.BASIC,
-            0
+            0,
+            PerkCategory.MILITARY
     )
     ;
 
@@ -179,14 +194,16 @@ public enum Perks {
     private final ItemStack itemStack;
     private final PerkType type;
     private final long cooldown;
+    private final PerkCategory category;
 
-    Perks(int id, String name, List<Component> lore, ItemStack itemStack, PerkType type, long cooldown) {
+    Perks(int id, String name, List<Component> lore, ItemStack itemStack, PerkType type, long cooldown, PerkCategory category) {
         this.id = id;
         this.name = name;
         this.lore = lore;
         this.itemStack = itemStack;
         this.type = type;
         this.cooldown = cooldown;
+        this.category = category;
     }
 
 
