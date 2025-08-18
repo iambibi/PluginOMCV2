@@ -20,6 +20,7 @@ import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.NPCManager;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
+import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.ChunkPos;
@@ -70,7 +71,8 @@ public class CityManager implements Listener {
 		        new CityChatCommand(),
 		        new CityPermsCommands(),
                 new CityChestCommand(),
-		        new CityRankCommands()
+                new CityRankCommands(),
+                new CityTopCommands()
         );
 
         OMCPlugin.registerEvents(
@@ -84,6 +86,7 @@ public class CityManager implements Listener {
         new WarManager();
         new CityBankManager();
         new CityStatisticsManager();
+        new NotationManager();
     }
 
     private static Dao<DBCity, String> citiesDao;
@@ -560,7 +563,7 @@ public class CityManager implements Listener {
                 permissionsDao.delete(permissionsDelete.prepare());
                 
                 DeleteBuilder<CityRank, String> ranksDelete = ranksDao.deleteBuilder();
-                ranksDelete.where().eq("city", city.getUUID());
+                ranksDelete.where().eq("city_uuid", city.getUUID());
                 ranksDao.delete(ranksDelete.prepare());
 
                 DeleteBuilder<DBCityClaim, String> claimsDelete = claimsDao.deleteBuilder();
