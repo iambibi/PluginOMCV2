@@ -45,25 +45,18 @@ public class ParticleUtils {
 
     }
 
-    public static void sendCubeParticles(Player player, Particle particle, double radius, double step) {
+    public static void sendRandomCubeParticles(Player player, Particle particle, double radius, int amount) {
         Location center = player.getLocation();
 
-        for (double x = -radius; x <= radius; x += step) {
-            for (double y = -radius; y <= radius; y += step) {
-                for (double z = -radius; z <= radius; z += step) {
-                    int faces = 0;
-                    if (Math.abs(x) == radius) faces++;
-                    if (Math.abs(y) == radius) faces++;
-                    if (Math.abs(z) == radius) faces++;
-                    if (faces < 2) continue;
+        for (int i = 0; i < amount; i++) {
+            double x = (Math.random() * 2 - 1) * radius; // de -radius à +radius
+            double y = (Math.random() * 2 - 1) * radius;
+            double z = (Math.random() * 2 - 1) * radius;
 
-                    Location loc = center.clone().add(x, y, z);
-                    sendParticlePacket(player, particle, loc);
-                }
-            }
+            Location loc = center.clone().add(x, y, z);
+            sendParticlePacket(player, particle, loc);
         }
     }
-
     public static void spawnParticlesInRegion(String regionId, World world, Particle particle, Integer amountPer2Tick, Integer maxHeight) {
         RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
         if (regionManager == null) return;

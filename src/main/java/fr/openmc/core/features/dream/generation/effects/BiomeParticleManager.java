@@ -19,6 +19,8 @@ import java.util.UUID;
 public class BiomeParticleManager {
 
     private static final Map<UUID, BukkitTask> runningTasks = new HashMap<>();
+
+    // ** PARTICLES FOR EACH ZONES **
     private static final Map<Biome, Particle> biomeParticles = new HashMap<>() {
         {
             put(Biome.FOREST, Particle.SCULK_SOUL);
@@ -28,6 +30,9 @@ public class BiomeParticleManager {
     };
     private static final Particle cloudParticles = Particle.SMALL_GUST;
     private static final Particle glaciteParticles = Particle.SNOWFLAKE;
+
+    // ** CONST **
+    private static final int PARTICLE_RADIUS = 8;
 
     public static void startTask(Player player) {
         if (runningTasks.containsKey(player.getUniqueId())) return;
@@ -46,24 +51,23 @@ public class BiomeParticleManager {
             Location location = player.getLocation();
 
             if (CloudChunkGenerator.MIN_HEIGHT_CLOUD < location.getY()) {
-                ParticleUtils.sendCubeParticles(player, cloudParticles, 5, 0.5);
-                return;
-            }
-
-            if (GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT > location.getY()) {
-                ParticleUtils.sendCubeParticles(player, glaciteParticles, 5, 0.5);
+                ParticleUtils.sendRandomCubeParticles(player, cloudParticles, PARTICLE_RADIUS, 50);
                 return;
             }
 
             Biome biome = player.getLocation().getBlock().getBiome();
 
+            if (GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT > location.getY() && biome.equals(Biome.BEACH)) {
+                ParticleUtils.sendRandomCubeParticles(player, glaciteParticles, PARTICLE_RADIUS, 50);
+                return;
+            }
+
             if (biomeParticles.containsKey(biome)) {
-                ParticleUtils.sendCubeParticles(player, biomeParticles.get(biome), 5, 0.5);
+                ParticleUtils.sendRandomCubeParticles(player, biomeParticles.get(biome), PARTICLE_RADIUS, 50);
                 return;
             }
 
             stopTask(player);
-            return;
         }, 0L, 20L);
 
         runningTasks.put(player.getUniqueId(), task);
