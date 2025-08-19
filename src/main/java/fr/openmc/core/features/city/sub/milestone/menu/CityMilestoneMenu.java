@@ -84,21 +84,21 @@ public class CityMilestoneMenu extends Menu {
 
             Supplier<ItemBuilder> upgradeItemSupplier = () -> getGenerateItemLevel(this, level, city, completed, active)
                     .setOnClick(e -> {
-                if (!active) return;
+                        if (!active) return;
 
                         if (level.isCompleted(city) && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
                             level.runUpgradeTime(city);
                             return;
                         }
 
-                new LevelMilestoneMenu(player, city, level);
+                        new LevelMilestoneMenu(player, city, level).open();
                     });
 
             if (!DynamicCooldownManager.isReady(city.getUUID(), "city:upgrade-level") && active) {
-                MenuUtils.runDynamicItem(player, this, i, upgradeItemSupplier)
+                MenuUtils.runDynamicItem(player, this, slot, upgradeItemSupplier)
                         .runTaskTimer(OMCPlugin.getInstance(), 0L, 20L);
             } else {
-                inventory.put(i, new ItemBuilder(this, upgradeItemSupplier.get()));
+                inventory.put(slot, new ItemBuilder(this, upgradeItemSupplier.get()));
             }
 
             if (i < levels.length - 1) {
