@@ -275,7 +275,7 @@ public class ItemBuilder extends ItemStack {
 				}
 			};
 			setOnClick(clickEventConsumer);
-            this.backButton = true;
+			this.previousButton = true;
 			return this;
 		} catch (Exception e) {
 			MessagesManager.sendMessage(itemMenu.getOwner(), Component.text("§cUne Erreur est survenue, veuillez contacter le Staff"), Prefix.OPENMC, MessageType.ERROR, false);

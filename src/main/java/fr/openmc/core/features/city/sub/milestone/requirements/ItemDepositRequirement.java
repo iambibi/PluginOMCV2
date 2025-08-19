@@ -42,14 +42,14 @@ public class ItemDepositRequirement implements CityRequirement {
             return Component.text(String.format(
                     "Déposer %d %s",
                     amountRequired,
-                    itemType.getItemMeta().displayName()
+                    itemType.getItemMeta().itemName()
             ));
         }
 
         return Component.text(String.format(
                 "Déposer %d %s (%d/%d)",
                 amountRequired,
-                itemType.getItemMeta().displayName(),
+                itemType.getItemMeta().itemName(),
                 Objects.requireNonNull(
                         CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
                 ).asInt(),
@@ -63,8 +63,9 @@ public class ItemDepositRequirement implements CityRequirement {
     }
 
     public void runAction(City city, InventoryClickEvent e) {
+        System.out.println("r1");
         if (!(e.getWhoClicked() instanceof Player player)) return;
-
+        System.out.println("r2");
         int current = Objects.requireNonNull(
                 CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
         ).asInt();
@@ -73,10 +74,12 @@ public class ItemDepositRequirement implements CityRequirement {
 
         if (remaining <= 0) return;
 
+        System.out.println("r3");
         if (ItemUtils.hasEnoughItems(player, itemType, remaining)) {
             ItemUtils.removeItemsFromInventory(player, itemType, remaining);
 
             CityStatisticsManager.increment(city.getUUID(), getScope(), remaining);
         }
+        System.out.println("r4");
     }
 }

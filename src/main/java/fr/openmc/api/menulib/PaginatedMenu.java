@@ -118,7 +118,14 @@ public abstract class PaginatedMenu extends Menu {
 		if (getButtons() != null) {
 			getButtons().forEach((integer, itemBuilder) -> {
 				if (staticSlots.contains(integer)) {
-					map.put(integer, new ItemBuilder(this, itemBuilder, itemBuilder.isBackButton()));
+					ItemBuilder newItemBuilder = new ItemBuilder(this, itemBuilder, itemBuilder.isBackButton());
+					if (itemBuilder.isPreviousButton()) {
+						newItemBuilder.setPreviousPageButton();
+					} else if (itemBuilder.isNextButton()) {
+						newItemBuilder.setNextPageButton();
+					}
+
+					map.put(integer, newItemBuilder);
 				}
 			});
 		}
@@ -154,6 +161,7 @@ public abstract class PaginatedMenu extends Menu {
 	 * @return {@code true} if the current page is the last page, {@code false} otherwise.
 	 */
 	public final boolean isLastPage() {
+		System.out.println(page + " " + numberOfPages);
 		return page == numberOfPages;
 	}
 }

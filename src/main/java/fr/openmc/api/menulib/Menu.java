@@ -158,9 +158,13 @@ public abstract class Menu implements InventoryHolder {
 		if (item.isBackButton() && !MenuLib.hasPreviousMenu(player)) return;
 
 		if (this instanceof PaginatedMenu paginatedMenu) {
-			if (item.isPreviousButton() && paginatedMenu.isFirstPage()) return;
+			if (item.isPreviousButton() && paginatedMenu.isFirstPage()) {
+				return;
+			}
 
-			if (item.isNextButton() && paginatedMenu.isLastPage()) return;
+			if (item.isNextButton() && paginatedMenu.isLastPage()) {
+				return;
+			}
 		}
 
 		if (item.isBackButton()) {

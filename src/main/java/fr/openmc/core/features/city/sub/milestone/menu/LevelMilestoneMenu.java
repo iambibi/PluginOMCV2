@@ -84,9 +84,11 @@ public class LevelMilestoneMenu extends PaginatedMenu {
                         .append(requirement.getName(city, level)).color(requirement.isDone(city, level) ? NamedTextColor.GREEN : NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
                 meta.setEnchantmentGlintOverride(requirement.isDone(city, level));
             }).setOnClick(inventoryClickEvent -> {
-                if (!(requirement instanceof ItemDepositRequirement r)) return;
-
-                r.runAction(city, inventoryClickEvent);
+                System.out.println(requirement instanceof ItemDepositRequirement r);
+                if (requirement instanceof ItemDepositRequirement r) {
+                    System.out.println("run");
+                    r.runAction(city, inventoryClickEvent);
+                }
             }));
         }
 
