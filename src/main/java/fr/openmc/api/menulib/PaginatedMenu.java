@@ -140,6 +140,15 @@ public abstract class PaginatedMenu extends Menu {
 	public abstract int getSizeOfItems();
 
 	/**
+	 * Determines whether the current page is the first page in the paginated menu.
+	 *
+	 * @return {@code true} if the current page is the first page, {@code false} otherwise.
+	 */
+	public final boolean isFirstPage() {
+		return page == 0;
+	}
+
+	/**
 	 * Determines whether the current page is the last page in the paginated menu.
 	 *
 	 * @return {@code true} if the current page is the last page, {@code false} otherwise.

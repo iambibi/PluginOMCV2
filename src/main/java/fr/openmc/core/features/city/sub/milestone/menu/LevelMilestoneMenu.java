@@ -9,6 +9,8 @@ import fr.openmc.core.features.city.sub.milestone.CityRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.ItemDepositRequirement;
 import fr.openmc.core.items.CustomItemRegistry;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -51,7 +53,7 @@ public class LevelMilestoneMenu extends PaginatedMenu {
 
     @Override
     public int getSizeOfItems() {
-        return 0;
+        return level.getRequirements().size();
     }
 
     @Override
@@ -78,7 +80,8 @@ public class LevelMilestoneMenu extends PaginatedMenu {
 
         for (CityRequirement requirement : level.getRequirements()) {
             items.add(new ItemBuilder(this, requirement.getIcon(city), meta -> {
-                meta.displayName(requirement.getName(city, level));
+                meta.displayName(Component.text((requirement.isDone(city, level) ? "§l✔ " : "§l✖ "))
+                        .append(requirement.getName(city, level)).color(requirement.isDone(city, level) ? NamedTextColor.GREEN : NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
                 meta.setEnchantmentGlintOverride(requirement.isDone(city, level));
             }).setOnClick(inventoryClickEvent -> {
                 if (!(requirement instanceof ItemDepositRequirement r)) return;

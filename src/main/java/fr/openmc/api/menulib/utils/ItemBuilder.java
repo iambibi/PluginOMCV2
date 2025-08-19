@@ -26,6 +26,10 @@ import java.util.function.Consumer;
  */
 public class ItemBuilder extends ItemStack {
 	private final Menu itemMenu;
+    @Getter
+    private boolean previousButton;
+    @Getter
+    private boolean nextButton;
 	@Getter
 	private boolean backButton;
 	private ItemMeta meta;
@@ -244,6 +248,7 @@ public class ItemBuilder extends ItemStack {
 				}
 			};
 			setOnClick(clickEventConsumer);
+            this.nextButton = true;
 			return this;
 		} catch (Exception e) {
 			MessagesManager.sendMessage(itemMenu.getOwner(), Component.text("§cUne Erreur est survenue, veuillez contacter le Staff"), Prefix.OPENMC, MessageType.ERROR, false);
@@ -270,6 +275,7 @@ public class ItemBuilder extends ItemStack {
 				}
 			};
 			setOnClick(clickEventConsumer);
+            this.backButton = true;
 			return this;
 		} catch (Exception e) {
 			MessagesManager.sendMessage(itemMenu.getOwner(), Component.text("§cUne Erreur est survenue, veuillez contacter le Staff"), Prefix.OPENMC, MessageType.ERROR, false);
