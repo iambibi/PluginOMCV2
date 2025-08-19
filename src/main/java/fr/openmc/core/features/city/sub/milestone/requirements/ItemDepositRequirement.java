@@ -1,6 +1,7 @@
 package fr.openmc.core.features.city.sub.milestone.requirements;
 
 import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.CityRequirement;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.utils.ItemUtils;
@@ -9,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
+import java.util.Objects;
 
 public class ItemDepositRequirement implements CityRequirement {
     private final ItemStack itemType;
@@ -21,7 +22,7 @@ public class ItemDepositRequirement implements CityRequirement {
     }
 
     @Override
-    public boolean isDone(City city) {
+    public boolean isPredicateDone(City city) {
         return false;
     }
 
@@ -36,8 +37,24 @@ public class ItemDepositRequirement implements CityRequirement {
     }
 
     @Override
-    public Component getName(City city) {
-        return Component.text("Déposer " + amountRequired + " ").append(ItemUtils.getItemTranslation(itemType));
+    public Component getName(City city, CityLevels level) {
+        if (city.getLevel() > level.ordinal() + 1) {
+            return Component.text(String.format(
+                    "Déposer %d %s",
+                    amountRequired,
+                    ItemUtils.getStringItemTranslation(itemType)
+            ));
+        }
+
+        return Component.text(String.format(
+                "Déposer %d %s (%d/%d)",
+                amountRequired,
+                ItemUtils.getStringItemTranslation(itemType),
+                Objects.requireNonNull(
+                        CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+                ).asInt(),
+                amountRequired
+        ));
     }
 
     @Override
@@ -48,12 +65,18 @@ public class ItemDepositRequirement implements CityRequirement {
     public void runAction(City city, InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player player)) return;
 
-        int itemRequiredCount = Arrays.stream(player.getInventory().getContents()).filter(is -> is != null && ItemUtils.isSimilar(is, itemType)).mapToInt(ItemStack::getAmount).sum();
+        int current = Objects.requireNonNull(
+                CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+        ).asInt();
 
-        if (ItemUtils.hasEnoughItems(player, itemType, itemRequiredCount)) {
-            ItemUtils.removeItemsFromInventory(player, itemType, itemRequiredCount);
+        int remaining = amountRequired - current;
 
-            CityStatisticsManager.increment(city.getUUID(), getScope(), itemRequiredCount);
+        if (remaining <= 0) return;
+
+        if (ItemUtils.hasEnoughItems(player, itemType, remaining)) {
+            ItemUtils.removeItemsFromInventory(player, itemType, remaining);
+
+            CityStatisticsManager.increment(city.getUUID(), getScope(), remaining);
         }
     }
 }

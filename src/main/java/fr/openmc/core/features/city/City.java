@@ -60,6 +60,8 @@ public class City {
     private int powerPoints;
     @Getter
     private int freeClaims;
+    @Getter
+    private int level;
     
     public static final int MAX_RANKS = 18; // Maximum number of ranks allowed in a city
 
@@ -71,6 +73,7 @@ public class City {
         this.name = name;
         this.type = type;
         this.freeClaims = 15;
+        this.level = 1;
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
                 CityManager.saveCity(this)
@@ -99,12 +102,13 @@ public class City {
     /**
      * Constructor used to deserialize City database object
      */
-    public City(String id, String name, double balance, String type, int power, int freeClaims) {
+    public City(String id, String name, double balance, String type, int power, int freeClaims, int level) {
         this.cityUUID = id;
         this.name = name;
         this.balance = balance;
         this.freeClaims = freeClaims;
         this.powerPoints = power;
+        this.level = level;
 
         setType(type);
 
@@ -115,7 +119,7 @@ public class City {
      * Serialize a city to be saved in the database
      */
     public DBCity serialize() {
-        return new DBCity(cityUUID, name, balance, type.name(), powerPoints, freeClaims);
+        return new DBCity(cityUUID, name, balance, type.name(), powerPoints, freeClaims, level);
     }
 
     // ==================== Global Methods ====================
@@ -919,16 +923,5 @@ public class City {
      */
     public void setNotationOfWeek(String weekStr, double architecturalNote, double coherenceNote, String description) {
         NotationManager.createOrUpdateNotation(new CityNotation(cityUUID, architecturalNote, coherenceNote, description, weekStr));
-    }
-
-    // ==================== City Milestone Methods ====================
-
-    /**
-     * Retrieves the power points of the city.
-     *
-     * @return The power points of the city, or 0 if not found.
-     */
-    public boolean getLevel() {
-        return WarManager.isCityInWar(cityUUID);
     }
 }

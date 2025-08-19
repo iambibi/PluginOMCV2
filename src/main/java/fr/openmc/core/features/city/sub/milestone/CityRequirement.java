@@ -5,13 +5,20 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
 
 public interface CityRequirement {
-    boolean isDone(City city);
+    boolean isPredicateDone(City city);
+
+    default boolean isDone(City city, CityLevels level) {
+        if (city.getLevel() > level.ordinal() + 1) {
+            return true;
+        }
+        return isPredicateDone(city);
+    }
 
     String getScope();
 
     ItemStack getIcon(City city);
 
-    Component getName(City city);
+    Component getName(City city, CityLevels level);
 
     Component getDescription();
 }

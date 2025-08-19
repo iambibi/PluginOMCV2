@@ -8,6 +8,7 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.sub.statistics.models.CityStatistics;
 import org.bukkit.Bukkit;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,64 +58,43 @@ public class CityStatisticsManager {
         return cityStatistics.computeIfAbsent(cityUUID, k -> new HashSet<>());
     }
 
-    public static void setStat(String cityUUID, String scope, Object value) {
+    public static CityStatistics getOrCreateStat(String cityUUID, String scope) {
         Set<CityStatistics> stats = getOrCreate(cityUUID);
-
         for (CityStatistics stat : stats) {
-            if (!stat.getScope().equals(scope)) return;
-
-            stat.setScope(scope);
-            stat.setValue(value);
-
-            Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-                try {
-                    statisticsDao.createOrUpdate(stat);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
+            if (stat != null && scope.equals(stat.getScope())) return stat;
         }
+        CityStatistics newStat = new CityStatistics(cityUUID, scope, 0);
+        stats.add(newStat);
+        return newStat;
+    }
+
+    public static void setStat(String cityUUID, String scope, Serializable value) {
+        CityStatistics stat = getOrCreateStat(cityUUID, scope);
+        stat.setValue(value);
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
+            try {
+                statisticsDao.createOrUpdate(stat);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static void increment(String cityUUID, String scope, long amount) {
+        CityStatistics stat = getOrCreateStat(cityUUID, scope);
+        long current = stat.asLong();
+        stat.setValue(current + amount);
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
+            try {
+                statisticsDao.createOrUpdate(stat);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static Object getStatValue(String cityUUID, String scope) {
-        Set<CityStatistics> stats = cityStatistics.get(cityUUID);
-
-        for (CityStatistics stat : stats) {
-            if (stat != null && scope.equals(stat.getScope())) {
-                return stat.getValue();
-            }
-        }
-
-        return null;
-    }
-
-    public static CityStatistics getStat(String cityUUID, String scope) {
-        Set<CityStatistics> stats = cityStatistics.get(cityUUID);
-
-        for (CityStatistics stat : stats) {
-            if (stat != null && scope.equals(stat.getScope())) {
-                return stat;
-            }
-        }
-        return null;
-    }
-
-
-    public static void increment(String cityUUID, String scope, long amount) {
-        Set<CityStatistics> stats = getOrCreate(cityUUID);
-        for (CityStatistics stat : stats) {
-            if (!scope.equals(stat.getScope())) stat.setScope(scope);
-
-            long current = stat.asLong();
-            stat.setValue(current + amount);
-
-            Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-                try {
-                    statisticsDao.createOrUpdate(stat);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+        CityStatistics stat = getOrCreateStat(cityUUID, scope);
+        return stat.getValue();
     }
 }

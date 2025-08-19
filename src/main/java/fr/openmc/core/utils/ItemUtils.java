@@ -45,6 +45,26 @@ public class ItemUtils {
         return getItemTranslation(new ItemStack(material));
     }
 
+    /**
+     * Return a {@link TranslatableComponent} from a {@link ItemStack}
+     *
+     * @param stack ItemStack that get translate
+     * @return a {@link TranslatableComponent} that can be translated by client
+     */
+    public static String getStringItemTranslation(ItemStack stack) {
+        return stack.getType().translationKey();
+    }
+
+    /**
+     * Return a {@link TranslatableComponent} from a {@link Material}
+     *
+     * @param material Material that get translate
+     * @return a {@link TranslatableComponent} that can be translated by client
+     */
+    public static String getStringItemTranslation(Material material) {
+        return getStringItemTranslation(new ItemStack(material));
+    }
+
     public static boolean isSimilar(ItemStack item1, ItemStack item2) {
         CustomStack customItem = CustomStack.byItemStack(item1);
         if (customItem != null) {

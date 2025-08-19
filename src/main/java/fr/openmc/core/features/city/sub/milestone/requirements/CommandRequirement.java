@@ -2,6 +2,7 @@ package fr.openmc.core.features.city.sub.milestone.requirements;
 
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.EventCityRequirement;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import net.kyori.adventure.text.Component;
@@ -24,8 +25,8 @@ public class CommandRequirement implements EventCityRequirement {
     }
 
     @Override
-    public boolean isDone(City city) {
-        return Objects.requireNonNull(CityStatisticsManager.getStat(city.getUUID(), getScope())).asInt() >= amountRequired;
+    public boolean isPredicateDone(City city) {
+        return Objects.requireNonNull(CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())).asInt() >= amountRequired;
     }
 
     @Override
@@ -39,8 +40,18 @@ public class CommandRequirement implements EventCityRequirement {
     }
 
     @Override
-    public Component getName(City city) {
-        return Component.text("Exécuter " + amountRequired + " fois " + command);
+    public Component getName(City city, CityLevels level) {
+        if (city.getLevel() > level.ordinal() + 1) {
+            return Component.text(String.format(
+                    "Exécuter %d fois %s",
+                    amountRequired, command
+            ));
+        }
+
+        return Component.text(String.format(
+                "Exécuter %d fois %s (%d/%d)",
+                amountRequired, command, Objects.requireNonNull(CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())).asInt(), amountRequired
+        ));
     }
 
     @Override
@@ -60,7 +71,7 @@ public class CommandRequirement implements EventCityRequirement {
 
         if (playerCity == null) return;
 
-        if (Objects.requireNonNull(CityStatisticsManager.getStat(playerCity.getUUID(), getScope())).asInt() >= amountRequired)
+        if (Objects.requireNonNull(CityStatisticsManager.getOrCreateStat(playerCity.getUUID(), getScope())).asInt() >= amountRequired)
             return;
 
         CityStatisticsManager.increment(playerCity.getUUID(), getScope(), 1);

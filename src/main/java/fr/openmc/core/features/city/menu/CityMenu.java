@@ -24,6 +24,7 @@ import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.features.city.sub.mayor.ElectionType;
 import fr.openmc.core.features.city.sub.mayor.actions.MayorCommandAction;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
+import fr.openmc.core.features.city.sub.milestone.menu.CityMilestoneMenu;
 import fr.openmc.core.features.city.sub.notation.NotationNote;
 import fr.openmc.core.features.city.sub.notation.menu.NotationDialog;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
@@ -109,15 +110,16 @@ public class CityMenu extends Menu {
         List<Component> loreMillestoneCity;
 
         loreMillestoneCity = List.of(
-                Component.text("§7Propriétaire de la Ville : " + CacheOfflinePlayer.getOfflinePlayer(city.getPlayerWithPermission(CPermission.OWNER)).getName()),
-                Component.text("§dMaire de la Ville §7: ").append(Component.text(mayorName).color(mayorColor).decoration(TextDecoration.ITALIC, false)),
-                Component.text("§7Membre(s) : " + city.getMembers().size()),
+                Component.text("§8§oAcceder à votre route de progression de la ville !"),
+                Component.text("§8§oImportant pour débloquer les différentes features des Villes !"),
                 Component.empty(),
-                Component.text("§e§lCLIQUEZ ICI POUR MODIFIER LA VILLE")
+                Component.text("§7Level : " + city.getLevel()),
+                Component.empty(),
+                Component.text("§e§lCLIQUEZ ICI POUR ACCEDER A ")
         );
 
         inventory.put(3, new ItemBuilder(this, Material.NETHER_STAR, itemMeta -> {
-            itemMeta.itemName(Component.text("§d" + city.getName()));
+            itemMeta.itemName(Component.text("§3Milestone de votre ville"));
             itemMeta.lore(loreMillestoneCity);
         }).setOnClick(inventoryClickEvent -> {
             City cityCheck = CityManager.getPlayerCity(player.getUniqueId());
@@ -126,10 +128,7 @@ public class CityMenu extends Menu {
                 return;
             }
 
-            if (hasPermissionOwner) {
-                CityModifyMenu menu = new CityModifyMenu(player);
-                menu.open();
-            }
+            new CityMilestoneMenu(player, cityCheck).open();
         }));
 
         List<Component> loreModifyCity;

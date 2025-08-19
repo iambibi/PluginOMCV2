@@ -6,6 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @DatabaseTable(tableName = "city_statistics")
 public class CityStatistics {
@@ -19,7 +21,7 @@ public class CityStatistics {
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     @Setter
-    private Object value;
+    private Serializable value;
 
     CityStatistics() {
     }
@@ -28,7 +30,7 @@ public class CityStatistics {
         this.cityUUID = cityUUID;
     }
 
-    public CityStatistics(String cityUUID, String scope, Object value) {
+    public CityStatistics(String cityUUID, String scope, Serializable value) {
         this.cityUUID = cityUUID;
         this.scope = scope;
         this.value = value;
