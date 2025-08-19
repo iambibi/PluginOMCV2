@@ -42,14 +42,14 @@ public class ItemDepositRequirement implements CityRequirement {
             return Component.text(String.format(
                     "Déposer %d %s",
                     amountRequired,
-                    ItemUtils.getStringItemTranslation(itemType)
+                    itemType.getItemMeta().displayName()
             ));
         }
 
         return Component.text(String.format(
                 "Déposer %d %s (%d/%d)",
                 amountRequired,
-                ItemUtils.getStringItemTranslation(itemType),
+                itemType.getItemMeta().displayName(),
                 Objects.requireNonNull(
                         CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
                 ).asInt(),
