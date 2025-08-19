@@ -78,10 +78,10 @@ public class CityMilestoneMenu extends Menu {
             boolean completed = i < currentLevel;
             boolean active = i == currentLevel;
 
-            inventory.put(slot, new ItemBuilder(this, completed ? Material.EMERALD_BLOCK : active ? Material.IRON_BLOCK : Material.COAL_BLOCK, meta -> {
-                meta.displayName(level.getName().color(completed ? NamedTextColor.GREEN : active ? NamedTextColor.YELLOW : NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
-                meta.lore(getGenerateLoreLevel(level, city, completed, active));
-                meta.setEnchantmentGlintOverride(active);
+            inventory.put(slot, getGenerateItemLevel(this, level, city, completed, active).setOnClick(e -> {
+                if (!active) return;
+
+                new LevelMilestoneMenu(player, city, level);
             }));
 
             if (i < levels.length - 1) {
@@ -113,7 +113,12 @@ public class CityMilestoneMenu extends Menu {
         return List.of();
     }
 
-    private List<Component> getGenerateLoreLevel(CityLevels level, City city, boolean completed, boolean active) {
+    public static ItemBuilder getGenerateItemLevel(Menu menu, CityLevels level, City city, boolean completed, boolean active) {
+        ItemBuilder itemBuilder = new ItemBuilder(menu, completed ? Material.EMERALD_BLOCK : active ? Material.IRON_BLOCK : Material.COAL_BLOCK, meta -> {
+            meta.displayName(level.getName().color(completed ? NamedTextColor.GREEN : active ? NamedTextColor.YELLOW : NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+            meta.setEnchantmentGlintOverride(active);
+        });
+
         List<Component> lore = new ArrayList<>();
 
         lore.add(level.getDescription().color(NamedTextColor.DARK_GRAY).decorate(TextDecoration.ITALIC));
@@ -130,6 +135,8 @@ public class CityMilestoneMenu extends Menu {
         lore.add(Component.empty());
         lore.add(Component.text("§6§lRécompenses :"));
 
+        //todo: rewards
+
 //        for (CityRewards reward : level.getRewards()) {
 //            lore.add(Component.text((requirement.isDone(city) ? "§a✔" : "§c✖") + requirement.getName(city)));
 //        }
@@ -145,7 +152,10 @@ public class CityMilestoneMenu extends Menu {
         if (active) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR CONTRIBUER"));
         }
-        return lore;
+
+        itemBuilder.lore(lore);
+
+        return itemBuilder;
 
     }
 }
