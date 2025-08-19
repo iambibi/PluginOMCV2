@@ -87,7 +87,7 @@ public class LevelMilestoneMenu extends PaginatedMenu {
             }));
         }
 
-        return List.of();
+        return items;
     }
 
     @Override

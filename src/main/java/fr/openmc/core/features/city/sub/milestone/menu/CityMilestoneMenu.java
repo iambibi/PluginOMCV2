@@ -1,8 +1,11 @@
 package fr.openmc.core.features.city.sub.milestone.menu;
 
+import fr.openmc.api.cooldown.DynamicCooldownManager;
 import fr.openmc.api.menulib.Menu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
+import fr.openmc.api.menulib.utils.MenuUtils;
+import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.CityRequirement;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class CityMilestoneMenu extends Menu {
 
@@ -78,11 +82,24 @@ public class CityMilestoneMenu extends Menu {
             boolean completed = i < currentLevel;
             boolean active = i == currentLevel;
 
-            inventory.put(slot, getGenerateItemLevel(this, level, city, completed, active).setOnClick(e -> {
+            Supplier<ItemBuilder> upgradeItemSupplier = () -> getGenerateItemLevel(this, level, city, completed, active)
+                    .setOnClick(e -> {
                 if (!active) return;
 
+                        if (level.isCompleted(city) && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
+                            level.runUpgradeTime(city);
+                            return;
+                        }
+
                 new LevelMilestoneMenu(player, city, level);
-            }));
+                    });
+
+            if (!DynamicCooldownManager.isReady(city.getUUID(), "city:upgrade-level") && active) {
+                MenuUtils.runDynamicItem(player, this, i, upgradeItemSupplier)
+                        .runTaskTimer(OMCPlugin.getInstance(), 0L, 20L);
+            } else {
+                inventory.put(i, new ItemBuilder(this, upgradeItemSupplier.get()));
+            }
 
             if (i < levels.length - 1) {
                 boolean unlocked = i < currentLevel;
@@ -146,10 +163,16 @@ public class CityMilestoneMenu extends Menu {
             lore.add(Component.text("§a§lDÉBLOQUÉ"));
         } else {
             lore.add(Component.empty());
-            lore.add(Component.text("§f" + DateUtils.convertSecondToTime(level.getUpgradeTime()) + " de débloquage"));
+            if (DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") != 0) {
+                lore.add(Component.text("§fIl reste " + DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level")) + " de débloquage"));
+            } else {
+                lore.add(Component.text("§f" + DateUtils.convertSecondToTime(level.getUpgradeTime()) + " de débloquage"));
+            }
         }
 
-        if (active) {
+        if (active && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
+            lore.add(Component.text("§e§lCLIQUEZ ICI POUR LANCER l'AMÉLIORATION"));
+        } else if (active) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR CONTRIBUER"));
         }
 

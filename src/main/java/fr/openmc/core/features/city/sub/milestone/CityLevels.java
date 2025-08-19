@@ -1,5 +1,7 @@
 package fr.openmc.core.features.city.sub.milestone;
 
+import fr.openmc.api.cooldown.DynamicCooldownManager;
+import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.sub.milestone.requirements.CommandRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.ItemDepositRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.TemplateRequirement;
@@ -280,5 +282,16 @@ public enum CityLevels {
         this.description = description;
         this.requirements = requirements;
         this.upgradeTime = upgradeTime;
+    }
+
+    public boolean isCompleted(City city) {
+        for (CityRequirement requirement : requirements) {
+            if (!requirement.isDone(city, this)) return false;
+        }
+        return true;
+    }
+
+    public void runUpgradeTime(City city) {
+        DynamicCooldownManager.use(city.getUUID(), "city:upgrade-level", upgradeTime * 1000);
     }
 }
