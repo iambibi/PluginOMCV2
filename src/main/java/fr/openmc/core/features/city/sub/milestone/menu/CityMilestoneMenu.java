@@ -170,7 +170,7 @@ public class CityMilestoneMenu extends Menu {
             }
         }
 
-        if (active && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
+        if (active && DynamicCooldownManager.isReady(city.getUUID(), "city:upgrade-level") && level.isCompleted(city)) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR LANCER l'AMÉLIORATION"));
         } else if (active) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR CONTRIBUER"));

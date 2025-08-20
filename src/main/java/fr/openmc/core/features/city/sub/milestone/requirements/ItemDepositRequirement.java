@@ -6,7 +6,12 @@ import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.CityRequirement;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.utils.ItemUtils;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +29,9 @@ public class ItemDepositRequirement implements CityRequirement {
 
     @Override
     public boolean isPredicateDone(City city) {
-        return false;
+        return Objects.requireNonNull(
+                CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+        ).asInt() >= amountRequired;
     }
 
     @Override
@@ -72,9 +79,15 @@ public class ItemDepositRequirement implements CityRequirement {
         int remaining = amountRequired - current;
         if (remaining <= 0) return;
 
-        int removed = ItemUtils.removeItemsFromInventory(player, itemType, remaining);
+        int toRemove = e.isShiftClick() ? remaining : 1;
+
+        int removed = ItemUtils.removeItemsFromInventory(player, itemType, toRemove);
 
         if (removed > 0) {
+            MessagesManager.sendMessage(player,
+                    Component.text("Vous avez déposé §3" + (toRemove == 1 ? "un" : toRemove) + " ")
+                            .append(ItemUtils.getItemTranslation(itemType).color(NamedTextColor.DARK_AQUA).decoration(TextDecoration.ITALIC, false)),
+                    Prefix.CITY, MessageType.SUCCESS, false);
             CityStatisticsManager.increment(city.getUUID(), getScope(), removed);
             menu.open();
         }

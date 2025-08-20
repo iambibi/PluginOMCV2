@@ -79,9 +79,17 @@ public class LevelMilestoneMenu extends PaginatedMenu {
         List<ItemStack> items = new ArrayList<>();
 
         for (CityRequirement requirement : level.getRequirements()) {
+            List<Component> loreRequirement = new ArrayList<>();
+
+            if (requirement instanceof ItemDepositRequirement) {
+                loreRequirement.add(Component.text("§e§lCLIQUE POUR DÉPOSER UN"));
+                loreRequirement.add(Component.text("§e§lSHIFT-CLIQUE POUR TOUT DÉPOSER"));
+            }
+
             items.add(new ItemBuilder(this, requirement.getIcon(city), meta -> {
                 meta.displayName(Component.text((requirement.isDone(city, level) ? "§l✔ " : "§l✖ "))
                         .append(requirement.getName(city, level)).color(requirement.isDone(city, level) ? NamedTextColor.GREEN : NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+                meta.lore(loreRequirement);
                 meta.setEnchantmentGlintOverride(requirement.isDone(city, level));
             }).setOnClick(inventoryClickEvent -> {
                 System.out.println(requirement instanceof ItemDepositRequirement r);

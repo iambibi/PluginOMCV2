@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
@@ -48,10 +47,7 @@ public class ItemUtils {
     }
 
     public static String getItemName(ItemStack stack) {
-        ItemMeta meta = stack.getItemMeta();
-        return PlainTextComponentSerializer.plainText().serialize(
-                meta.hasDisplayName() ? meta.displayName() : Component.translatable(stack.getType().translationKey())
-        );
+        return PlainTextComponentSerializer.plainText().serialize(getItemTranslation(stack));
     }
 
 

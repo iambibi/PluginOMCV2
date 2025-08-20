@@ -12,10 +12,13 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "city_statistics")
 public class CityStatistics {
 
-    @DatabaseField(canBeNull = false, uniqueCombo = true)
+    @DatabaseField(generatedId = true)
+    private int id;
+
+    @DatabaseField(canBeNull = false)
     private String cityUUID;
 
-    @DatabaseField(canBeNull = false, uniqueCombo = true)
+    @DatabaseField(canBeNull = false)
     @Setter
     private String scope;
 
