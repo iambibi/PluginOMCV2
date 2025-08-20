@@ -46,8 +46,11 @@ public class AdminNotationCommands {
             MessagesManager.sendMessage(sender, Component.text("Vous devez faire /admcity notation edit et éditez la semaine " + weekStr), Prefix.STAFF, MessageType.ERROR, false);
             return;
         }
-
-        calculateAllCityScore(weekStr);
+        try {
+            calculateAllCityScore(weekStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         giveReward(weekStr);
 
