@@ -25,6 +25,8 @@ import java.time.DayOfWeek;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static fr.openmc.core.features.city.sub.notation.NotationNote.getMaxTotalNote;
+
 public class NotationManager {
 
     private static final DayOfWeek APPLY_NOTATION_DAY = DayOfWeek.MONDAY;
@@ -36,6 +38,7 @@ public class NotationManager {
     public static final HashMap<UUID, Long> activityNotation = new HashMap<>();
 
 
+    private static Dao<ActivityTimePlayed, String> activityTimePlayedDao;
     private static Dao<CityNotation, String> notationDao;
 
     public NotationManager() {
@@ -56,8 +59,7 @@ public class NotationManager {
         notationDao = DaoManager.createDao(connectionSource, CityNotation.class);
 
         TableUtils.createTableIfNotExists(connectionSource, ActivityTimePlayed.class);
-        Dao<ActivityTimePlayed, String> activityTimePlayedDao = DaoManager.createDao(connectionSource, ActivityTimePlayed.class);
-
+        activityTimePlayedDao = DaoManager.createDao(connectionSource, ActivityTimePlayed.class);
         activityTimePlayedDao.queryForAll()
                 .forEach(activityTimePlayed -> activityNotation.put(
                         UUID.fromString(activityTimePlayed.getPlayerUUID()),
@@ -96,6 +98,31 @@ public class NotationManager {
         );
     }
 
+    public static void createOrUpdateActivityTimePlayed(CityNotation notation) {
+        try {
+            notationDao.createOrUpdate(notation);
+
+            String weekStr = notation.getWeekStr();
+
+            notationPerWeek.compute(weekStr, (k, list) -> {
+                if (list == null) list = new ArrayList<>();
+                list.removeIf(n -> Objects.equals(n.getCityUUID(), notation.getCityUUID()));
+                list.add(notation);
+                return list;
+            });
+
+            cityNotations.compute(weekStr, (k, list) -> {
+                if (list == null) list = new ArrayList<>();
+                list.removeIf(n -> Objects.equals(n.getCityUUID(), notation.getCityUUID()));
+                list.add(notation);
+                return list;
+            });
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void createOrUpdateNotation(CityNotation notation) {
         try {
             notationDao.createOrUpdate(notation);
@@ -131,7 +158,7 @@ public class NotationManager {
                 .collect(Collectors.toList());
     }
 
-    public static double getActivityScore(City city) {
+    public static double getActivityScore(City city) throws SQLException {
         double totalScore = 0;
         int playerCount = 0;
 
@@ -150,9 +177,29 @@ public class NotationManager {
                 totalScore += playerScore;
                 playerCount++;
             }
+
+            activityTimePlayedDao.createOrUpdate(
+                    new ActivityTimePlayed(playerUUID, currentPlaytime)
+            );
         }
 
         return playerCount == 0 ? 0 : totalScore / playerCount;
+    }
+
+    public static double getMilitaryScore(City city) {
+        int powerPoints = city.getPowerPoints();
+
+        int maxNote = NotationNote.NOTE_MILITARY.getMaxNote();
+
+        int pointsToGetMaxNote = 30;
+
+        double score = ((double) powerPoints / pointsToGetMaxNote) * maxNote;
+
+        if (score > maxNote) {
+            score = maxNote;
+        }
+
+        return score;
     }
 
     public static double getEconomyScore(City city, double pibMax) {
@@ -193,13 +240,15 @@ public class NotationManager {
         return maxPib;
     }
 
-    public static void calculateAllCityScore(String weekStr) {
+    public static void calculateAllCityScore(String weekStr) throws SQLException {
         List<CityNotation> notationsCopy = new ArrayList<>(notationPerWeek.get(weekStr));
 
         for (CityNotation notations : notationsCopy) {
             City city = CityManager.getCity(notations.getCityUUID());
 
             notations.setNoteActivity(getActivityScore(city));
+
+            notations.setNoteMilitary(getMilitaryScore(city));
 
             notations.setNoteEconomy(Math.floor(getEconomyScore(
                     city,
@@ -216,7 +265,7 @@ public class NotationManager {
     public static double calculateReward(CityNotation notation) {
         double points = notation.getTotalNote();
 
-        double money = points * (45000.0 / 70.0);
+        double money = points * (45000.0 / getMaxTotalNote());
         notation.setMoney(money);
         return money;
     }
@@ -239,7 +288,11 @@ public class NotationManager {
 
         Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
             String weekStr = DateUtils.getWeekFormat();
-            calculateAllCityScore(weekStr);
+            try {
+                calculateAllCityScore(weekStr);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
             giveReward(weekStr);
 

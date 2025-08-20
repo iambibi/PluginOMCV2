@@ -87,6 +87,10 @@ public class CityTypeMenu extends Menu {
             CityChangeAction.beginChangeCity(player, CityType.WAR);
         }));
 
+        map.put(18, new ItemBuilder(this, Material.ARROW, itemMeta -> {
+            itemMeta.itemName(Component.text("§aRetour"));
+        }, true));
+
         return map;
     }
 
