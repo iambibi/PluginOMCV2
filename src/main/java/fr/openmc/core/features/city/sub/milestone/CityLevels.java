@@ -31,7 +31,7 @@ public enum CityLevels {
                             city -> city.getChunks().size() >= 5,
                             city -> ItemStack.of(Material.OAK_FENCE),
                             (city, level) -> {
-                                if (city.getLevel() > level.ordinal() + 1) {
+                                if (city.getLevel() > level.ordinal()) {
                                     return Component.text("Avoir 5 Chunks");
                                 }
 
@@ -179,7 +179,7 @@ public enum CityLevels {
                             city -> city.getChunks().size() >= 5,
                             city -> ItemStack.of(Material.OAK_FENCE),
                             (city, level) -> {
-                                if (city.getLevel() > level.ordinal() + 1) {
+                                if (city.getLevel() > level.ordinal()) {
                                     return Component.text("Avoir 5 Chunks");
                                 }
 

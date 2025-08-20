@@ -46,7 +46,7 @@ public class ItemDepositRequirement implements CityRequirement {
 
     @Override
     public Component getName(City city, CityLevels level) {
-        if (city.getLevel() > level.ordinal() + 1) {
+        if (city.getLevel() > level.ordinal()) {
             return Component.text(String.format(
                     "Déposer %d %s",
                     amountRequired,

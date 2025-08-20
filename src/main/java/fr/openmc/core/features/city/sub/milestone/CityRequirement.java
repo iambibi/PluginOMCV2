@@ -8,7 +8,7 @@ public interface CityRequirement {
     boolean isPredicateDone(City city);
 
     default boolean isDone(City city, CityLevels level) {
-        if (city.getLevel() > level.ordinal() + 1) {
+        if (city.getLevel() > level.ordinal()) {
             return true;
         }
         return isPredicateDone(city);
