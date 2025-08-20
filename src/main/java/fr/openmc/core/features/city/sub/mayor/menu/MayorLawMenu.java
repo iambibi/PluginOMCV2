@@ -150,11 +150,11 @@ public class MayorLawMenu extends Menu {
                 ));
             }
 
-            if (!DynamicCooldownManager.isReady(mayor.getUUID().toString(), "mayor:law-move-warp")) {
+            if (!DynamicCooldownManager.isReady(city.getUUID(), "mayor:law-move-warp")) {
                 loreLawWarp.addAll(
                         List.of(
                                 Component.empty(),
-                                Component.text("§cCooldown §7: " + DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(mayor.getUUID().toString(), "mayor:law-move-warp")))
+                                Component.text("§cCooldown §7: " + DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUUID(), "mayor:law-move-warp")))
                         )
                 );
             } else {

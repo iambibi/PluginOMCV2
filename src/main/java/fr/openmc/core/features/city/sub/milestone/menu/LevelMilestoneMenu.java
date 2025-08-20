@@ -81,7 +81,7 @@ public class LevelMilestoneMenu extends PaginatedMenu {
         for (CityRequirement requirement : level.getRequirements()) {
             List<Component> loreRequirement = new ArrayList<>();
 
-            if (requirement instanceof ItemDepositRequirement) {
+            if (requirement instanceof ItemDepositRequirement && !requirement.isDone(city, level)) {
                 loreRequirement.add(Component.text("§e§lCLIQUE POUR DÉPOSER UN"));
                 loreRequirement.add(Component.text("§e§lSHIFT-CLIQUE POUR TOUT DÉPOSER"));
             }
@@ -105,8 +105,8 @@ public class LevelMilestoneMenu extends PaginatedMenu {
     public Map<Integer, ItemBuilder> getButtons() {
         Map<Integer, ItemBuilder> buttons = new HashMap<>();
 
-        boolean completed = level.ordinal() + 1 < city.getLevel();
-        boolean active = level.ordinal() + 1 == city.getLevel();
+        boolean completed = level.ordinal() < city.getLevel();
+        boolean active = level.ordinal() == city.getLevel();
 
         buttons.put(4, CityMilestoneMenu.getGenerateItemLevel(this, level, city, completed, active));
 

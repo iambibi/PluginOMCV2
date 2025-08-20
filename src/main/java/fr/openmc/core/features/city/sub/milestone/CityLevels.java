@@ -62,7 +62,7 @@ public enum CityLevels {
             List.of(
 
             ),
-            60 * 5
+            60 * 20
     ),
     LEVEL_4(
             Component.text("Niveau 4"),
