@@ -1,5 +1,6 @@
 package fr.openmc.core.features.city.sub.milestone.requirements;
 
+import fr.openmc.api.menulib.Menu;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.CityRequirement;
@@ -42,14 +43,14 @@ public class ItemDepositRequirement implements CityRequirement {
             return Component.text(String.format(
                     "Déposer %d %s",
                     amountRequired,
-                    itemType.getItemMeta().itemName()
+                    ItemUtils.getItemName(itemType)
             ));
         }
 
         return Component.text(String.format(
                 "Déposer %d %s (%d/%d)",
                 amountRequired,
-                itemType.getItemMeta().itemName(),
+                ItemUtils.getItemName(itemType),
                 Objects.requireNonNull(
                         CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
                 ).asInt(),
@@ -62,24 +63,20 @@ public class ItemDepositRequirement implements CityRequirement {
         return Component.text("§e§lCLIQUEZ ICI POUR DEPOSER");
     }
 
-    public void runAction(City city, InventoryClickEvent e) {
-        System.out.println("r1");
+    public void runAction(Menu menu, City city, InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player player)) return;
-        System.out.println("r2");
         int current = Objects.requireNonNull(
                 CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
         ).asInt();
 
         int remaining = amountRequired - current;
-
         if (remaining <= 0) return;
 
-        System.out.println("r3");
-        if (ItemUtils.hasEnoughItems(player, itemType, remaining)) {
-            ItemUtils.removeItemsFromInventory(player, itemType, remaining);
+        int removed = ItemUtils.removeItemsFromInventory(player, itemType, remaining);
 
-            CityStatisticsManager.increment(city.getUUID(), getScope(), remaining);
+        if (removed > 0) {
+            CityStatisticsManager.increment(city.getUUID(), getScope(), removed);
+            menu.open();
         }
-        System.out.println("r4");
     }
 }

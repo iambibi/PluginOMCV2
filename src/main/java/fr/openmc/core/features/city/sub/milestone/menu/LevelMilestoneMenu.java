@@ -86,8 +86,7 @@ public class LevelMilestoneMenu extends PaginatedMenu {
             }).setOnClick(inventoryClickEvent -> {
                 System.out.println(requirement instanceof ItemDepositRequirement r);
                 if (requirement instanceof ItemDepositRequirement r) {
-                    System.out.println("run");
-                    r.runAction(city, inventoryClickEvent);
+                    r.runAction(this, city, inventoryClickEvent);
                 }
             }));
         }

@@ -9,6 +9,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
@@ -43,6 +45,18 @@ public class ItemUtils {
      */
     public static TranslatableComponent getItemTranslation(Material material) {
         return getItemTranslation(new ItemStack(material));
+    }
+
+    public static String getItemName(ItemStack stack) {
+        ItemMeta meta = stack.getItemMeta();
+        return PlainTextComponentSerializer.plainText().serialize(
+                meta.hasDisplayName() ? meta.displayName() : Component.translatable(stack.getType().translationKey())
+        );
+    }
+
+
+    public static String getMaterialName(Material material) {
+        return getItemName(new ItemStack(material));
     }
 
     public static boolean isSimilar(ItemStack item1, ItemStack item2) {
@@ -210,38 +224,33 @@ public class ItemUtils {
      *
      * @param player the player whose inventory will be modified
      * @param item the item to remove, must be similar to the items in the inventory {@link ItemStack}
-     * @param quantity the number of items to remove
+     * @param amountToRemove the number of items to remove
      */
-    public static void removeItemsFromInventory(Player player, ItemStack item, int quantity) {
+    public static int removeItemsFromInventory(Player player, ItemStack item, int amountToRemove) {
+        if (player == null || item == null || amountToRemove <= 0) return 0;
+
+        int removed = 0;
         ItemStack[] contents = player.getInventory().getContents();
-        int remaining = quantity;
 
-        CustomStack customItem = CustomStack.byItemStack(item);
-
-        for (int i = 0; i < contents.length && remaining > 0; i++) {
+        for (int i = 0; i < contents.length && removed < amountToRemove; i++) {
             ItemStack stack = contents[i];
             if (stack == null) continue;
 
-            boolean matches = false;
-
-            if (customItem != null) {
-                CustomStack customStack = CustomStack.byItemStack(stack);
-                matches = customStack != null && customStack.getId().equals(customItem.getId());
-            } else {
-                matches = stack.getType().equals(item.getType());
-            }
-
             if (isSimilar(stack, item)) {
                 int stackAmount = stack.getAmount();
-                if (stackAmount <= remaining) {
+                int toRemove = Math.min(amountToRemove - removed, stackAmount);
+
+                removed += toRemove;
+
+                if (stackAmount <= toRemove) {
                     player.getInventory().setItem(i, null);
-                    remaining -= stackAmount;
                 } else {
-                    stack.setAmount(stackAmount - remaining);
-                    remaining = 0;
+                    stack.setAmount(stackAmount - toRemove);
                 }
             }
         }
+
+        return removed;
     }
 
     public static boolean takeAywenite(Player player, int amount) {
