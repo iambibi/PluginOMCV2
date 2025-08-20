@@ -92,7 +92,6 @@ public class LevelMilestoneMenu extends PaginatedMenu {
                 meta.lore(loreRequirement);
                 meta.setEnchantmentGlintOverride(requirement.isDone(city, level));
             }).setOnClick(inventoryClickEvent -> {
-                System.out.println(requirement instanceof ItemDepositRequirement r);
                 if (requirement instanceof ItemDepositRequirement r) {
                     r.runAction(this, city, inventoryClickEvent);
                 }

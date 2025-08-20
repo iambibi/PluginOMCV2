@@ -161,7 +161,6 @@ public abstract class PaginatedMenu extends Menu {
 	 * @return {@code true} if the current page is the last page, {@code false} otherwise.
 	 */
 	public final boolean isLastPage() {
-		System.out.println(page + " " + numberOfPages);
 		return page == numberOfPages;
 	}
 }
