@@ -12,6 +12,7 @@ import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +22,11 @@ import java.util.Objects;
 public class ItemDepositRequirement implements CityRequirement {
     private final ItemStack itemType;
     private final int amountRequired;
+
+    public ItemDepositRequirement(Material itemMaterial, int amountRequired) {
+        this.itemType = ItemStack.of(itemMaterial);
+        this.amountRequired = amountRequired;
+    }
 
     public ItemDepositRequirement(ItemStack itemType, int amountRequired) {
         this.itemType = itemType;

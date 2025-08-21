@@ -98,31 +98,6 @@ public class NotationManager {
         );
     }
 
-    public static void createOrUpdateActivityTimePlayed(CityNotation notation) {
-        try {
-            notationDao.createOrUpdate(notation);
-
-            String weekStr = notation.getWeekStr();
-
-            notationPerWeek.compute(weekStr, (k, list) -> {
-                if (list == null) list = new ArrayList<>();
-                list.removeIf(n -> Objects.equals(n.getCityUUID(), notation.getCityUUID()));
-                list.add(notation);
-                return list;
-            });
-
-            cityNotations.compute(weekStr, (k, list) -> {
-                if (list == null) list = new ArrayList<>();
-                list.removeIf(n -> Objects.equals(n.getCityUUID(), notation.getCityUUID()));
-                list.add(notation);
-                return list;
-            });
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void createOrUpdateNotation(CityNotation notation) {
         try {
             notationDao.createOrUpdate(notation);
