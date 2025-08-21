@@ -38,7 +38,7 @@ public class EventTemplateRequirement implements EventCityRequirement {
 
     @Override
     public boolean isPredicateDone(City city) {
-        return eqBool.test(city);
+        return eqBool.test(city, getScope());
     }
 
     @Override
