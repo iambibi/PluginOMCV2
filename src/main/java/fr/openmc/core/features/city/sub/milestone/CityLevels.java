@@ -445,8 +445,8 @@ public enum CityLevels {
             Component.text("Métropole"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 60),
-                            city -> ItemStack.of(Material.DANDELION),
+                            city -> NotationManager.top10Cities.contains(city.getUUID()),
+                            city -> ItemStack.of(Material.HONEYCOMB),
                             (city, level) -> Component.text("Etre dans le top 10 des notations sur une des Notations")
                     ),
                     new TemplateRequirement(
@@ -455,26 +455,32 @@ public enum CityLevels {
                             (city, level) -> Component.text("Avoir minimum 60 points sur une des Notations")
                     ),
                     new TemplateRequirement(
-                            city -> city.getBalance() >= 80000,
+                            city -> WarManager.warHistory.get(city.getUUID()).getNumberWar() >= 10,
+                            city -> ItemStack.of(Material.NETHERITE_SWORD),
+                            (city, level) -> Component.text("Avoir fait 10 guerres")
+                    ),
+                    new TemplateRequirement(
+                            city -> city.getBalance() >= 125000,
                             city -> ItemStack.of(Material.GOLD_BLOCK),
                             (city, level) -> {
                                 if (city.getLevel() > level.ordinal()) {
-                                    return Component.text("Avoir 80k dans la banque");
+                                    return Component.text("Avoir 125k dans la banque");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 80k dans la banque (%s/80k)",
+                                        "Avoir 125k dans la banque (%s/125k)",
                                         EconomyManager.getFormattedNumber(city.getBalance())
                                 ));
                             }
                     ),
                     new TemplateRequirement(
-                            city -> city.getMascot().getLevel() >= 8,
+                            city -> city.getMascot().getLevel() >= 9,
                             city -> ItemStack.of(city.getMascot().getMascotEgg()),
-                            (city, level) -> Component.text("Etre level 8 sur la Mascotte")
+                            (city, level) -> Component.text("Etre level 9 sur la Mascotte")
                     ),
-                    new ItemDepositRequirement(Material.DIAMOND, 300),
-                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:kebab").getBest(), 128)
+                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_blocks:aywenite_block").getBest(), 32),
+                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_contest:contest_shell").getBest(), 128),
+                    new ItemDepositRequirement(Material.SCULK, 1028)
             ),
             60 * 60 * 24 * 2
     ),

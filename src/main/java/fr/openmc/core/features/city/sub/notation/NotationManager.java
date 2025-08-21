@@ -36,7 +36,7 @@ public class NotationManager {
 
 
     public static final HashMap<UUID, Long> activityNotation = new HashMap<>();
-
+    public static final Set<String> top10Cities = new HashSet<>();
 
     private static Dao<ActivityTimePlayed, String> activityTimePlayedDao;
     private static Dao<CityNotation, String> notationDao;
@@ -52,6 +52,7 @@ public class NotationManager {
         );
 
         scheduleMidnightTask();
+        loadTop10Cities();
     }
 
     public static void initDB(ConnectionSource connectionSource) throws SQLException {
@@ -120,6 +121,17 @@ public class NotationManager {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void loadTop10Cities() {
+        top10Cities.clear();
+
+        for (String weekStr : notationPerWeek.keySet()) {
+            getSortedNotationForWeek(weekStr).stream()
+                    .limit(10)
+                    .map(CityNotation::getCityUUID)
+                    .forEach(top10Cities::add);
         }
     }
 

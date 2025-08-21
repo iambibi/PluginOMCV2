@@ -54,6 +54,8 @@ public class MascotsSoundListener {
                         .toList();
 
                 mascotsNear.forEach(mascot -> {
+                    if (EntityType.fromName(splitedSound[1].toUpperCase()) == null) return;
+
                     if (mascot.getEntity().getType().equals(EntityType.fromName(splitedSound[1].toUpperCase()))) {
                         event.setCancelled(true);
                         return;

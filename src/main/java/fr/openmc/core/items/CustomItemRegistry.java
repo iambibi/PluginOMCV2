@@ -41,6 +41,7 @@ public class CustomItemRegistry {
         /* Items */
         registerSimpleItem("omc_contest:contest_shell", Material.NAUTILUS_SHELL);
         registerSimpleItem("omc_items:aywenite", Material.AMETHYST_SHARD);
+        registerSimpleItem("omc_blocks:aywenite_block", Material.AMETHYST_BLOCK);
         registerSimpleItem("omc_foods:kebab", Material.COOKED_BEEF);
         registerSimpleItem("omc_foods:the_mixture", Material.HONEY_BOTTLE);
         registerSimpleItem("omc_foods:courgette", Material.SEA_PICKLE);
