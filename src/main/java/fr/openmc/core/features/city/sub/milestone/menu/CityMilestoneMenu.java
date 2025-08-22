@@ -9,6 +9,7 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.CityRequirement;
+import fr.openmc.core.features.city.sub.milestone.CityRewards;
 import fr.openmc.core.utils.DateUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -152,11 +153,9 @@ public class CityMilestoneMenu extends Menu {
         lore.add(Component.empty());
         lore.add(Component.text("§6§lRécompenses :"));
 
-        //todo: rewards
-
-//        for (CityRewards reward : level.getRewards()) {
-//            lore.add(Component.text((requirement.isDone(city) ? "§a✔" : "§c✖") + requirement.getName(city)));
-//        }
+        for (CityRewards reward : level.getRewards()) {
+            lore.add(Component.text(" ").append(reward.getName()));
+        }
 
         lore.add(Component.empty());
         if (completed) {

@@ -2,9 +2,9 @@ package fr.openmc.core.features.city.actions;
 
 import fr.openmc.api.cooldown.DynamicCooldownManager;
 import fr.openmc.api.input.location.ItemInteraction;
-import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.sub.mayor.models.CityLaw;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
 import fr.openmc.core.items.CustomItemRegistry;
@@ -31,7 +31,7 @@ public class MayorSetWarpAction {
 
         if (mayor == null) return;
 
-        if (!player.getUniqueId().equals(mayor.getUUID()) && !city.getPlayerWithPermission(CPermission.OWNER).equals(player.getUniqueId())) {
+        if (!player.getUniqueId().equals(mayor.getUUID()) && !city.getPlayerWithPermission(CityPermission.OWNER).equals(player.getUniqueId())) {
             MessagesManager.sendMessage(player, Component.text("Vous n'êtes pas le Maire de la ville ou le Propriétaire de la ville"), Prefix.MAYOR, MessageType.ERROR, false);
             return;
         }

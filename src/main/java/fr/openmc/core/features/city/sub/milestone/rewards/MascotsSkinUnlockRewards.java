@@ -1,36 +1,62 @@
 package fr.openmc.core.features.city.sub.milestone.rewards;
 
+import fr.openmc.core.features.city.sub.mascots.models.MascotType;
 import fr.openmc.core.features.city.sub.milestone.CityRewards;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.inventory.ItemStack;
 
-public class MascotsSkinUnlockRewards implements CityRewards {
+import java.util.Arrays;
+import java.util.List;
 
-    private final String command;
-    private final int amountRequired;
+@Getter
+public enum MascotsSkinUnlockRewards implements CityRewards {
 
-    public MascotsSkinUnlockRewards(String command, int amountRequired) {
-        this.command = command;
-        this.amountRequired = amountRequired;
+    LEVEL_1(MascotType.ZOMBIE),
+    LEVEL_2(MascotType.COW, MascotType.MOOSHROOM),
+    LEVEL_3(MascotType.SPIDER, MascotType.SKELETON),
+    LEVEL_4(MascotType.VILLAGER),
+    LEVEL_5(MascotType.SHEEP),
+    LEVEL_6(MascotType.PANDA),
+    LEVEL_7(MascotType.PIG),
+    LEVEL_8(MascotType.WOLF, MascotType.GOAT),
+    LEVEL_9(MascotType.CHICKEN),
+    LEVEL_10(MascotType.AXOLOTL);
+
+
+    private final MascotType[] mascotsSkin;
+
+    MascotsSkinUnlockRewards(MascotType... mascotsSkin) {
+        this.mascotsSkin = mascotsSkin;
     }
 
-    @Override
-    public ItemStack getIcon() {
-        return null;
+    public static int getLevelRequiredSkin(MascotType type) {
+        for (MascotsSkinUnlockRewards reward : MascotsSkinUnlockRewards.values()) {
+            for (MascotType mascot : reward.mascotsSkin) {
+                if (mascot == type) {
+                    String name = reward.name();
+                    return Integer.parseInt(name.split("_")[1]);
+                }
+            }
+        }
+        return -1;
     }
 
     @Override
     public Component getName() {
-        return null;
-    }
+        MascotType[] unlocked = this.getMascotsSkin();
 
-    @Override
-    public Component getDescription() {
-        return null;
-    }
+        List<String> names = Arrays.stream(unlocked)
+                .map(MascotType::getDisplayName)
+                .toList();
 
-    @Override
-    public Runnable getMethods() {
-        return null;
+        String skins;
+        if (names.size() == 1) {
+            skins = "le skin " + names.getFirst();
+        } else {
+            skins = "les skins " + String.join(", ", names.subList(0, names.size() - 1))
+                    + " et " + names.get(names.size() - 1);
+        }
+
+        return Component.text("Débloque " + skins);
     }
 }

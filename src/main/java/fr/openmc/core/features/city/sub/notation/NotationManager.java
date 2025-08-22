@@ -25,6 +25,8 @@ import java.time.DayOfWeek;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static fr.openmc.core.features.city.sub.notation.NotationNote.getMaxTotalNote;
+
 public class NotationManager {
 
     private static final DayOfWeek APPLY_NOTATION_DAY = DayOfWeek.MONDAY;

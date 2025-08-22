@@ -28,8 +28,8 @@ public enum Perks {
     IMPOT(
             2,
             PerkType.EVENT,
-            3 * 24 * 60 * 60 * 1000L, // 3 jours
             PerkCategory.ECONOMIC,
+            3 * 24 * 60 * 60 * 1000L, // 3 jours
             "§e§lPrévélement d'Impot",
             List.of(
                     Component.text("§7Possibilité de lancer un §3événement §7pour préléver les Impots"),

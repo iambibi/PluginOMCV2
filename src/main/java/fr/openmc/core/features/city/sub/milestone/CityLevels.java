@@ -8,6 +8,7 @@ import fr.openmc.core.features.city.sub.milestone.requirements.CommandRequiremen
 import fr.openmc.core.features.city.sub.milestone.requirements.EventTemplateRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.ItemDepositRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.TemplateRequirement;
+import fr.openmc.core.features.city.sub.milestone.rewards.MascotsSkinUnlockRewards;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.features.city.sub.war.WarManager;
@@ -30,6 +31,9 @@ public enum CityLevels {
             Component.text("Ere Urbaine"),
             List.of(
                     new CommandRequirement("/city create", 1)
+            ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_1
             ),
             0
     ),
@@ -63,6 +67,9 @@ public enum CityLevels {
                             (city, ignore) -> Component.text("Avoir sa Mascotte Niveau 2")
                     ),
                     new ItemDepositRequirement(Material.GOLD_INGOT, 128)
+            ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_2
             ),
             60 * 10
     ),
@@ -116,6 +123,9 @@ public enum CityLevels {
                     ),
                     new ItemDepositRequirement(Material.DIAMOND, 16)
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_3
+            ),
             60 * 30
     ),
     LEVEL_4(
@@ -123,7 +133,7 @@ public enum CityLevels {
             Component.text("Démocratie"),
             List.of(
                     new TemplateRequirement(
-                            city -> !NotationManager.cityNotations.get(city.getUUID()).isEmpty(),
+                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && !NotationManager.cityNotations.get(city.getUUID()).isEmpty(),
                             city -> ItemStack.of(Material.DIAMOND),
                             (city, level) -> Component.text("Recevoir une Notation")
                     ),
@@ -189,6 +199,9 @@ public enum CityLevels {
                             }
                     )
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_4
+            ),
             60 * 90
     ),
     LEVEL_5(
@@ -202,7 +215,7 @@ public enum CityLevels {
                     ),
 
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 10),
+                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 10),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 10 points sur une des Notations")
                     ),
@@ -237,6 +250,9 @@ public enum CityLevels {
                             }
                     )
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_5
+            ),
             60 * 60 * 3
     ),
     LEVEL_6(
@@ -244,7 +260,7 @@ public enum CityLevels {
             Component.text("Capitale"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 20),
+                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 20),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 20 points sur une des Notations")
                     ),
@@ -286,6 +302,9 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.WHITE_CONCRETE, 64),
                     new ItemDepositRequirement(Material.DIAMOND, 64)
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_6
+            ),
             60 * 60 * 5
     ),
     LEVEL_7(
@@ -293,7 +312,7 @@ public enum CityLevels {
             Component.text("Royaume ?"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 30),
+                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 30),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 30 points sur une des Notations")
                     ),
@@ -334,6 +353,9 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.DIAMOND_SWORD, 10),
                     new ItemDepositRequirement(Material.TNT, 10)
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_7
+            ),
             60 * 60 * 10
     ),
     LEVEL_8(
@@ -341,17 +363,26 @@ public enum CityLevels {
             Component.text("Empire ?"),
             List.of(
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()).getNumberWar() >= 2,
+                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWar() >= 2,
                             city -> ItemStack.of(Material.IRON_SWORD),
-                            (city, level) -> Component.text("Avoir fait 2 guerre")
+                            (city, level) -> {
+                                if (city.getLevel() > level.ordinal()) {
+                                    return Component.text("Avoir fait 2 guerres");
+                                }
+
+                                return Component.text(String.format(
+                                        "Avoir fait 2 guerres (%s/2)",
+                                        WarManager.warHistory.get(city.getUUID()) != null ? WarManager.warHistory.get(city.getUUID()).getNumberWar() : 0
+                                ));
+                            }
                     ),
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()).getNumberWon() >= 1,
+                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWon() >= 1,
                             city -> ItemStack.of(Material.DIAMOND_SWORD),
                             (city, level) -> Component.text("Gagner une guerre")
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 40),
+                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 40) && NotationManager.cityNotations.get(city.getUUID()) != null,
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 40 points sur une des Notations")
                     ),
@@ -391,6 +422,9 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.NETHERITE_INGOT, 4),
                     new ItemDepositRequirement(Material.OBSIDIAN, 128)
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_8
+            ),
             60 * 60 * 16
     ),
     LEVEL_9(
@@ -398,7 +432,7 @@ public enum CityLevels {
             Component.text("Puissance militaire"),
             List.of(
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()).getNumberWon() >= 3,
+                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWon() >= 3,
                             city -> ItemStack.of(Material.DIAMOND_SWORD),
                             (city, level) -> {
                                 if (city.getLevel() > level.ordinal()) {
@@ -407,12 +441,12 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Gagner 3 guerres (%s/3)",
-                                        WarManager.warHistory.get(city.getUUID()).getNumberWon()
+                                        WarManager.warHistory.get(city.getUUID()) != null ? WarManager.warHistory.get(city.getUUID()).getNumberWon() : 0
                                 ));
                             }
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 50),
+                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 50),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 50 points sur une des Notations")
                     ),
@@ -438,6 +472,9 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.DIAMOND, 300),
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:kebab").getBest(), 128)
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_9
+            ),
             60 * 60 * 24
     ),
     LEVEL_10(
@@ -450,14 +487,23 @@ public enum CityLevels {
                             (city, level) -> Component.text("Etre dans le top 10 des notations sur une des Notations")
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 60),
+                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 60),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 60 points sur une des Notations")
                     ),
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()).getNumberWar() >= 10,
+                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWar() >= 10,
                             city -> ItemStack.of(Material.NETHERITE_SWORD),
-                            (city, level) -> Component.text("Avoir fait 10 guerres")
+                            (city, level) -> {
+                                if (city.getLevel() > level.ordinal()) {
+                                    return Component.text("Avoir fait 10 guerres");
+                                }
+
+                                return Component.text(String.format(
+                                        "Avoir fait 10 guerres (%s/10)",
+                                        WarManager.warHistory.get(city.getUUID()) != null ? WarManager.warHistory.get(city.getUUID()).getNumberWar() : 0
+                                ));
+                            }
                     ),
                     new TemplateRequirement(
                             city -> city.getBalance() >= 125000,
@@ -482,6 +528,9 @@ public enum CityLevels {
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_contest:contest_shell").getBest(), 128),
                     new ItemDepositRequirement(Material.SCULK, 1028)
             ),
+            List.of(
+                    MascotsSkinUnlockRewards.LEVEL_10
+            ),
             60 * 60 * 24 * 2
     ),
     ;
@@ -489,12 +538,14 @@ public enum CityLevels {
     private final Component name;
     private final Component description;
     private final List<CityRequirement> requirements;
+    private final List<CityRewards> rewards;
     private final long upgradeTime;
 
-    CityLevels(Component name, Component description, List<CityRequirement> requirements, long upgradeTime) {
+    CityLevels(Component name, Component description, List<CityRequirement> requirements, List<CityRewards> rewards, long upgradeTime) {
         this.name = name;
         this.description = description;
         this.requirements = requirements;
+        this.rewards = rewards;
         this.upgradeTime = upgradeTime;
     }
 

@@ -60,16 +60,6 @@ public class ItemUtils {
         return getItemName(new ItemStack(material));
     }
 
-    public static boolean isSimilar(ItemStack item1, ItemStack item2) {
-        CustomStack customItem = CustomStack.byItemStack(item1);
-        if (customItem != null) {
-            CustomStack customIs = CustomStack.byItemStack(item2);
-            return customIs != null && customIs.getId().equals(customItem.getId());
-        } else {
-            return item2.getType().equals(item1.getType());
-        }
-    }
-
     /**
      * Découpe un nombre d'item en paquets
      *
@@ -273,6 +263,17 @@ public class ItemUtils {
     /**
      * Retirer le nombre d'objet au joueur (vérification obligatoire avant execution)
      *
+     * @param player         the player whose inventory will be modified
+     * @param material       the item to remove, must be similar to the items in the inventory {@link Material}
+     * @param amountToRemove the number of items to remove
+     */
+    public static int removeItemsFromInventory(Player player, Material material, int amountToRemove) {
+        return removeItemsFromInventory(player, ItemStack.of(material), amountToRemove);
+    }
+
+    /**
+     * Retirer le nombre d'objet au joueur (vérification obligatoire avant execution)
+     *
      * @param player the player whose inventory will be modified
      * @param item the item to remove, must be similar to the items in the inventory {@link ItemStack}
      * @param amountToRemove the number of items to remove
@@ -424,6 +425,12 @@ public class ItemUtils {
      */
     @SuppressWarnings("UnstableApiUsage")
     public static boolean isSimilar(ItemStack item1, ItemStack item2) {
+        CustomStack customItem = CustomStack.byItemStack(item1);
+        if (customItem != null) {
+            CustomStack customIs = CustomStack.byItemStack(item2);
+            return customIs != null && customIs.getId().equals(customItem.getId());
+        }
+
         if (item1 == null || item2 == null) return false;
         if (item1.getType() != item2.getType()) return false;
         if (item1.getAmount() != item2.getAmount()) return false;
