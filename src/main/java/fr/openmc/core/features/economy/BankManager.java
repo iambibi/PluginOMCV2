@@ -16,6 +16,7 @@ import fr.openmc.core.features.city.sub.milestone.rewards.PlayerBankLimitRewards
 import fr.openmc.core.features.economy.commands.BankCommands;
 import fr.openmc.core.features.economy.events.BankDepositEvent;
 import fr.openmc.core.features.economy.models.Bank;
+import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.InputUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -23,6 +24,7 @@ import fr.openmc.core.utils.messages.Prefix;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
@@ -57,15 +59,55 @@ public class BankManager {
         return bank.getBalance();
     }
 
+    /*
+     *   MUST BE BEFORE THIS !!
+     */
     public static void addBankBalance(UUID player, double amount) {
+        City playerCity = CityManager.getPlayerCity(player);
+
+        OfflinePlayer offlinePlayer = CacheOfflinePlayer.getOfflinePlayer(player);
+
+        if (playerCity == null) {
+            MessagesManager.sendMessage(offlinePlayer,
+                    Component.text("Pour avoir une banque personnelle, vous devez appartenir à une ville niveau 2 minimum !"),
+                    Prefix.BANK, MessageType.ERROR, false);
+            return;
+        }
+
+        double currentBalance = getBankBalance(player);
+        double limit = PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel());
+
+        if (currentBalance >= limit) {
+            MessagesManager.sendMessage(offlinePlayer,
+                    Component.text("Vous avez atteint la limite de votre plafond qui est de " +
+                            EconomyManager.getFormattedNumber(limit) +
+                            ". Améliorez votre ville au niveau supérieur !"),
+                    Prefix.BANK, MessageType.ERROR, false);
+            return;
+        }
+
+        double allowedAmount = Math.min(amount, limit - currentBalance);
+
         Bank bank = getPlayerBank(player);
+        bank.deposit(allowedAmount);
+        saveBank(bank);
 
         Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
             Bukkit.getPluginManager().callEvent(new BankDepositEvent(player));
         });
 
-        bank.deposit(amount);
-        saveBank(bank);
+        if (allowedAmount < amount) {
+            EconomyManager.addBalance(player, amount - allowedAmount);
+            MessagesManager.sendMessage(offlinePlayer,
+                    Component.text("Vous avez atteint la limite de votre plafond, seulement " +
+                            EconomyManager.getFormattedNumber(allowedAmount) + " ont été déposés."),
+                    Prefix.BANK, MessageType.ERROR, false);
+        } else {
+            MessagesManager.sendMessage(offlinePlayer,
+                    Component.text("Vous avez déposé " +
+                            EconomyManager.getFormattedNumber(allowedAmount) + "."),
+                    Prefix.BANK, MessageType.SUCCESS, false);
+        }
     }
 
     public static void withdrawBankBalance(UUID player, double amount) {
@@ -90,7 +132,7 @@ public class BankManager {
 
             if (getBankBalance(player.getUniqueId()) >= PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel())) {
                 MessagesManager.sendMessage(player,
-                        Component.text("Vous avez atteint la limite de votre plafon qui est de " + EconomyManager.getFormattedNumber(PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel())) + ". Améliorer votre ville au niveau suppérieur !"),
+                        Component.text("Vous avez atteint la limite de votre plafond qui est de " + EconomyManager.getFormattedNumber(PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel())) + ". Améliorer votre ville au niveau suppérieur !"),
                         Prefix.BANK, MessageType.ERROR, false);
                 return;
             }

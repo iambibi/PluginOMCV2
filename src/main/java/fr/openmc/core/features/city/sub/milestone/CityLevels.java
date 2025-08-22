@@ -76,6 +76,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_2,
+                    CityBankLimitRewards.LEVEL_2,
                     MascotsSkinUnlockRewards.LEVEL_2,
                     MemberLimitRewards.LEVEL_2
             ),
@@ -133,6 +134,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_3,
+                    CityBankLimitRewards.LEVEL_3,
                     MascotsSkinUnlockRewards.LEVEL_3,
                     MemberLimitRewards.LEVEL_3,
                     ChestPageLimitRewards.LEVEL_3,
@@ -213,6 +215,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_4,
+                    CityBankLimitRewards.LEVEL_4,
                     InterestRewards.LEVEL_4,
                     MascotsSkinUnlockRewards.LEVEL_4,
                     ChestPageLimitRewards.LEVEL_4,
@@ -268,6 +271,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_5,
+                    CityBankLimitRewards.LEVEL_5,
                     InterestRewards.LEVEL_5,
                     MascotsSkinUnlockRewards.LEVEL_5,
                     MemberLimitRewards.LEVEL_5,
@@ -325,6 +329,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_6,
+                    CityBankLimitRewards.LEVEL_6,
                     InterestRewards.LEVEL_6,
                     MascotsSkinUnlockRewards.LEVEL_6,
                     MemberLimitRewards.LEVEL_6,
@@ -381,6 +386,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_7,
+                    CityBankLimitRewards.LEVEL_7,
                     InterestRewards.LEVEL_7,
                     MascotsSkinUnlockRewards.LEVEL_7,
                     MemberLimitRewards.LEVEL_7,
@@ -510,6 +516,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_9,
+                    CityBankLimitRewards.LEVEL_9,
                     InterestRewards.LEVEL_9,
                     MascotsSkinUnlockRewards.LEVEL_9,
                     ChestPageLimitRewards.LEVEL_9,
@@ -570,6 +577,7 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_10,
+                    CityBankLimitRewards.LEVEL_10,
                     InterestRewards.LEVEL_10,
                     MascotsSkinUnlockRewards.LEVEL_10,
                     MemberLimitRewards.LEVEL_10,

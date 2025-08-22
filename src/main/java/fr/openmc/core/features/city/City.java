@@ -5,25 +5,22 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.events.*;
 import fr.openmc.core.features.city.models.CityRank;
 import fr.openmc.core.features.city.models.DBCity;
+import fr.openmc.core.features.city.sub.bank.CityBankManager;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.features.city.sub.mayor.ElectionType;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
-import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.models.CityLaw;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
-import fr.openmc.core.features.city.sub.mayor.perks.Perks;
-import fr.openmc.core.features.city.sub.milestone.rewards.InterestRewards;
+import fr.openmc.core.features.city.sub.milestone.rewards.CityBankLimitRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.RankLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 import fr.openmc.core.features.city.sub.rank.CityRankManager;
 import fr.openmc.core.features.city.sub.war.War;
 import fr.openmc.core.features.city.sub.war.WarManager;
-import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.ChunkPos;
-import fr.openmc.core.utils.InputUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -401,15 +398,24 @@ public class City {
      * @param value The new balance value to be set.
      */
     public void setBalance(double value) {
-        double before = balance;
-        balance = value;
+        double limit = CityBankLimitRewards.getBankBalanceLimit(this.getLevel());
+
+        double newBalance = Math.min(value, limit);
+
+        double before = this.balance;
+        this.balance = newBalance;
+
+        // Sauvegarde async
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
                 CityManager.saveCity(this)
         );
+
+        // Event sync
         Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
-                Bukkit.getPluginManager().callEvent(new CityMoneyUpdateEvent(this, before, balance))
+                Bukkit.getPluginManager().callEvent(new CityMoneyUpdateEvent(this, before, this.balance))
         );
     }
+
 
     /**
      * Updates the balance for a given City by adding a difference amount and
@@ -428,23 +434,7 @@ public class City {
      * @param input  The input string to get the money value
      */
     public void depositCityBank(Player player, String input) {
-        if (InputUtils.isInputMoney(input)) {
-            double moneyDeposit = InputUtils.convertToMoneyValue(input);
-
-            if (EconomyManager.withdrawBalance(player.getUniqueId(), moneyDeposit)) {
-                updateBalance(moneyDeposit);
-                MessagesManager.sendMessage(player,
-                        Component.text("Tu as transféré §d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit)
-                                + "§r" + EconomyManager.getEconomyIcon() + " à ta ville"),
-                        Prefix.CITY, MessageType.ERROR, false);
-            } else {
-                MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
-                        Prefix.CITY, MessageType.ERROR, false);
-            }
-        } else {
-            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.CITY,
-                    MessageType.ERROR, true);
-        }
+        CityBankManager.depositCityBank(this, player, input);
     }
 
     /**
@@ -454,24 +444,7 @@ public class City {
      * @param input  The input string to get the money value
      */
     public void withdrawCityBank(Player player, String input) {
-        if (InputUtils.isInputMoney(input)) {
-            double moneyDeposit = InputUtils.convertToMoneyValue(input);
-
-            if (getBalance() < moneyDeposit) {
-                MessagesManager.sendMessage(player, Component.text("Ta ville n'a pas assez d'argent en banque"),
-                        Prefix.CITY, MessageType.ERROR, false);
-            } else {
-                updateBalance(-moneyDeposit);
-                EconomyManager.addBalance(player.getUniqueId(), moneyDeposit);
-                MessagesManager.sendMessage(player,
-                        Component.text("§d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit) + "§r"
-                                + EconomyManager.getEconomyIcon() + " ont été transférés à votre compte"),
-                        Prefix.CITY, MessageType.SUCCESS, false);
-            }
-        } else {
-            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.CITY,
-                    MessageType.ERROR, true);
-        }
+        CityBankManager.withdrawCityBank(this, player, input);
     }
 
     /**
@@ -481,26 +454,14 @@ public class City {
      * @return The calculated interest as a double.
      */
     public double calculateCityInterest() {
-        double interest = .01; // base interest is 1%
-
-        interest += InterestRewards.getTotalInterest(this.getLevel());
-
-        if (MayorManager.phaseMayor == 2) {
-            if (PerkManager.hasPerk(getMayor(), Perks.BUSINESS_MAN.getId())) {
-                interest += .02; // interest is +2% when perk Business Man enabled
-            }
-        }
-
-        return interest;
+        return CityBankManager.calculateCityInterest(this);
     }
 
     /**
      * Applies the interest to the city balance and updates it in the database.
      */
     public void applyCityInterest() {
-        double interest = calculateCityInterest();
-        double amount = getBalance() * interest;
-        updateBalance(amount);
+        CityBankManager.applyCityInterest(this);
     }
 
     // ==================== Permissions Methods ====================

@@ -1,8 +1,20 @@
 package fr.openmc.core.features.city.sub.bank;
 
 import fr.openmc.core.CommandsManager;
+import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.bank.commands.CityBankCommand;
+import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
+import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
+import fr.openmc.core.features.city.sub.mayor.perks.Perks;
+import fr.openmc.core.features.city.sub.milestone.rewards.InterestRewards;
+import fr.openmc.core.features.economy.EconomyManager;
+import fr.openmc.core.utils.InputUtils;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -14,6 +26,88 @@ public class CityBankManager {
         CommandsManager.getHandler().register(
                 new CityBankCommand()
         );
+    }
+
+    /**
+     * Adds money to the city bank and removes it from {@link Player}
+     *
+     * @param player The player depositing into the bank
+     * @param input  The input string to get the money value
+     */
+    public static void depositCityBank(City city, Player player, String input) {
+        if (InputUtils.isInputMoney(input)) {
+            double moneyDeposit = InputUtils.convertToMoneyValue(input);
+
+            if (EconomyManager.withdrawBalance(player.getUniqueId(), moneyDeposit)) {
+                city.updateBalance(moneyDeposit);
+                MessagesManager.sendMessage(player,
+                        Component.text("Tu as transféré §d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit)
+                                + "§r" + EconomyManager.getEconomyIcon() + " à ta ville"),
+                        Prefix.CITY, MessageType.ERROR, false);
+            } else {
+                MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
+                        Prefix.CITY, MessageType.ERROR, false);
+            }
+        } else {
+            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.CITY,
+                    MessageType.ERROR, true);
+        }
+    }
+
+    /**
+     * Removes money from the city bank and add it to {@link Player}
+     *
+     * @param player The player withdrawing from the bank
+     * @param input  The input string to get the money value
+     */
+    public static void withdrawCityBank(City city, Player player, String input) {
+        if (InputUtils.isInputMoney(input)) {
+            double moneyDeposit = InputUtils.convertToMoneyValue(input);
+
+            if (city.getBalance() < moneyDeposit) {
+                MessagesManager.sendMessage(player, Component.text("Ta ville n'a pas assez d'argent en banque"),
+                        Prefix.CITY, MessageType.ERROR, false);
+            } else {
+                city.updateBalance(-moneyDeposit);
+                EconomyManager.addBalance(player.getUniqueId(), moneyDeposit);
+                MessagesManager.sendMessage(player,
+                        Component.text("§d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit) + "§r"
+                                + EconomyManager.getEconomyIcon() + " ont été transférés à votre compte"),
+                        Prefix.CITY, MessageType.SUCCESS, false);
+            }
+        } else {
+            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.CITY,
+                    MessageType.ERROR, true);
+        }
+    }
+
+    /**
+     * Calculates the interest for the city
+     * Interests calculated as proportion not percentage (eg: 0.01 = 1%)
+     *
+     * @return The calculated interest as a double.
+     */
+    public static double calculateCityInterest(City city) {
+        double interest = .01; // base interest is 1%
+
+        interest += InterestRewards.getTotalInterest(city.getLevel());
+
+        if (MayorManager.phaseMayor == 2) {
+            if (PerkManager.hasPerk(city.getMayor(), Perks.BUSINESS_MAN.getId())) {
+                interest += .02; // interest is +2% when perk Business Man enabled
+            }
+        }
+
+        return interest;
+    }
+
+    /**
+     * Applies the interest to the city balance and updates it in the database.
+     */
+    public static void applyCityInterest(City city) {
+        double interest = calculateCityInterest(city);
+        double amount = city.getBalance() * interest;
+        city.updateBalance(amount);
     }
 
     /**
