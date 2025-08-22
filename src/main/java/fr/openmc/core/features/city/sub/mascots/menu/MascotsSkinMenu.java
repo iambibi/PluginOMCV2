@@ -95,12 +95,16 @@ public class MascotsSkinMenu extends Menu {
     private ItemBuilder createMascotButton(City city, MascotType type) {
         List<Component> loreMascots = new ArrayList<>();
 
-        if (city.getLevel() <= MascotsSkinUnlockRewards.getLevelRequiredSkin(type)) {
-            loreMascots.add(Component.text("§cVous devez etre Niveau " + MascotsSkinUnlockRewards.getLevelRequiredSkin(type) + "pour débloquer ce skin"));
+        if (city.getLevel() < MascotsSkinUnlockRewards.getLevelRequiredSkin(type)) {
+            loreMascots.add(Component.text("§cVous devez etre Niveau " + MascotsSkinUnlockRewards.getLevelRequiredSkin(type) + " pour débloquer ce skin"));
         }
 
         return new ItemBuilder(this, type.getMascotItem(egg.equals(type.getSpawnEgg())), meta -> meta.lore(loreMascots))
                 .setOnClick(event -> {
+                    if (city.getLevel() < MascotsSkinUnlockRewards.getLevelRequiredSkin(type)) {
+                        MessagesManager.sendMessage(getOwner(), Component.text("Vous n'avez pas le niveau de ville requis pour mettre ce skin"), Prefix.CITY, MessageType.ERROR, false);
+                        return;
+                    }
                     if (!egg.equals(type.getSpawnEgg())) {
                         int aywenite = type.getPrice();
                         ItemStack ISAywenite = CustomItemRegistry.getByName("omc_items:aywenite").getBest();

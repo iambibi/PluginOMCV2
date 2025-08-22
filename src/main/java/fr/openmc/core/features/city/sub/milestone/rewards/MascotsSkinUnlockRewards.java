@@ -32,7 +32,7 @@ public enum MascotsSkinUnlockRewards implements CityRewards {
     public static int getLevelRequiredSkin(MascotType type) {
         for (MascotsSkinUnlockRewards reward : MascotsSkinUnlockRewards.values()) {
             for (MascotType mascot : reward.mascotsSkin) {
-                if (mascot == type) {
+                if (mascot.equals(type)) {
                     String name = reward.name();
                     return Integer.parseInt(name.split("_")[1]);
                 }

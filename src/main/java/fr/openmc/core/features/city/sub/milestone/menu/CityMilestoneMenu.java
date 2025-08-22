@@ -91,6 +91,7 @@ public class CityMilestoneMenu extends Menu {
 
                         if (level.isCompleted(city) && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
                             level.runUpgradeTime(city);
+                            new CityMilestoneMenu(player, city).open();
                             return;
                         }
 
