@@ -13,8 +13,10 @@ import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.models.CityLaw;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
+import fr.openmc.core.features.city.sub.milestone.rewards.RankLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
+import fr.openmc.core.features.city.sub.rank.CityRankManager;
 import fr.openmc.core.features.city.sub.war.War;
 import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.economy.EconomyManager;
@@ -62,8 +64,6 @@ public class City {
     private int freeClaims;
     @Getter
     private int level;
-    
-    public static final int MAX_RANKS = 18; // Maximum number of ranks allowed in a city
 
     /**
      * Constructor used for City creation
@@ -92,7 +92,7 @@ public class City {
         addPlayer(owner.getUniqueId());
         addPermission(owner.getUniqueId(), CityPermission.OWNER);
         saveChestContent(1, null);
-        CityManager.loadCityRanks(this);
+        CityRankManager.loadCityRanks(this);
 
         Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
                 Bukkit.getPluginManager().callEvent(new CityCreationEvent(this, owner))
@@ -716,7 +716,7 @@ public class City {
      * @return True if the city ranks are full, false otherwise.
      */
     public boolean isRanksFull() {
-        return cityRanks.size() >= MAX_RANKS;
+        return cityRanks.size() >= RankLimitRewards.getRankLimit(this.getLevel());
     }
     
     public CityRank getRankByName(String rankName) {
@@ -773,7 +773,7 @@ public class City {
             throw new IllegalStateException("Cannot add more than 18 ranks to a city.");
         }
         cityRanks.add(rank);
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> CityManager.addCityRank(rank));
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> CityRankManager.addCityRank(rank));
     }
     
     /**
@@ -791,7 +791,7 @@ public class City {
         }
         cityRanks.remove(rank);
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.removeCityRank(rank);
+            CityRankManager.removeCityRank(rank);
         });
     }
     
@@ -805,7 +805,7 @@ public class City {
     public void updateRank(CityRank oldRank, CityRank newRank) {
         if (cityRanks.contains(oldRank)) {
             Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-                CityManager.updateCityRank(newRank);
+                CityRankManager.updateCityRank(newRank);
             });
             cityRanks.remove(oldRank);
             cityRanks.add(newRank);
@@ -890,10 +890,10 @@ public class City {
         
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             if (currentRank != null) {
-                CityManager.updateCityRank(currentRank);
+                CityRankManager.updateCityRank(currentRank);
             }
-            
-            CityManager.updateCityRank(newRank);
+
+            CityRankManager.updateCityRank(newRank);
         });
     }
 

@@ -9,6 +9,7 @@ import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
+import fr.openmc.core.features.city.sub.rank.CityRankManager;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.contest.managers.ContestManager;
@@ -66,6 +67,7 @@ public class DatabaseManager {
             DynamicCooldownManager.initDB(connectionSource);
             CompanyManager.initDB(connectionSource);
             CityManager.initDB(connectionSource);
+            CityRankManager.initDB(connectionSource);
             MascotsManager.initDB(connectionSource);
             PlayerSettingsManager.initDB(connectionSource);
             CityStatisticsManager.initDB(connectionSource);

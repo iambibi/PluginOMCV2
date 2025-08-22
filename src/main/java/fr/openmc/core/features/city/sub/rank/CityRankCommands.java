@@ -1,12 +1,11 @@
-package fr.openmc.core.features.city.commands;
+package fr.openmc.core.features.city.sub.rank;
 
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
-import fr.openmc.core.features.city.actions.CityRankAction;
-import fr.openmc.core.features.city.menu.ranks.CityRankDetailsMenu;
-import fr.openmc.core.features.city.menu.ranks.CityRanksMenu;
 import fr.openmc.core.features.city.models.CityRank;
+import fr.openmc.core.features.city.sub.rank.menus.CityRankDetailsMenu;
+import fr.openmc.core.features.city.sub.rank.menus.CityRanksMenu;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;

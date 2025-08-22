@@ -1,4 +1,4 @@
-package fr.openmc.core.features.city.actions;
+package fr.openmc.core.features.city.sub.mayor.actions;
 
 import fr.openmc.api.cooldown.DynamicCooldownManager;
 import fr.openmc.api.input.location.ItemInteraction;

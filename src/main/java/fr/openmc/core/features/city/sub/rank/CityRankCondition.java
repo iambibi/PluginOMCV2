@@ -1,8 +1,9 @@
-package fr.openmc.core.features.city.conditions;
+package fr.openmc.core.features.city.sub.rank;
 
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.models.CityRank;
+import fr.openmc.core.features.city.sub.milestone.rewards.RankLimitRewards;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -30,7 +31,7 @@ public class CityRankCondition {
             MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_ACCESS_PERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
-        if (city.getRanks().size() >= City.MAX_RANKS) {
+        if (city.getRanks().size() >= RankLimitRewards.getRankLimit(city.getLevel())) {
             MessagesManager.sendMessage(player, MessagesManager.Message.CITY_RANKS_MAX.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
@@ -60,7 +61,7 @@ public class CityRankCondition {
             MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_ACCESS_PERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
-        if (city.getRanks().size() >= City.MAX_RANKS) {
+        if (city.getRanks().size() >= RankLimitRewards.getRankLimit(city.getLevel())) {
             MessagesManager.sendMessage(player, MessagesManager.Message.CITY_RANKS_MAX.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
