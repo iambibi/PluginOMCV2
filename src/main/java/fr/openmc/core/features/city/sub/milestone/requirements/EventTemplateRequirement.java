@@ -6,6 +6,7 @@ import fr.openmc.core.features.city.sub.milestone.EventCityRequirement;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.function.TriFunction;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.BiConsumer;
@@ -61,7 +62,7 @@ public class EventTemplateRequirement implements EventCityRequirement {
         return null;
     }
 
-    @Override
+    @EventHandler
     public void onEvent(Event event) {
         if (!eventClass.isInstance(event)) return;
         if (onTrigger != null) {

@@ -2,9 +2,11 @@ package fr.openmc.core.features.city.sub.statistics;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.city.models.DBCityMember;
 import fr.openmc.core.features.city.sub.statistics.models.CityStatistics;
 import org.bukkit.Bukkit;
 
@@ -74,6 +76,20 @@ public class CityStatisticsManager {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 statisticsDao.createOrUpdate(stat);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static void removeStats(String cityUUID) {
+        if (!cityStatistics.containsKey(cityUUID)) return;
+        cityStatistics.remove(cityUUID);
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
+            try {
+                DeleteBuilder<CityStatistics, String> statisticsDelete = statisticsDao.deleteBuilder();
+                statisticsDelete.where().eq("cityUUID", cityUUID);
+                statisticsDao.delete(statisticsDelete.prepare());
             } catch (SQLException e) {
                 e.printStackTrace();
             }

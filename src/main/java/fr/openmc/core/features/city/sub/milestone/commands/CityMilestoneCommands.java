@@ -12,7 +12,7 @@ public class CityMilestoneCommands {
     @Command({"city milestone", "ville milestone"})
     @CommandPermission("omc.commands.city.milestone")
     @Description("Ouvre le menu des maires")
-    void mayor(Player sender) {
+    void milestone(Player sender) {
         City playerCity = CityManager.getPlayerCity(sender.getUniqueId());
 
         if (playerCity == null) return;

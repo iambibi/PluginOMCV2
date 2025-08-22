@@ -228,7 +228,7 @@ public class MascotsManager {
         if (!DynamicCooldownManager.isReady(mascots.getMascotUUID().toString(), "mascots:move")) {
             cooldown = DynamicCooldownManager.getRemaining(mascots.getMascotUUID().toString(), "mascots:move");
             hasCooldown = true;
-            DynamicCooldownManager.clear(entityMascot.getUniqueId().toString(), "mascots:move");
+            DynamicCooldownManager.clear(entityMascot.getUniqueId().toString(), "mascots:move", false);
         }
 
         entityMascot.remove();

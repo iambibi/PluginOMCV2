@@ -63,6 +63,7 @@ public class City {
     @Getter
     private int freeClaims;
     @Getter
+    @Setter
     private int level;
 
     /**

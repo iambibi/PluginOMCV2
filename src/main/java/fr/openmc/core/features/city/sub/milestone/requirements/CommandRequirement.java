@@ -63,7 +63,7 @@ public class CommandRequirement implements EventCityRequirement {
     public void onEvent(Event event) {
         if (!(event instanceof PlayerCommandPreprocessEvent e)) return;
 
-        String cmd = e.getMessage().split(" ")[0].substring(1).toLowerCase();
+        String cmd = e.getMessage();
         if (!cmd.equals(command)) return;
 
         Player player = e.getPlayer();

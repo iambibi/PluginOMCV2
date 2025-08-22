@@ -19,6 +19,10 @@ import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.NPCManager;
+import fr.openmc.core.features.city.sub.milestone.CityRequirementListener;
+import fr.openmc.core.features.city.sub.milestone.commands.AdminCityMilestoneCommands;
+import fr.openmc.core.features.city.sub.milestone.commands.CityMilestoneCommands;
+import fr.openmc.core.features.city.sub.milestone.requirements.CommandRequirement;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.rank.CityRankCommands;
 import fr.openmc.core.features.city.sub.rank.CityRankManager;
@@ -74,12 +78,15 @@ public class CityManager implements Listener {
 		        new CityPermsCommands(),
                 new CityChestCommand(),
                 new CityRankCommands(),
-                new CityTopCommands()
+                new CityTopCommands(),
+                new CityMilestoneCommands(),
+                new AdminCityMilestoneCommands()
         );
 
         OMCPlugin.registerEvents(
-                new CityChatListener()
-            );
+                new CityChatListener(),
+                new CityRequirementListener()
+        );
 
         // SUB-FEATURE
         new MascotsManager();
@@ -440,7 +447,7 @@ public class CityManager implements Listener {
 
             if (!DynamicCooldownManager.isReady(mascot.getMascotUUID().toString(), "mascots:move")) {
                 if (Bukkit.getEntity(memberId) != null) {
-                    DynamicCooldownManager.clear(mascot.getMascotUUID().toString(), "mascots:move");
+                    DynamicCooldownManager.clear(mascot.getMascotUUID().toString(), "mascots:move", false);
                 }
             }
         }
@@ -464,7 +471,7 @@ public class CityManager implements Listener {
         }
 
         if (DynamicCooldownManager.isReady(city.getUUID(), "city:type")) {
-            DynamicCooldownManager.clear(city.getUUID(), "city:type");
+            DynamicCooldownManager.clear(city.getUUID(), "city:type", false);
         }
 
         MascotsManager.removeMascotsFromCity(city);
