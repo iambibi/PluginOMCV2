@@ -36,7 +36,7 @@ public enum CityLevels {
             ),
             List.of(
                     new TemplateRewards(
-                            Component.text(FREE_CLAIMS + " Claims Gratuits")
+                            Component.text("§6" + FREE_CLAIMS + " Claims §7Gratuits")
                     ),
                     MascotsSkinUnlockRewards.LEVEL_1,
                     MemberLimitRewards.LEVEL_1
@@ -86,7 +86,7 @@ public enum CityLevels {
             Component.text("Niveau 3"),
             Component.text("Ville peu développé"),
             List.of(
-                    new CommandRequirement("/city bank", 1),
+                    new CommandRequirement("/city bank view", 1),
                     new CommandRequirement("/city chest", 1),
                     new TemplateRequirement(
                             city -> city.getChunks().size() >= 10,

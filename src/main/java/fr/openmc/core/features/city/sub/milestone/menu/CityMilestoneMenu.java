@@ -69,9 +69,9 @@ public class CityMilestoneMenu extends Menu {
                 {28},
                 {11, 20},
                 {3},
-                {12, 21},
+                {13, 22},
                 {32},
-                {14, 23},
+                {15, 24},
                 {7},
                 {17, 26, 35, 44}
         };
@@ -86,6 +86,8 @@ public class CityMilestoneMenu extends Menu {
             Supplier<ItemBuilder> upgradeItemSupplier = () -> getGenerateItemLevel(this, level, city, completed, active)
                     .setOnClick(e -> {
                         if (!active) return;
+
+                        if (DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") > 0) return;
 
                         if (level.isCompleted(city) && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
                             level.runUpgradeTime(city);
@@ -163,15 +165,15 @@ public class CityMilestoneMenu extends Menu {
         } else {
             lore.add(Component.empty());
             if (DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") != 0) {
-                lore.add(Component.text("§fIl reste " + DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level")) + " de débloquage"));
+                lore.add(Component.text("§fIl reste §3" + DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level")) + " §fde débloquage"));
             } else {
-                lore.add(Component.text("§f" + DateUtils.convertSecondToTime(level.getUpgradeTime()) + " de débloquage"));
+                lore.add(Component.text("§3" + DateUtils.convertSecondToTime(level.getUpgradeTime()) + " §fde débloquage"));
             }
         }
 
         if (active && DynamicCooldownManager.isReady(city.getUUID(), "city:upgrade-level") && level.isCompleted(city)) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR LANCER l'AMÉLIORATION"));
-        } else if (active) {
+        } else if (active && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR CONTRIBUER"));
         }
 

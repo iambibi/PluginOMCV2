@@ -48,6 +48,6 @@ public enum ChestPageLimitRewards implements CityRewards {
 
     @Override
     public Component getName() {
-        return Component.text(chestPageLimit + " pages de coffre maximum");
+        return Component.text("§a" + chestPageLimit + " pages de coffre §7maximum");
     }
 }

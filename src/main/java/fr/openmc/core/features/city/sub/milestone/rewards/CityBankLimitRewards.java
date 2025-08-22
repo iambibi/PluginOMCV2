@@ -48,6 +48,6 @@ public enum CityBankLimitRewards implements CityRewards {
 
     @Override
     public Component getName() {
-        return Component.text("Limite à " + bankBalanceLimit + " d'Argent dans la banque");
+        return Component.text("§7Limite à §6" + bankBalanceLimit + " d'Argent §7dans la §ebanque");
     }
 }

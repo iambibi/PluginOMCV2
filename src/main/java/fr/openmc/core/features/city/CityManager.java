@@ -19,10 +19,7 @@ import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.NPCManager;
-import fr.openmc.core.features.city.sub.milestone.CityRequirementListener;
-import fr.openmc.core.features.city.sub.milestone.commands.AdminCityMilestoneCommands;
-import fr.openmc.core.features.city.sub.milestone.commands.CityMilestoneCommands;
-import fr.openmc.core.features.city.sub.milestone.requirements.CommandRequirement;
+import fr.openmc.core.features.city.sub.milestone.CityMilestoneManager;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.rank.CityRankCommands;
 import fr.openmc.core.features.city.sub.rank.CityRankManager;
@@ -78,14 +75,11 @@ public class CityManager implements Listener {
 		        new CityPermsCommands(),
                 new CityChestCommand(),
                 new CityRankCommands(),
-                new CityTopCommands(),
-                new CityMilestoneCommands(),
-                new AdminCityMilestoneCommands()
+                new CityTopCommands()
         );
 
         OMCPlugin.registerEvents(
-                new CityChatListener(),
-                new CityRequirementListener()
+                new CityChatListener()
         );
 
         // SUB-FEATURE
@@ -97,6 +91,7 @@ public class CityManager implements Listener {
         new CityStatisticsManager();
         new NotationManager();
         new CityRankManager();
+        new CityMilestoneManager();
     }
 
     private static Dao<DBCity, String> citiesDao;

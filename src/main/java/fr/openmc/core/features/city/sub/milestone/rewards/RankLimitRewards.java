@@ -48,6 +48,6 @@ public enum RankLimitRewards implements CityRewards {
 
     @Override
     public Component getName() {
-        return Component.text(rankLimit + " grades maximum");
+        return Component.text("§a" + rankLimit + " §7grades maximum");
     }
 }

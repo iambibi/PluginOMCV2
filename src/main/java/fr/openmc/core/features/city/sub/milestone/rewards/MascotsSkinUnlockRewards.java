@@ -57,6 +57,6 @@ public enum MascotsSkinUnlockRewards implements CityRewards {
                     + " et " + names.get(names.size() - 1);
         }
 
-        return Component.text("§cDébloque §4" + skins);
+        return Component.text("§7Débloque §c" + skins);
     }
 }

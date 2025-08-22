@@ -48,6 +48,6 @@ public enum MemberLimitRewards implements CityRewards {
 
     @Override
     public Component getName() {
-        return Component.text(memberLimit + " membres maximum");
+        return Component.text("§d" + memberLimit + " §7membres maximum");
     }
 }

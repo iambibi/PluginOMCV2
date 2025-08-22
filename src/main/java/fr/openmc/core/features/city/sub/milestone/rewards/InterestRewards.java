@@ -41,6 +41,6 @@ public enum InterestRewards implements CityRewards {
 
     @Override
     public Component getName() {
-        return Component.text("+ " + interest + " d'intérêt");
+        return Component.text("§7+ §6" + interest + "% §6d'intérêt");
     }
 }

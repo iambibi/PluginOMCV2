@@ -20,10 +20,11 @@ public class AdminCityMilestoneCommands {
         City city = CityManager.getCity(uuid);
 
         if (city == null) {
-            MessagesManager.sendMessage(sender, Component.text("§cVille inexistante"), Prefix.CITY, MessageType.ERROR, false);
+            MessagesManager.sendMessage(sender, Component.text("§cVille inexistante"), Prefix.STAFF, MessageType.ERROR, false);
             return;
         }
 
+        MessagesManager.sendMessage(sender, Component.text("Upgrade du level skip"), Prefix.STAFF, MessageType.SUCCESS, false);
         DynamicCooldownManager.clear(uuid, "city:upgrade-level", true);
     }
 

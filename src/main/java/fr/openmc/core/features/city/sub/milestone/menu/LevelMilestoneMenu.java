@@ -6,6 +6,7 @@ import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.CityRequirement;
+import fr.openmc.core.features.city.sub.milestone.CityRewards;
 import fr.openmc.core.features.city.sub.milestone.requirements.ItemDepositRequirement;
 import fr.openmc.core.items.CustomItemRegistry;
 import net.kyori.adventure.text.Component;
@@ -110,13 +111,11 @@ public class LevelMilestoneMenu extends PaginatedMenu {
 
         buttons.put(4, CityMilestoneMenu.getGenerateItemLevel(this, level, city, completed, active));
 
-        List<Component> loreRewards = List.of();
+        List<Component> loreRewards = new ArrayList<>();
 
-        //todo: rewards
-
-        //        for (CityRewards reward : level.getRewards()) {
-//            loreRewards.add(Component.text((requirement.isDone(city) ? "§a✔" : "§c✖") + requirement.getName(city)));
-//        }
+        for (CityRewards reward : level.getRewards()) {
+            loreRewards.add(Component.text(" ").append(reward.getName()).decoration(TextDecoration.ITALIC, false));
+        }
 
         buttons.put(31, new ItemBuilder(this, Material.GOLD_BLOCK, itemMeta -> {
             itemMeta.itemName(Component.text("§6Récompenses"));
