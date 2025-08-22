@@ -9,6 +9,7 @@ import fr.openmc.core.features.city.sub.milestone.requirements.EventTemplateRequ
 import fr.openmc.core.features.city.sub.milestone.requirements.ItemDepositRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.TemplateRequirement;
 import fr.openmc.core.features.city.sub.milestone.rewards.MascotsSkinUnlockRewards;
+import fr.openmc.core.features.city.sub.milestone.rewards.MemberLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.features.city.sub.war.WarManager;
@@ -33,7 +34,8 @@ public enum CityLevels {
                     new CommandRequirement("/city create", 1)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_1
+                    MascotsSkinUnlockRewards.LEVEL_1,
+                    MemberLimitRewards.LEVEL_1
             ),
             0
     ),
@@ -69,7 +71,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.GOLD_INGOT, 128)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_2
+                    MascotsSkinUnlockRewards.LEVEL_2,
+                    MemberLimitRewards.LEVEL_2
             ),
             60 * 10
     ),
@@ -124,7 +127,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.DIAMOND, 16)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_3
+                    MascotsSkinUnlockRewards.LEVEL_3,
+                    MemberLimitRewards.LEVEL_3
             ),
             60 * 30
     ),
@@ -251,7 +255,8 @@ public enum CityLevels {
                     )
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_5
+                    MascotsSkinUnlockRewards.LEVEL_5,
+                    MemberLimitRewards.LEVEL_5
             ),
             60 * 60 * 3
     ),
@@ -303,7 +308,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.DIAMOND, 64)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_6
+                    MascotsSkinUnlockRewards.LEVEL_6,
+                    MemberLimitRewards.LEVEL_6
             ),
             60 * 60 * 5
     ),
@@ -354,7 +360,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.TNT, 10)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_7
+                    MascotsSkinUnlockRewards.LEVEL_7,
+                    MemberLimitRewards.LEVEL_7
             ),
             60 * 60 * 10
     ),
@@ -423,7 +430,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.OBSIDIAN, 128)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_8
+                    MascotsSkinUnlockRewards.LEVEL_8,
+                    MemberLimitRewards.LEVEL_8
             ),
             60 * 60 * 16
     ),
@@ -529,7 +537,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.SCULK, 1028)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_10
+                    MascotsSkinUnlockRewards.LEVEL_10,
+                    MemberLimitRewards.LEVEL_10
             ),
             60 * 60 * 24 * 2
     ),

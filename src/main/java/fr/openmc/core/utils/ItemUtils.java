@@ -52,6 +52,9 @@ public class ItemUtils {
     }
 
     public static String getItemName(ItemStack stack) {
+        CustomStack customItem = CustomStack.byItemStack(stack);
+        if (customItem != null) return PlainTextComponentSerializer.plainText().serialize(getItemTranslation(stack));
+
         return PlainTextComponentSerializer.plainText().serialize(getItemTranslation(stack));
     }
 

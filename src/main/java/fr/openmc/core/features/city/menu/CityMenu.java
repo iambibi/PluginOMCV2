@@ -25,6 +25,7 @@ import fr.openmc.core.features.city.sub.mayor.ElectionType;
 import fr.openmc.core.features.city.sub.mayor.actions.MayorCommandAction;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.milestone.menu.CityMilestoneMenu;
+import fr.openmc.core.features.city.sub.milestone.rewards.MemberLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationNote;
 import fr.openmc.core.features.city.sub.notation.menu.NotationDialog;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
@@ -114,7 +115,7 @@ public class CityMenu extends Menu {
                 Component.text("§8§oAcceder à votre route de progression de la ville !"),
                 Component.text("§8§oImportant pour débloquer les différentes features des Villes !"),
                 Component.empty(),
-                Component.text("§7Level : " + city.getLevel()),
+                Component.text("§7Level : §3" + city.getLevel()),
                 Component.empty(),
                 Component.text("§e§lCLIQUEZ ICI POUR ACCEDER A ")
         );
@@ -138,7 +139,7 @@ public class CityMenu extends Menu {
             loreModifyCity = List.of(
                     Component.text("§7Propriétaire de la Ville : " + CacheOfflinePlayer.getOfflinePlayer(city.getPlayerWithPermission(CityPermission.OWNER)).getName()),
                     Component.text("§dMaire de la Ville §7: ").append(Component.text(mayorName).color(mayorColor).decoration(TextDecoration.ITALIC, false)),
-                    Component.text("§7Membre(s) : " + city.getMembers().size()),
+                    Component.text("§7Membre(s) : §d" + city.getMembers().size() + "§7/§d" + MemberLimitRewards.getMemberLimit(city.getLevel())),
                     Component.empty(),
                     Component.text("§e§lCLIQUEZ ICI POUR MODIFIER LA VILLE")
             );
@@ -146,7 +147,7 @@ public class CityMenu extends Menu {
             loreModifyCity = List.of(
                     Component.text("§7Propriétaire de la Ville : " + CacheOfflinePlayer.getOfflinePlayer(city.getPlayerWithPermission(CityPermission.OWNER)).getName()),
                     Component.text("§dMaire de la Ville §7: ").append(Component.text(mayorName).color(mayorColor).decoration(TextDecoration.ITALIC, false)),
-                    Component.text("§7Membre(s) : " + city.getMembers().size())
+                    Component.text("§7Membre(s) : §d" + city.getMembers().size() + "§7/§d" + MemberLimitRewards.getMemberLimit(city.getLevel()))
             );
         }
 
@@ -171,7 +172,7 @@ public class CityMenu extends Menu {
             List<Component> loreNotation = new ArrayList<>() {
                 {
                     add(Component.text("§7Notation de la Ville : §9" + notation.getTotalNote() + "§7/§9" + NotationNote.getMaxTotalNote()));
-                    add(Component.text("§7Argent reporté : §6" + notation.getMoney() + EconomyManager.getEconomyIcon()));
+                    add(Component.text("§7Argent remporté : §6" + notation.getMoney() + EconomyManager.getEconomyIcon()));
                     add(Component.empty());
                     add(Component.text("§e§lCLIQUEZ ICI POUR VOIR LA NOTATION"));
                 }
@@ -283,6 +284,7 @@ public class CityMenu extends Menu {
             itemMeta.displayName(Component.text("§dListe des Membres"));
             itemMeta.lore(List.of(
                     Component.text("§7Il y a actuellement §d" + city.getMembers().size() + "§7 membre(s) dans votre ville"),
+                    Component.text("§7Vous avez une limite de membre de §d" + MemberLimitRewards.getMemberLimit(city.getLevel()) + "§7 membre(s)"),
                     Component.empty(),
                     Component.text("§e§lCLIQUEZ ICI POUR VOIR LA LISTE DES JOUEURS")
             ));

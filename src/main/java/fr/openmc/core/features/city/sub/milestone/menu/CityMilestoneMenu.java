@@ -154,7 +154,7 @@ public class CityMilestoneMenu extends Menu {
         lore.add(Component.text("§6§lRécompenses :"));
 
         for (CityRewards reward : level.getRewards()) {
-            lore.add(Component.text(" ").append(reward.getName()));
+            lore.add(Component.text(" ").append(reward.getName()).decoration(TextDecoration.ITALIC, false));
         }
 
         lore.add(Component.empty());
