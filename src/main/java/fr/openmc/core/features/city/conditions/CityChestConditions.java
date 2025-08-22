@@ -2,6 +2,7 @@ package fr.openmc.core.features.city.conditions;
 
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityPermission;
+import fr.openmc.core.features.city.sub.milestone.rewards.ChestPageLimitRewards;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.ItemUtils;
@@ -66,8 +67,8 @@ public class CityChestConditions {
             return false;
         }
 
-        if (city.getChestPages() >= 5) {
-            MessagesManager.sendMessage(player, Component.text("Le coffre de la Ville est déjà au niveau maximum"), Prefix.CITY, MessageType.ERROR, false);
+        if (city.getChestPages() >= ChestPageLimitRewards.getChestPageLimit(city.getLevel())) {
+            MessagesManager.sendMessage(player, Component.text("Le Coffre de la Ville est déjà au niveau maximum ("), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
 

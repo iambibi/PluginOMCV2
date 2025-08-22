@@ -8,6 +8,7 @@ import fr.openmc.core.features.city.sub.milestone.requirements.CommandRequiremen
 import fr.openmc.core.features.city.sub.milestone.requirements.EventTemplateRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.ItemDepositRequirement;
 import fr.openmc.core.features.city.sub.milestone.requirements.TemplateRequirement;
+import fr.openmc.core.features.city.sub.milestone.rewards.ChestPageLimitRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.MascotsSkinUnlockRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.MemberLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
@@ -128,7 +129,8 @@ public enum CityLevels {
             ),
             List.of(
                     MascotsSkinUnlockRewards.LEVEL_3,
-                    MemberLimitRewards.LEVEL_3
+                    MemberLimitRewards.LEVEL_3,
+                    ChestPageLimitRewards.LEVEL_3
             ),
             60 * 30
     ),
@@ -204,7 +206,8 @@ public enum CityLevels {
                     )
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_4
+                    MascotsSkinUnlockRewards.LEVEL_4,
+                    ChestPageLimitRewards.LEVEL_4
             ),
             60 * 90
     ),
@@ -256,7 +259,8 @@ public enum CityLevels {
             ),
             List.of(
                     MascotsSkinUnlockRewards.LEVEL_5,
-                    MemberLimitRewards.LEVEL_5
+                    MemberLimitRewards.LEVEL_5,
+                    ChestPageLimitRewards.LEVEL_5
             ),
             60 * 60 * 3
     ),
@@ -309,7 +313,8 @@ public enum CityLevels {
             ),
             List.of(
                     MascotsSkinUnlockRewards.LEVEL_6,
-                    MemberLimitRewards.LEVEL_6
+                    MemberLimitRewards.LEVEL_6,
+                    ChestPageLimitRewards.LEVEL_6
             ),
             60 * 60 * 5
     ),
@@ -361,7 +366,8 @@ public enum CityLevels {
             ),
             List.of(
                     MascotsSkinUnlockRewards.LEVEL_7,
-                    MemberLimitRewards.LEVEL_7
+                    MemberLimitRewards.LEVEL_7,
+                    ChestPageLimitRewards.LEVEL_7
             ),
             60 * 60 * 10
     ),
@@ -431,7 +437,8 @@ public enum CityLevels {
             ),
             List.of(
                     MascotsSkinUnlockRewards.LEVEL_8,
-                    MemberLimitRewards.LEVEL_8
+                    MemberLimitRewards.LEVEL_8,
+                    ChestPageLimitRewards.LEVEL_8
             ),
             60 * 60 * 16
     ),
@@ -481,7 +488,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:kebab").getBest(), 128)
             ),
             List.of(
-                    MascotsSkinUnlockRewards.LEVEL_9
+                    MascotsSkinUnlockRewards.LEVEL_9,
+                    ChestPageLimitRewards.LEVEL_9
             ),
             60 * 60 * 24
     ),
@@ -538,7 +546,8 @@ public enum CityLevels {
             ),
             List.of(
                     MascotsSkinUnlockRewards.LEVEL_10,
-                    MemberLimitRewards.LEVEL_10
+                    MemberLimitRewards.LEVEL_10,
+                    ChestPageLimitRewards.LEVEL_10
             ),
             60 * 60 * 24 * 2
     ),

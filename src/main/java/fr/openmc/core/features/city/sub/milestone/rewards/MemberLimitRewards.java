@@ -37,14 +37,12 @@ public enum MemberLimitRewards implements CityRewards {
             return reward.memberLimit;
         }
 
-        // sinon on cherche en arrière la précédente valeur non-null
         for (int i = level - 2; i >= 0; i--) {
             if (values[i].memberLimit != null) {
                 return values[i].memberLimit;
             }
         }
 
-        // fallback si toutes les précédentes sont null (normalement impossible si LEVEL_1 défini)
         return 0;
     }
 
