@@ -24,6 +24,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Objects;
 
+import static fr.openmc.core.features.city.actions.CityCreateAction.FREE_CLAIMS;
+
 @Getter
 public enum CityLevels {
     LEVEL_1(
@@ -33,6 +35,9 @@ public enum CityLevels {
                     new CommandRequirement("/city create", 1)
             ),
             List.of(
+                    new TemplateRewards(
+                            Component.text(FREE_CLAIMS + " Claims Gratuits")
+                    ),
                     MascotsSkinUnlockRewards.LEVEL_1,
                     MemberLimitRewards.LEVEL_1
             ),
@@ -70,6 +75,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.GOLD_INGOT, 128)
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_2,
                     MascotsSkinUnlockRewards.LEVEL_2,
                     MemberLimitRewards.LEVEL_2
             ),
@@ -126,6 +132,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.DIAMOND, 16)
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_3,
                     MascotsSkinUnlockRewards.LEVEL_3,
                     MemberLimitRewards.LEVEL_3,
                     ChestPageLimitRewards.LEVEL_3,
@@ -205,6 +212,7 @@ public enum CityLevels {
                     )
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_4,
                     InterestRewards.LEVEL_4,
                     MascotsSkinUnlockRewards.LEVEL_4,
                     ChestPageLimitRewards.LEVEL_4,
@@ -259,6 +267,7 @@ public enum CityLevels {
                     )
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_5,
                     InterestRewards.LEVEL_5,
                     MascotsSkinUnlockRewards.LEVEL_5,
                     MemberLimitRewards.LEVEL_5,
@@ -315,6 +324,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.DIAMOND, 64)
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_6,
                     InterestRewards.LEVEL_6,
                     MascotsSkinUnlockRewards.LEVEL_6,
                     MemberLimitRewards.LEVEL_6,
@@ -370,6 +380,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.TNT, 10)
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_7,
                     InterestRewards.LEVEL_7,
                     MascotsSkinUnlockRewards.LEVEL_7,
                     MemberLimitRewards.LEVEL_7,
@@ -443,6 +454,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.OBSIDIAN, 128)
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_8,
                     InterestRewards.LEVEL_8,
                     MascotsSkinUnlockRewards.LEVEL_8,
                     MemberLimitRewards.LEVEL_8,
@@ -497,6 +509,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:kebab").getBest(), 128)
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_9,
                     InterestRewards.LEVEL_9,
                     MascotsSkinUnlockRewards.LEVEL_9,
                     ChestPageLimitRewards.LEVEL_9,
@@ -556,6 +569,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.SCULK, 1028)
             ),
             List.of(
+                    PlayerBankLimitRewards.LEVEL_10,
                     InterestRewards.LEVEL_10,
                     MascotsSkinUnlockRewards.LEVEL_10,
                     MemberLimitRewards.LEVEL_10,

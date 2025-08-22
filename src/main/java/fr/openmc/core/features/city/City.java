@@ -43,6 +43,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static fr.openmc.core.features.city.actions.CityCreateAction.FREE_CLAIMS;
+
 public class City {
     @Getter
     private String name;
@@ -73,7 +75,7 @@ public class City {
         this.cityUUID = id;
         this.name = name;
         this.type = type;
-        this.freeClaims = 15;
+        this.freeClaims = FREE_CLAIMS;
         this.level = 1;
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->

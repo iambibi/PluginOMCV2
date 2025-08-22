@@ -6,11 +6,13 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.bank.CityBankManager;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
+import fr.openmc.core.features.city.sub.milestone.rewards.PlayerBankLimitRewards;
 import fr.openmc.core.features.economy.commands.BankCommands;
 import fr.openmc.core.features.economy.events.BankDepositEvent;
 import fr.openmc.core.features.economy.models.Bank;
@@ -77,12 +79,28 @@ public class BankManager {
         if (InputUtils.isInputMoney(input)) {
             double moneyDeposit = InputUtils.convertToMoneyValue(input);
 
+            City playerCity = CityManager.getPlayerCity(player.getUniqueId());
+
+            if (playerCity == null) {
+                MessagesManager.sendMessage(player,
+                        Component.text("Pour avoir une banque personnelle, vous devez appartenir à une ville niveau 2 minimum !"),
+                        Prefix.BANK, MessageType.ERROR, false);
+                return;
+            }
+
+            if (getBankBalance(player.getUniqueId()) >= PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel())) {
+                MessagesManager.sendMessage(player,
+                        Component.text("Vous avez atteint la limite de votre plafon qui est de " + EconomyManager.getFormattedNumber(PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel())) + ". Améliorer votre ville au niveau suppérieur !"),
+                        Prefix.BANK, MessageType.ERROR, false);
+                return;
+            }
+
             if (EconomyManager.withdrawBalance(player.getUniqueId(), moneyDeposit)) {
                 addBankBalance(player.getUniqueId(), moneyDeposit);
                 MessagesManager.sendMessage(player,
                         Component.text("Tu as transféré §d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit)
                                 + "§r" + EconomyManager.getEconomyIcon() + " à ta banque"),
-                        Prefix.BANK, MessageType.ERROR, false);
+                        Prefix.BANK, MessageType.SUCCESS, false);
             } else {
                 MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
                         Prefix.BANK, MessageType.ERROR, false);
