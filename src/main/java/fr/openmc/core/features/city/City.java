@@ -13,6 +13,7 @@ import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.models.CityLaw;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
+import fr.openmc.core.features.city.sub.milestone.rewards.InterestRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.RankLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
@@ -480,9 +481,11 @@ public class City {
     public double calculateCityInterest() {
         double interest = .01; // base interest is 1%
 
+        interest += InterestRewards.getTotalInterest(this.getLevel());
+
         if (MayorManager.phaseMayor == 2) {
             if (PerkManager.hasPerk(getMayor(), Perks.BUSINESS_MAN.getId())) {
-                interest = .03; // interest is 3% when perk Business Man enabled
+                interest += .02; // interest is +2% when perk Business Man enabled
             }
         }
 

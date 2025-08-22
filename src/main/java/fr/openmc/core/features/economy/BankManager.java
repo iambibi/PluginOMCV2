@@ -150,7 +150,7 @@ public class BankManager {
 
         if (MayorManager.phaseMayor == 2) {
             if (PerkManager.hasPerk(CityManager.getPlayerCity(player).getMayor(), Perks.BUSINESS_MAN.getId())) {
-                interest = .03; // interest is 3% when perk Business Man enabled
+                interest += .02; // interest is +2% when perk Business Man enabled
             }
         }
 
