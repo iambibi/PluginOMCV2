@@ -14,7 +14,6 @@ import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
 import fr.openmc.core.features.city.sub.milestone.rewards.PlayerBankLimitRewards;
 import fr.openmc.core.features.economy.commands.BankCommands;
-import fr.openmc.core.features.economy.events.BankDepositEvent;
 import fr.openmc.core.features.economy.models.Bank;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.InputUtils;
@@ -59,23 +58,63 @@ public class BankManager {
         return bank.getBalance();
     }
 
-    /*
-     *   MUST BE BEFORE THIS !!
-     */
-    public static void addBankBalance(UUID player, double amount) {
-        City playerCity = CityManager.getPlayerCity(player);
+    public static boolean deposit(UUID player, double amount) {
+        Bank bank = getPlayerBank(player);
+        bank.deposit(amount);
+        return saveBank(bank);
+    }
 
-        OfflinePlayer offlinePlayer = CacheOfflinePlayer.getOfflinePlayer(player);
+    public static boolean withdraw(UUID player, double amount) {
+        Bank bank = getPlayerBank(player);
 
-        if (playerCity == null) {
+        if (bank.getBalance() < amount) {
+            return false;
+        }
+        bank.withdraw(amount);
+        return saveBank(bank);
+    }
+
+    public static double getBalance(UUID player) {
+        Bank bank = getPlayerBank(player);
+        return bank.getBalance();
+    }
+
+    private static Bank getPlayerBank(UUID player) {
+        return banks.computeIfAbsent(player, Bank::new);
+    }
+
+    private static boolean saveBank(Bank bank) {
+        try {
+            banks.put(bank.getPlayer(), bank);
+            banksDao.createOrUpdate(bank);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void deposit(UUID playerUUID, String input) {
+        OfflinePlayer offlinePlayer = CacheOfflinePlayer.getOfflinePlayer(playerUUID);
+
+        if (!InputUtils.isInputMoney(input)) {
+            MessagesManager.sendMessage(offlinePlayer, Component.text("Veuillez mettre une entrée correcte"),
+                    Prefix.BANK, MessageType.ERROR, true);
+            return;
+        }
+
+        double amount = InputUtils.convertToMoneyValue(input);
+        City city = CityManager.getPlayerCity(playerUUID);
+
+        if (city == null || city.getLevel() < 2) {
             MessagesManager.sendMessage(offlinePlayer,
                     Component.text("Pour avoir une banque personnelle, vous devez appartenir à une ville niveau 2 minimum !"),
                     Prefix.BANK, MessageType.ERROR, false);
             return;
         }
 
-        double currentBalance = getBankBalance(player);
-        double limit = PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel());
+        double limit = PlayerBankLimitRewards.getBankBalanceLimit(city.getLevel());
+        double currentBalance = getBalance(playerUUID);
 
         if (currentBalance >= limit) {
             MessagesManager.sendMessage(offlinePlayer,
@@ -88,19 +127,18 @@ public class BankManager {
 
         double allowedAmount = Math.min(amount, limit - currentBalance);
 
-        Bank bank = getPlayerBank(player);
-        bank.deposit(allowedAmount);
-        saveBank(bank);
+        if (!EconomyManager.withdrawBalance(playerUUID, allowedAmount)) {
+            MessagesManager.sendMessage(offlinePlayer, Component.text("Vous n'avez pas assez d'argent"),
+                    Prefix.BANK, MessageType.ERROR, false);
+            return;
+        }
 
-        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-            Bukkit.getPluginManager().callEvent(new BankDepositEvent(player));
-        });
+        deposit(playerUUID, allowedAmount);
 
         if (allowedAmount < amount) {
-            EconomyManager.addBalance(player, amount - allowedAmount);
             MessagesManager.sendMessage(offlinePlayer,
-                    Component.text("Vous avez atteint la limite de votre plafond, seulement " +
-                            EconomyManager.getFormattedNumber(allowedAmount) + " ont été déposés."),
+                    Component.text("Seulement " + EconomyManager.getFormattedNumber(allowedAmount) +
+                            " ont été déposés (plafond atteint)."),
                     Prefix.BANK, MessageType.ERROR, false);
         } else {
             MessagesManager.sendMessage(offlinePlayer,
@@ -110,84 +148,30 @@ public class BankManager {
         }
     }
 
-    public static void withdrawBankBalance(UUID player, double amount) {
-        Bank bank = getPlayerBank(player);
+    public static void withdraw(UUID playerUUID, String input) {
+        OfflinePlayer offlinePlayer = CacheOfflinePlayer.getOfflinePlayer(playerUUID);
 
-        bank.withdraw(amount);
-        saveBank(bank);
-    }
-
-    public static void addBankBalance(Player player, String input) {
-        if (InputUtils.isInputMoney(input)) {
-            double moneyDeposit = InputUtils.convertToMoneyValue(input);
-
-            City playerCity = CityManager.getPlayerCity(player.getUniqueId());
-
-            if (playerCity == null) {
-                MessagesManager.sendMessage(player,
-                        Component.text("Pour avoir une banque personnelle, vous devez appartenir à une ville niveau 2 minimum !"),
-                        Prefix.BANK, MessageType.ERROR, false);
-                return;
-            }
-
-            if (getBankBalance(player.getUniqueId()) >= PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel())) {
-                MessagesManager.sendMessage(player,
-                        Component.text("Vous avez atteint la limite de votre plafond qui est de " + EconomyManager.getFormattedNumber(PlayerBankLimitRewards.getBankBalanceLimit(playerCity.getLevel())) + ". Améliorer votre ville au niveau suppérieur !"),
-                        Prefix.BANK, MessageType.ERROR, false);
-                return;
-            }
-
-            if (EconomyManager.withdrawBalance(player.getUniqueId(), moneyDeposit)) {
-                addBankBalance(player.getUniqueId(), moneyDeposit);
-                MessagesManager.sendMessage(player,
-                        Component.text("Tu as transféré §d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit)
-                                + "§r" + EconomyManager.getEconomyIcon() + " à ta banque"),
-                        Prefix.BANK, MessageType.SUCCESS, false);
-            } else {
-                MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
-                        Prefix.BANK, MessageType.ERROR, false);
-            }
-        } else {
-            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.BANK,
-                    MessageType.ERROR, true);
+        if (!InputUtils.isInputMoney(input)) {
+            MessagesManager.sendMessage(offlinePlayer, Component.text("Veuillez mettre une entrée correcte"),
+                    Prefix.BANK, MessageType.ERROR, true);
+            return;
         }
-    }
 
-    public static void withdrawBankBalance(Player player, String input) {
-        if (InputUtils.isInputMoney(input)) {
-            double moneyDeposit = InputUtils.convertToMoneyValue(input);
+        double amount = InputUtils.convertToMoneyValue(input);
 
-            if (getBankBalance(player.getUniqueId()) < moneyDeposit) {
-                MessagesManager.sendMessage(player, Component.text("Tu n'a pas assez d'argent en banque"), Prefix.BANK,
-                        MessageType.ERROR, false);
-            } else {
-                withdrawBankBalance(player.getUniqueId(), moneyDeposit);
-                EconomyManager.addBalance(player.getUniqueId(), moneyDeposit);
-                MessagesManager.sendMessage(player,
-                        Component.text("§d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit) + "§r"
-                                + EconomyManager.getEconomyIcon() + " ont été transférés à votre compte"),
-                        Prefix.BANK, MessageType.SUCCESS, false);
-            }
-        } else {
-            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.BANK,
-                    MessageType.ERROR, true);
+        if (!withdraw(playerUUID, amount)) {
+            MessagesManager.sendMessage(offlinePlayer,
+                    Component.text("Tu n'as pas assez d'argent en banque"),
+                    Prefix.BANK, MessageType.ERROR, false);
+            return;
         }
-    }
 
-    private static Bank getPlayerBank(UUID player) {
-        Bank bank = banks.get(player);
-        if (bank != null)
-            return bank;
-        return new Bank(player);
-    }
+        EconomyManager.addBalance(playerUUID, amount);
 
-    private static void saveBank(Bank bank) {
-        try {
-            banks.put(bank.getPlayer(), bank);
-            banksDao.createOrUpdate(bank);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        MessagesManager.sendMessage(offlinePlayer,
+                Component.text("§d" + EconomyManager.getFormattedSimplifiedNumber(amount) + "§r"
+                        + EconomyManager.getEconomyIcon() + " ont été transférés à votre compte"),
+                Prefix.BANK, MessageType.SUCCESS, false);
     }
 
     private static Map<UUID, Bank> loadAllBanks() {
@@ -220,7 +204,7 @@ public class BankManager {
     public static void applyPlayerInterest(UUID player) {
         double interest = calculatePlayerInterest(player);
         double amount = getBankBalance(player) * interest;
-        addBankBalance(player, amount);
+        deposit(player, amount);
 
         Player sender = Bukkit.getPlayer(player);
         if (sender != null)

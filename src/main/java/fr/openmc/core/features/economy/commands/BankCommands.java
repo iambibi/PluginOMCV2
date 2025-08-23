@@ -27,13 +27,13 @@ public class BankCommands {
     @Subcommand("deposit")
     @Description("Ajout de l'argent a votre banque personelle")
     void deposit(Player player, String input) {
-        BankManager.addBankBalance(player, input);
+        BankManager.deposit(player.getUniqueId(), input);
     }
 
     @Subcommand("withdraw")
     @Description("Retire de l'argent de votre banque personelle")
     void withdraw(Player player, String input) {
-        BankManager.withdrawBankBalance(player, input);
+        BankManager.withdraw(player.getUniqueId(), input);
     }
 
     @Subcommand({ "balance", "bal" })

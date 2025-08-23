@@ -893,4 +893,11 @@ public class City {
     public void setNotationOfWeek(String weekStr, double architecturalNote, double coherenceNote, String description) {
         NotationManager.createOrUpdateNotation(new CityNotation(cityUUID, architecturalNote, coherenceNote, description, weekStr));
     }
+
+    public void setLevel(int newLevel) {
+        this.level = newLevel;
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
+    }
 }
