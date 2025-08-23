@@ -7,7 +7,6 @@ import fr.openmc.api.menulib.MenuLib;
 import fr.openmc.api.packetmenulib.PacketMenuLib;
 import fr.openmc.core.commands.admin.freeze.FreezeManager;
 import fr.openmc.core.commands.utils.SpawnManager;
-import fr.openmc.core.features.accountdetection.AccountDetectionManager;
 import fr.openmc.core.features.adminshop.AdminShopManager;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
@@ -16,7 +15,6 @@ import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.contest.managers.ContestManager;
-import fr.openmc.core.features.corporation.manager.CompanyManager;
 import fr.openmc.core.features.displays.TabList;
 import fr.openmc.core.features.displays.bossbar.BossbarManager;
 import fr.openmc.core.features.displays.holograms.HologramLoader;
@@ -98,8 +96,6 @@ public class OMCPlugin extends JavaPlugin {
         /* MANAGERS */
         new DatabaseManager();
         new CommandsManager();
-        new CustomItemRegistry();
-        new CustomUsableItemRegistry();
         new SpawnManager();
         new UpdateManager();
         new CityManager();
@@ -110,8 +106,6 @@ public class OMCPlugin extends JavaPlugin {
         new HomesManager();
         new TPAManager();
         new FreezeManager();
-        new MilestonesManager();
-        new QuestsManager();
         new QuestProgressSaveManager();
         new TabList();
         if (!OMCPlugin.isUnitTestVersion()) { // Tous les trucs faits par misieur qui fonctionne à peu près
@@ -120,9 +114,7 @@ public class OMCPlugin extends JavaPlugin {
             new HologramLoader();
         }
         new AdminShopManager();
-        new AccountDetectionManager();
         new BossbarManager();
-        new CompanyManager();// laisser apres Economy Manager
         new ContestManager();
         new PrivateMessageManager();
 
@@ -137,6 +129,13 @@ public class OMCPlugin extends JavaPlugin {
             ParticleUtils.spawnParticlesInRegion("spawn", Bukkit.getWorld("world"), Particle.CHERRY_LEAVES, 50, 70, 130);
             ParticleUtils.spawnContestParticlesInRegion("spawn", Bukkit.getWorld("world"), 10, 70, 135);
         }
+    }
+
+    public void loadWithItemsAdder() {
+        new CustomItemRegistry();
+        new CustomUsableItemRegistry();
+        new MilestonesManager();
+        new QuestsManager();
     }
 
     @Override
@@ -164,10 +163,6 @@ public class OMCPlugin extends JavaPlugin {
         MayorManager.saveMayorCandidates();
         MayorManager.saveCityMayors();
         MayorManager.saveCityLaws();
-
-        // - Companies & Shop
-        CompanyManager.saveAllCompanies();
-        CompanyManager.saveAllShop();
 
         HomesManager.saveHomesData();
         HomeIconCacheManager.clearCache();
