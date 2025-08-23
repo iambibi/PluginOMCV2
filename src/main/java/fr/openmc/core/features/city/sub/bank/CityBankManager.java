@@ -4,9 +4,11 @@ import fr.openmc.core.CommandsManager;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.bank.commands.CityBankCommand;
+import fr.openmc.core.features.city.sub.bank.conditions.CityBankConditions;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
+import fr.openmc.core.features.city.sub.milestone.rewards.CityBankLimitRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.InterestRewards;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.InputUtils;
@@ -35,22 +37,55 @@ public class CityBankManager {
      * @param input  The input string to get the money value
      */
     public static void depositCityBank(City city, Player player, String input) {
-        if (InputUtils.isInputMoney(input)) {
-            double moneyDeposit = InputUtils.convertToMoneyValue(input);
+        if (!CityBankConditions.canCityDeposit(city, player)) return;
 
-            if (EconomyManager.withdrawBalance(player.getUniqueId(), moneyDeposit)) {
-                city.updateBalance(moneyDeposit);
-                MessagesManager.sendMessage(player,
-                        Component.text("Tu as transféré §d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit)
-                                + "§r" + EconomyManager.getEconomyIcon() + " à ta ville"),
-                        Prefix.CITY, MessageType.ERROR, false);
-            } else {
-                MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
-                        Prefix.CITY, MessageType.ERROR, false);
-            }
+        if (!InputUtils.isInputMoney(input)) {
+            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"),
+                    Prefix.CITY, MessageType.ERROR, true);
+            return;
+        }
+
+        double amount = InputUtils.convertToMoneyValue(input);
+
+        if (city == null || city.getLevel() < 2) {
+            MessagesManager.sendMessage(player,
+                    Component.text("Pour utiliser la banque de ville, votre ville doit être niveau 2 minimum !"),
+                    Prefix.CITY, MessageType.ERROR, false);
+            return;
+        }
+
+        double limit = CityBankLimitRewards.getBankBalanceLimit(city.getLevel());
+        double currentBalance = city.getBalance();
+
+        if (currentBalance >= limit) {
+            MessagesManager.sendMessage(player,
+                    Component.text("La banque de ta ville a atteint son plafond de " +
+                            EconomyManager.getFormattedNumber(limit) +
+                            ". Améliorez votre ville pour augmenter ce plafond."),
+                    Prefix.CITY, MessageType.ERROR, false);
+            return;
+        }
+
+        double allowedAmount = Math.min(amount, limit - currentBalance);
+
+        if (!EconomyManager.withdrawBalance(player.getUniqueId(), allowedAmount)) {
+            MessagesManager.sendMessage(player,
+                    MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
+                    Prefix.CITY, MessageType.ERROR, false);
+            return;
+        }
+
+        city.updateBalance(allowedAmount);
+
+        if (allowedAmount < amount) {
+            MessagesManager.sendMessage(player,
+                    Component.text("Seulement " + EconomyManager.getFormattedNumber(allowedAmount) +
+                            " ont été déposés (plafond atteint)."),
+                    Prefix.CITY, MessageType.ERROR, false);
         } else {
-            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.CITY,
-                    MessageType.ERROR, true);
+            MessagesManager.sendMessage(player,
+                    Component.text("Tu as déposé " + EconomyManager.getFormattedNumber(allowedAmount) + " dans la banque de ta ville."),
+                    Prefix.CITY, MessageType.SUCCESS, false);
         }
     }
 
@@ -61,24 +96,30 @@ public class CityBankManager {
      * @param input  The input string to get the money value
      */
     public static void withdrawCityBank(City city, Player player, String input) {
-        if (InputUtils.isInputMoney(input)) {
-            double moneyDeposit = InputUtils.convertToMoneyValue(input);
+        if (!CityBankConditions.canCityWithdraw(city, player)) return;
 
-            if (city.getBalance() < moneyDeposit) {
-                MessagesManager.sendMessage(player, Component.text("Ta ville n'a pas assez d'argent en banque"),
-                        Prefix.CITY, MessageType.ERROR, false);
-            } else {
-                city.updateBalance(-moneyDeposit);
-                EconomyManager.addBalance(player.getUniqueId(), moneyDeposit);
-                MessagesManager.sendMessage(player,
-                        Component.text("§d" + EconomyManager.getFormattedSimplifiedNumber(moneyDeposit) + "§r"
-                                + EconomyManager.getEconomyIcon() + " ont été transférés à votre compte"),
-                        Prefix.CITY, MessageType.SUCCESS, false);
-            }
-        } else {
-            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"), Prefix.CITY,
-                    MessageType.ERROR, true);
+        if (!InputUtils.isInputMoney(input)) {
+            MessagesManager.sendMessage(player, Component.text("Veuillez mettre une entrée correcte"),
+                    Prefix.CITY, MessageType.ERROR, true);
+            return;
         }
+
+        double amount = InputUtils.convertToMoneyValue(input);
+
+        if (city.getBalance() < amount) {
+            MessagesManager.sendMessage(player,
+                    Component.text("La banque de ta ville n'a pas assez d'argent."),
+                    Prefix.CITY, MessageType.ERROR, false);
+            return;
+        }
+
+        city.updateBalance(-amount);
+        EconomyManager.addBalance(player.getUniqueId(), amount);
+
+        MessagesManager.sendMessage(player,
+                Component.text("§d" + EconomyManager.getFormattedSimplifiedNumber(amount) + "§r"
+                        + EconomyManager.getEconomyIcon() + " ont été transférés à ton compte."),
+                Prefix.CITY, MessageType.SUCCESS, false);
     }
 
     /**
