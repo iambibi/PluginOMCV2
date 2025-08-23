@@ -6,6 +6,7 @@ import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.models.CityRank;
+import fr.openmc.core.features.city.sub.milestone.rewards.FeaturesRewards;
 import fr.openmc.core.features.city.sub.rank.menus.CityRankDetailsMenu;
 import fr.openmc.core.features.city.sub.rank.menus.CityRankMemberMenu;
 import fr.openmc.core.utils.messages.MessageType;
@@ -111,6 +112,12 @@ public class CityRankAction {
             MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_CITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return;
         }
+
+        if (!FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.RANK)) {
+            MessagesManager.sendMessage(player, Component.text("Vous n'avez pas débloqué cette Feature ! Veuillez Améliorer votre Ville au niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.RANK) + "!"), Prefix.CITY, MessageType.ERROR, false);
+            return;
+        }
+
         if (!city.hasPermission(player.getUniqueId(), CityPermission.ASSIGN_RANKS)) {
             MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_ACCESS_PERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return;

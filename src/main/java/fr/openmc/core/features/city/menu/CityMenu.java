@@ -92,15 +92,33 @@ public class CityMenu extends Menu {
 		City city = CityManager.getPlayerCity(player.getUniqueId());
 		assert city != null;
 
-		inventory.put(0, new ItemBuilder(this, Material.COMMAND_BLOCK, itemMeta -> {
-			itemMeta.displayName(Component.text("§6Grades de la Ville"));
-			itemMeta.lore(List.of(
-					Component.text("§7Gérer les grades de votre ville"),
+        List<Component> loreRanks;
+        if (FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.RANK)) {
+            loreRanks = List.of(
+                    Component.text("§7Gérer les grades de votre ville"),
                     Component.text("§7Votre Grade : §d" + city.getRankName(player.getUniqueId())),
                     Component.empty(),
-					Component.text("§e§lCLIQUEZ ICI POUR ACCEDER AUX GRADES")
-			));
-		}).setOnClick(inventoryClickEvent -> new CityRanksMenu(getOwner(), city).open()));
+                    Component.text("§e§lCLIQUEZ ICI POUR ACCEDER AUX GRADES")
+            );
+        } else {
+            loreRanks = List.of(
+                    Component.text("§7Gérer les grades de votre ville"),
+                    Component.empty(),
+                    Component.text("§cVous devez etre Niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.RANK) + " pour débloquer ceci")
+            );
+        }
+
+        inventory.put(0, new ItemBuilder(this, Material.COMMAND_BLOCK, itemMeta -> {
+            itemMeta.displayName(Component.text("§6Grades de la Ville"));
+            itemMeta.lore(loreRanks);
+        }).setOnClick(inventoryClickEvent -> {
+            if (!FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.RANK)) {
+                MessagesManager.sendMessage(player, Component.text("Vous n'avez pas débloqué cette Feature ! Veuillez Améliorer votre Ville au niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.RANK) + "!"), Prefix.CITY, MessageType.ERROR, false);
+                return;
+            }
+
+            new CityRanksMenu(getOwner(), city).open();
+        }));
 
 		boolean hasPermissionRenameCity = city.hasPermission(player.getUniqueId(), CityPermission.RENAME);
 		boolean hasPermissionChest = city.hasPermission(player.getUniqueId(), CityPermission.CHEST);
