@@ -39,6 +39,7 @@ public enum CityLevels {
                             Component.text("§6" + FREE_CLAIMS + " Claims §7Gratuits")
                     ),
                     MascotsSkinUnlockRewards.LEVEL_1,
+                    MascotsLevelsRewards.LEVEL_1,
                     MemberLimitRewards.LEVEL_1
             ),
             0
@@ -78,6 +79,7 @@ public enum CityLevels {
                     FeaturesRewards.LEVEL_2,
                     PlayerBankLimitRewards.LEVEL_2,
                     CityBankLimitRewards.LEVEL_2,
+                    MascotsLevelsRewards.LEVEL_2,
                     MascotsSkinUnlockRewards.LEVEL_2,
                     MemberLimitRewards.LEVEL_2
             ),
@@ -137,6 +139,7 @@ public enum CityLevels {
                     FeaturesRewards.LEVEL_3,
                     PlayerBankLimitRewards.LEVEL_3,
                     CityBankLimitRewards.LEVEL_3,
+                    MascotsLevelsRewards.LEVEL_3,
                     MascotsSkinUnlockRewards.LEVEL_3,
                     MemberLimitRewards.LEVEL_3,
                     ChestPageLimitRewards.LEVEL_3,
@@ -220,6 +223,7 @@ public enum CityLevels {
                     PlayerBankLimitRewards.LEVEL_4,
                     CityBankLimitRewards.LEVEL_4,
                     InterestRewards.LEVEL_4,
+                    MascotsLevelsRewards.LEVEL_4,
                     MascotsSkinUnlockRewards.LEVEL_4,
                     ChestPageLimitRewards.LEVEL_4,
                     RankLimitRewards.LEVEL_4
@@ -277,6 +281,7 @@ public enum CityLevels {
                     PlayerBankLimitRewards.LEVEL_5,
                     CityBankLimitRewards.LEVEL_5,
                     InterestRewards.LEVEL_5,
+                    MascotsLevelsRewards.LEVEL_5,
                     MascotsSkinUnlockRewards.LEVEL_5,
                     MemberLimitRewards.LEVEL_5,
                     ChestPageLimitRewards.LEVEL_5,
@@ -335,6 +340,7 @@ public enum CityLevels {
                     PlayerBankLimitRewards.LEVEL_6,
                     CityBankLimitRewards.LEVEL_6,
                     InterestRewards.LEVEL_6,
+                    MascotsLevelsRewards.LEVEL_6,
                     MascotsSkinUnlockRewards.LEVEL_6,
                     MemberLimitRewards.LEVEL_6,
                     ChestPageLimitRewards.LEVEL_6,
@@ -393,6 +399,7 @@ public enum CityLevels {
                     PlayerBankLimitRewards.LEVEL_7,
                     CityBankLimitRewards.LEVEL_7,
                     InterestRewards.LEVEL_7,
+                    MascotsLevelsRewards.LEVEL_7,
                     MascotsSkinUnlockRewards.LEVEL_7,
                     MemberLimitRewards.LEVEL_7,
                     ChestPageLimitRewards.LEVEL_7,
@@ -468,6 +475,7 @@ public enum CityLevels {
                     FeaturesRewards.LEVEL_8,
                     PlayerBankLimitRewards.LEVEL_8,
                     InterestRewards.LEVEL_8,
+                    MascotsLevelsRewards.LEVEL_8,
                     MascotsSkinUnlockRewards.LEVEL_8,
                     MemberLimitRewards.LEVEL_8,
                     ChestPageLimitRewards.LEVEL_8,
@@ -525,6 +533,7 @@ public enum CityLevels {
                     PlayerBankLimitRewards.LEVEL_9,
                     CityBankLimitRewards.LEVEL_9,
                     InterestRewards.LEVEL_9,
+                    MascotsLevelsRewards.LEVEL_9,
                     MascotsSkinUnlockRewards.LEVEL_9,
                     ChestPageLimitRewards.LEVEL_9,
                     RankLimitRewards.LEVEL_9
@@ -586,6 +595,7 @@ public enum CityLevels {
                     PlayerBankLimitRewards.LEVEL_10,
                     CityBankLimitRewards.LEVEL_10,
                     InterestRewards.LEVEL_10,
+                    MascotsLevelsRewards.LEVEL_10,
                     MascotsSkinUnlockRewards.LEVEL_10,
                     MemberLimitRewards.LEVEL_10,
                     ChestPageLimitRewards.LEVEL_10,

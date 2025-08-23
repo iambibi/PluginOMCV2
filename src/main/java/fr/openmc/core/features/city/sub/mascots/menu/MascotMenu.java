@@ -12,6 +12,7 @@ import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
 import fr.openmc.core.features.city.sub.mascots.models.MascotsLevels;
+import fr.openmc.core.features.city.sub.milestone.rewards.MascotsLevelsRewards;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.ItemUtils;
@@ -216,8 +217,14 @@ public class MascotMenu extends Menu {
         List<Component> requiredAmount = new ArrayList<>();
         MascotsLevels mascotsLevels = MascotsLevels.valueOf("level" + mascot.getLevel());
 
+        int maxMascotLevel = MascotsLevelsRewards.getMascotsLevelLimit(city.getLevel());
+
+        int currentMascotLevel = mascot.getLevel();
+
         if (mascotsLevels.equals(MascotsLevels.level10)) {
             requiredAmount.add(Component.text("§7Niveau max atteint"));
+        } else if (currentMascotLevel >= maxMascotLevel) {
+            requiredAmount.add(Component.text("§cVous devez etre Niveau " + maxMascotLevel + " pour améliorer la Mascotte"));
         } else {
             requiredAmount.add(Component.text("§7Nécessite §d" + mascotsLevels.getUpgradeCost() + " d'Aywenites"));
         }
@@ -229,8 +236,8 @@ public class MascotMenu extends Menu {
         })
                 .hide(DataComponentTypes.ENCHANTMENTS, DataComponentTypes.ATTRIBUTE_MODIFIERS, DataComponentTypes.TRIM)
                 .setOnClick(inventoryClickEvent -> {
-
                     if (mascotsLevels.equals(MascotsLevels.level10)) return;
+                    if (currentMascotLevel >= maxMascotLevel) return;
 
                     if (city == null) {
                         MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_CITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);
