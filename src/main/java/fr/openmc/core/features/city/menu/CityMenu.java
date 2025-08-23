@@ -24,6 +24,7 @@ import fr.openmc.core.features.city.sub.mayor.ElectionType;
 import fr.openmc.core.features.city.sub.mayor.actions.MayorCommandAction;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.milestone.menu.CityMilestoneMenu;
+import fr.openmc.core.features.city.sub.milestone.rewards.FeaturesRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.MemberLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationNote;
 import fr.openmc.core.features.city.sub.notation.menu.NotationDialog;
@@ -54,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static fr.openmc.core.features.city.sub.bank.conditions.CityBankConditions.canOpenCityBank;
 import static fr.openmc.core.features.city.sub.mayor.managers.MayorManager.PHASE_1_DAY;
 import static fr.openmc.core.features.city.sub.mayor.managers.MayorManager.PHASE_2_DAY;
 
@@ -418,6 +420,14 @@ public class CityMenu extends Menu {
 
         List<Component> loreChestCity;
 
+        if (!FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.CHEST)) {
+            loreChestCity = List.of(
+                    Component.text("§7Acceder au Coffre de votre Ville pour"),
+                    Component.text("§7stocker des items en commun"),
+                    Component.empty(),
+                    Component.text("§cVous devez etre Niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.CHEST) + " pour débloquer ceci")
+            );
+        } else {
             if (hasPermissionChest) {
                 if (city.getChestWatcher() != null) {
                     loreChestCity = List.of(
@@ -439,6 +449,7 @@ public class CityMenu extends Menu {
                         Component.text("§7Vous n'avez pas le §cdroit de visionner le coffre !")
                 );
             }
+        }
 
             inventory.put(36, new ItemBuilder(this, Material.CHEST, itemMeta -> {
                 itemMeta.itemName(Component.text("§aLe Coffre de la Ville"));
@@ -451,20 +462,35 @@ public class CityMenu extends Menu {
             new CityChestMenu(player, city, 1).open();
         }));
 
-        inventory.put(40, new ItemBuilder(this, Material.GOLD_BLOCK, itemMeta -> {
-            itemMeta.itemName(Component.text("§6La Banque"));
-            itemMeta.lore(List.of(
+        List<Component> loreBankCity;
+
+        if (FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.CITY_BANK)) {
+            loreBankCity = List.of(
                     Component.text("§7Stocker votre argent et celle de votre ville"),
                     Component.text("§7Contribuer au développement de votre ville"),
                     Component.empty(),
                     Component.text("§e§lCLIQUEZ ICI POUR ACCEDER AUX COMPTES")
-            ));
+            );
+        } else {
+            loreBankCity = List.of(
+                    Component.text("§7Stocker votre argent et celle de votre ville"),
+                    Component.text("§7Contribuer au développement de votre ville"),
+                    Component.empty(),
+                    Component.text("§cVous devez être Niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.CITY_BANK) + " pour débloquer ceci")
+            );
+        }
+
+        inventory.put(40, new ItemBuilder(this, Material.GOLD_BLOCK, itemMeta -> {
+            itemMeta.itemName(Component.text("§6La Banque"));
+            itemMeta.lore(loreBankCity);
         }).setOnClick(inventoryClickEvent -> {
             City cityCheck = CityManager.getPlayerCity(player.getUniqueId());
             if (cityCheck == null) {
                 MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_CITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);
                 return;
             }
+
+            if (!canOpenCityBank(cityCheck, player)) return;
 
             new CityBankMenu(player).open();
         }));

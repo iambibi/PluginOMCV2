@@ -75,6 +75,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.GOLD_INGOT, 128)
             ),
             List.of(
+                    FeaturesRewards.LEVEL_2,
                     PlayerBankLimitRewards.LEVEL_2,
                     CityBankLimitRewards.LEVEL_2,
                     MascotsSkinUnlockRewards.LEVEL_2,
@@ -116,23 +117,24 @@ public enum CityLevels {
                                 ));
                             }
                     ),
-                    new TemplateRequirement(
-                            city -> city.getMembers().size() >= 2,
-                            city -> ItemStack.of(Material.PLAYER_HEAD),
-                            (city, level) -> {
-                                if (city.getLevel() > level.ordinal()) {
-                                    return Component.text("Avoir 2 Membres");
-                                }
-
-                                return Component.text(String.format(
-                                        "Avoir 2 Membres (%d/2)",
-                                        city.getMembers().size()
-                                ));
-                            }
-                    ),
+//                    new TemplateRequirement(
+//                            city -> city.getMembers().size() >= 2,
+//                            city -> ItemStack.of(Material.PLAYER_HEAD),
+//                            (city, level) -> {
+//                                if (city.getLevel() > level.ordinal()) {
+//                                    return Component.text("Avoir 2 Membres");
+//                                }
+//
+//                                return Component.text(String.format(
+//                                        "Avoir 2 Membres (%d/2)",
+//                                        city.getMembers().size()
+//                                ));
+//                            }
+//                    ),
                     new ItemDepositRequirement(Material.DIAMOND, 16)
             ),
             List.of(
+                    FeaturesRewards.LEVEL_3,
                     PlayerBankLimitRewards.LEVEL_3,
                     CityBankLimitRewards.LEVEL_3,
                     MascotsSkinUnlockRewards.LEVEL_3,
@@ -214,6 +216,7 @@ public enum CityLevels {
                     )
             ),
             List.of(
+                    FeaturesRewards.LEVEL_4,
                     PlayerBankLimitRewards.LEVEL_4,
                     CityBankLimitRewards.LEVEL_4,
                     InterestRewards.LEVEL_4,
@@ -270,6 +273,7 @@ public enum CityLevels {
                     )
             ),
             List.of(
+                    FeaturesRewards.LEVEL_5,
                     PlayerBankLimitRewards.LEVEL_5,
                     CityBankLimitRewards.LEVEL_5,
                     InterestRewards.LEVEL_5,
@@ -385,6 +389,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.TNT, 10)
             ),
             List.of(
+                    FeaturesRewards.LEVEL_7,
                     PlayerBankLimitRewards.LEVEL_7,
                     CityBankLimitRewards.LEVEL_7,
                     InterestRewards.LEVEL_7,
@@ -460,6 +465,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.OBSIDIAN, 128)
             ),
             List.of(
+                    FeaturesRewards.LEVEL_8,
                     PlayerBankLimitRewards.LEVEL_8,
                     InterestRewards.LEVEL_8,
                     MascotsSkinUnlockRewards.LEVEL_8,
@@ -515,6 +521,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:kebab").getBest(), 128)
             ),
             List.of(
+                    FeaturesRewards.LEVEL_9,
                     PlayerBankLimitRewards.LEVEL_9,
                     CityBankLimitRewards.LEVEL_9,
                     InterestRewards.LEVEL_9,

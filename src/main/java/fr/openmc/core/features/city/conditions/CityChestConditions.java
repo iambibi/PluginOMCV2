@@ -3,6 +3,7 @@ package fr.openmc.core.features.city.conditions;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.sub.milestone.rewards.ChestPageLimitRewards;
+import fr.openmc.core.features.city.sub.milestone.rewards.FeaturesRewards;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.ItemUtils;
@@ -37,6 +38,11 @@ public class CityChestConditions {
             return false;
         }
 
+        if (!FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.CHEST)) {
+            MessagesManager.sendMessage(player, Component.text("Vous n'avez pas débloqué cette Feature ! Veuillez Améliorer votre Ville au niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.CHEST) + "!"), Prefix.CITY, MessageType.ERROR, false);
+            return false;
+        }
+
         if (!city.hasPermission(player.getUniqueId(), CityPermission.CHEST)) {
             MessagesManager.sendMessage(player, Component.text("Vous n'avez pas les permissions de voir le coffre"), Prefix.CITY, MessageType.ERROR, false);
             return false;
@@ -68,7 +74,7 @@ public class CityChestConditions {
         }
 
         if (city.getChestPages() >= ChestPageLimitRewards.getChestPageLimit(city.getLevel())) {
-            MessagesManager.sendMessage(player, Component.text("Le Coffre de la Ville est déjà au niveau maximum (" + ChestPageLimitRewards.getChestPageLimit(city.getLevel()) + "pages maximale), Pour améliorer cette limite, passez a un niveau de ville supérieur"), Prefix.CITY, MessageType.ERROR, false);
+            MessagesManager.sendMessage(player, Component.text("Le Coffre de la Ville est déjà au niveau maximum (" + ChestPageLimitRewards.getChestPageLimit(city.getLevel()) + " page(s) maximale(s)), Pour améliorer cette limite, passez a un niveau de ville supérieur"), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
 
