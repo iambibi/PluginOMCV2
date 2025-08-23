@@ -3,15 +3,11 @@ package fr.openmc.core.features.city.sub.bank.conditions;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.CityType;
-import fr.openmc.core.features.city.sub.milestone.rewards.PlayerBankLimitRewards;
-import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
-
-import static fr.openmc.core.features.economy.BankManager.getBankBalance;
 
 
 /**
@@ -35,13 +31,6 @@ public class CityBankConditions {
 
         if (!(city.hasPermission(player.getUniqueId(), CityPermission.MONEY_GIVE))) {
             MessagesManager.sendMessage(player, Component.text("Tu n'as pas la permission de donner de l'argent à ta ville"), Prefix.CITY, MessageType.ERROR, false);
-            return false;
-        }
-
-        if (getBankBalance(player.getUniqueId()) >= PlayerBankLimitRewards.getBankBalanceLimit(city.getLevel())) {
-            MessagesManager.sendMessage(player,
-                    Component.text("Vous avez atteint la limite de votre plafond qui est de " + EconomyManager.getFormattedNumber(PlayerBankLimitRewards.getBankBalanceLimit(city.getLevel())) + ". Améliorer votre ville au niveau suppérieur !"),
-                    Prefix.BANK, MessageType.ERROR, false);
             return false;
         }
 
