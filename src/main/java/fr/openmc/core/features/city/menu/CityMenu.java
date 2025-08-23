@@ -315,6 +315,28 @@ public class CityMenu extends Menu {
 
         Supplier<ItemBuilder> electionItemSupplier = () -> {
                 List<Component> loreElections = List.of();
+            if (!FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.MAYOR)) {
+                if (MayorManager.phaseMayor == 2) {
+                    loreElections = List.of(
+                            Component.text("§7En ce moment, les Maires sont tous appliqués dans les Villes !"),
+                            Component.text("§7Sauf la votre !"),
+                            Component.empty(),
+                            Component.text("§cVous devez etre Niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.MAYOR) + " pour débloquer ceci")
+                    );
+                } else if (MayorManager.phaseMayor == 1) {
+                    loreElections = List.of(
+                            Component.text("§7Les Elections sont actuellement §6ouverte"),
+                            Component.text("§cFermeture dans " + DateUtils.getTimeUntilNextDay(PHASE_2_DAY)),
+                            Component.text("§7Mais vous ne pouvez pas y acceder !"),
+                            Component.empty(),
+                            Component.text("§cVous devez etre Niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.MAYOR) + " pour débloquer ceci")
+                    );
+                } else {
+                    loreElections = List.of(
+                            Component.text("§cErreur")
+                    );
+                }
+            } else {
                 if (city.getElectionType() == ElectionType.ELECTION) {
                     if (MayorManager.phaseMayor == 2) {
                         loreElections = List.of(
@@ -379,6 +401,7 @@ public class CityMenu extends Menu {
                                     Component.empty(),
                                     Component.text("§cFermeture dans " + DateUtils.getTimeUntilNextDay(PHASE_2_DAY))
                             );
+                        }
                         }
                     }
                 }

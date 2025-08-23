@@ -3,7 +3,9 @@ package fr.openmc.core.features.city.sub.milestone.listeners;
 import fr.openmc.api.cooldown.CooldownEndEvent;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.milestone.CityLevels;
+import fr.openmc.core.features.city.sub.milestone.rewards.FeaturesRewards;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,11 +22,23 @@ public class CooldownEndListener implements Listener {
         City city = CityManager.getCity(event.getUUID());
 
         int oldLevel = city.getLevel();
+        boolean hadMayorBefore = FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.MAYOR);
+
 
         if (oldLevel + 1 > CityLevels.values().length) return;
 
         city.setLevel(oldLevel + 1);
 
         CityStatisticsManager.removeStats(city.getUUID());
+
+        boolean hasMayorNow = FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.MAYOR);
+
+        if (!hadMayorBefore && hasMayorNow) {
+            if (MayorManager.phaseMayor == 1) {
+                MayorManager.initCityPhase1(city, null);
+            } else if (MayorManager.phaseMayor == 2) {
+                MayorManager.initCityPhase2(city);
+            }
+        }
     }
 }
