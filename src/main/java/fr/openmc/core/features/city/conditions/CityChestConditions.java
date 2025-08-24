@@ -74,7 +74,7 @@ public class CityChestConditions {
         }
 
         if (city.getChestPages() >= ChestPageLimitRewards.getChestPageLimit(city.getLevel())) {
-            MessagesManager.sendMessage(player, Component.text("Le Coffre de la Ville est déjà au niveau maximum (" + ChestPageLimitRewards.getChestPageLimit(city.getLevel()) + " page(s) maximale(s)), Pour améliorer cette limite, passez a un niveau de ville supérieur"), Prefix.CITY, MessageType.ERROR, false);
+            MessagesManager.sendMessage(player, Component.text("Le coffre de la Ville est déjà au niveau maximum (" + ChestPageLimitRewards.getChestPageLimit(city.getLevel()) + " page(s) maximale(s)), Pour améliorer cette limite, passez a un niveau de ville supérieur"), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
 

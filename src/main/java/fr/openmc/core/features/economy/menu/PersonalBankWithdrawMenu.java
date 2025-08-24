@@ -67,7 +67,6 @@ public class PersonalBankWithdrawMenu extends Menu {
             itemMeta.itemName(Component.text("§7Prendre l'§6Argent de votre banque"));
             itemMeta.lore(loreBankWithdrawAll);
         }).setOnClick(inventoryClickEvent -> {
-            System.out.println("click");
             player.closeInventory();
             BankManager.withdraw(player.getUniqueId(), String.valueOf(moneyBankPlayer));
         }));

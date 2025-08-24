@@ -242,11 +242,11 @@ public class DynamicCooldownManager {
      * @param uuid  Entity UUID
      * @param group Cooldown group
      */
-    public static void clear(String uuid, String group, boolean calLEvent) {
+    public static void clear(String uuid, String group, boolean callEvent) {
         var userCooldowns = cooldowns.get(uuid);
 
         if (userCooldowns != null) {
-            if (calLEvent) Bukkit.getPluginManager().callEvent(new CooldownEndEvent(uuid, group));
+            if (callEvent) Bukkit.getPluginManager().callEvent(new CooldownEndEvent(uuid, group));
 
             Cooldown removed = userCooldowns.remove(group);
             if (removed != null) removed.cancelTask();
