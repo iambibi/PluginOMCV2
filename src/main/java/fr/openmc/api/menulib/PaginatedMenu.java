@@ -98,7 +98,7 @@ public abstract class PaginatedMenu extends Menu {
 	public final @NotNull Map<Integer, ItemBuilder> getContent() {
 		Map<Integer, ItemBuilder> map = new HashMap<>();
 		for (Integer staticSlot : getStaticSlots()) {
-			map.put(staticSlot, new ItemBuilder(this, ItemUtils.createItem(" ", getBorderMaterial() == null ? Material.AIR : getBorderMaterial())));
+			map.put(staticSlot, new ItemBuilder(this, ItemUtils.createItem(" ", getBorderMaterial() == null ? Material.AIR : getBorderMaterial())).hideTooltip(true));
 		}
 		List<Integer> staticSlots = StaticSlots.removeRecurringIntegers(getStaticSlots(), getInventorySize().getSize());
 		int maxItems = getInventorySize().getSize() - staticSlots.size();

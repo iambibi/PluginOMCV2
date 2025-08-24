@@ -35,7 +35,6 @@ public final class MenuLib implements Listener {
     private static final Map<Player, Deque<Menu>> menuHistory = new HashMap<>();
 
     private static final Set<Class<? extends Menu>> ignoredMenus = new HashSet<>();
-
     static {
         ignoredMenus.add(ConfirmMenu.class);
         ignoredMenus.add(fr.openmc.core.features.contest.menu.ConfirmMenu.class);
@@ -130,9 +129,9 @@ public final class MenuLib implements Listener {
         Menu current = history.pop();
 
         while (!history.isEmpty()) {
-            Menu previous = history.peek();
+            Menu previous = history.pop();
 
-            if (!ignoredMenus.contains(previous.getClass()) && !previous.getClass().equals(current.getClass())) {
+            if (!ignoredMenus.contains(previous.getClass()) && previous != current) {
                 return previous;
             }
 
