@@ -65,8 +65,8 @@ public enum FeaturesRewards implements CityRewards {
         StringBuilder sb = new StringBuilder("§7Débloque ");
         for (int i = 0; i < features.length; i++) {
             sb.append(features[i].getName());
-            if (i < features.length - 2) sb.append(", ");
-            else if (i == features.length - 2) sb.append(" et ");
+            if (i < features.length - 2) sb.append("§7, ");
+            else if (i == features.length - 2) sb.append(" §7et ");
         }
         return Component.text(sb.toString());
     }
@@ -77,7 +77,7 @@ public enum FeaturesRewards implements CityRewards {
         CITY_BANK("§6/city bank"),
         PLAYER_BANK("§b/bank"),
         NOTATION("§3/city notation"),
-        RANK("§6/city rank"),
+        RANK("§6/city ranks"),
         MAYOR("§6/city mayor"),
         PERK_AGRICULTURAL("§3les Réformes d'Agriculture"),
         PERK_ECONOMY("§3les Réformes d'Economie"),

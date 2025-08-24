@@ -102,7 +102,7 @@ public class PerkChoiceMenu extends PaginatedMenu {
                 itemMeta.customName(Component.text(newPerk.getName()));
                 itemMeta.lore(perkLore);
             })
-                    .hide(newPerk.getToHide())
+                    .hide((newPerk != null) ? newPerk.getToHide() : null)
                     .setOnClick(inventoryClickEvent -> {
                         switch (newPerk.getCategory()) {
                             case AGRICULTURAL -> {

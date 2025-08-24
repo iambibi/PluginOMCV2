@@ -98,7 +98,6 @@ public class OMCPlugin extends JavaPlugin {
         new CommandsManager();
         new SpawnManager();
         new UpdateManager();
-        new CityManager();
         new ListenersManager();
         new EconomyManager();
         new BankManager();
@@ -121,6 +120,8 @@ public class OMCPlugin extends JavaPlugin {
         new MotdUtils();
         new TranslationManager(new File(this.getDataFolder(), "translations"), "fr");
         new DynamicCooldownManager();
+
+        new MascotsManager();
         HomeIconCacheManager.initialize();
 
         PlayerSettingsManager.loadAllPlayerSettings();
@@ -136,6 +137,7 @@ public class OMCPlugin extends JavaPlugin {
         new CustomUsableItemRegistry();
         new MilestonesManager();
         new QuestsManager();
+        new CityManager();
     }
 
     @Override

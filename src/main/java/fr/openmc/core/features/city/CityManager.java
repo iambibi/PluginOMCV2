@@ -83,7 +83,6 @@ public class CityManager implements Listener {
         );
 
         // SUB-FEATURE
-        new MascotsManager();
         new MayorManager();
         new ProtectionsManager();
         new WarManager();

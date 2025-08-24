@@ -298,6 +298,8 @@ public class ItemBuilder extends ItemStack {
 	 */
 	@SuppressWarnings("UnstableApiUsage")
     public ItemBuilder hide(DataComponentType... typesToHide) {
+		if (typesToHide == null) return this;
+
 		if (this.hasData(DataComponentTypes.TOOLTIP_DISPLAY) && this.getData(DataComponentTypes.TOOLTIP_DISPLAY).hideTooltip())
 			return this;
 

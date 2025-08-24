@@ -7,16 +7,16 @@ import net.kyori.adventure.text.Component;
 @Getter
 public enum InterestRewards implements CityRewards {
 
-    LEVEL_1(0),
-    LEVEL_2(0),
-    LEVEL_3(0),
-    LEVEL_4(0.2),
-    LEVEL_5(0.2),
-    LEVEL_6(0.2),
-    LEVEL_7(0.1),
-    LEVEL_8(0.1),
-    LEVEL_9(0.1),
-    LEVEL_10(0.4);
+    LEVEL_1(.00),
+    LEVEL_2(.00),
+    LEVEL_3(.00),
+    LEVEL_4(.01),
+    LEVEL_5(.02),
+    LEVEL_6(.01),
+    LEVEL_7(.01),
+    LEVEL_8(.01),
+    LEVEL_9(.01),
+    LEVEL_10(.03);
 
 
     private final double interest;
@@ -32,7 +32,7 @@ public enum InterestRewards implements CityRewards {
             throw new IllegalArgumentException("Niveau invalide: " + level);
         }
 
-        double total = 0;
+        double total = .00;
         for (int i = 0; i < level; i++) {
             total += values[i].interest;
         }
@@ -41,6 +41,6 @@ public enum InterestRewards implements CityRewards {
 
     @Override
     public Component getName() {
-        return Component.text("§7+ §6" + interest + "% §6d'intérêt");
+        return Component.text("§7+ §6" + interest * 100 + "% §6d'intérêt");
     }
 }

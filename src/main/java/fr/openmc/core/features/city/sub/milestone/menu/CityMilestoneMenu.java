@@ -110,7 +110,7 @@ public class CityMilestoneMenu extends Menu {
                 Material glass = unlocked ? Material.LIME_STAINED_GLASS_PANE : Material.GRAY_STAINED_GLASS_PANE;
 
                 for (int pathSlot : pathSlots[i]) {
-                    inventory.put(pathSlot, new ItemBuilder(this, glass, meta -> meta.displayName(Component.empty())));
+                    inventory.put(pathSlot, new ItemBuilder(this, glass, meta -> meta.displayName(Component.empty())).hideTooltip(true));
                 }
             }
         }

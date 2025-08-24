@@ -8,7 +8,6 @@ import fr.openmc.core.features.city.sub.bank.conditions.CityBankConditions;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
-import fr.openmc.core.features.city.sub.milestone.rewards.CityBankLimitRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.InterestRewards;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.InputUtils;
@@ -54,39 +53,18 @@ public class CityBankManager {
             return;
         }
 
-        double limit = CityBankLimitRewards.getBankBalanceLimit(city.getLevel());
-        double currentBalance = city.getBalance();
-
-        if (currentBalance >= limit) {
-            MessagesManager.sendMessage(player,
-                    Component.text("La banque de ta ville a atteint son plafond de " +
-                            EconomyManager.getFormattedNumber(limit) +
-                            ". Améliorez votre ville pour augmenter ce plafond."),
-                    Prefix.CITY, MessageType.ERROR, false);
-            return;
-        }
-
-        double allowedAmount = Math.min(amount, limit - currentBalance);
-
-        if (!EconomyManager.withdrawBalance(player.getUniqueId(), allowedAmount)) {
+        if (!EconomyManager.withdrawBalance(player.getUniqueId(), amount)) {
             MessagesManager.sendMessage(player,
                     MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
                     Prefix.CITY, MessageType.ERROR, false);
             return;
         }
 
-        city.updateBalance(allowedAmount);
+        city.updateBalance(amount);
 
-        if (allowedAmount < amount) {
-            MessagesManager.sendMessage(player,
-                    Component.text("Seulement " + EconomyManager.getFormattedNumber(allowedAmount) +
-                            " ont été déposés (plafond atteint)."),
-                    Prefix.CITY, MessageType.ERROR, false);
-        } else {
-            MessagesManager.sendMessage(player,
-                    Component.text("Tu as déposé " + EconomyManager.getFormattedNumber(allowedAmount) + " dans la banque de ta ville."),
-                    Prefix.CITY, MessageType.SUCCESS, false);
-        }
+        MessagesManager.sendMessage(player,
+                Component.text("Tu as déposé " + EconomyManager.getFormattedNumber(amount) + " dans la banque de ta ville."),
+                Prefix.CITY, MessageType.SUCCESS, false);
     }
 
     /**

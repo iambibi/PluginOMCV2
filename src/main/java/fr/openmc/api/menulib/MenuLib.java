@@ -1,5 +1,6 @@
 package fr.openmc.api.menulib;
 
+import fr.openmc.api.menulib.default_menu.ConfirmMenu;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.utils.ItemUtils;
@@ -107,8 +108,20 @@ public final class MenuLib implements Listener {
     public static Menu popAndGetPreviousMenu(Player player) {
         Deque<Menu> history = menuHistory.get(player);
         if (history == null || history.size() < 2) return null;
-        history.pop();
-        return history.peek();
+
+        Menu current = history.pop();
+
+        while (!history.isEmpty()) {
+            Menu previous = history.peek();
+
+            if (!(previous instanceof ConfirmMenu) && !previous.getClass().equals(current.getClass())) {
+                return previous;
+            }
+
+            current = history.pop();
+        }
+
+        return null;
     }
 
     public static boolean hasPreviousMenu(Player player) {

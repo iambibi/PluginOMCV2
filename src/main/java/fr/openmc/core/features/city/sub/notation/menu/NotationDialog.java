@@ -79,7 +79,7 @@ public class NotationDialog {
 
         return DialogBody.plainMessage(
                 header,
-                600
+                1000
         );
     }
 
@@ -138,7 +138,7 @@ public class NotationDialog {
 
         return DialogBody.plainMessage(
                 base,
-                500
+                1000
         );
     }
 

@@ -66,21 +66,16 @@ public enum CityLevels {
                     new TemplateRequirement(
                             city -> city.getLaw().getWarp() != null,
                             city -> CustomItemRegistry.getByName("omc_items:warp_stick").getBest(),
-                            (city, ignore) -> Component.text("Poser un /city warp")
-                    ),
-                    new TemplateRequirement(
-                            city -> city.getMascot().getLevel() >= 2,
-                            city -> ItemStack.of(city.getMascot().getMascotEgg()),
-                            (city, ignore) -> Component.text("Avoir sa Mascotte Niveau 2")
+                            (city, ignore) -> Component.text("Poser un /city setwarp")
                     ),
                     new ItemDepositRequirement(Material.GOLD_INGOT, 128)
             ),
             List.of(
                     FeaturesRewards.LEVEL_2,
                     PlayerBankLimitRewards.LEVEL_2,
-                    CityBankLimitRewards.LEVEL_2,
                     MascotsLevelsRewards.LEVEL_2,
                     MascotsSkinUnlockRewards.LEVEL_2,
+                    ChestPageLimitRewards.LEVEL_2,
                     MemberLimitRewards.LEVEL_2
             ),
             60 * 10
@@ -115,7 +110,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 5k dans la banque (%s/5k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
@@ -133,12 +128,16 @@ public enum CityLevels {
 //                                ));
 //                            }
 //                    ),
+                    new TemplateRequirement(
+                            city -> city.getMascot().getLevel() >= 2,
+                            city -> ItemStack.of(city.getMascot().getMascotEgg()),
+                            (city, ignore) -> Component.text("Avoir sa Mascotte Niveau 2")
+                    ),
                     new ItemDepositRequirement(Material.DIAMOND, 16)
             ),
             List.of(
                     FeaturesRewards.LEVEL_3,
                     PlayerBankLimitRewards.LEVEL_3,
-                    CityBankLimitRewards.LEVEL_3,
                     MascotsLevelsRewards.LEVEL_3,
                     MascotsSkinUnlockRewards.LEVEL_3,
                     MemberLimitRewards.LEVEL_3,
@@ -180,17 +179,13 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 7,5k dans la banque (%s/7,5k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_items:aywenite").getBest(), 128),
                     new ItemDepositRequirement(Material.GRAY_WOOL, 32),
                     new ItemDepositRequirement(Material.GLASS, 128),
-                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_items:suit_helmet").getBest(), 1),
-                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_items:suit_chestplate").getBest(), 1),
-                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_items:suit_leggings").getBest(), 1),
-                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_items:suit_boots").getBest(), 1),
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:courgette").getBest(), 8),
                     new EventTemplateRequirement(
                             (city, scope) -> Objects.requireNonNull(CityStatisticsManager
@@ -221,7 +216,6 @@ public enum CityLevels {
             List.of(
                     FeaturesRewards.LEVEL_4,
                     PlayerBankLimitRewards.LEVEL_4,
-                    CityBankLimitRewards.LEVEL_4,
                     InterestRewards.LEVEL_4,
                     MascotsLevelsRewards.LEVEL_4,
                     MascotsSkinUnlockRewards.LEVEL_4,
@@ -257,7 +251,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 12k dans la banque (%s/12k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
@@ -279,7 +273,6 @@ public enum CityLevels {
             List.of(
                     FeaturesRewards.LEVEL_5,
                     PlayerBankLimitRewards.LEVEL_5,
-                    CityBankLimitRewards.LEVEL_5,
                     InterestRewards.LEVEL_5,
                     MascotsLevelsRewards.LEVEL_5,
                     MascotsSkinUnlockRewards.LEVEL_5,
@@ -308,7 +301,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 20k dans la banque (%s/20k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
@@ -338,7 +331,6 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_6,
-                    CityBankLimitRewards.LEVEL_6,
                     InterestRewards.LEVEL_6,
                     MascotsLevelsRewards.LEVEL_6,
                     MascotsSkinUnlockRewards.LEVEL_6,
@@ -367,7 +359,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 30k dans la banque (%s/30k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
@@ -397,7 +389,6 @@ public enum CityLevels {
             List.of(
                     FeaturesRewards.LEVEL_7,
                     PlayerBankLimitRewards.LEVEL_7,
-                    CityBankLimitRewards.LEVEL_7,
                     InterestRewards.LEVEL_7,
                     MascotsLevelsRewards.LEVEL_7,
                     MascotsSkinUnlockRewards.LEVEL_7,
@@ -445,7 +436,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 60k dans la banque (%s/60k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
@@ -516,7 +507,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 80k dans la banque (%s/80k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
@@ -531,7 +522,6 @@ public enum CityLevels {
             List.of(
                     FeaturesRewards.LEVEL_9,
                     PlayerBankLimitRewards.LEVEL_9,
-                    CityBankLimitRewards.LEVEL_9,
                     InterestRewards.LEVEL_9,
                     MascotsLevelsRewards.LEVEL_9,
                     MascotsSkinUnlockRewards.LEVEL_9,
@@ -578,7 +568,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir 125k dans la banque (%s/125k)",
-                                        EconomyManager.getFormattedNumber(city.getBalance())
+                                        EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
@@ -593,7 +583,6 @@ public enum CityLevels {
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_10,
-                    CityBankLimitRewards.LEVEL_10,
                     InterestRewards.LEVEL_10,
                     MascotsLevelsRewards.LEVEL_10,
                     MascotsSkinUnlockRewards.LEVEL_10,

@@ -12,7 +12,6 @@ import fr.openmc.core.features.city.sub.mayor.ElectionType;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.models.CityLaw;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
-import fr.openmc.core.features.city.sub.milestone.rewards.CityBankLimitRewards;
 import fr.openmc.core.features.city.sub.milestone.rewards.RankLimitRewards;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
@@ -399,12 +398,8 @@ public class City {
      * @param value The new balance value to be set.
      */
     public void setBalance(double value) {
-        double limit = CityBankLimitRewards.getBankBalanceLimit(this.getLevel());
-
-        double newBalance = Math.min(value, limit);
-
         double before = this.balance;
-        this.balance = newBalance;
+        this.balance = value;
 
         // Sauvegarde async
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->

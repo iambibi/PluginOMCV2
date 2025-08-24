@@ -137,7 +137,7 @@ public class CityMenu extends Menu {
                 Component.empty(),
                 Component.text("§7Level : §3" + city.getLevel()),
                 Component.empty(),
-                Component.text("§e§lCLIQUEZ ICI POUR ACCEDER A ")
+                Component.text("§e§lCLIQUEZ ICI POUR ACCEDER AU MILESTONE")
         );
 
         inventory.put(3, new ItemBuilder(this, Material.NETHER_STAR, itemMeta -> {

@@ -7,6 +7,10 @@ import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.milestone.CityLevels;
 import fr.openmc.core.features.city.sub.milestone.rewards.FeaturesRewards;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -28,6 +32,8 @@ public class CooldownEndListener implements Listener {
         if (oldLevel + 1 > CityLevels.values().length) return;
 
         city.setLevel(oldLevel + 1);
+
+        MessagesManager.broadcastMessage(Component.text("La ville §d" + city.getName() + " §fa passé au §3Niveau " + city.getLevel() + " §f! Un maximum de GG!"), Prefix.CITY, MessageType.INFO);
 
         CityStatisticsManager.removeStats(city.getUUID());
 

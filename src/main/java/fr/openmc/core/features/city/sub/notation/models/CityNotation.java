@@ -15,7 +15,7 @@ public class CityNotation {
     private String weekStr;
     @DatabaseField(defaultValue = "0", columnName = "economy")
     private Double noteEconomy;
-    @DatabaseField(defaultValue = "0", columnName = "economy")
+    @DatabaseField(defaultValue = "0", columnName = "military")
     private Double noteMilitary;
     @DatabaseField(defaultValue = "0", columnName = "activity")
     private Double noteActivity;

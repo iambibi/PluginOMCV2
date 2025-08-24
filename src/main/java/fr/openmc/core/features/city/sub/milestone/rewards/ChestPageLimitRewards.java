@@ -8,10 +8,10 @@ import net.kyori.adventure.text.Component;
 public enum ChestPageLimitRewards implements CityRewards {
 
     LEVEL_1(0),
-    LEVEL_2(0),
-    LEVEL_3(1),
-    LEVEL_4(2),
-    LEVEL_5(3),
+    LEVEL_2(1),
+    LEVEL_3(2),
+    LEVEL_4(3),
+    LEVEL_5(4),
     LEVEL_6(5),
     LEVEL_7(6),
     LEVEL_8(8),
