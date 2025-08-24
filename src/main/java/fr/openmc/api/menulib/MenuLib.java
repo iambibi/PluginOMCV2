@@ -3,6 +3,7 @@ package fr.openmc.api.menulib;
 import fr.openmc.api.menulib.default_menu.ConfirmMenu;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.homes.menu.HomeDeleteConfirmMenu;
 import fr.openmc.core.utils.ItemUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -32,6 +33,15 @@ import java.util.function.Consumer;
  */
 public final class MenuLib implements Listener {
     private static final Map<Player, Deque<Menu>> menuHistory = new HashMap<>();
+
+    private static final Set<Class<? extends Menu>> ignoredMenus = new HashSet<>();
+
+    static {
+        ignoredMenus.add(ConfirmMenu.class);
+        ignoredMenus.add(fr.openmc.core.features.contest.menu.ConfirmMenu.class);
+        ignoredMenus.add(fr.openmc.core.features.adminshop.menus.ConfirmMenu.class);
+        ignoredMenus.add(HomeDeleteConfirmMenu.class);
+    }
     @Getter
     private static NamespacedKey itemIdKey;
 
@@ -94,15 +104,23 @@ public final class MenuLib implements Listener {
     public static Menu getLastMenu(Player player) {
         Deque<Menu> history = menuHistory.get(player);
 
-        if (history == null || history.isEmpty() || history.size() < 2) {
+        if (history == null || history.size() < 2) {
             return null;
         }
 
         Iterator<Menu> iterator = history.iterator();
 
-        iterator.next();
+        Menu current = iterator.next();
 
-        return iterator.next();
+        while (iterator.hasNext()) {
+            Menu previous = iterator.next();
+
+            if (!ignoredMenus.contains(previous.getClass()) && !previous.getClass().equals(current.getClass())) {
+                return previous;
+            }
+        }
+
+        return null;
     }
 
     public static Menu popAndGetPreviousMenu(Player player) {
@@ -114,7 +132,7 @@ public final class MenuLib implements Listener {
         while (!history.isEmpty()) {
             Menu previous = history.peek();
 
-            if (!(previous instanceof ConfirmMenu) && !previous.getClass().equals(current.getClass())) {
+            if (!ignoredMenus.contains(previous.getClass()) && !previous.getClass().equals(current.getClass())) {
                 return previous;
             }
 
