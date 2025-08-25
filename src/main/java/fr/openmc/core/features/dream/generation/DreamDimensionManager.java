@@ -1,18 +1,19 @@
 package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.generation.biomes.*;
 import fr.openmc.core.features.dream.generation.effects.BiomeParticleListener;
 import fr.openmc.core.features.dream.generation.populators.mud.RockPopulator;
 import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopulator;
 import fr.openmc.core.features.dream.generation.structures.cloud.CloudCastleStructure;
 import fr.openmc.core.utils.SchematicsUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.Random;
 
 public class DreamDimensionManager {
@@ -39,20 +40,20 @@ public class DreamDimensionManager {
 
     public void createDimension() {
         WorldCreator creator = new WorldCreator(DIMENSION_NAME);
-        long seed = createSeed();
 
-        // ** BIOMES REGISTER **
-        new SoulForestChunkGenerator(seed);
-        new PlainsChunkGenerator(seed);
-        new MudBeachChunkGenerator(seed);
-        new CloudChunkGenerator(seed);
-        new GlaciteCaveChunkGenerator(seed);
+        File worldFolder = new File(Bukkit.getWorldContainer(), DIMENSION_NAME);
 
-        creator.seed(seed);
-        creator.generator(new DreamChunkGenerator(seed));
+        if (!worldFolder.exists()) {
+            long seed = createSeed();
+            creator.seed(seed);
+            plugin.getLogger().info("New Dream world created with seed: " + seed);
+        } else {
+            plugin.getLogger().info("Loading existing Dream world...");
+        }
+
+        creator.generator(new DreamChunkGenerator(creator.seed() != 0 ? creator.seed() : 0));
         creator.environment(World.Environment.NORMAL);
 
-        System.out.println(creator.seed());
         World dream = creator.createWorld();
 
         // ** POPULATORS REGISTER **
@@ -62,6 +63,7 @@ public class DreamDimensionManager {
         // ** STRUCTURES POPULATORS REGISTER **
         dream.getPopulators().add(new CloudCastleStructure());
 
+        // ** SET GAMERULE FOR THE WORLD **
         dream.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         dream.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         dream.setGameRule(GameRule.DISABLE_RAIDS, true);
@@ -71,7 +73,7 @@ public class DreamDimensionManager {
 
         dream.setTime(18000);
 
-        plugin.getLogger().info("Dream Dimension created successfully!");
+        plugin.getLogger().info("Dream Dimension ready!");
     }
 
     private long createSeed() {
