@@ -143,7 +143,7 @@ public class CityChestMenu extends PaginatedMenu {
             loreUpgrade.add(Component.text("§e§lCLIQUEZ ICI POUR AMELIORER LE COFFRE"));
         }
 
-        if (city.hasPermission(getOwner().getUniqueId(), CityPermission.CHEST_UPGRADE) && city.getChestPages() < 5) {
+        if (city.hasPermission(getOwner().getUniqueId(), CityPermission.CHEST_UPGRADE) && city.getChestPages() < ChestPageLimitRewards.getChestPageLimit(city.getLevel())) {
             map.put(47, new ItemBuilder(this, Material.ENDER_CHEST, itemMeta -> {
                 itemMeta.displayName(Component.text("§aAméliorer le coffre"));
                 itemMeta.lore(loreUpgrade);

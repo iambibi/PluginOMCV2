@@ -114,20 +114,20 @@ public enum CityLevels {
                                 ));
                             }
                     ),
-//                    new TemplateRequirement(
-//                            city -> city.getMembers().size() >= 2,
-//                            city -> ItemStack.of(Material.PLAYER_HEAD),
-//                            (city, level) -> {
-//                                if (city.getLevel() > level.ordinal()) {
-//                                    return Component.text("Avoir 2 Membres");
-//                                }
-//
-//                                return Component.text(String.format(
-//                                        "Avoir 2 Membres (%d/2)",
-//                                        city.getMembers().size()
-//                                ));
-//                            }
-//                    ),
+                    new TemplateRequirement(
+                            city -> city.getMembers().size() >= 2,
+                            city -> ItemStack.of(Material.PLAYER_HEAD),
+                            (city, level) -> {
+                                if (city.getLevel() > level.ordinal()) {
+                                    return Component.text("Avoir 2 Membres");
+                                }
+
+                                return Component.text(String.format(
+                                        "Avoir 2 Membres (%d/2)",
+                                        city.getMembers().size()
+                                ));
+                            }
+                    ),
                     new TemplateRequirement(
                             city -> city.getMascot().getLevel() >= 2,
                             city -> ItemStack.of(city.getMascot().getMascotEgg()),
