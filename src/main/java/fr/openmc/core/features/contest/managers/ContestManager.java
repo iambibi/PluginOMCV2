@@ -492,8 +492,8 @@ public class ContestManager {
                         e.printStackTrace();
                     }
             TradeYMLManager.selectRandomlyContest(); // on pioche un contest qui a une valeur selected la + faible
-                    dataPlayer=new HashMap<>(); // on supprime les données précédentes du joueurs
-                    MailboxManager.sendItemsToAOfflinePlayerBatch(playerItemsMap); // on envoit les Items en mailbox ss forme de batch
+            dataPlayer = new HashMap<>(); // on supprime les données précédentes du joueurs
+            MailboxManager.sendItemsToAOfflinePlayerBatch(playerItemsMap); // on envoit les Items en mailbox ss forme de batch
         });
     }
 
