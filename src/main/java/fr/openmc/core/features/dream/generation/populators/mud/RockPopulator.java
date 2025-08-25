@@ -1,10 +1,10 @@
 package fr.openmc.core.features.dream.generation.populators.mud;
 
+import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.utils.StructureUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +36,7 @@ public class RockPopulator extends BlockPopulator {
 
         Location loc = new Location(world, x, y, z);
 
-        if (!world.getBiome(loc).equals(Biome.BEACH)) return;
+        if (!world.getBiome(loc).equals(DreamBiome.MUD_BEACH.getBiome())) return;
 
         try {
             StructureUtils.placeStructure(StructureUtils.getStructureFile("omc_dream", ROCK_FEATURES.get(random.nextInt(ROCK_FEATURES.size()))), loc, random.nextBoolean(), random.nextBoolean());

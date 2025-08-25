@@ -12,7 +12,6 @@ import java.util.Random;
 
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT;
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT;
-import static org.bukkit.block.Biome.*;
 
 public class DreamChunkGenerator extends ChunkGenerator {
     public static final Material FLOOR_MATERIAL = Material.BEDROCK;
@@ -46,13 +45,13 @@ public class DreamChunkGenerator extends ChunkGenerator {
                 for (int z = 0; z < 16; z++) {
                     Biome biome = chunkData.getBiome(x, y, z);
 
-                    if (biome.equals(Biome.PLAINS)) {
+                    if (biome.equals(DreamBiome.SCULK_PLAINS.getBiome())) {
                         PlainsChunkGenerator.generateBlock(random, chunkX, chunkZ, chunkData, x, y, z);
-                    } else if (biome.equals(FOREST)) {
+                    } else if (biome.equals(DreamBiome.SOUL_FOREST.getBiome())) {
                         SoulForestChunkGenerator.generateBlock(random, chunkX, chunkZ, chunkData, x, y, z);
-                    } else if (biome.equals(BEACH)) {
+                    } else if (biome.equals(DreamBiome.MUD_BEACH.getBiome())) {
                         MudBeachChunkGenerator.generateBlock(random, chunkX, chunkZ, chunkData, x, y, z);
-                    } else if (biome.equals(THE_VOID)) {
+                    } else if (biome.equals(DreamBiome.CLOUD_LAND.getBiome())) {
                         CloudChunkGenerator.generateBlock(random, chunkX, chunkZ, chunkData, x, y, z);
                     }
                 }
@@ -69,6 +68,8 @@ public class DreamChunkGenerator extends ChunkGenerator {
                 }
             }
         }
+
+        // sol avant la bedrock
         for (int y = MIN_CAVE_HEIGHT + 1; y < MIN_CAVE_HEIGHT + 4; y++) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {

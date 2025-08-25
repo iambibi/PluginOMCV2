@@ -17,7 +17,7 @@ import fr.openmc.core.features.displays.TabList;
 import fr.openmc.core.features.displays.bossbar.BossbarManager;
 import fr.openmc.core.features.displays.holograms.HologramLoader;
 import fr.openmc.core.features.displays.scoreboards.ScoreboardManager;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.economy.BankManager;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.features.homes.HomesManager;
@@ -120,7 +120,8 @@ public class OMCPlugin extends JavaPlugin {
         new MotdUtils();
         new TranslationManager(new File(this.getDataFolder(), "translations"), "fr");
         new DynamicCooldownManager();
-        new DreamDimensionManager();
+        new DreamManager();
+
         HomeIconCacheManager.initialize();
 
         PlayerSettingsManager.loadAllPlayerSettings();

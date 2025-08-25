@@ -10,6 +10,8 @@ import fr.openmc.core.utils.SchematicsUtils;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Biome;
+import org.bukkit.entity.Player;
 
 import java.util.Random;
 
@@ -82,6 +84,24 @@ public class DreamDimensionManager {
         }
 
         return seed;
+    }
+
+    public static DreamBiome getDreamBiome(Biome biome) {
+        for (DreamBiome dreamBiome : DreamBiome.values()) {
+            if (!dreamBiome.getBiome().equals(biome)) continue;
+
+            return dreamBiome;
+        }
+
+        return DreamBiome.SCULK_PLAINS;
+    }
+
+    public static DreamBiome getDreamBiome(Player player) {
+        World world = player.getWorld();
+
+        if (!world.getName().equals(DIMENSION_NAME)) return null;
+
+        return getDreamBiome(world.getBiome(player.getLocation()));
     }
 }
 

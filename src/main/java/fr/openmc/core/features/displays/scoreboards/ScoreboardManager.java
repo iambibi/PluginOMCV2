@@ -1,6 +1,10 @@
 package fr.openmc.core.features.displays.scoreboards;
 
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
+import fr.openmc.api.hooks.ItemsAdderHook;
+import fr.openmc.api.hooks.LuckPermsHook;
+import fr.openmc.api.hooks.PapiHook;
+import fr.openmc.api.hooks.WorldGuardHook;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.commands.utils.Restart;
@@ -10,13 +14,11 @@ import fr.openmc.core.features.city.sub.war.War;
 import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.contest.managers.ContestManager;
 import fr.openmc.core.features.contest.models.Contest;
+import fr.openmc.core.features.dream.DreamScoreboard;
+import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.DirectionUtils;
-import fr.openmc.api.hooks.ItemsAdderHook;
-import fr.openmc.api.hooks.LuckPermsHook;
-import fr.openmc.api.hooks.PapiHook;
-import fr.openmc.api.hooks.WorldGuardHook;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -74,16 +76,27 @@ public class ScoreboardManager implements Listener {
 
     public static Scoreboard createNewScoreboard(Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective;
-        if (canShowLogo) {
-            objective = scoreboard.registerNewObjective("sb_aywen", Criteria.DUMMY, Component.text(FontImageWrapper.replaceFontImages(":openmc:")));
+
+        Component displayName;
+
+        if (canShowLogo && player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) {
+            displayName = Component.text(FontImageWrapper.replaceFontImages(":dream_openmc:"));
+        } else if (canShowLogo) {
+            displayName = Component.text(FontImageWrapper.replaceFontImages(":openmc:"));
         } else {
-            objective = scoreboard.registerNewObjective("sb_aywen", Criteria.DUMMY, Component.text("OPENMC").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE));
+            displayName = Component.text("OPENMC").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE);
         }
+
+
+        Objective objective = scoreboard.registerNewObjective("sb_aywen", Criteria.DUMMY, displayName);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         updateScoreboard(player, scoreboard, objective);
         return scoreboard;
+    }
+
+    public static void removePlayerScoreboard(Player player) {
+        playerScoreboards.remove(player.getUniqueId());
     }
 
     public static void updateAllScoreboards() {
@@ -124,6 +137,11 @@ public class ScoreboardManager implements Listener {
 
         for (String entry : scoreboard.getEntries()) {
             scoreboard.resetScores(entry);
+        }
+
+        if (player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) {
+            DreamScoreboard.updateDreamScoreboard(player, scoreboard, objective);
+            return;
         }
 
         // RESTART SCOREBOARD

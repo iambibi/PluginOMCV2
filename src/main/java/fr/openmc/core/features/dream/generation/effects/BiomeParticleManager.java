@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.generation.effects;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.utils.ParticleUtils;
 import org.bukkit.Bukkit;
@@ -20,11 +21,11 @@ public class BiomeParticleManager {
     // ** PARTICLES FOR EACH ZONES **
     private static final Map<Biome, Particle> biomeParticles = new HashMap<>() {
         {
-            put(Biome.FOREST, Particle.SCULK_SOUL);
-            put(Biome.PLAINS, Particle.TRIAL_SPAWNER_DETECTION_OMINOUS);
-            put(Biome.BEACH, Particle.ASH);
-            put(Biome.DEEP_DARK, Particle.SNOWFLAKE);
-            put(Biome.THE_VOID, Particle.SMALL_GUST);
+            put(DreamBiome.SOUL_FOREST.getBiome(), Particle.SCULK_SOUL);
+            put(DreamBiome.SCULK_PLAINS.getBiome(), Particle.TRIAL_SPAWNER_DETECTION_OMINOUS);
+            put(DreamBiome.MUD_BEACH.getBiome(), Particle.ASH);
+            put(DreamBiome.GLACITE_GROTTO.getBiome(), Particle.SNOWFLAKE);
+            put(DreamBiome.CLOUD_LAND.getBiome(), Particle.SMALL_GUST);
         }
     };
 

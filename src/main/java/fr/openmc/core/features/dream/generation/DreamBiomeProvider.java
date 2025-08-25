@@ -21,24 +21,24 @@ public class DreamBiomeProvider extends BiomeProvider {
     public DreamBiomeProvider(long seed) {
         this.noiseGenerator = new PerlinNoiseGenerator(new Random(seed));
         this.biomes = new ArrayList<>();
-        this.biomes.add(Biome.PLAINS);
-        this.biomes.add(Biome.FOREST);
-        this.biomes.add(Biome.BEACH);
+        this.biomes.add(DreamBiome.SCULK_PLAINS.getBiome());
+        this.biomes.add(DreamBiome.SOUL_FOREST.getBiome());
+        this.biomes.add(DreamBiome.MUD_BEACH.getBiome());
     }
 
 
     @Override
     public Biome getBiome(WorldInfo worldInfo, int x, int y, int z) {
         if (y >= MIN_HEIGHT_CLOUD) {
-            return Biome.THE_VOID;
+            return DreamBiome.CLOUD_LAND.getBiome();
         }
 
         if (y <= MAX_HEIGHT_MUD && y > MIN_HEIGHT_MUD) {
-            return Biome.BEACH;
+            return DreamBiome.MUD_BEACH.getBiome();
         }
 
         if (y <= MIN_HEIGHT_MUD) {
-            return Biome.DEEP_DARK;
+            return DreamBiome.GLACITE_GROTTO.getBiome();
         }
 
         double noise = 0;
@@ -56,7 +56,7 @@ public class DreamBiomeProvider extends BiomeProvider {
         noise = noise / maxValue;
 
         List<Biome> landBiomes = biomes.stream()
-                .filter(b -> b != Biome.BEACH)
+                .filter(b -> b != DreamBiome.MUD_BEACH.getBiome())
                 .toList();
 
         int biomeIndex = (int) ((noise + 1) * landBiomes.size() / 2) % landBiomes.size();

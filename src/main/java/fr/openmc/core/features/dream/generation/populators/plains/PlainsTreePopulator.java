@@ -1,10 +1,10 @@
 package fr.openmc.core.features.dream.generation.populators.plains;
 
+import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.utils.StructureUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +37,7 @@ public class PlainsTreePopulator extends BlockPopulator {
 
         Location loc = new Location(world, x, y, z);
 
-        if (!world.getBiome(loc).equals(Biome.PLAINS)) return;
+        if (!world.getBiome(loc).equals(DreamBiome.SCULK_PLAINS.getBiome())) return;
 
         try {
             StructureUtils.placeStructure(StructureUtils.getStructureFile("omc_dream", TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))), loc, false, false);
