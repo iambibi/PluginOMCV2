@@ -158,14 +158,7 @@ public class MilestoneMenu extends Menu {
         return List.of();
     }
 
-    private static final class Snake {
-        final List<Integer> nodes; // quete
-        final List<Integer> links; // lien entre les quetes
-
-        Snake(List<Integer> n, List<Integer> l) {
-            nodes = n;
-            links = l;
-        }
+    private record Snake(List<Integer> nodes, List<Integer> links) {
     }
 
     private Snake buildSnake(int count) {
