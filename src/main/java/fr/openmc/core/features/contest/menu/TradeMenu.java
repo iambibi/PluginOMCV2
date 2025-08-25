@@ -2,15 +2,16 @@ package fr.openmc.core.features.contest.menu;
 
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
+import fr.openmc.api.hooks.ItemsAdderHook;
 import fr.openmc.api.menulib.Menu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.core.features.contest.managers.ContestManager;
 import fr.openmc.core.features.contest.managers.ContestPlayerManager;
+import fr.openmc.core.features.contest.managers.TradeYMLManager;
 import fr.openmc.core.features.mailboxes.MailboxManager;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.ItemUtils;
-import fr.openmc.api.hooks.ItemsAdderHook;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -83,7 +84,7 @@ public class TradeMenu extends Menu {
             itemMeta.lore(loreTrade);
         }));
 
-            List<Map<String, Object>> selectedTrades = ContestManager.getTradeSelected(true).stream()
+        List<Map<String, Object>> selectedTrades = TradeYMLManager.getTradeSelected(true).stream()
                     .sorted(Comparator.comparing(trade -> (String) trade.get("ress"))).toList();
 
         List<Integer> slotTrade = Arrays.asList(10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24);

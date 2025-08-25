@@ -28,15 +28,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import revxrsal.commands.autocomplete.SuggestionProvider;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
@@ -52,9 +48,6 @@ public class ContestManager {
     private static final DayOfWeek START_CONTEST_DAY = DayOfWeek.FRIDAY;
     private static final DayOfWeek START_TRADE_CONTEST_DAY = DayOfWeek.SATURDAY;
     private static final DayOfWeek END_CONTEST_DAY = DayOfWeek.MONDAY;
-
-    public static File contestFile;
-    public static YamlConfiguration contestConfig;
 
     public static Contest data;
     public static Map<UUID, ContestPlayer> dataPlayer = new HashMap<>();
@@ -74,15 +67,11 @@ public class ContestManager {
 
         //COMMANDS
         CommandsManager.getHandler().getAutoCompleter().registerSuggestion("colorContest", SuggestionProvider.of(ContestManager.getColorContestList()));
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("trade", SuggestionProvider.of(ContestManager.getRessListFromConfig()));
+        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("trade", SuggestionProvider.of(TradeYMLManager.getRessListFromConfig()));
 
         CommandsManager.getHandler().register(
                 new ContestCommand()
         );
-
-        //Load config
-        contestFile = new File(OMCPlugin.getInstance().getDataFolder() + "/data", "contest.yml");
-        loadContestConfig();
 
         // Fill data and playerData
         initContestData();
@@ -105,29 +94,6 @@ public class ContestManager {
 
         TableUtils.createTableIfNotExists(connectionSource, ContestPlayer.class);
         playerDao = DaoManager.createDao(connectionSource, ContestPlayer.class);
-    }
-
-    /**
-     * Charge le contest.yml
-     */
-    private static void loadContestConfig() {
-        if(!contestFile.exists()) {
-            contestFile.getParentFile().mkdirs();
-            OMCPlugin.getInstance().saveResource("data/contest.yml", false);
-        }
-
-        contestConfig = YamlConfiguration.loadConfiguration(contestFile);
-    }
-
-    /**
-     * Sauvegarde du contest.yml
-     */
-    public static void saveContestConfig() {
-        try {
-            contestConfig.save(contestFile);
-        } catch (IOException e) {
-            OMCPlugin.getInstance().getSLF4JLogger().warn("Failed to save contest configuration file: {}", e.getMessage(), e);
-        }
     }
 
     // CONTEST DATA
@@ -221,14 +187,14 @@ public class ContestManager {
      * Initialisation de la phase 2 donc le commencement du Contests (ouverture des trades et des confrontations)
      */
     public static void initPhase2() {
-        List<Map<String, Object>> selectedTrades = getTradeSelected(true);
+        List<Map<String, Object>> selectedTrades = TradeYMLManager.getTradeSelected(true);
         for (Map<String, Object> trade : selectedTrades) {
-            updateColumnBooleanFromRandomTrades(false, (String) trade.get("ress"));
+            TradeYMLManager.updateColumnBooleanFromRandomTrades(false, (String) trade.get("ress"));
         }
 
-        List<Map<String, Object>> unselectedTrades = getTradeSelected(false);
+        List<Map<String, Object>> unselectedTrades = TradeYMLManager.getTradeSelected(false);
         for (Map<String, Object> trade : unselectedTrades) {
-            updateColumnBooleanFromRandomTrades(true, (String) trade.get("ress"));
+            TradeYMLManager.updateColumnBooleanFromRandomTrades(true, (String) trade.get("ress"));
         }
 
         data.setPhase(3);
@@ -519,49 +485,16 @@ public class ContestManager {
 
         //EXECUTER LES REQUETES SQL DANS UN AUTRE THREAD
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-                    addOneToLastContest(data.getCamp1()); // on ajoute 1 au contest précédant dans data/contest.yml pour signifier qu'il n'est plus prioritaire
+            TradeYMLManager.addOneToLastContest(data.getCamp1()); // on ajoute 1 au contest précédant dans data/contest.yml pour signifier qu'il n'est plus prioritaire
                     try {
                         TableUtils.clearTable(DatabaseManager.getConnectionSource(), ContestPlayer.class);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    selectRandomlyContest(); // on pioche un contest qui a une valeur selected la + faible
+            TradeYMLManager.selectRandomlyContest(); // on pioche un contest qui a une valeur selected la + faible
                     dataPlayer=new HashMap<>(); // on supprime les données précédentes du joueurs
                     MailboxManager.sendItemsToAOfflinePlayerBatch(playerItemsMap); // on envoit les Items en mailbox ss forme de batch
         });
-    }
-
-    // TRADE METHODE
-    /**
-     * Retourne une Liste avec les trades selectionnés donc le bool pour savoir si le trade est déjà
-     * choisis ou pas
-     */
-    public static List<Map<String, Object>> getTradeSelected(boolean bool) {
-        List<Map<?, ?>> contestTrades = contestConfig.getMapList("contestTrades");
-
-        List<Map<String, Object>> filteredTrades = contestTrades.stream()
-                .filter(trade -> (boolean) trade.get("selected") == bool)
-                .map(trade -> (Map<String, Object>) trade)
-                .collect(Collectors.toList());
-
-        Collections.shuffle(filteredTrades);
-
-        return filteredTrades.stream().limit(12).collect(Collectors.toList());
-    }
-
-
-    /**
-     * Change le boolean, si il est true il sera false
-     */
-    public static void updateColumnBooleanFromRandomTrades(Boolean bool, String ress) {
-        List<Map<String, Object>> contestTrades = (List<Map<String, Object>>) contestConfig.get("contestTrades");
-
-        for (Map<String, Object> trade : contestTrades) {
-            if (trade.get("ress").equals(ress)) {
-                trade.put("selected", bool);
-            }
-        }
-        saveContestConfig();
     }
 
     /**
@@ -571,94 +504,6 @@ public class ContestManager {
         return (int) dataPlayer.values().stream()
                 .filter(player -> player.getCamp() == camps)
                 .count();
-    }
-
-    //END CONTEST METHODE
-
-    /**
-     * Retourne une Liste contenant les ressources (ex NETHERITE_BLOCK)
-     */
-    public static List<String> getRessListFromConfig() {
-        FileConfiguration config = OMCPlugin.getInstance().getConfig();
-        List<Map<?, ?>> trades = config.getMapList("contestTrades");
-        List<String> ressList = new ArrayList<>();
-
-        for (Map<?, ?> tradeEntry : trades) {
-            if (tradeEntry.containsKey("ress")) {
-                ressList.add(tradeEntry.get("ress").toString());
-            }
-        }
-        return ressList;
-    }
-
-
-    private static void updateSelected(String camp) {
-        List<Map<?, ?>> contestList = contestConfig.getMapList("contestList");
-        List<Map<String, Object>> updatedContestList = new ArrayList<>();
-
-        for (Map<?, ?> contest : contestList) {
-            Map<String, Object> fusionContestList = new HashMap<>();
-
-            for (Map.Entry<?, ?> entry : contest.entrySet()) {
-                if (entry.getKey() instanceof String) {
-                    fusionContestList.put((String) entry.getKey(), entry.getValue());
-                }
-            }
-
-            if (fusionContestList.get("camp1").equals(camp)) {
-                int selected = (int) fusionContestList.get("selected");
-                fusionContestList.put("selected", selected + 1);
-            }
-
-            updatedContestList.add(fusionContestList);
-        }
-        contestConfig.set("contestList", updatedContestList);
-        saveContestConfig();
-    }
-
-    /**
-     * On ajoute 1 au dernier Contest pour éviter qu'il revienne (il revient seulement si tout les contests sont passés
-     */
-    public static void addOneToLastContest(String camps) {
-        List<Map<?, ?>> contestList = contestConfig.getMapList("contestList");
-
-        for (Map<?, ?> contest : contestList) {
-            if (contest.get("camp1").equals(camps)) {
-                updateSelected(camps);
-            }
-        }
-    }
-
-    /**
-     * Pioche un Conests en fonction de son nombre de selection
-     */
-    public static void selectRandomlyContest() {
-        List<Map<?, ?>> contestList = contestConfig.getMapList("contestList");
-        List<Map<String, Object>> orderedContestList = new ArrayList<>();
-
-        for (Map<?, ?> contest : contestList) {
-            Map<String, Object> fusionContest = new HashMap<>();
-            for (Map.Entry<?, ?> entry : contest.entrySet()) {
-                if (entry.getKey() instanceof String) {
-                    fusionContest.put((String) entry.getKey(), entry.getValue());
-                }
-            }
-            orderedContestList.add(fusionContest);
-        }
-
-        int minSelected = orderedContestList.stream()
-                .mapToInt(c -> (int) c.get("selected"))
-                .min()
-                .orElse(0);
-
-        List<Map<String, Object>> leastSelectedContests = orderedContestList.stream()
-                .filter(c -> (int) c.get("selected") == minSelected)
-                .toList();
-
-        Random random = new Random();
-        Map<String, Object> selectedContest = leastSelectedContests.get(random.nextInt(leastSelectedContests.size()));
-
-        data = new Contest((String) selectedContest.get("camp1"), (String) selectedContest.get("camp2"), (String) selectedContest.get("color1"), (String) selectedContest.get("color2"), 1, "ven.", 0, 0);
     }
 
     /**
