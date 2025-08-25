@@ -1,20 +1,17 @@
 package fr.openmc.core.features.city.menu.ranks;
 
 import dev.lone.itemsadder.api.CustomStack;
-import fr.openmc.api.input.signgui.SignGUI;
-import fr.openmc.api.input.signgui.exception.SignGUIVersionException;
+import fr.openmc.api.input.DialogInput;
 import fr.openmc.api.menulib.PaginatedMenu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.StaticSlots;
-import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.models.CityRank;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.ItemUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static fr.openmc.core.utils.InputUtils.MAX_LENGTH;
 
 public class CityRankIconMenu extends PaginatedMenu {
 	
@@ -74,7 +73,7 @@ public class CityRankIconMenu extends PaginatedMenu {
 	private static final List<Material> paginableMaterials = List.of();
 
 	@Override
-	public @NotNull List<ItemStack> getItems() {
+	public List<ItemStack> getItems() {
 		List<ItemStack> items = new ArrayList<>();
 		List<Material> filtered = getFilteredMaterials();
 
@@ -96,12 +95,10 @@ public class CityRankIconMenu extends PaginatedMenu {
 
 	
 	@Override
-	public Map<Integer, ItemStack> getButtons() {
-		Map<Integer, ItemStack> map = new HashMap<>();
+	public Map<Integer, ItemBuilder> getButtons() {
+		Map<Integer, ItemBuilder> map = new HashMap<>();
 		map.put(45, new ItemBuilder(this, Material.BARRIER
-				, itemMeta -> itemMeta.displayName(Component.text("§cRetour"))).setOnClick(inventoryClickEvent -> {
-			new CityRankDetailsMenu(getOwner(), city, rank).open();
-		}));
+				, itemMeta -> itemMeta.displayName(Component.text("§cRetour")), true));
 
 		if (hasPreviousPage())
 			map.put(48, new ItemBuilder(this, CustomStack.getInstance("_iainternal:icon_back_orange")
@@ -118,32 +115,9 @@ public class CityRankIconMenu extends PaginatedMenu {
 			itemMeta.displayName(Component.text("§bRechercher une icône"));
 			itemMeta.lore(List.of(Component.text("§7Cliquez pour saisir un mot-clé")));
 		}).setOnClick(event -> {
-			String[] lines = new String[4];
-			lines[0] = "";
-			lines[1] = " ᐱᐱᐱᐱᐱᐱᐱ ";
-			lines[2] = "Entrez votre nom";
-			lines[3] = "de grade ci dessus";
-
-			SignGUI gui;
-			try {
-				gui = SignGUI.builder()
-						.setLines(null, lines[1], lines[2], lines[3])
-						.setType(ItemUtils.getSignType(getOwner()))
-						.setHandler((p, result) -> {
-							String input = result.getLine(0);
-
-							Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-								new CityRankIconMenu(getOwner(), city, 0, rank, input).open();
-							});
-
-							return Collections.emptyList();
-						})
-						.build();
-			} catch (SignGUIVersionException e) {
-				throw new RuntimeException(e);
-			}
-
-			gui.open(getOwner());
+			DialogInput.send(getOwner(), Component.text("Entrez le nom d'un mot clé pour l'icône"), MAX_LENGTH, input -> {
+				new CityRankIconMenu(getOwner(), city, 0, rank, input).open();
+			});
 		}));
 
 		if (filter != null && !filter.isEmpty()) {
@@ -159,9 +133,14 @@ public class CityRankIconMenu extends PaginatedMenu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Choisir une icône - Page " + (page + 1);
+		return "Menu de choix d'une icône - Page " + (page + 1);
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public void onInventoryClick(InventoryClickEvent e) {
 	}

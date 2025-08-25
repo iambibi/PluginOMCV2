@@ -6,9 +6,9 @@ import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.ItemUtils;
 import fr.openmc.api.menulib.utils.StaticSlots;
-import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.CityType;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.economy.EconomyManager;
@@ -68,10 +68,10 @@ public class CityListMenu extends PaginatedMenu {
 	}
 	
 	@Override
-	public @NotNull List<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
 		List<ItemStack> items = new ArrayList<>();
 		cities.forEach(city -> {
-			UUID ownerUUID = city.getPlayerWithPermission(CPermission.OWNER);
+			UUID ownerUUID = city.getPlayerWithPermission(CityPermission.OWNER);
 			String ownerName = PlayerNameCache.getName(ownerUUID);
 
 			List<Component> cityLore = new ArrayList<>();
@@ -110,8 +110,8 @@ public class CityListMenu extends PaginatedMenu {
 	}
 
 	@Override
-	public Map<Integer, ItemStack> getButtons() {
-		Map<Integer, ItemStack> map = new HashMap<>();
+    public Map<Integer, ItemBuilder> getButtons() {
+        Map<Integer, ItemBuilder> map = new HashMap<>();
 		map.put(49, new ItemBuilder(this, Material.HOPPER, itemMeta -> {
 			itemMeta.displayName(Component.text("Trier"));
 			itemMeta.lore(generateSortLoreText());
@@ -128,9 +128,14 @@ public class CityListMenu extends PaginatedMenu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Liste des villes";
+		return "Menu des listes des Villes";
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getSlot() > 44) return;
@@ -249,7 +254,7 @@ public class CityListMenu extends PaginatedMenu {
 	/**
 	 * Enum representing the sorting types for the city list.
 	 */
-	private enum SortType {
+	public enum SortType {
 		NAME,
 		WEALTH,
 		POPULATION,

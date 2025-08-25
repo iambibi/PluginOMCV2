@@ -30,7 +30,6 @@ public class ProtectionsManager {
                 new ExplodeProtection(),
                 new FireProtection(),
                 new FishProtection(),
-                new FoodProtection(),
                 new HangingProtection(),
                 new InteractProtection(),
                 new LeashProtection(),
@@ -56,6 +55,8 @@ public class ProtectionsManager {
         if (canBypassPlayer.contains(player.getUniqueId())) return true; // Le joueur peut bypass les protections
 
         City cityAtLoc = CityManager.getCityFromChunk(loc.getChunk().getX(), loc.getChunk().getZ());
+
+		if (cityAtLoc == null) return true;
 
         if (cityAtLoc.isMember(player)) return true;
 
@@ -125,7 +126,7 @@ public class ProtectionsManager {
 		}
 	}
 	
-	public static void checkPermissions(@NotNull Player player, Cancellable event, City city, CPermission permission) {
+	public static void checkPermissions(@NotNull Player player, Cancellable event, City city, CityPermission permission) {
 		if (! player.getWorld().getName().equals("world")) return;
 		
 		if (canBypassPlayer.contains(player.getUniqueId())) return; // Le joueur peut bypass les protections

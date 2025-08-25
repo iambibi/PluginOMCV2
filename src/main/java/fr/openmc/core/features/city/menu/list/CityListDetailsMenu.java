@@ -5,8 +5,8 @@ import fr.openmc.api.menulib.Menu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.ItemUtils;
-import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.CityType;
 import fr.openmc.core.features.city.sub.mayor.ElectionType;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
@@ -48,9 +48,14 @@ public class CityListDetailsMenu extends Menu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Détails de la ville " + city.getName();
+		return "Menu de détails de la Ville " + city.getName();
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public @NotNull InventorySize getInventorySize() {
 		return InventorySize.NORMAL;
@@ -62,8 +67,8 @@ public class CityListDetailsMenu extends Menu {
 	}
 	
 	@Override
-	public @NotNull Map<Integer, ItemStack> getContent() {
-		Map<Integer, ItemStack> map = new HashMap<>();
+	public @NotNull Map<Integer, ItemBuilder> getContent() {
+		Map<Integer, ItemBuilder> map = new HashMap<>();
 
 		List<Component> loreOwner = new ArrayList<>();
 
@@ -86,9 +91,9 @@ public class CityListDetailsMenu extends Menu {
 				loreOwner.addAll(perk3.getLore());
 			}
 
-			map.put(12, new ItemBuilder(this, ItemUtils.getPlayerSkull(this.city.getPlayerWithPermission(CPermission.OWNER)),
+			map.put(12, new ItemBuilder(this, ItemUtils.getPlayerSkull(this.city.getPlayerWithPermission(CityPermission.OWNER)),
 					itemMeta -> {
-						itemMeta.displayName(Component.text("§7Propriétaire : " + CacheOfflinePlayer.getOfflinePlayer(this.city.getPlayerWithPermission(CPermission.OWNER)).getName()));
+						itemMeta.displayName(Component.text("§7Propriétaire : " + CacheOfflinePlayer.getOfflinePlayer(this.city.getPlayerWithPermission(CityPermission.OWNER)).getName()));
 						itemMeta.lore(loreOwner);
 					})
 			);
@@ -102,7 +107,7 @@ public class CityListDetailsMenu extends Menu {
 				loreMayor.add(Component.text(perk3.getName()));
 				loreMayor.addAll(perk3.getLore());
 
-				map.put(14, new ItemBuilder(this, ItemUtils.getPlayerSkull(this.city.getPlayerWithPermission(CPermission.OWNER)),
+				map.put(14, new ItemBuilder(this, ItemUtils.getPlayerSkull(this.city.getPlayerWithPermission(CityPermission.OWNER)),
 								itemMeta -> {
 									itemMeta.displayName(
 											Component.text("§7Maire : ")
@@ -114,9 +119,9 @@ public class CityListDetailsMenu extends Menu {
 				);
 			}
 		} else {
-			map.put(13, new ItemBuilder(this, ItemUtils.getPlayerSkull(this.city.getPlayerWithPermission(CPermission.OWNER)),
+			map.put(13, new ItemBuilder(this, ItemUtils.getPlayerSkull(this.city.getPlayerWithPermission(CityPermission.OWNER)),
 					itemMeta -> {
-						itemMeta.displayName(Component.text("§7Propriétaire : " + CacheOfflinePlayer.getOfflinePlayer(this.city.getPlayerWithPermission(CPermission.OWNER)).getName()));
+						itemMeta.displayName(Component.text("§7Propriétaire : " + CacheOfflinePlayer.getOfflinePlayer(this.city.getPlayerWithPermission(CityPermission.OWNER)).getName()));
 					})
 			);
 		}
@@ -140,13 +145,12 @@ public class CityListDetailsMenu extends Menu {
 									Component.text("§e§lCLIQUEZ ICI POUR VOIR LES MEMBRES")
 							)
 					);
-				}).setNextMenu(new CityPlayerListMenu(getOwner(), city)));
+				}).setOnClick(inventoryClickEvent -> new CityPlayerListMenu(getOwner(), city).open()));
 
 		map.put(26, new ItemBuilder(this, new ItemStack(city.getType().equals(CityType.WAR) ? Material.RED_BANNER : Material.GREEN_BANNER),
 				itemMeta -> itemMeta.displayName(Component.text("§eType : " + (city.getType().equals(CityType.WAR) ? "§cGuerre" : "§aPaix")))));
 		map.put(18, new ItemBuilder(this, CustomStack.getInstance("_iainternal:icon_back_orange").getItemStack(),
-				itemMeta -> itemMeta.displayName(Component.text("§eRetour")))
-				.setOnClick(inventoryClickEvent -> new CityListMenu(getOwner()).open()));
+				itemMeta -> itemMeta.displayName(Component.text("§eRetour")), true));
 		return map;
 	}
 

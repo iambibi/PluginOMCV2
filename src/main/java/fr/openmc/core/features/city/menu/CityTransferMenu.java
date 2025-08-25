@@ -5,12 +5,12 @@ import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.ItemUtils;
 import fr.openmc.api.menulib.utils.StaticSlots;
-import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.actions.CityTransferAction;
-import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.items.CustomItemRegistry;
+import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -44,17 +44,17 @@ public class CityTransferMenu extends PaginatedMenu {
     }
 
     @Override
-    public @NotNull List<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
         List<ItemStack> items = new ArrayList<>();
         Player player = getOwner();
 
         City city = CityManager.getPlayerCity(player.getUniqueId());
         assert city != null;
 
-        boolean hasPermissionOwner = city.hasPermission(player.getUniqueId(), CPermission.OWNER);
+        boolean hasPermissionOwner = city.hasPermission(player.getUniqueId(), CityPermission.OWNER);
 
             for (UUID uuid : city.getMembers()) {
-                if (uuid.equals(city.getPlayerWithPermission(CPermission.OWNER))) {
+                if (uuid.equals(city.getPlayerWithPermission(CityPermission.OWNER))) {
                     continue;
                 }
 
@@ -70,7 +70,7 @@ public class CityTransferMenu extends PaginatedMenu {
                     ));
                 }).setOnClick(inventoryClickEvent -> {
                     if (!hasPermissionOwner) {
-                        MessagesManager.sendMessage(player, MessagesManager.Message.PLAYERNOOWNER.getMessage(), Prefix.CITY, MessageType.ERROR, false);
+                        MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_OWNER.getMessage(), Prefix.CITY, MessageType.ERROR, false);
                         return;
                     }
 
@@ -87,8 +87,8 @@ public class CityTransferMenu extends PaginatedMenu {
     }
 
     @Override
-    public Map<Integer, ItemStack> getButtons() {
-        Map<Integer, ItemStack> map = new HashMap<>();
+    public Map<Integer, ItemBuilder> getButtons() {
+        Map<Integer, ItemBuilder> map = new HashMap<>();
         map.put(49, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_cancel").getBest(), itemMeta -> {
             itemMeta.displayName(Component.text("§7Fermer"));
         }).setCloseButton());
@@ -114,6 +114,11 @@ public class CityTransferMenu extends PaginatedMenu {
     @Override
     public @NotNull String getName() {
         return "Menu des Villes - Transferer";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
     }
 
     @Override

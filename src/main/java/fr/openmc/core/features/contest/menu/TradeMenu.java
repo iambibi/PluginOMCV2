@@ -1,20 +1,19 @@
 package fr.openmc.core.features.contest.menu;
 
 import dev.lone.itemsadder.api.CustomStack;
+import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import fr.openmc.api.menulib.Menu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.core.features.contest.managers.ContestManager;
 import fr.openmc.core.features.contest.managers.ContestPlayerManager;
 import fr.openmc.core.features.mailboxes.MailboxManager;
-import fr.openmc.core.utils.ItemUtils;
-import fr.openmc.core.utils.api.ItemsAdderApi;
-import fr.openmc.core.utils.api.PapiApi;
 import fr.openmc.core.items.CustomItemRegistry;
+import fr.openmc.core.utils.ItemUtils;
+import fr.openmc.api.hooks.ItemsAdderHook;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -28,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-
 public class TradeMenu extends Menu {
 
     public TradeMenu(Player owner) {
@@ -37,11 +35,12 @@ public class TradeMenu extends Menu {
 
     @Override
     public @NotNull String getName() {
-        if (PapiApi.hasPAPI() && ItemsAdderApi.hasItemAdder()) {
-            return PlaceholderAPI.setPlaceholders(getOwner(), "§r§f%img_offset_-48%%img_contest_menu%");
-        } else {
-            return "Menu des Contests - Trades";
-        }
+        return "Menu des Contests - Trades";
+    }
+
+    @Override
+    public String getTexture() {
+        return FontImageWrapper.replaceFontImages("§r§f:offset_-48::contest_menu:");
     }
 
     @Override
@@ -55,9 +54,9 @@ public class TradeMenu extends Menu {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> getContent() {
+    public @NotNull Map<Integer, ItemBuilder> getContent() {
         Player player = getOwner();
-        Map<Integer, ItemStack> inventory = new HashMap<>();
+        Map<Integer, ItemBuilder> inventory = new HashMap<>();
 
             String campName = ContestPlayerManager.getPlayerCampName(player);
             NamedTextColor campColor = ContestManager.dataPlayer.get(player.getUniqueId()).getColor();
@@ -101,7 +100,7 @@ public class TradeMenu extends Menu {
             );
 
             inventory.put(slot, new ItemBuilder(this, m, itemMeta -> itemMeta.lore(loreTrades)).setOnClick(inventoryClickEvent -> {
-                if (!ItemsAdderApi.hasItemAdder()) {
+                if (!ItemsAdderHook.hasItemAdder()) {
                     MessagesManager.sendMessage(player, Component.text("§cFonctionnalité bloqué. Veuillez contactez l'administration"), Prefix.CONTEST, MessageType.ERROR, true);
                     return;
                 }
@@ -143,7 +142,7 @@ public class TradeMenu extends Menu {
                                 if (remain2 != 0) {
                                     newshellContestItem.setAmount(remain2);
                                     List<ItemStack> itemlist = ItemUtils.splitAmountIntoStack(newshellContestItem);
-                                    ItemStack[] shellContestArray = itemlist.toArray(new ItemStack[itemlist.size()]);
+                                    ItemStack[] shellContestArray = itemlist.toArray(new ItemStack[0]);
                                     MailboxManager.sendItems(player, player, shellContestArray);
                                 }
                             }
@@ -189,12 +188,12 @@ public class TradeMenu extends Menu {
             }));
         }
 
-        inventory.put(27, new ItemBuilder(this, Material.ARROW, itemMeta -> itemMeta.displayName(Component.text("§r§aRetour"))).setBackButton());
+        inventory.put(27, new ItemBuilder(this, Material.ARROW, itemMeta -> itemMeta.displayName(Component.text("§r§aRetour")), true));
 
         inventory.put(35, new ItemBuilder(this, Material.EMERALD, itemMeta -> {
             itemMeta.displayName(Component.text("§r§aPlus d'info !"));
             itemMeta.lore(loreInfo);
-        }).setNextMenu(new MoreInfoMenu(getOwner())));
+        }).setOnClick(inventoryClickEvent -> new MoreInfoMenu(getOwner()).open()));
 
         return inventory;
     }

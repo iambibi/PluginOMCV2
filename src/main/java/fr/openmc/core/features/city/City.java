@@ -1,6 +1,5 @@
 package fr.openmc.core.features.city;
 
-import com.sk89q.worldedit.math.BlockVector2;
 import fr.openmc.api.cooldown.DynamicCooldownManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.events.*;
@@ -14,10 +13,13 @@ import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.models.CityLaw;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
+import fr.openmc.core.features.city.sub.notation.NotationManager;
+import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 import fr.openmc.core.features.city.sub.war.War;
 import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.CacheOfflinePlayer;
+import fr.openmc.core.utils.ChunkPos;
 import fr.openmc.core.utils.InputUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -43,8 +45,8 @@ public class City {
     private String name;
     private final String cityUUID;
     private Set<UUID> members;
-    private Set<BlockVector2> chunks; // Liste des chunks claims par la ville
-    private HashMap<UUID, Set<CPermission>> permissions;
+    private Set<ChunkPos> chunks; // Liste des chunks claims par la ville
+    private HashMap<UUID, Set<CityPermission>> permissions;
     private Set<CityRank> cityRanks;
     private HashMap<Integer, ItemStack[]> chestContent;
     @Getter
@@ -70,9 +72,9 @@ public class City {
         this.type = type;
         this.freeClaims = 15;
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveCity(this);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
 
         CityManager.registerCity(this);
 
@@ -81,16 +83,17 @@ public class City {
         this.cityRanks = new HashSet<>();
         this.chunks = new HashSet<>();
         this.chestContent = new HashMap<>();
-        
-        addChunk(chunk);
+      
+        addChunk(chunk.getX(), chunk.getZ());
+      
         addPlayer(owner.getUniqueId());
-        addPermission(owner.getUniqueId(), CPermission.OWNER);
+        addPermission(owner.getUniqueId(), CityPermission.OWNER);
         saveChestContent(1, null);
         CityManager.loadCityRanks(this);
 
-        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-            Bukkit.getPluginManager().callEvent(new CityCreationEvent(this, owner));
-        });
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
+                Bukkit.getPluginManager().callEvent(new CityCreationEvent(this, owner))
+        );
     }
 
     /**
@@ -130,7 +133,7 @@ public class City {
     /**
      * Gets all the member of this city
      */
-    public Set<BlockVector2> getChunks() {
+    public Set<ChunkPos> getChunks() {
         if (this.chunks == null)
             this.chunks = CityManager.getCityChunks(this);
 
@@ -149,9 +152,9 @@ public class City {
     public void rename(String newName) {
         this.name = newName;
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveCity(this);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
     }
 
     public void setType(String type) {
@@ -161,9 +164,9 @@ public class City {
             this.type = CityType.PEACE;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveCity(this);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
     }
 
     public void changeType() {
@@ -173,9 +176,9 @@ public class City {
             this.type = CityType.WAR;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveCity(this);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
     }
 
     // ==================== Members Methods ====================
@@ -213,9 +216,9 @@ public class City {
             this.members = CityManager.getCityMembers(this);
 
         members.add(player);
-        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-            Bukkit.getPluginManager().callEvent(new MemberJoinEvent(CacheOfflinePlayer.getOfflinePlayer(player), this));
-        });
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
+                Bukkit.getPluginManager().callEvent(new MemberJoinEvent(CacheOfflinePlayer.getOfflinePlayer(player), this))
+        );
         CityManager.addPlayerToCity(this, player);
     }
 
@@ -230,10 +233,10 @@ public class City {
             this.members = CityManager.getCityMembers(this);
 
         members.remove(player);
-        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
             Bukkit.getPluginManager()
-                    .callEvent(new MemberLeaveEvent(CacheOfflinePlayer.getOfflinePlayer(player), this));
-        });
+                    .callEvent(new MemberLeaveEvent(CacheOfflinePlayer.getOfflinePlayer(player), this))
+        );
         CityManager.removePlayerFromCity(this, player);
     }
 
@@ -243,8 +246,8 @@ public class City {
      * @param player The UUID of the new owner.
      */
     public void changeOwner(UUID player) {
-        removePermission(getPlayerWithPermission(CPermission.OWNER), CPermission.OWNER);
-        addPermission(player, CPermission.OWNER);
+        removePermission(getPlayerWithPermission(CityPermission.OWNER), CityPermission.OWNER);
+        addPermission(player, CityPermission.OWNER);
     }
 
     /**
@@ -252,9 +255,9 @@ public class City {
      */
     public void updateFreeClaims(int diff) {
         freeClaims += diff;
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveCity(this);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
     }
 
     // ==================== Chest Methods ====================
@@ -287,9 +290,9 @@ public class City {
 
         chestContent.put(page, content);
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveChestPage(this, page, content);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveChestPage(this, page, content)
+        );
     }
 
     /**
@@ -301,7 +304,7 @@ public class City {
         if (this.chestContent == null)
             this.chestContent = CityManager.getCityChestContent(this);
 
-        if (this.chestContent.size() < 1)
+        if (this.chestContent.isEmpty())
             saveChestContent(1, null);
 
         return chestContent.size();
@@ -313,29 +316,19 @@ public class City {
      * Adds a chunk to the city's claimed chunks and updates the database
      * asynchronously.
      *
-     * @param chunk The chunk to be added.
+     * @param x The chunk X to be added.
+     * @param z The chunk Z to be added.
      */
-    public void addChunk(Chunk chunk) {
+    public void addChunk(int x, int z) {
         if (this.chunks == null)
             this.chunks = CityManager.getCityChunks(this);
 
-        BlockVector2 coords = BlockVector2.at(chunk.getX(), chunk.getZ());
-        if (chunks.contains(coords))
+        ChunkPos chunkPos = new ChunkPos(x, z);
+        if (chunks.contains(chunkPos))
             return;
-        chunks.add(coords);
+        chunks.add(chunkPos);
 
-        CityManager.claimChunk(this, coords);
-    }
-
-    /**
-     * Adds a chunk to the city's claimed chunks by specifying its coordinates and updates the database asynchronously.
-     *
-     * @param x The X coordinate of the chunk to be added.
-     * @param z The Z coordinate of the chunk to be added.
-     */
-    public void addChunk(int x, int z) {
-        Chunk chunk = Bukkit.getWorld("world").getChunkAt(x, z);
-        addChunk(chunk);
+        CityManager.claimChunk(this, chunkPos);
     }
 
     /**
@@ -359,10 +352,10 @@ public class City {
         if (this.chunks == null)
             this.chunks = CityManager.getCityChunks(this);
 
-        BlockVector2 coords = BlockVector2.at(chunkX, chunkZ);
-        chunks.remove(coords);
+        ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
+        chunks.remove(chunkPos);
 
-        CityManager.unclaimChunk(this, coords);
+        CityManager.unclaimChunk(this, chunkPos);
     }
 
     /**
@@ -372,11 +365,11 @@ public class City {
      * @param z The Z coordinate of the chunk to check.
      * @return True if the chunk is claimed, false otherwise.
      */
-    public boolean hasChunk(double x, double z) {
+    public boolean hasChunk(int x, int z) {
         if (this.chunks == null)
             this.chunks = CityManager.getCityChunks(this);
 
-        return chunks.contains(BlockVector2.at(x, z));
+        return chunks.contains(new ChunkPos(x, z));
     }
 
     /**
@@ -389,7 +382,7 @@ public class City {
         if (this.chunks == null)
             this.chunks = CityManager.getCityChunks(this);
 
-        return chunks.contains(BlockVector2.at(chunk.getX(), chunk.getZ()));
+        return chunks.contains(new ChunkPos(chunk.getX(), chunk.getZ()));
     }
 
     // ==================== Economy Methods ====================
@@ -403,12 +396,12 @@ public class City {
     public void setBalance(double value) {
         double before = balance;
         balance = value;
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveCity(this);
-        });
-        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-            Bukkit.getPluginManager().callEvent(new CityMoneyUpdateEvent(this, before, balance));
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
+                Bukkit.getPluginManager().callEvent(new CityMoneyUpdateEvent(this, before, balance))
+        );
     }
 
     /**
@@ -438,7 +431,7 @@ public class City {
                                 + "§r" + EconomyManager.getEconomyIcon() + " à ta ville"),
                         Prefix.CITY, MessageType.ERROR, false);
             } else {
-                MessagesManager.sendMessage(player, MessagesManager.Message.MONEYPLAYERMISSING.getMessage(),
+                MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_MISSING_MONEY.getMessage(),
                         Prefix.CITY, MessageType.ERROR, false);
             }
         } else {
@@ -484,8 +477,8 @@ public class City {
         double interest = .01; // base interest is 1%
 
         if (MayorManager.phaseMayor == 2) {
-            if (PerkManager.hasPerk(getMayor(), Perks.BUISNESS_MAN.getId())) {
-                interest = .03; // interest is 3% when perk Buisness Man actived
+            if (PerkManager.hasPerk(getMayor(), Perks.BUSINESS_MAN.getId())) {
+                interest = .03; // interest is 3% when perk Business Man enabled
             }
         }
 
@@ -509,7 +502,7 @@ public class City {
      * @param permission The permission to check for.
      * @return The UUID of the player with the permission, or null if not found.
      */
-    public UUID getPlayerWithPermission(CPermission permission) {
+    public UUID getPlayerWithPermission(CityPermission permission) {
         if (this.permissions == null)
             this.permissions = CityManager.getCityPermissions(this);
 
@@ -527,7 +520,7 @@ public class City {
      * @param player The UUID of the player to retrieve permissions for.
      * @return A set of permissions for the player.
      */
-    public Set<CPermission> getPermissions(UUID player) {
+    public Set<CityPermission> getPermissions(UUID player) {
         if (this.permissions == null)
             this.permissions = CityManager.getCityPermissions(this);
 
@@ -541,13 +534,13 @@ public class City {
      * @param permission The permission to check for.
      * @return True if the player has the permission, false otherwise.
      */
-    public boolean hasPermission(UUID uuid, CPermission permission) {
+    public boolean hasPermission(UUID uuid, CityPermission permission) {
         if (this.permissions == null)
             this.permissions = CityManager.getCityPermissions(this);
 
-        Set<CPermission> playerPerms = permissions.getOrDefault(uuid, new HashSet<>());
+        Set<CityPermission> playerPerms = permissions.getOrDefault(uuid, new HashSet<>());
         
-        if (playerPerms.contains(CPermission.OWNER)) {
+        if (playerPerms.contains(CityPermission.OWNER)) {
             return true;
         }
         
@@ -562,11 +555,11 @@ public class City {
      * @param playerUUID       The UUID of the player to add the permission to.
      * @param permission The permission to add.
      */
-    public void addPermission(UUID playerUUID, CPermission permission) {
+    public void addPermission(UUID playerUUID, CityPermission permission) {
         if (this.permissions == null)
             this.permissions = CityManager.getCityPermissions(this);
 
-        Set<CPermission> playerPerms = permissions.getOrDefault(playerUUID, new HashSet<>());
+        Set<CityPermission> playerPerms = permissions.getOrDefault(playerUUID, new HashSet<>());
 
         if (playerPerms.contains(permission))
             return;
@@ -574,14 +567,14 @@ public class City {
         playerPerms.add(permission);
         permissions.put(playerUUID, playerPerms);
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.addPlayerPermission(this, playerUUID, permission);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.addPlayerPermission(this, playerUUID, permission)
+        );
 
-        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
             Bukkit.getPluginManager().callEvent(
-                    new CityPermissionChangeEvent(this, CacheOfflinePlayer.getOfflinePlayer(playerUUID), permission, true));
-        });
+                    new CityPermissionChangeEvent(this, CacheOfflinePlayer.getOfflinePlayer(playerUUID), permission, true))
+        );
     }
 
     /**
@@ -591,10 +584,10 @@ public class City {
      * @param playerUUID       The UUID of the player to remove the permission from.
      * @param permission The permission to remove.
      */
-    public void removePermission(UUID playerUUID, CPermission permission) {
+    public void removePermission(UUID playerUUID, CityPermission permission) {
         if (this.permissions == null) this.permissions = CityManager.getCityPermissions(this);
 
-        Set<CPermission> playerPerms = permissions.get(playerUUID);
+        Set<CityPermission> playerPerms = permissions.get(playerUUID);
         
         if (playerPerms == null) return;
         
@@ -689,6 +682,7 @@ public class City {
         return getMascot().isImmunity() && !DynamicCooldownManager.isReady(cityUUID, "city:immunity");
     }
 
+
     /**
      * Updates the power of a City by adding or removing points.
      *
@@ -696,9 +690,9 @@ public class City {
      */
     public void updatePowerPoints(int diff) {
         powerPoints += diff;
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityManager.saveCity(this);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
+                CityManager.saveCity(this)
+        );
     }
     
     /* =================== RANKS =================== */
@@ -838,7 +832,7 @@ public class City {
      * @return The CityRank object representing the member's rank, or null if not found.
      */
     public String getRankName(UUID member) {
-        if (this.hasPermission(member, CPermission.OWNER)) {
+        if (this.hasPermission(member, CityPermission.OWNER)) {
             return "Propriétaire";
         } else if (this.hasMayor() && this.getMayor().getUUID().equals(member)) {
             return "Maire";
@@ -866,8 +860,8 @@ public class City {
             throw new IllegalArgumentException("The specified rank does not exist in the city's ranks.");
         }
         
-        if (hasPermission(playerUUID, CPermission.OWNER)) {
-            MessagesManager.sendMessage(sender, MessagesManager.Message.PLAYERISOWNER.getMessage(), Prefix.CITY, MessageType.ERROR, false);
+        if (hasPermission(playerUUID, CityPermission.OWNER)) {
+            MessagesManager.sendMessage(sender, MessagesManager.Message.PLAYER_IS_OWNER.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return;
         }
         
@@ -876,7 +870,7 @@ public class City {
         
         if (currentRank != null) {
             currentRank.removeMember(playerUUID);
-            for (CPermission permission : currentRank.getPermissionsSet()) {
+            for (CityPermission permission : currentRank.getPermissionsSet()) {
                 removePermission(playerUUID, permission);
             }
             MessagesManager.sendMessage(sender, Component.text("§cVous avez retiré le grade §e" + currentRank.getName() + "§c de §6" + player.getName()), Prefix.CITY, MessageType.SUCCESS, true);
@@ -884,7 +878,7 @@ public class City {
         
         if (currentRank != newRank) {
             newRank.addMember(playerUUID);
-            for (CPermission permission : newRank.getPermissionsSet()) {
+            for (CityPermission permission : newRank.getPermissionsSet()) {
                 addPermission(playerUUID, permission);
             }
             MessagesManager.sendMessage(sender, Component.text("§aVous avez assigné le grade §e" + newRank.getName() + "§a à §6" + player.getName()), Prefix.CITY, MessageType.SUCCESS, true);
@@ -899,14 +893,33 @@ public class City {
         });
     }
 
-    // ==================== City Milestone Methods ====================
+    /* =================== NOTATION =================== */
 
     /**
-     * Retrieves the power points of the city.
+     * Retrieves the notation of the city for a specific week.
+     * * @param weekStr The week string in the format "YYYY-WW" (e.g., "2023-01").
      *
-     * @return The power points of the city, or 0 if not found.
+     * @return The CityNotation object representing the city's notation for the specified week, or null if not found.
      */
-    public boolean getLevel() {
-        return WarManager.isCityInWar(cityUUID);
+    public CityNotation getNotationOfWeek(String weekStr) {
+        if (!NotationManager.notationPerWeek.containsKey(weekStr)) {
+            return null;
+        }
+        return NotationManager.notationPerWeek.get(weekStr).stream()
+                .filter(notation -> notation.getCityUUID().equals(cityUUID))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Sets the notation of the city for a specific week.
+     *
+     * @param weekStr          The week string in the format "YYYY-WW" (e.g., "2023-01").
+     * @param architecturalNote The architectural note for the city.
+     * @param coherenceNote    The coherence note for the city.
+     * @param description      A description of the notation.
+     */
+    public void setNotationOfWeek(String weekStr, double architecturalNote, double coherenceNote, String description) {
+        NotationManager.createOrUpdateNotation(new CityNotation(cityUUID, architecturalNote, coherenceNote, description, weekStr));
     }
 }

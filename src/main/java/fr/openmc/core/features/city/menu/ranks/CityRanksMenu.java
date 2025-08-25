@@ -4,10 +4,9 @@ import fr.openmc.api.menulib.PaginatedMenu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.StaticSlots;
-import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.actions.CityRankAction;
-import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.features.city.models.CityRank;
 import fr.openmc.core.items.CustomItemRegistry;
 import net.kyori.adventure.text.Component;
@@ -33,7 +32,12 @@ public class CityRanksMenu extends PaginatedMenu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Grades de la ville";
+		return "Menu de la Ville - Grades";
+	}
+
+	@Override
+	public String getTexture() {
+		return null;
 	}
 
 	@Override
@@ -65,11 +69,11 @@ public class CityRanksMenu extends PaginatedMenu {
 	}
 
 	@Override
-	public @NotNull List<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
 		List<ItemStack> map = new ArrayList<>();
 		Player player = getOwner();
 
-		boolean canManagerRanks = city.hasPermission(player.getUniqueId(), CPermission.MANAGE_RANKS);
+		boolean canManagerRanks = city.hasPermission(player.getUniqueId(), CityPermission.MANAGE_RANKS);
 
 		Set<CityRank> cityRanks = city.getRanks();
 		if (! cityRanks.isEmpty()) {
@@ -95,8 +99,8 @@ public class CityRanksMenu extends PaginatedMenu {
 	}
 
 	@Override
-	public Map<Integer, ItemStack> getButtons() {
-		Map<Integer, ItemStack> map = new HashMap<>();
+    public Map<Integer, ItemBuilder> getButtons() {
+        Map<Integer, ItemBuilder> map = new HashMap<>();
 		Player player = getOwner();
 
 
@@ -104,9 +108,9 @@ public class CityRanksMenu extends PaginatedMenu {
 				itemMeta -> {
 					itemMeta.displayName(Component.text("§cRetour"));
 					itemMeta.lore(List.of(Component.text("§7Cliquez pour revenir en arrière")));
-				}).setOnClick(inventoryClickEvent -> new CityMenu(player).open()));
+                }, true));
 
-		boolean canAssignRanks = city.hasPermission(player.getUniqueId(), CPermission.ASSIGN_RANKS);
+		boolean canAssignRanks = city.hasPermission(player.getUniqueId(), CityPermission.ASSIGN_RANKS);
 
 		if (canAssignRanks) {
 			List<Component> loreAssignRanks = new ArrayList<>();
@@ -131,7 +135,7 @@ public class CityRanksMenu extends PaginatedMenu {
 			);
 		}
 
-		boolean canManageRanks = city.hasPermission(player.getUniqueId(), CPermission.MANAGE_RANKS);
+		boolean canManageRanks = city.hasPermission(player.getUniqueId(), CityPermission.MANAGE_RANKS);
 
 		if (canManageRanks) {
 			List<Component> loreCreateRank = List.of(

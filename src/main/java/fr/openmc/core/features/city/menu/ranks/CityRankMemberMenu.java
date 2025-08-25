@@ -5,8 +5,8 @@ import fr.openmc.api.menulib.PaginatedMenu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.ItemUtils;
-import fr.openmc.core.features.city.CPermission;
 import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -44,7 +44,7 @@ public class CityRankMemberMenu extends PaginatedMenu {
 	}
 	
 	@Override
-	public @NotNull List<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
 		List<ItemStack> items = new ArrayList<>();
 		Set<UUID> members = city.getMembers();
 		for (UUID uuid : members) {
@@ -57,7 +57,7 @@ public class CityRankMemberMenu extends PaginatedMenu {
 
 			List<Component> lore = new ArrayList<>();
 			lore.add(Component.text("§7Grade : §e" + rankName).decoration(TextDecoration.ITALIC, false));
-			if (!city.hasPermission(player.getUniqueId(), CPermission.OWNER)) {
+			if (!city.hasPermission(player.getUniqueId(), CityPermission.OWNER)) {
 				lore.add(Component.empty());
 				lore.add(Component.text("§e§lCLIQUEZ ICI POUR ASSIGNER UN GRADE"));
 			}
@@ -65,10 +65,10 @@ public class CityRankMemberMenu extends PaginatedMenu {
 				itemMeta.displayName(Component.text(player.getName() != null ? player.getName() : "§c§oJoueur inconnu").decoration(TextDecoration.ITALIC, false));
 				itemMeta.lore(lore);
 			}).setOnClick(event -> {
-				if (city.hasPermission(player.getUniqueId(), CPermission.OWNER)) return;
+				if (city.hasPermission(player.getUniqueId(), CityPermission.OWNER)) return;
 
-				if (!city.hasPermission(getOwner().getUniqueId(), CPermission.ASSIGN_RANKS)) {
-					MessagesManager.sendMessage(getOwner(), MessagesManager.Message.PLAYERNOACCESSPERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
+				if (!city.hasPermission(getOwner().getUniqueId(), CityPermission.ASSIGN_RANKS)) {
+					MessagesManager.sendMessage(getOwner(), MessagesManager.Message.PLAYER_NO_ACCESS_PERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
 					getOwner().closeInventory();
 					return;
 				}
@@ -80,8 +80,8 @@ public class CityRankMemberMenu extends PaginatedMenu {
 	}
 	
 	@Override
-	public Map<Integer, ItemStack> getButtons() {
-		Map<Integer, ItemStack> map = new HashMap<>();
+    public Map<Integer, ItemBuilder> getButtons() {
+        Map<Integer, ItemBuilder> map = new HashMap<>();
 		map.put(48, new ItemBuilder(this, CustomStack.getInstance("_iainternal:icon_back_orange")
 				.getItemStack(), itemMeta -> itemMeta.displayName(Component.text("§cPage précédente"))).setPreviousPageButton());
 		map.put(50, new ItemBuilder(this, CustomStack.getInstance("_iainternal:icon_next_orange")
@@ -101,9 +101,14 @@ public class CityRankMemberMenu extends PaginatedMenu {
 
 	@Override
 	public @NotNull String getName() {
-		return "Liste des membres - Grades";
+		return "Menu du choix des membres - Grades";
 	}
-	
+
+	@Override
+	public String getTexture() {
+		return null;
+	}
+
 	@Override
 	public void onInventoryClick(InventoryClickEvent e) {
 	

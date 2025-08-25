@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ListenersManager {
     public ListenersManager() {
         registerEvents(
+                new HappyGhastListener(),
                 new SessionsListener(),
                 new JoinMessageListener(),
                 new UpdateListener(),
@@ -30,7 +31,8 @@ public class ListenersManager {
                 new AsyncChatListener(OMCPlugin.getInstance()),
                 new BossbarListener(),
                 new PlayerSettingsManager(),
-                new InteractListener()
+                new InteractListener(),
+                new ItemsAddersListener()
         );
     }
 
