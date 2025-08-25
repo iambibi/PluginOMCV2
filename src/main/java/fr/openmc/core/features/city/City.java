@@ -62,7 +62,6 @@ public class City {
     @Getter
     private int freeClaims;
     @Getter
-    @Setter
     private int level;
 
     /**
@@ -645,7 +644,9 @@ public class City {
      * @return True if the city is immune, false otherwise.
      */
     public boolean isImmune() {
-        return getMascot().isImmunity() && !DynamicCooldownManager.isReady(cityUUID, "city:immunity");
+        if (this.getMascot() == null) return false;
+
+        return this.getMascot().isImmunity() && !DynamicCooldownManager.isReady(cityUUID, "city:immunity");
     }
 
 

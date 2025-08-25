@@ -191,8 +191,8 @@ public class CityMenu extends Menu {
         if (notation != null) {
             List<Component> loreNotation = new ArrayList<>() {
                 {
-                    add(Component.text("§7Notation de la Ville : §9" + notation.getTotalNote() + "§7/§9" + NotationNote.getMaxTotalNote()));
-                    add(Component.text("§7Argent remporté : §6" + notation.getMoney() + EconomyManager.getEconomyIcon()));
+                    add(Component.text("§7Notation de la Ville : §9" + Math.floor(notation.getTotalNote()) + "§7/§9" + NotationNote.getMaxTotalNote()));
+                    add(Component.text("§7Argent remporté : §6" + EconomyManager.getFormattedSimplifiedNumber(notation.getMoney()) + EconomyManager.getEconomyIcon()));
                     add(Component.empty());
                     add(Component.text("§e§lCLIQUEZ ICI POUR VOIR LA NOTATION"));
                 }

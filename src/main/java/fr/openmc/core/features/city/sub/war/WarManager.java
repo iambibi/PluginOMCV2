@@ -154,8 +154,7 @@ public class WarManager {
      */
     public static void endWar(War war) {
         War warRemoved = warsByAttacker.remove(war.getCityAttacker().getUUID());
-        if (warRemoved == null)
-            warRemoved = warsByDefender.remove(war.getCityDefender().getUUID());
+        warsByDefender.remove(war.getCityDefender().getUUID());
 
         if (warRemoved == null) return;
 
@@ -232,7 +231,9 @@ public class WarManager {
         int powerChange = -1;
         double bonusMoney = 0;
         if (!winReason.equals(WinReason.DRAW)) {
-            double ratio = winner.getPowerPoints() / (double) loser.getPowerPoints();
+            int powerPointWinner = winner.getPowerPoints() == 0 ? 4 : winner.getPowerPoints();
+            int powerPointLoser = loser.getPowerPoints() == 0 ? 4 : loser.getPowerPoints();
+            double ratio = powerPointWinner / powerPointLoser;
             ratio = Math.max(0.2, Math.min(2.5, ratio));
 
             int base = (war.getAttackers().size() + war.getDefenders().size()) / 2;

@@ -44,7 +44,11 @@ public class NotationDialog {
         body.add(lineCityNotationHeader(CityManager.getPlayerCity(player.getUniqueId()), weekStr));
 
         for (CityNotation notation : NotationManager.getSortedNotationForWeek(weekStr)) {
-            body.add(lineCityNotation(CityManager.getCity(notation.getCityUUID()), weekStr));
+            City city = CityManager.getCity(notation.getCityUUID());
+
+            if (city == null) continue;
+
+            body.add(lineCityNotation(city, weekStr));
         }
 
         Dialog dialog = Dialog.create(builder -> builder.empty()

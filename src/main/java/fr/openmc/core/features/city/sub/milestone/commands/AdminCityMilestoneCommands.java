@@ -28,4 +28,19 @@ public class AdminCityMilestoneCommands {
         DynamicCooldownManager.clear(uuid, "city:upgrade-level", true);
     }
 
+    @Command({"admcity milestone setlevel"})
+    @CommandPermission("omc.admins.commands.milestone")
+    @Description("Skip l'upgrade d'un level")
+    void setLevel(Player sender, String uuid, int level) {
+        City city = CityManager.getCity(uuid);
+
+        if (city == null) {
+            MessagesManager.sendMessage(sender, Component.text("§cVille inexistante"), Prefix.STAFF, MessageType.ERROR, false);
+            return;
+        }
+
+        city.setLevel(level);
+        MessagesManager.sendMessage(sender, Component.text("Level " + level + " mis sur la ville"), Prefix.STAFF, MessageType.SUCCESS, false);
+    }
+
 }
