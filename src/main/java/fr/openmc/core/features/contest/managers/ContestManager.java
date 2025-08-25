@@ -10,7 +10,6 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.contest.ContestEndEvent;
 import fr.openmc.core.features.contest.commands.ContestCommand;
 import fr.openmc.core.features.contest.listeners.ContestIntractEvents;
-import fr.openmc.core.features.contest.listeners.ContestListener;
 import fr.openmc.core.features.contest.models.Contest;
 import fr.openmc.core.features.contest.models.ContestPlayer;
 import fr.openmc.core.features.economy.EconomyManager;
@@ -19,6 +18,7 @@ import fr.openmc.core.features.mailboxes.MailboxManager;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.ColorUtils;
+import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.ParticleUtils;
 import fr.openmc.core.utils.database.DatabaseManager;
 import net.kyori.adventure.text.Component;
@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.time.DayOfWeek;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -47,6 +48,10 @@ import static fr.openmc.core.features.mailboxes.utils.MailboxUtils.getHoverEvent
 import static fr.openmc.core.features.mailboxes.utils.MailboxUtils.getRunCommand;
 
 public class ContestManager {
+
+    private static final DayOfWeek START_CONTEST_DAY = DayOfWeek.FRIDAY;
+    private static final DayOfWeek START_TRADE_CONTEST_DAY = DayOfWeek.SATURDAY;
+    private static final DayOfWeek END_CONTEST_DAY = DayOfWeek.MONDAY;
 
     public static File contestFile;
     public static YamlConfiguration contestConfig;
@@ -61,8 +66,6 @@ public class ContestManager {
     );
 
     public ContestManager() {
-        // LISTENERS
-        OMCPlugin.registerEvents(new ContestListener(OMCPlugin.getInstance()));
         if (ItemsAdderHook.hasItemAdder()) {
             OMCPlugin.registerEvents(
                     new ContestIntractEvents()
@@ -84,6 +87,10 @@ public class ContestManager {
         // Fill data and playerData
         initContestData();
         loadContestPlayerData();
+
+        scheduleStartContest();
+        scheduleStartTradeContest();
+        scheduleEndContest();
     }
 
     private static Dao<Contest, Integer> contestDao;
@@ -666,5 +673,47 @@ public class ContestManager {
      */
     public static void insertCustomContest(String camp1, String color1, String camp2, String color2) {
         data = new Contest(camp1, camp2, color1, color2, 1, "ven.", 0, 0);
+    }
+
+    private static void scheduleStartContest() {
+        long delayInTicks = DateUtils.getSecondsUntilDayOfWeekMidnight(START_CONTEST_DAY) * 20;
+
+        if (DateUtils.getCurrentDayOfWeek().equals(START_CONTEST_DAY)) {
+            ContestManager.initPhase1();
+        }
+
+        Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
+            ContestManager.initPhase1();
+
+            scheduleStartContest();
+        }, delayInTicks);
+    }
+
+    private static void scheduleStartTradeContest() {
+        long delayInTicks = DateUtils.getSecondsUntilDayOfWeekMidnight(START_TRADE_CONTEST_DAY) * 20;
+
+        if (DateUtils.getCurrentDayOfWeek().equals(START_TRADE_CONTEST_DAY)) {
+            ContestManager.initPhase2();
+        }
+
+        Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
+            ContestManager.initPhase2();
+
+            scheduleStartTradeContest();
+        }, delayInTicks);
+    }
+
+    private static void scheduleEndContest() {
+        long delayInTicks = DateUtils.getSecondsUntilDayOfWeekMidnight(END_CONTEST_DAY) * 20;
+
+        if (DateUtils.getCurrentDayOfWeek().equals(END_CONTEST_DAY)) {
+            ContestManager.initPhase3();
+        }
+
+        Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
+            ContestManager.initPhase3();
+
+            scheduleEndContest();
+        }, delayInTicks);
     }
 }
