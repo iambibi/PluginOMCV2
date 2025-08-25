@@ -28,6 +28,8 @@ public class ConfirmMenu extends Menu {
     private final Runnable deny;
     private String texture = null;
     private InventorySize inventorySize = InventorySize.SMALLEST;
+    private int posAcceptBtn = 5;
+    private int posDenyBtn = 3;
 
     /**
      * Add Confirmation Menu, it must use for all
@@ -59,7 +61,7 @@ public class ConfirmMenu extends Menu {
      * @param texture      set textures
      * @param size         Set inventory size
      */
-    public ConfirmMenu(Player owner, Runnable methodAccept, Runnable methodDeny, List<Component> loreAccept, List<Component> loreDeny, String texture, InventorySize size) {
+    public ConfirmMenu(Player owner, Runnable methodAccept, Runnable methodDeny, List<Component> loreAccept, List<Component> loreDeny, String texture, InventorySize size, int posAcceptBtn, int posDenyBtn) {
         super(owner);
         this.accept = methodAccept != null ? methodAccept : () -> {
         };
@@ -69,6 +71,8 @@ public class ConfirmMenu extends Menu {
         this.loreDenyMsg = loreDeny;
         this.texture = texture;
         this.inventorySize = size;
+        this.posAcceptBtn = posAcceptBtn;
+        this.posDenyBtn = posDenyBtn;
     }
 
     @Override
@@ -112,7 +116,7 @@ public class ConfirmMenu extends Menu {
         ItemStack refuseBtn = CustomItemRegistry.getByName("omc_menus:refuse_btn").getBest();
         ItemStack acceptBtn = CustomItemRegistry.getByName("omc_menus:accept_btn").getBest();
 
-        inventory.put(3, new ItemBuilder(this, refuseBtn, itemMeta -> {
+        inventory.put(posDenyBtn, new ItemBuilder(this, refuseBtn, itemMeta -> {
             itemMeta.displayName(Component.text("§cRefuser"));
             itemMeta.lore(loreDeny);
         }).setOnClick(event -> {
@@ -125,7 +129,7 @@ public class ConfirmMenu extends Menu {
             }
         }));
 
-        inventory.put(5, new ItemBuilder(this, acceptBtn, itemMeta -> {
+        inventory.put(posAcceptBtn, new ItemBuilder(this, acceptBtn, itemMeta -> {
             itemMeta.displayName(Component.text("§aAccepter"));
             itemMeta.lore(loreAccept);
         }).setOnClick(event -> {

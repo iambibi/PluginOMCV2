@@ -55,11 +55,11 @@ public class VoteMenu extends Menu {
         Player player = getOwner();
         Map<Integer, ItemBuilder> inventory = new HashMap<>();
 
-            String camp1Name = ContestManager.data.getCamp1();
-            String camp2Name = ContestManager.data.getCamp2();
+        String camp1Name = ContestManager.data.getCamp1();
+        String camp2Name = ContestManager.data.getCamp2();
 
-            String camp1Color = ContestManager.data.getColor1();
-            String camp2Color = ContestManager.data.getColor2();
+        String camp1Color = ContestManager.data.getColor1();
+        String camp2Color = ContestManager.data.getColor2();
 
         NamedTextColor color1 = ColorUtils.getNamedTextColor(camp1Color);
         NamedTextColor color2 = ColorUtils.getNamedTextColor(camp2Color);
@@ -189,7 +189,9 @@ public class VoteMenu extends Menu {
                         loreAccept,
                         loreDeny,
                         FontImageWrapper.replaceFontImages("§r§f:offset_-48::contest_menu:"),
-                        InventorySize.LARGE
+                        InventorySize.LARGE,
+                        24,
+                        20
                 );
                 menu.open();
             }
@@ -232,7 +234,9 @@ public class VoteMenu extends Menu {
                         loreAccept,
                         loreDeny,
                         FontImageWrapper.replaceFontImages("§r§f:offset_-48::contest_menu:"),
-                        InventorySize.LARGE
+                        InventorySize.LARGE,
+                        24,
+                        20
                 );
                 menu.open();
             }

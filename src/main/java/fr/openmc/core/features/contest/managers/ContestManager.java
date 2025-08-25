@@ -73,6 +73,8 @@ public class ContestManager {
                 new ContestCommand()
         );
 
+        new TradeYMLManager();
+
         // Fill data and playerData
         initContestData();
         loadContestPlayerData();
