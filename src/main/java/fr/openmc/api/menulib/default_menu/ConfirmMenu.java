@@ -26,6 +26,8 @@ public class ConfirmMenu extends Menu {
     private final List<Component> loreDenyMsg;
     private final Runnable accept;
     private final Runnable deny;
+    private String texture = null;
+    private InventorySize inventorySize = InventorySize.SMALLEST;
 
     /**
      * Add Confirmation Menu, it must use for all
@@ -46,6 +48,29 @@ public class ConfirmMenu extends Menu {
         this.loreDenyMsg = loreDeny;
     }
 
+    /**
+     * Add Confirmation Menu, it must use for all
+     *
+     * @param owner        Player for Menu owner
+     * @param methodAccept Run your action when Accept
+     * @param methodDeny   Run your action when Accept
+     * @param loreAccept   Put your lore for Accept
+     * @param loreDeny     Run your lore for Deny
+     * @param texture      set textures
+     * @param size         Set inventory size
+     */
+    public ConfirmMenu(Player owner, Runnable methodAccept, Runnable methodDeny, List<Component> loreAccept, List<Component> loreDeny, String texture, InventorySize size) {
+        super(owner);
+        this.accept = methodAccept != null ? methodAccept : () -> {
+        };
+        this.deny = methodDeny != null ? methodDeny : () -> {
+        };
+        this.loreAcceptMsg = loreAccept;
+        this.loreDenyMsg = loreDeny;
+        this.texture = texture;
+        this.inventorySize = size;
+    }
+
     @Override
     public @NotNull String getName() {
         return "Menu de Confirmation";
@@ -53,12 +78,12 @@ public class ConfirmMenu extends Menu {
 
     @Override
     public String getTexture() {
-        return FontImageWrapper.replaceFontImages("§r§f:offset_-8::confirm_menu:");
+        return texture == null ? FontImageWrapper.replaceFontImages("§r§f:offset_-8::confirm_menu:") : texture;
     }
 
     @Override
     public @NotNull InventorySize getInventorySize() {
-        return InventorySize.SMALLEST;
+        return inventorySize;
     }
 
     @Override
