@@ -154,7 +154,7 @@ contestTrades:
     amount_shell: 30
     selected: false
   - ress: CACTUS
-    amount: 64
+    amount: 128
     amount_shell: 1
     selected: false
   - ress: INK_SAC

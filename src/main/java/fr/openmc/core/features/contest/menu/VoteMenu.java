@@ -190,8 +190,8 @@ public class VoteMenu extends Menu {
                         loreDeny,
                         FontImageWrapper.replaceFontImages("§r§f:offset_-48::contest_menu:"),
                         InventorySize.LARGE,
-                        24,
-                        20
+                        15,
+                        11
                 );
                 menu.open();
             }
@@ -235,8 +235,8 @@ public class VoteMenu extends Menu {
                         loreDeny,
                         FontImageWrapper.replaceFontImages("§r§f:offset_-48::contest_menu:"),
                         InventorySize.LARGE,
-                        24,
-                        20
+                        15,
+                        11
                 );
                 menu.open();
             }

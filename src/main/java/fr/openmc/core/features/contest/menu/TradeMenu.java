@@ -178,19 +178,28 @@ public class TradeMenu extends Menu {
     }
 
     private void giveShells(Player player, int amount) {
-        ItemStack shellItem = CustomStack.getInstance(SHELL_NAMESPACE).getItemStack();
-        shellItem.setAmount(amount);
+        ItemStack baseShell = CustomStack.getInstance(SHELL_NAMESPACE).getItemStack();
 
-        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(shellItem);
-        if (!leftover.isEmpty()) {
-            MailboxManager.sendItems(player, player, leftover.values().toArray(new ItemStack[0]));
+        List<ItemStack> stacks = ItemUtils.splitAmountIntoStack(baseShell, amount);
+
+        List<ItemStack> leftovers = new ArrayList<>();
+
+        for (ItemStack stack : stacks) {
+            HashMap<Integer, ItemStack> result = player.getInventory().addItem(stack);
+            if (!result.isEmpty()) {
+                leftovers.addAll(result.values());
+            }
+        }
+
+        if (!leftovers.isEmpty()) {
+            MailboxManager.sendItems(player, player, leftovers.toArray(new ItemStack[0]));
         }
     }
 
     private void sendSuccessMessage(Player player, int itemsRemoved, int shellsEarned, Component tradeName) {
         MessagesManager.sendMessage(player,
                 Component.text("§7Vous avez échangé §e" + itemsRemoved + " ")
-                        .append(tradeName)
+                        .append(tradeName).color(NamedTextColor.YELLOW)
                         .append(Component.text(" §7contre §b" + shellsEarned + " Coquillage(s) de Contest")),
                 Prefix.CONTEST, MessageType.SUCCESS, true);
     }
