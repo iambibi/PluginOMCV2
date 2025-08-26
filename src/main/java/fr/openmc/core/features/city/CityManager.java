@@ -25,6 +25,7 @@ import fr.openmc.core.features.city.sub.rank.CityRankCommands;
 import fr.openmc.core.features.city.sub.rank.CityRankManager;
 import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
 import fr.openmc.core.features.city.sub.war.WarManager;
+import fr.openmc.core.features.city.view.CityViewManager;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.ChunkPos;
 import org.bukkit.Bukkit;
@@ -39,9 +40,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CityManager implements Listener {
-    private static final HashMap<String, City> cities = new HashMap<>();
-    private static final HashMap<UUID, City> playerCities = new HashMap<>();
-    private static final HashMap<ChunkPos, City> claimedChunks = new HashMap<>();
+    private static final Map<String, City> cities = new HashMap<>();
+    private static final Map<UUID, City> playerCities = new HashMap<>();
+    private static final Map<ChunkPos, City> claimedChunks = new HashMap<>();
 
     public CityManager() {
         OMCPlugin.registerEvents(this);
@@ -69,10 +70,10 @@ public class CityManager implements Listener {
         );
 
         CommandsManager.getHandler().register(
-		        new AdminCityCommands(),
-		        new CityCommands(),
-		        new CityChatCommand(),
-		        new CityPermsCommands(),
+                new AdminCityCommands(),
+                new CityCommands(),
+                new CityChatCommand(),
+                new CityPermsCommands(),
                 new CityChestCommand(),
                 new CityRankCommands(),
                 new CityTopCommands()
@@ -160,6 +161,8 @@ public class CityManager implements Listener {
      */
     public static void addPlayerToCity(City city, UUID player) {
         playerCities.put(player, city);
+        CityViewManager.updateView(player);
+
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 membersDao.create(new DBCityMember(player, city.getUUID()));
@@ -177,6 +180,8 @@ public class CityManager implements Listener {
      */
     public static void removePlayerFromCity(City city, UUID player) {
         playerCities.remove(player);
+        CityViewManager.updateView(player);
+
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 membersDao.delete(new DBCityMember(player, city.getUUID()));
@@ -260,6 +265,7 @@ public class CityManager implements Listener {
 
     public static void claimChunk(City city, ChunkPos chunk) {
         claimedChunks.put(chunk, city);
+        CityViewManager.updateAllViews();
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
@@ -272,6 +278,7 @@ public class CityManager implements Listener {
 
     public static void unclaimChunk(City city, ChunkPos chunk) {
         claimedChunks.remove(chunk);
+        CityViewManager.updateAllViews();
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
@@ -404,6 +411,80 @@ public class CityManager implements Listener {
     }
 
     /**
+     * Get a city from a chunk
+     *
+     * @param chunkPos The chunk position
+     * @return The city object, or null if not found
+     */
+    @Nullable
+    public static City getCityFromChunk(ChunkPos chunkPos) {
+        return claimedChunks.get(chunkPos);
+    }
+
+
+    /* =================== RANKS =================== */
+
+    /**
+     * Add a city rank to the database
+     *
+     * @param rank The rank to add
+     */
+    public static void addCityRank(CityRank rank) {
+        try {
+            ranksDao.create(rank);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Remove a city rank from the database
+     *
+     * @param rank The rank to remove
+     */
+    public static void removeCityRank(CityRank rank) {
+        try {
+            DeleteBuilder<CityRank, String> delete = ranksDao.deleteBuilder();
+            delete.where().eq("city_uuid", rank.getCityUUID()).and().eq("name", rank.getName());
+            ranksDao.delete(delete.prepare());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Update a city rank in the database
+     *
+     * @param rank The rank to update
+     */
+    public static void updateCityRank(CityRank rank) {
+        try {
+            ranksDao.update(rank);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load city ranks from the database and add them to the city
+     *
+     * @param city The city to load ranks for
+     */
+    public static void loadCityRanks(City city) {
+        try {
+            QueryBuilder<CityRank, String> query = ranksDao.queryBuilder();
+            query.where().eq("city_uuid", city.getUUID());
+            List<CityRank> dbRanks = ranksDao.query(query.prepare());
+
+            for (CityRank dbRank : dbRanks) {
+                city.getRanks().add(dbRank);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Register a city
      *
      * @param city The city object
@@ -503,5 +584,7 @@ public class CityManager implements Listener {
         Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
             Bukkit.getPluginManager().callEvent(new CityDeleteEvent(city));
         });
+
+        CityViewManager.updateAllViews();
     }
 }

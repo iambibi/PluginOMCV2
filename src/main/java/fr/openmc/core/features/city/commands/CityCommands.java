@@ -12,6 +12,7 @@ import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.features.city.menu.CityTypeMenu;
 import fr.openmc.core.features.city.menu.NoCityMenu;
 import fr.openmc.core.features.city.menu.list.CityListMenu;
+import fr.openmc.core.features.city.view.CityViewManager;
 import fr.openmc.core.utils.InputUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -204,6 +205,7 @@ public class CityCommands {
     @Subcommand("claim")
     @CommandPermission("omc.commands.city.claim")
     @Description("Claim un chunk pour votre ville")
+    @DefaultFor("~")
     void claim(Player sender) {
         City city = CityManager.getPlayerCity(sender.getUniqueId());
 
@@ -225,6 +227,13 @@ public class CityCommands {
         Chunk chunk = sender.getLocation().getChunk();
 
         CityUnclaimAction.startUnclaim(sender, chunk.getX(), chunk.getZ());
+    }
+
+    @Subcommand("claim view")
+    @Description("Voir les villes aux alentours")
+    @CommandPermission("omc.commands.city.view")
+    void view(Player player) {
+        CityViewManager.startView(player);
     }
 
     @Subcommand("map")
