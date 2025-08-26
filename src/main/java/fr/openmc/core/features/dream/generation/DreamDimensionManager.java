@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.generation.biomes.*;
 import fr.openmc.core.features.dream.generation.effects.BiomeParticleListener;
 import fr.openmc.core.features.dream.generation.populators.mud.RockPopulator;
 import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopulator;
@@ -51,7 +52,12 @@ public class DreamDimensionManager {
             plugin.getLogger().info("Loading existing Dream world...");
         }
 
-        creator.generator(new DreamChunkGenerator(creator.seed() != 0 ? creator.seed() : 0));
+        creator.generator(new DreamChunkGenerator(creator.seed()));
+        new SoulForestChunkGenerator(creator.seed());
+        new PlainsChunkGenerator(creator.seed());
+        new MudBeachChunkGenerator(creator.seed());
+        new CloudChunkGenerator(creator.seed());
+        new GlaciteCaveChunkGenerator(creator.seed());
         creator.environment(World.Environment.NORMAL);
 
         World dream = creator.createWorld();
