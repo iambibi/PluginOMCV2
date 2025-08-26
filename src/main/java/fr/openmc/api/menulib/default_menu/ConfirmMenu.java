@@ -64,7 +64,7 @@ public class ConfirmMenu extends Menu {
     public ConfirmMenu(Player owner, Runnable methodAccept, Runnable methodDeny, List<Component> loreAccept, List<Component> loreDeny, String texture, InventorySize size, int posAcceptBtn, int posDenyBtn) {
         super(owner);
         this.accept = methodAccept != null ? methodAccept : () -> {};
-        this.deny = methodDeny != null ? methodDeny : () -> {
+        this.deny = methodDeny != null ? methodDeny : () -> {};
         };
         this.loreAcceptMsg = loreAccept;
         this.loreDenyMsg = loreDeny;
