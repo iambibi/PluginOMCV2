@@ -65,7 +65,6 @@ public class ConfirmMenu extends Menu {
         super(owner);
         this.accept = methodAccept != null ? methodAccept : () -> {};
         this.deny = methodDeny != null ? methodDeny : () -> {};
-        };
         this.loreAcceptMsg = loreAccept;
         this.loreDenyMsg = loreDeny;
         this.texture = texture;
