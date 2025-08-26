@@ -183,9 +183,7 @@ public class VoteMenu extends Menu {
 
                             player.closeInventory();
                         },
-                        () -> {
-                            new VoteMenu(player).open();
-                        },
+                        () -> new VoteMenu(player).open(),
                         loreAccept,
                         loreDeny,
                         FontImageWrapper.replaceFontImages("§r§f:offset_-48::contest_menu:"),
@@ -228,9 +226,7 @@ public class VoteMenu extends Menu {
 
                             player.closeInventory();
                         },
-                        () -> {
-                            new VoteMenu(player).open();
-                        },
+                        () -> new VoteMenu(player).open(),
                         loreAccept,
                         loreDeny,
                         FontImageWrapper.replaceFontImages("§r§f:offset_-48::contest_menu:"),
