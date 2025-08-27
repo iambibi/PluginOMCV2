@@ -5,13 +5,17 @@ import com.flowpowered.nbt.stream.NBTInputStream;
 import fr.openmc.core.OMCPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class StructureUtils {
     /**
@@ -27,108 +31,109 @@ public class StructureUtils {
      */
     public static void placeStructure(File file, Location target, boolean mirrorX, boolean mirrorZ) throws IOException {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            NBTInputStream input = null;
-            try {
-                input = new NBTInputStream(new FileInputStream(file));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            try (NBTInputStream input = new NBTInputStream(new FileInputStream(file))) {
+                Tag baseCompound = input.readTag();
+                if (!baseCompound.getType().equals(TagType.TAG_COMPOUND)) return;
+                CompoundMap compound = ((CompoundTag) baseCompound).getValue();
 
-            Tag baseCompound = null;
-            try {
-                baseCompound = input.readTag();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            int[] size;
+                if (!compound.containsKey("size")) return;
+                ListTag sizeList = (ListTag) compound.get("size");
+                if (!(sizeList.getElementType().equals(IntTag.class)) || sizeList.getValue().size() != 3) return;
+                int[] size = new int[]{
+                        ((IntTag) sizeList.getValue().get(0)).getValue(),
+                        ((IntTag) sizeList.getValue().get(1)).getValue(),
+                        ((IntTag) sizeList.getValue().get(2)).getValue()
+                };
 
-            if (!baseCompound.getType().equals(TagType.TAG_COMPOUND)) return;
-            CompoundMap compound = ((CompoundTag) baseCompound).getValue();
+                if (!compound.containsKey("palette")) return;
+                ListTag paletteList = (ListTag) compound.get("palette");
+                if (!(paletteList.getElementType().equals(CompoundTag.class))) return;
 
-            if (!compound.containsKey("size")) return;
-            Tag sizeTag = compound.get("size");
-            if (!sizeTag.getType().equals(TagType.TAG_LIST)) return;
-            ListTag sizeList = (ListTag) sizeTag;
-            if (!(sizeList.getElementType().equals(IntTag.class)))
-                return;
-            if (sizeList.getValue().size() != 3) return;
-            size = new int[]{((IntTag) sizeList.getValue().get(0)).getValue(), ((IntTag) sizeList.getValue().get(1)).getValue(), ((IntTag) sizeList.getValue().get(2)).getValue()};
+                BlockData[] states = new BlockData[paletteList.getValue().size()];
+                for (int i = 0; i < states.length; i++) {
+                    CompoundMap blockTag = ((CompoundTag) paletteList.getValue().get(i)).getValue();
+                    if (!blockTag.containsKey("Name")) return;
 
-            if (!compound.containsKey("palette")) return;
-            Tag paletteTag = compound.get("palette");
-            if (!paletteTag.getType().equals(TagType.TAG_LIST)) return;
-            ListTag paletteList = (ListTag) paletteTag;
-            if (!(paletteList.getElementType().equals(CompoundTag.class)))
-                return;
-
-            BlockData[] states = new BlockData[paletteList.getValue().size()];
-            for (int stateNum = 0; stateNum < states.length; stateNum++) {
-                Object oTag = paletteList.getValue().get(stateNum);
-                CompoundMap blockTag = ((CompoundTag) oTag).getValue();
-                StringBuilder blockStateString = new StringBuilder();
-
-                if (!blockTag.keySet().contains("Name")) return;
-                blockStateString.append(blockTag.get("Name").getValue()); //String now looks like "minecraft:log"
-
-                if (blockTag.keySet().contains("Properties")) {
-                    blockStateString.append("[");
-                    if (!blockTag.get("Properties").getType().equals(TagType.TAG_COMPOUND))
-                        return;
-                    CompoundMap properties = ((CompoundTag) blockTag.get("Properties")).getValue();
-
-                    Set<Map.Entry<String, Tag<?>>> properySet = properties.entrySet();
-                    Iterator<Map.Entry<String, Tag<?>>> propertyIterator = properySet.iterator();
-                    for (int p = 0; p < properySet.size(); p++) {
-                        if (p > 0) blockStateString.append(",");
-                        Tag property = propertyIterator.next().getValue();
-                        blockStateString.append(property.getName()).append("=").append(property.getValue());
+                    StringBuilder s = new StringBuilder(blockTag.get("Name").getValue().toString()); // e.g. "minecraft:oak_log"
+                    if (blockTag.containsKey("Properties")) {
+                        CompoundMap props = ((CompoundTag) blockTag.get("Properties")).getValue();
+                        Iterator<Map.Entry<String, Tag<?>>> it = props.entrySet().iterator();
+                        if (!props.isEmpty()) s.append("[");
+                        int k = 0;
+                        while (it.hasNext()) {
+                            Map.Entry<String, Tag<?>> e = it.next();
+                            if (k++ > 0) s.append(",");
+                            s.append(e.getKey()).append("=").append(e.getValue().getValue());
+                        }
+                        if (!props.isEmpty()) s.append("]");
                     }
-                    blockStateString.append("]");
-                } //If the block had properties, it now looks like "minecraft:log[axis=z]
+                    states[i] = Bukkit.createBlockData(s.toString());
+                }
 
-                states[stateNum] = Bukkit.createBlockData(blockStateString.toString());
-            }
+                if (!compound.containsKey("blocks")) return;
+                ListTag blocksList = (ListTag) compound.get("blocks");
+                if (!(blocksList.getElementType().equals(CompoundTag.class))) return;
 
-            if (!compound.containsKey("blocks")) return;
-            Tag blocksTag = compound.get("blocks");
-            if (!blocksTag.getType().equals(TagType.TAG_LIST)) return;
-            ListTag blocksList = (ListTag) blocksTag;
-            if (!(blocksList.getElementType().equals(CompoundTag.class)))
-                return;
+                final List<int[]> blocksToPlace = new ArrayList<>(); // {x,y,z,stateIdx}
+                final List<int[]> baseSolidCells = new ArrayList<>(); // {x,z} pour y==0 et block SOLIDE
 
-            List<Block> blocks = new ArrayList<>();
-            for (Object oTag : blocksList.getValue()) {
-                CompoundMap blockTag = ((CompoundTag) oTag).getValue();
-                if (!blockTag.containsKey("pos")) return;
-                Tag posTag = blockTag.get("pos");
-                if (!posTag.getType().equals(TagType.TAG_LIST)) return;
-                ListTag posListTag = (ListTag) posTag;
-                if (!(posListTag.getElementType().equals(IntTag.class)))
-                    return;
-                List posList = posListTag.getValue();
-                if (posListTag.getValue().size() != 3) return;
-                int x = ((IntTag) posList.get(0)).getValue();
-                int y = ((IntTag) posList.get(1)).getValue();
-                int z = ((IntTag) posList.get(2)).getValue();
+                for (Object oTag : blocksList.getValue()) {
+                    CompoundMap blockTag = ((CompoundTag) oTag).getValue();
 
-                if (mirrorX) x = (size[0] - 1) - x;
-                if (mirrorZ) z = (size[2] - 1) - z;
+                    ListTag posListTag = (ListTag) blockTag.get("pos");
+                    if (!(posListTag.getElementType().equals(IntTag.class)) || posListTag.getValue().size() != 3)
+                        return;
+                    int x = ((IntTag) posListTag.getValue().get(0)).getValue();
+                    int y = ((IntTag) posListTag.getValue().get(1)).getValue();
+                    int z = ((IntTag) posListTag.getValue().get(2)).getValue();
 
-                if (!blockTag.containsKey("state")) return;
-                Tag stateTag = blockTag.get("state");
-                if (!stateTag.getType().equals(TagType.TAG_INT)) return;
-                IntTag stateIntTag = (IntTag) stateTag;
-                if (stateIntTag.getValue() > states.length) return;
-                Block block = new Location(target.getWorld(), target.getX() + x, target.getY() + y, target.getZ() + z).getBlock();
+                    if (mirrorX) x = (size[0] - 1) - x;
+                    if (mirrorZ) z = (size[2] - 1) - z;
 
-                if (!block.getType().isAir() && block.getType().isSolid()) {
-                    continue;
+                    IntTag stateIntTag = (IntTag) blockTag.get("state");
+                    int stateIdx = stateIntTag.getValue();
+                    if (stateIdx < 0 || stateIdx >= states.length) return;
+
+                    blocksToPlace.add(new int[]{x, y, z, stateIdx});
+
+                    if (y == 0 && states[stateIdx].getMaterial().isSolid()) {
+                        baseSolidCells.add(new int[]{x, z});
+                    }
                 }
 
                 Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-                    block.setBlockData(states[stateIntTag.getValue()], false);
-                    blocks.add(block);
+                    World world = target.getWorld();
+                    int baseY = target.getBlockY();
+                    int baseX = target.getBlockX();
+                    int baseZ = target.getBlockZ();
+
+                    int totalBaseSolid = baseSolidCells.size();
+                    int floating = 0;
+                    for (int[] rc : baseSolidCells) {
+                        Block below = world.getBlockAt(baseX + rc[0], baseY - 1, baseZ + rc[1]);
+                        if (below.isEmpty() || !below.getType().isSolid()) {
+                            floating++;
+                        }
+                    }
+                    if (totalBaseSolid > 0) {
+                        double ratio = (double) floating / (double) totalBaseSolid;
+                        if (ratio > 0.40D) {
+                            return;
+                        }
+                    }
+
+                    for (int[] e : blocksToPlace) {
+                        int rx = e[0], ry = e[1], rz = e[2], sIdx = e[3];
+                        Block worldBlock = world.getBlockAt(baseX + rx, baseY + ry, baseZ + rz);
+
+                        if (!worldBlock.getType().isAir() && worldBlock.getType().isSolid()) continue;
+
+                        worldBlock.setBlockData(states[sIdx], false);
+                    }
                 });
+                
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         });
     }
