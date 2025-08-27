@@ -322,6 +322,8 @@ public class ItemBuilder extends ItemStack {
 	 */
 	@SuppressWarnings("UnstableApiUsage")
 	public ItemBuilder hideTooltip(boolean hideTooltip) {
+		if (this.getType().equals(Material.AIR)) return this;
+
 		TooltipDisplay tooltipDisplay = TooltipDisplay.tooltipDisplay().hideTooltip(hideTooltip).build();
 		this.setData(DataComponentTypes.TOOLTIP_DISPLAY, tooltipDisplay);
 

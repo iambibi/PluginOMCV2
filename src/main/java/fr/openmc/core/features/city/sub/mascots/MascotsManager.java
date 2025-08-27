@@ -46,7 +46,6 @@ public class MascotsManager {
     public static final HashMap<UUID, Mascot> mascotsByEntityUUID = new HashMap<>();
     public static final String PLACEHOLDER_MASCOT_NAME = "§l%s §c%.0f/%.0f❤";
     public static final String DEAD_MASCOT_NAME = "☠ §cMascotte Morte";
-    private static final NamespacedKey MAX_HEALTH_KEY = NamespacedKey.fromString("openmc:trans_rights_are_human_rights");
     public static NamespacedKey mascotsKey;
     private static Dao<Mascot, String> mascotsDao;
 

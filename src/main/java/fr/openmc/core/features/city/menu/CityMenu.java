@@ -16,6 +16,7 @@ import fr.openmc.core.features.city.actions.CityLeaveAction;
 import fr.openmc.core.features.city.conditions.CityChestConditions;
 import fr.openmc.core.features.city.conditions.CityLeaveCondition;
 import fr.openmc.core.features.city.menu.playerlist.CityPlayerListMenu;
+import fr.openmc.core.features.city.sub.bank.conditions.CityBankConditions;
 import fr.openmc.core.features.city.sub.bank.menu.CityBankMenu;
 import fr.openmc.core.features.city.sub.mascots.menu.MascotMenu;
 import fr.openmc.core.features.city.sub.mascots.menu.MascotsDeadMenu;
@@ -55,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static fr.openmc.core.features.city.sub.bank.conditions.CityBankConditions.canOpenCityBank;
 import static fr.openmc.core.features.city.sub.mayor.managers.MayorManager.PHASE_1_DAY;
 import static fr.openmc.core.features.city.sub.mayor.managers.MayorManager.PHASE_2_DAY;
 
@@ -531,7 +531,7 @@ public class CityMenu extends Menu {
                 return;
             }
 
-            if (!canOpenCityBank(cityCheck, player)) return;
+            if (!CityBankConditions.canOpenCityBank(cityCheck, player)) return;
 
             new CityBankMenu(player).open();
         }));

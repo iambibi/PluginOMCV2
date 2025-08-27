@@ -341,24 +341,29 @@ public class MayorManager {
                 OfflinePlayer offlinePlayer = CacheOfflinePlayer.getOfflinePlayer(uuid);
                 if (offlinePlayer.isOnline()) {
                     Player player = offlinePlayer.getPlayer();
+
+                    if (player == null) continue;
+
+                    Mayor oldMayor = copyCityMayor.get(city.getUUID());
+
                     // Fou de Rage
-                    if (PerkManager.hasPerk(copyCityMayor.get(city.getUUID()), Perks.FOU_DE_RAGE.getId())) {
+                    if (PerkManager.hasPerk(oldMayor, Perks.FOU_DE_RAGE.getId())) {
                         player.removePotionEffect(PotionEffectType.STRENGTH);
                         player.removePotionEffect(PotionEffectType.RESISTANCE);
                     }
 
                     // Mineur Dévoué
-                    if (PerkManager.hasPerk(copyCityMayor.get(city.getUUID()), Perks.MINER.getId())) {
+                    if (PerkManager.hasPerk(oldMayor, Perks.MINER.getId())) {
                         MinerPerk.updatePlayerEffects(player);
                     }
 
                     // Mascotte de Compagnie
-                    if (PerkManager.hasPerk(copyCityMayor.get(city.getUUID()), Perks.MASCOTS_FRIENDLY.getId())) {
+                    if (PerkManager.hasPerk(oldMayor, Perks.MASCOTS_FRIENDLY.getId())) {
                         MascotFriendlyPerk.updatePlayerEffects(player);
                     }
 
                     // Fruit du Démon
-                    if (PerkManager.hasPerk(copyCityMayor.get(city.getUUID()), Perks.FRUIT_DEMON.getId())) {
+                    if (PerkManager.hasPerk(oldMayor, Perks.FRUIT_DEMON.getId())) {
                         DemonFruitPerk.removeReachBonus(player);
                     }
                 }

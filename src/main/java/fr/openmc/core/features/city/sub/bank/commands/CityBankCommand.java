@@ -9,9 +9,6 @@ import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Range;
 
-import static fr.openmc.core.features.city.sub.bank.conditions.CityBankConditions.canOpenCityBank;
-
-
 public class CityBankCommand {
     @Command({"city bank view", "ville bank view"})
     @Description("Ouvre le menu de la banque de ville")
@@ -19,7 +16,7 @@ public class CityBankCommand {
         if (CityManager.getPlayerCity(player.getUniqueId()) == null)
             return;
 
-        if (!canOpenCityBank(CityManager.getPlayerCity(player.getUniqueId()), player)) return;
+        if (!CityBankConditions.canOpenCityBank(CityManager.getPlayerCity(player.getUniqueId()), player)) return;
 
         new CityBankMenu(player).open();
     }

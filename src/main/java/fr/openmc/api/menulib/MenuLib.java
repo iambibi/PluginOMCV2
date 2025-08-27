@@ -37,7 +37,6 @@ public final class MenuLib implements Listener {
     private static final Set<Class<? extends Menu>> ignoredMenus = new HashSet<>();
     static {
         ignoredMenus.add(ConfirmMenu.class);
-        ignoredMenus.add(fr.openmc.core.features.contest.menu.ConfirmMenu.class);
         ignoredMenus.add(fr.openmc.core.features.adminshop.menus.ConfirmMenu.class);
         ignoredMenus.add(HomeDeleteConfirmMenu.class);
     }
