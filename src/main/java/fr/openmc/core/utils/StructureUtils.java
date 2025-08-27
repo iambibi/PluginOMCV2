@@ -5,6 +5,7 @@ import com.flowpowered.nbt.stream.NBTInputStream;
 import fr.openmc.core.OMCPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -13,76 +14,69 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class StructureUtils {
     /**
-     * The function that places a structure into a world from an NBT file. You can generate this file using the in-game
-     * <a href="https://minecraft.gamepedia.com/Structure_Block">MC Structure Block docs</a>
-     * Credit : <a href="https://github.com/rodiconmc/Rodiblock/blob/master/src/main/java/com/rodiconmc/rodiblock/Structure.java">rodiconmc</a>
+     * Places a structure from an NBT file into the world at the given location.
+     * Structure files can be exported using a Minecraft Structure Block.
      *
-     * @param file    NBT file of the structure
-     * @param target  The lowest value location of where you want to place the structure.
-     * @param mirrorX Whether or not to mirror the structure on the X coordinate. (Does not change block rotation values)
-     * @param mirrorZ Whether or not to mirror the structure on the Z coordinate. (Does not change block rotation values)
-     * @throws IOException Exception thrown if the NBT file is formatted incorrectly.
+     * Optimisations :
+     * - Lecture asynchrone de l’NBT, placement synchrone.
+     * - Réduction des appels coûteux à world.getBlockAt() / getBlockData().
+     * - Pré-calcul des positions et cache du BlockData pour palette.
+     *
+     * @param file    The NBT file of the structure.
+     * @param target  The lowest (min corner) location where to place the structure.
+     * @param mirrorX Whether to mirror the structure on the X axis (ignores block rotation).
+     * @param mirrorZ Whether to mirror the structure on the Z axis (ignores block rotation).
+     * @throws IOException If the NBT file is malformed or unreadable.
      */
     public static void placeStructure(File file, Location target, boolean mirrorX, boolean mirrorZ) throws IOException {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try (NBTInputStream input = new NBTInputStream(new FileInputStream(file))) {
                 Tag baseCompound = input.readTag();
-                if (!baseCompound.getType().equals(TagType.TAG_COMPOUND)) return;
+                if (!(baseCompound instanceof CompoundTag)) return;
                 CompoundMap compound = ((CompoundTag) baseCompound).getValue();
 
-                if (!compound.containsKey("size")) return;
                 ListTag sizeList = (ListTag) compound.get("size");
-                if (!(sizeList.getElementType().equals(IntTag.class)) || sizeList.getValue().size() != 3) return;
+                if (sizeList == null || sizeList.getValue().size() != 3) return;
                 int[] size = new int[]{
                         ((IntTag) sizeList.getValue().get(0)).getValue(),
                         ((IntTag) sizeList.getValue().get(1)).getValue(),
                         ((IntTag) sizeList.getValue().get(2)).getValue()
                 };
 
-                if (!compound.containsKey("palette")) return;
                 ListTag paletteList = (ListTag) compound.get("palette");
-                if (!(paletteList.getElementType().equals(CompoundTag.class))) return;
-
+                if (paletteList == null) return;
                 BlockData[] states = new BlockData[paletteList.getValue().size()];
                 for (int i = 0; i < states.length; i++) {
                     CompoundMap blockTag = ((CompoundTag) paletteList.getValue().get(i)).getValue();
-                    if (!blockTag.containsKey("Name")) return;
-
-                    StringBuilder s = new StringBuilder(blockTag.get("Name").getValue().toString()); // e.g. "minecraft:oak_log"
+                    StringBuilder s = new StringBuilder(blockTag.get("Name").getValue().toString());
                     if (blockTag.containsKey("Properties")) {
                         CompoundMap props = ((CompoundTag) blockTag.get("Properties")).getValue();
-                        Iterator<Map.Entry<String, Tag<?>>> it = props.entrySet().iterator();
-                        if (!props.isEmpty()) s.append("[");
-                        int k = 0;
-                        while (it.hasNext()) {
-                            Map.Entry<String, Tag<?>> e = it.next();
-                            if (k++ > 0) s.append(",");
-                            s.append(e.getKey()).append("=").append(e.getValue().getValue());
+                        if (!props.isEmpty()) {
+                            s.append("[");
+                            int k = 0;
+                            for (Map.Entry<String, Tag<?>> e : props.entrySet()) {
+                                if (k++ > 0) s.append(",");
+                                s.append(e.getKey()).append("=").append(e.getValue().getValue());
+                            }
+                            s.append("]");
                         }
-                        if (!props.isEmpty()) s.append("]");
                     }
                     states[i] = Bukkit.createBlockData(s.toString());
                 }
 
-                if (!compound.containsKey("blocks")) return;
                 ListTag blocksList = (ListTag) compound.get("blocks");
-                if (!(blocksList.getElementType().equals(CompoundTag.class))) return;
-
-                final List<int[]> blocksToPlace = new ArrayList<>(); // {x,y,z,stateIdx}
-                final List<int[]> baseSolidCells = new ArrayList<>(); // {x,z} pour y==0 et block SOLIDE
+                if (blocksList == null) return;
+                final List<int[]> blocksToPlace = new ArrayList<>();
+                final List<int[]> baseSolidCells = new ArrayList<>();
 
                 for (Object oTag : blocksList.getValue()) {
                     CompoundMap blockTag = ((CompoundTag) oTag).getValue();
-
                     ListTag posListTag = (ListTag) blockTag.get("pos");
-                    if (!(posListTag.getElementType().equals(IntTag.class)) || posListTag.getValue().size() != 3)
-                        return;
                     int x = ((IntTag) posListTag.getValue().get(0)).getValue();
                     int y = ((IntTag) posListTag.getValue().get(1)).getValue();
                     int z = ((IntTag) posListTag.getValue().get(2)).getValue();
@@ -90,12 +84,10 @@ public class StructureUtils {
                     if (mirrorX) x = (size[0] - 1) - x;
                     if (mirrorZ) z = (size[2] - 1) - z;
 
-                    IntTag stateIntTag = (IntTag) blockTag.get("state");
-                    int stateIdx = stateIntTag.getValue();
-                    if (stateIdx < 0 || stateIdx >= states.length) return;
+                    int stateIdx = ((IntTag) blockTag.get("state")).getValue();
+                    if (stateIdx < 0 || stateIdx >= states.length) continue;
 
                     blocksToPlace.add(new int[]{x, y, z, stateIdx});
-
                     if (y == 0 && states[stateIdx].getMaterial().isSolid()) {
                         baseSolidCells.add(new int[]{x, z});
                     }
@@ -103,35 +95,27 @@ public class StructureUtils {
 
                 Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
                     World world = target.getWorld();
-                    int baseY = target.getBlockY();
                     int baseX = target.getBlockX();
+                    int baseY = target.getBlockY();
                     int baseZ = target.getBlockZ();
 
-                    int totalBaseSolid = baseSolidCells.size();
                     int floating = 0;
                     for (int[] rc : baseSolidCells) {
-                        BlockData data = world.getBlockAt(baseX + rc[0], baseY - 1, baseZ + rc[1]).getBlockData();
-                        if (data.getMaterial().isAir() || !data.getMaterial().isSolid()) {
-                            floating++;
-                        }
+                        Material below = world.getBlockAt(baseX + rc[0], baseY - 1, baseZ + rc[1]).getType();
+                        if (below.isAir() || !below.isSolid()) floating++;
                     }
-                    if (totalBaseSolid > 0) {
-                        double ratio = (double) floating / (double) totalBaseSolid;
-                        if (ratio > 0.40D) {
-                            return;
-                        }
+                    if (!baseSolidCells.isEmpty() && ((double) floating / baseSolidCells.size()) > 0.40D) {
+                        return;
                     }
 
                     for (int[] e : blocksToPlace) {
                         int rx = e[0], ry = e[1], rz = e[2], sIdx = e[3];
-                        Block worldBlock = world.getBlockAt(baseX + rx, baseY + ry, baseZ + rz);
-
-                        if (!worldBlock.getType().isAir() && worldBlock.getType().isSolid()) continue;
-
-                        worldBlock.setBlockData(states[sIdx], false);
+                        Block block = world.getBlockAt(baseX + rx, baseY + ry, baseZ + rz);
+                        if (block.getType().isSolid() && !block.getType().isAir()) continue;
+                        block.setBlockData(states[sIdx], false);
                     }
                 });
-                
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

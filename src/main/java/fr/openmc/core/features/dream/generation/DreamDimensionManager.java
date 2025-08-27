@@ -5,6 +5,7 @@ import fr.openmc.core.features.dream.generation.biomes.*;
 import fr.openmc.core.features.dream.generation.effects.BiomeParticleListener;
 import fr.openmc.core.features.dream.generation.populators.mud.RockPopulator;
 import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopulator;
+import fr.openmc.core.features.dream.generation.populators.soulforest.SoulTreePopulator;
 import fr.openmc.core.features.dream.generation.structures.cloud.CloudCastleStructure;
 import fr.openmc.core.utils.SchematicsUtils;
 import org.bukkit.Bukkit;
@@ -65,6 +66,7 @@ public class DreamDimensionManager {
         // ** POPULATORS REGISTER **
         dream.getPopulators().add(new RockPopulator());
         dream.getPopulators().add(new PlainsTreePopulator());
+        dream.getPopulators().add(new SoulTreePopulator());
 
         // ** STRUCTURES POPULATORS REGISTER **
         dream.getPopulators().add(new CloudCastleStructure());
