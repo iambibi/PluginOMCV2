@@ -5,6 +5,7 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.sub.milestone.commands.AdminCityMilestoneCommands;
 import fr.openmc.core.features.city.sub.milestone.commands.CityMilestoneCommands;
 import fr.openmc.core.features.city.sub.milestone.listeners.CooldownEndListener;
+import fr.openmc.core.features.city.sub.statistics.listeners.MemberJoinListener;
 
 public class CityMilestoneManager {
     public CityMilestoneManager() {
@@ -15,7 +16,8 @@ public class CityMilestoneManager {
 
         OMCPlugin.registerEvents(
                 new CooldownEndListener(),
-                new CityRequirementListener()
+                new CityRequirementListener(),
+                new MemberJoinListener()
         );
     }
 }
