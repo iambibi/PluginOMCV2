@@ -4,6 +4,10 @@ import fr.openmc.core.features.city.sub.milestone.CityRewards;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 
+/**
+ * Enumération représentant les récompenses d'intérêt pour une ville.
+ * Chaque niveau définit un pourcentage d'intérêt spécifique.
+ */
 @Getter
 public enum InterestRewards implements CityRewards {
 
@@ -18,13 +22,27 @@ public enum InterestRewards implements CityRewards {
     LEVEL_9(.01),
     LEVEL_10(.03);
 
-
+    /**
+     * Pourcentage d'intérêt pour le niveau.
+     */
     private final double interest;
 
+    /**
+     * Constructeur de l'énumération.
+     *
+     * @param interest le pourcentage d'intérêt associé au niveau
+     */
     InterestRewards(double interest) {
         this.interest = interest;
     }
 
+    /**
+     * Calcule l'intérêt total cumulé jusqu'au niveau spécifié.
+     *
+     * @param level le niveau jusqu'auquel cumuler l'intérêt
+     * @return l'intérêt total cumulé
+     * @throws IllegalArgumentException si le niveau est invalide
+     */
     public static double getTotalInterest(int level) {
         InterestRewards[] values = InterestRewards.values();
 
@@ -39,6 +57,11 @@ public enum InterestRewards implements CityRewards {
         return total;
     }
 
+    /**
+     * Retourne le nom de la récompense sous forme d'un composant texte.
+     *
+     * @return un composant texte décrivant le pourcentage d'intérêt
+     */
     @Override
     public Component getName() {
         return Component.text("§7+ §6" + interest * 100 + "% §6d'intérêt");

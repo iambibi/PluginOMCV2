@@ -5,6 +5,11 @@ import fr.openmc.core.features.city.sub.milestone.CityRewards;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 
+
+/**
+ * Enumération représentant les récompenses de fonctionnalités débloquées pour une ville.
+ * Chaque niveau définit les fonctionnalités accessibles pour ce niveau.
+ */
 @Getter
 public enum FeaturesRewards implements CityRewards {
 
@@ -19,13 +24,28 @@ public enum FeaturesRewards implements CityRewards {
     LEVEL_9(Feature.PERK_STRATEGY),
     LEVEL_10();
 
-
+    /**
+     * Tableau des fonctionnalités débloquées à ce niveau.
+     */
     private final Feature[] features;
 
+    /**
+     * Constructeur de l'enumération.
+     *
+     * @param features une liste variable de fonctionnalités débloquées
+     */
     FeaturesRewards(Feature... features) {
         this.features = features;
     }
 
+    /**
+     * Vérifie si la ville a débloqué la fonctionnalité spécifiée.
+     * La méthode parcourt les récompenses correspondant aux niveaux inférieurs au niveau de la ville.
+     *
+     * @param city    la ville dont on vérifie les fonctionnalités débloquées
+     * @param feature la fonctionnalité recherchée
+     * @return true si la fonctionnalité est débloquée, false sinon
+     */
     public static boolean hasUnlockFeature(City city, Feature feature) {
         if (feature == null || city == null) return false;
 
@@ -41,6 +61,12 @@ public enum FeaturesRewards implements CityRewards {
         return false;
     }
 
+    /**
+     * Retourne le niveau de déblocage de la fonctionnalité spécifiée.
+     *
+     * @param feature la fonctionnalité dont on recherche le niveau de déblocage
+     * @return le niveau de déblocage, ou -1 si la fonctionnalité n'est pas trouvée
+     */
     public static int getFeatureUnlockLevel(Feature feature) {
         if (feature == null) return -1;
         for (FeaturesRewards reward : values()) {
@@ -53,6 +79,12 @@ public enum FeaturesRewards implements CityRewards {
         return -1;
     }
 
+    /**
+     * Retourne le nom de la récompense sous forme de composant texte.
+     * Le nom est basé sur la ou les fonctionnalités débloquées à ce niveau.
+     *
+     * @return un composant texte décrivant les fonctionnalités débloquées
+     */
     @Override
     public Component getName() {
         if (features == null || features.length == 0) {
@@ -71,6 +103,9 @@ public enum FeaturesRewards implements CityRewards {
         return Component.text(sb.toString());
     }
 
+    /**
+     * Enumération interne représentant les différentes fonctionnalités pouvant être débloquées.
+     */
     @Getter
     public enum Feature {
         CHEST("§a/city chest"),
@@ -84,11 +119,18 @@ public enum FeaturesRewards implements CityRewards {
         TYPE_WAR("§cle Type de Ville en Guerre"),
         WAR("§c/war"),
         PERK_MILITARY("§3les Réformes Militaires"),
-        PERK_STRATEGY("§3les Réformes de Stratégies"),
-        ;
+        PERK_STRATEGY("§3les Réformes de Stratégies");
 
+        /**
+         * Nom de la fonctionnalité.
+         */
         private final String name;
 
+        /**
+         * Constructeur de la fonctionnalité.
+         *
+         * @param name le nom associé à la fonctionnalité
+         */
         Feature(String name) {
             this.name = name;
         }

@@ -134,23 +134,40 @@ public class CityMilestoneMenu extends Menu {
         return List.of();
     }
 
+    /**
+     * Génère un item représentatif d'un niveau de ville dans le menu.
+     *
+     * <p>Selon l'état du niveau (complété, actif ou non), l'item est construit avec un matériau spécifique,
+     * un affichage de nom coloré et une description (lore) détaillant les conditions requises, les récompenses
+     * et l'état d'activation.</p>
+     *
+     * @param menu      le menu auquel appartient l'item
+     * @param level     le niveau de la ville à représenter
+     * @param city      la ville concernée
+     * @param completed indique si le niveau est déjà complété
+     * @param active    indique si le niveau est actuellement actif
+     * @return un {@code ItemBuilder} configuré pour le niveau
+     */
     public static ItemBuilder getGenerateItemLevel(Menu menu, CityLevels level, City city, boolean completed, boolean active) {
-        ItemBuilder itemBuilder = new ItemBuilder(menu, completed ? Material.EMERALD_BLOCK : active ? Material.IRON_BLOCK : Material.COAL_BLOCK, meta -> {
-            meta.displayName(level.getName().color(completed ? NamedTextColor.GREEN : active ? NamedTextColor.YELLOW : NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
-            meta.setEnchantmentGlintOverride(active);
-        });
+        ItemBuilder itemBuilder = new ItemBuilder(menu,
+                completed ? Material.EMERALD_BLOCK : active ? Material.IRON_BLOCK : Material.COAL_BLOCK,
+                meta -> {
+                    meta.displayName(level.getName()
+                            .color(completed ? NamedTextColor.GREEN : active ? NamedTextColor.YELLOW : NamedTextColor.GRAY)
+                            .decoration(TextDecoration.ITALIC, false));
+                    meta.setEnchantmentGlintOverride(active);
+                });
 
         List<Component> lore = new ArrayList<>();
-
         lore.add(level.getDescription().color(NamedTextColor.DARK_GRAY).decorate(TextDecoration.ITALIC));
-
         lore.add(Component.empty());
         lore.add(Component.text("§3§lRequis :"));
 
         for (CityRequirement requirement : level.getRequirements()) {
             lore.add(Component.text((requirement.isDone(city, level) ? "§l✔ " : "§l✖ "))
-                    .append(requirement.getName(city, level)).color(requirement.isDone(city, level) ? NamedTextColor.GREEN : NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)
-            );
+                    .append(requirement.getName(city, level))
+                    .color(requirement.isDone(city, level) ? NamedTextColor.GREEN : NamedTextColor.RED)
+                    .decoration(TextDecoration.ITALIC, false));
         }
 
         lore.add(Component.empty());
@@ -166,9 +183,13 @@ public class CityMilestoneMenu extends Menu {
         } else {
             lore.add(Component.empty());
             if (DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") != 0) {
-                lore.add(Component.text("§fIl reste §3" + DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level")) + " §fde débloquage"));
+                lore.add(Component.text("§fIl reste §3" +
+                        DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level")) +
+                        " §fde débloquage"));
             } else {
-                lore.add(Component.text("§3" + DateUtils.convertSecondToTime(level.getUpgradeTime()) + " §fde débloquage"));
+                lore.add(Component.text("§3" +
+                        DateUtils.convertSecondToTime(level.getUpgradeTime()) +
+                        " §fde débloquage"));
             }
         }
 
@@ -181,6 +202,5 @@ public class CityMilestoneMenu extends Menu {
         itemBuilder.lore(lore);
 
         return itemBuilder;
-
     }
 }

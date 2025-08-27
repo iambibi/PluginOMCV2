@@ -600,6 +600,15 @@ public enum CityLevels {
     private final List<CityRewards> rewards;
     private final long upgradeTime;
 
+    /**
+     * Constructeur de l'énumération des niveaux de ville.
+     *
+     * @param name         le nom du niveau sous forme de composant
+     * @param description  la description du niveau sous forme de composant
+     * @param requirements la liste des exigences à remplir
+     * @param rewards      la liste des récompenses obtenues une fois le niveau atteint
+     * @param upgradeTime  le temps requis pour la montée de niveau (en secondes)
+     */
     CityLevels(Component name, Component description, List<CityRequirement> requirements, List<CityRewards> rewards, long upgradeTime) {
         this.name = name;
         this.description = description;
@@ -608,6 +617,12 @@ public enum CityLevels {
         this.upgradeTime = upgradeTime;
     }
 
+    /**
+     * Vérifie si toutes les exigences de la ville sont satisfaites pour ce niveau.
+     *
+     * @param city la ville à vérifier
+     * @return {@code true} si toutes les exigences sont remplies, {@code false} sinon
+     */
     public boolean isCompleted(City city) {
         for (CityRequirement requirement : requirements) {
             if (!requirement.isDone(city, this)) return false;
@@ -615,6 +630,11 @@ public enum CityLevels {
         return true;
     }
 
+    /**
+     * Lance le cooldown pour la montée de niveau de la ville.
+     *
+     * @param city la ville concernée
+     */
     public void runUpgradeTime(City city) {
         DynamicCooldownManager.use(city.getUUID(), "city:upgrade-level", upgradeTime * 1000);
     }

@@ -18,7 +18,6 @@ public enum RankLimitRewards implements CityRewards {
     LEVEL_9(15),
     LEVEL_10(18);
 
-
     private final Integer rankLimit;
 
     RankLimitRewards(Integer rankLimit) {
@@ -42,7 +41,6 @@ public enum RankLimitRewards implements CityRewards {
                 return values[i].rankLimit;
             }
         }
-
         return 0;
     }
 

@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class CooldownEndListener implements Listener {
     @EventHandler
-    public void onEnd(CooldownEndEvent event) {
+    public void onUpgradeEnd(CooldownEndEvent event) {
         String group = event.getGroup();
 
         if (!Objects.equals(group, "city:upgrade-level")) return;

@@ -4,6 +4,10 @@ import fr.openmc.core.features.city.sub.milestone.CityRewards;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 
+/**
+ * Enumération représentant les récompenses de limite de pages de coffre pour une ville.
+ * Chaque niveau définit une limite spécifique qui sera utilisée pour déterminer le nombre maximal de pages de coffre.
+ */
 @Getter
 public enum ChestPageLimitRewards implements CityRewards {
 
@@ -18,13 +22,28 @@ public enum ChestPageLimitRewards implements CityRewards {
     LEVEL_9(9),
     LEVEL_10(10);
 
-
+    /**
+     * Limite de pages de coffre associée à ce niveau.
+     */
     private final Integer chestPageLimit;
 
+    /**
+     * Constructeur de l'énumération.
+     *
+     * @param chestPageLimit la limite de pages de coffre pour ce niveau.
+     */
     ChestPageLimitRewards(Integer chestPageLimit) {
         this.chestPageLimit = chestPageLimit;
     }
 
+    /**
+     * Retourne la limite de pages de coffre correspondant au niveau donné.
+     * Si la limite du niveau est nulle, une recherche dans les niveaux inférieurs est effectuée.
+     *
+     * @param level le niveau pour lequel obtenir la limite de pages de coffre.
+     * @return la limite correspondante.
+     * @throws IllegalArgumentException si le niveau est invalide.
+     */
     public static int getChestPageLimit(int level) {
         ChestPageLimitRewards[] values = ChestPageLimitRewards.values();
 
@@ -46,6 +65,12 @@ public enum ChestPageLimitRewards implements CityRewards {
         return 0;
     }
 
+    /**
+     * Retourne le nom de la récompense sous forme d'un composant texte.
+     * Le texte indique la limite de pages de coffre maximum pour ce niveau.
+     *
+     * @return un composant texte décrivant la récompense.
+     */
     @Override
     public Component getName() {
         return Component.text("§a" + chestPageLimit + " pages de coffre §7maximum");
