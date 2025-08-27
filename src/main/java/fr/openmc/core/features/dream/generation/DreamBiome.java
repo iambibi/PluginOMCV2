@@ -9,7 +9,7 @@ public enum DreamBiome {
     SOUL_FOREST("§5Forêt des Ames", Biome.FOREST),
     MUD_BEACH("§8Plage de boue", Biome.BEACH),
     CLOUD_LAND("§fVallée des Nuages", Biome.THE_VOID),
-    GLACITE_GROTTO("§bGrotte glacé", Biome.DEEP_DARK);
+    GLACITE_GROTTO("§bGrotte glacée", Biome.DEEP_DARK);
 
     private final String name;
     private final Biome biome;
