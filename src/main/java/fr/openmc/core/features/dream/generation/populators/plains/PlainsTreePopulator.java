@@ -15,7 +15,7 @@ import java.util.Random;
 
 
 public class PlainsTreePopulator extends BlockPopulator {
-    private static final double TREE_PROBABILITY = 0.25;
+    private static final double TREE_PROBABILITY = 0.15;
     private static final List<String> TREE_FEATURES = new ArrayList<>(List.of(
             "plains/tree_1",
             "plains/tree_2",

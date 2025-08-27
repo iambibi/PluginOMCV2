@@ -110,8 +110,8 @@ public class StructureUtils {
                     int totalBaseSolid = baseSolidCells.size();
                     int floating = 0;
                     for (int[] rc : baseSolidCells) {
-                        Block below = world.getBlockAt(baseX + rc[0], baseY - 1, baseZ + rc[1]);
-                        if (below.isEmpty() || !below.getType().isSolid()) {
+                        BlockData data = world.getBlockAt(baseX + rc[0], baseY - 1, baseZ + rc[1]).getBlockData();
+                        if (data.getMaterial().isAir() || !data.getMaterial().isSolid()) {
                             floating++;
                         }
                     }
