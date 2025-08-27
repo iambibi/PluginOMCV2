@@ -58,14 +58,23 @@ public class ContestManager {
             "DARK_GREEN","DARK_BLUE","BLACK"
     );
 
+    /**
+     * Constructeur du ContestManager :
+     * - Enregistre les évents liés aux contests si ItemsAdder est présent
+     * - Enregistre les suggestions pour l’autocomplétion des commandes
+     * - Enregistre la commande principale /contest
+     * - Initialise les données globales et les joueurs
+     * - Programme le lancement et la fin des différentes phases du contest
+     */
     public ContestManager() {
+        // ** LISTENERS **
         if (ItemsAdderHook.hasItemAdder()) {
             OMCPlugin.registerEvents(
                     new ContestIntractEvents()
             );
         }
 
-        //COMMANDS
+        // ** COMMANDS **
         CommandsManager.getHandler().getAutoCompleter().registerSuggestion("colorContest", SuggestionProvider.of(ContestManager.getColorContestList()));
         CommandsManager.getHandler().getAutoCompleter().registerSuggestion("trade", SuggestionProvider.of(TradeYMLManager.getRessListFromConfig()));
 
@@ -73,12 +82,14 @@ public class ContestManager {
                 new ContestCommand()
         );
 
+        // ** MANAGER EXTERNE **
         new TradeYMLManager();
 
-        // Fill data and playerData
+        // ** LOAD DATAS **
         initContestData();
         loadContestPlayerData();
 
+        // ** SCHEDULE TASK **
         scheduleStartContest();
         scheduleStartTradeContest();
         scheduleEndContest();
@@ -88,7 +99,8 @@ public class ContestManager {
     private static Dao<ContestPlayer, UUID> playerDao;
 
     /**
-     * Initialise la DB pour les Contests
+     * Initialise la base de données pour les contests et les joueurs
+     * (création des tables si elles n’existent pas encore)
      */
     public static void initDB(ConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, Contest.class);
@@ -98,9 +110,9 @@ public class ContestManager {
         playerDao = DaoManager.createDao(connectionSource, ContestPlayer.class);
     }
 
-    // CONTEST DATA
     /**
-     * Initialisation des variables en fonction des données dans la DB
+     * Initialise les données globales du contest depuis la DB.
+     * Si aucune donnée n’est trouvée, un contest par défaut est créé.
      */
     public static void initContestData() {
         try {
@@ -115,7 +127,7 @@ public class ContestManager {
     }
 
     /**
-     * Sauvegarde des Données globales des Contests
+     * Sauvegarde les données globales du contest dans la DB.
      */
     public static void saveContestData() {
         try {
@@ -125,9 +137,9 @@ public class ContestManager {
         }
     }
 
-    // CONTEST PLAYER DATA
     /**
-     * Charge les données des Joueurs a propos du contests (leur profil, leur points, son camp)
+     * Charge les données des joueurs depuis la DB
+     * et les insère dans la map dataPlayer.
      */
     public static void loadContestPlayerData() {
         try {
@@ -138,7 +150,7 @@ public class ContestManager {
     }
 
     /**
-     * Sauvegarder les données des Joueurs du Contests
+     * Sauvegarde les données des joueurs (points, camp, etc.) dans la DB.
      */
     public static void saveContestPlayerData() {
         OMCPlugin.getInstance().getSLF4JLogger().info("Saving contest player data...");
@@ -152,6 +164,9 @@ public class ContestManager {
         OMCPlugin.getInstance().getSLF4JLogger().info("Contest player data saved successfully.");
     }
 
+    /**
+     * Vide les tables relatives au contest (Contest et ContestPlayer) dans la DB.
+     */
     public static void clearDB() {
         try {
             TableUtils.clearTable(DatabaseManager.getConnectionSource(), Contest.class);
@@ -161,9 +176,11 @@ public class ContestManager {
         }
     }
 
-    //PHASE 1
     /**
-     * Initialisation de la phase 1 donc des votes
+     * Démarre la phase 1 du contest (phase de vote).
+     * - Définit la phase sur 2
+     * - Réinitialise les particules
+     * - Diffuse un message et joue un son aux joueurs connectés
      */
     public static void initPhase1() {
         data.setPhase(2);
@@ -184,9 +201,12 @@ public class ContestManager {
             player.playSound(player.getEyeLocation(), Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1.0F, 0.2F);
         }
     }
-    //PHASE 2
+
     /**
-     * Initialisation de la phase 2 donc le commencement du Contests (ouverture des trades et des confrontations)
+     * Démarre la phase 2 du contest (contributions et échanges).
+     * - Sélectionne et met à jour les trades
+     * - Définit la phase sur 3
+     * - Diffuse un message et joue un son aux joueurs connectés
      */
     public static void initPhase2() {
         List<Map<String, Object>> selectedTrades = TradeYMLManager.getTradeSelected(true);
@@ -215,9 +235,14 @@ public class ContestManager {
             player.playSound(player.getEyeLocation(), Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.0F, 0.3F);
         }
     }
-    //PHASE 3
+
     /**
-     * Initialisation de la phase 3 donc la fin du Contests (les récompenses ect)
+     * Démarre la phase 3 du contest (fin du contest et récompenses).
+     * - Calcule les résultats et affiche les statistiques
+     * - Crée un livre de résultats global + classement
+     * - Donne un livre personnalisé avec récompenses à chaque joueur
+     * - Envoie les récompenses via la mailbox
+     * - Réinitialise les données en DB pour le prochain contest
      */
     public static void initPhase3() {
         data.setPhase(4);
@@ -500,7 +525,9 @@ public class ContestManager {
     }
 
     /**
-     * Calcule le Taux de Vote d'un Camp
+     * Calcule le nombre de votes pour un camp donné.
+     * @param camps 1 ou 2
+     * @return nombre de votes
      */
     public static Integer getVoteTaux(Integer camps) {
         return (int) dataPlayer.values().stream()
@@ -509,19 +536,22 @@ public class ContestManager {
     }
 
     /**
-     * Retourne une Liste contenant toutes les couleurs possibles pour faire un Contest
+     * Retourne la liste des couleurs disponibles pour créer un contest.
      */
     public static List<String> getColorContestList() {
         return new ArrayList<>(colorContest);
     }
 
     /**
-     * Mise d'un Contest de type innédit
+     * Insère un contest personnalisé dans la DB avec 2 camps et leurs couleurs.
      */
     public static void insertCustomContest(String camp1, String color1, String camp2, String color2) {
         data = new Contest(camp1, camp2, color1, color2, 1, "ven.", 0, 0);
     }
 
+    /**
+     * Programme le lancement de la phase 1 (votes) chaque vendredi à minuit.
+     */
     private static void scheduleStartContest() {
         long delayInTicks = DateUtils.getSecondsUntilDayOfWeekMidnight(START_CONTEST_DAY) * 20;
 
@@ -531,11 +561,13 @@ public class ContestManager {
 
         Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
             ContestManager.initPhase1();
-
             scheduleStartContest();
         }, delayInTicks);
     }
 
+    /**
+     * Programme le lancement de la phase 2 (contributions) chaque samedi à minuit.
+     */
     private static void scheduleStartTradeContest() {
         long delayInTicks = DateUtils.getSecondsUntilDayOfWeekMidnight(START_TRADE_CONTEST_DAY) * 20;
 
@@ -545,11 +577,13 @@ public class ContestManager {
 
         Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
             ContestManager.initPhase2();
-
             scheduleStartTradeContest();
         }, delayInTicks);
     }
 
+    /**
+     * Programme la fin du contest (phase 3) chaque lundi à minuit.
+     */
     private static void scheduleEndContest() {
         long delayInTicks = DateUtils.getSecondsUntilDayOfWeekMidnight(END_CONTEST_DAY) * 20;
 
@@ -559,7 +593,6 @@ public class ContestManager {
 
         Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
             ContestManager.initPhase3();
-
             scheduleEndContest();
         }, delayInTicks);
     }

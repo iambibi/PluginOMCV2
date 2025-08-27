@@ -145,57 +145,90 @@ public class TradeMenu extends Menu {
         return List.of();
     }
 
+    /**
+     * Gère l'échange simple d'items pour un trade.
+     * <p>
+     * Vérifie si le joueur possède assez d'items, supprime les items échangés, attribue les coquillages
+     * correspondants et envoie un message de succès.
+     *
+     * @param player       le joueur effectuant le trade
+     * @param item         l'item concerné par l'échange
+     * @param itemsRemoved le nombre d'items à retirer
+     * @param shellsEarned le nombre de coquillages à attribuer
+     * @param tradeName    le nom du trade sous forme de composant traduisible
+     */
     private void handleSingleTrade(Player player, ItemStack item, int itemsRemoved, int shellsEarned, TranslatableComponent tradeName) {
         if (!ItemUtils.hasEnoughItems(player, item, itemsRemoved)) {
             sendNotEnoughMessage(player);
             return;
         }
-
         ItemUtils.removeItemsFromInventory(player, item, itemsRemoved);
         giveShells(player, shellsEarned);
-
         sendSuccessMessage(player, itemsRemoved, shellsEarned, tradeName);
     }
 
+    /**
+     * Gère l'échange en masse d'items pour un trade.
+     * <p>
+     * Vérifie si le joueur possède assez d'items, calcule la somme totale d'items dans l'inventaire,
+     * détermine le nombre de coquillages à attribuer et d'items à retirer, puis réalise l'échange et
+     * envoie un message de succès.
+     *
+     * @param player      le joueur effectuant le trade
+     * @param item        l'item concerné par l'échange
+     * @param amount      le nombre minimal d'items pour réaliser un échange
+     * @param amountShell le nombre de coquillages attribués pour cet échange
+     * @param tradeName   le nom du trade sous forme de composant traduisible
+     */
     private void handleBulkTrade(Player player, ItemStack item, int amount, int amountShell, TranslatableComponent tradeName) {
         if (!ItemUtils.hasEnoughItems(player, item, amount)) {
             sendNotEnoughMessage(player);
             return;
         }
-
         int totalItems = Arrays.stream(player.getInventory().getContents())
                 .filter(is -> is != null && is.getType() == item.getType())
                 .mapToInt(ItemStack::getAmount)
                 .sum();
-
         int shellsEarned = (totalItems / amount) * amountShell;
         int itemsRemoved = (shellsEarned / amountShell) * amount;
-
         ItemUtils.removeItemsFromInventory(player, item, itemsRemoved);
         giveShells(player, shellsEarned);
-
         sendSuccessMessage(player, itemsRemoved, shellsEarned, tradeName);
     }
 
+    /**
+     * Attribue au joueur un certain nombre de coquillages en répartissant l'item coquillage en stacks.
+     * <p>
+     * Si l'inventaire du joueur ne peut accueillir tous les items, ceux-ci sont envoyés par courrier.
+     *
+     * @param player le joueur destinataire des coquillages
+     * @param amount le nombre total de coquillages à attribuer
+     */
     private void giveShells(Player player, int amount) {
         ItemStack baseShell = CustomStack.getInstance(SHELL_NAMESPACE).getItemStack();
-
         List<ItemStack> stacks = ItemUtils.splitAmountIntoStack(baseShell, amount);
-
         List<ItemStack> leftovers = new ArrayList<>();
-
         for (ItemStack stack : stacks) {
             HashMap<Integer, ItemStack> result = player.getInventory().addItem(stack);
             if (!result.isEmpty()) {
                 leftovers.addAll(result.values());
             }
         }
-
         if (!leftovers.isEmpty()) {
             MailboxManager.sendItems(player, player, leftovers.toArray(new ItemStack[0]));
         }
     }
 
+    /**
+     * Envoie un message de succès au joueur après un trade réussi.
+     *
+     * Le message indique le nombre d'items échangés et le nombre de coquillages obtenus.
+     *
+     * @param player       le joueur destinataire du message
+     * @param itemsRemoved le nombre d'items échangés
+     * @param shellsEarned le nombre de coquillages obtenus
+     * @param tradeName    le nom du trade sous forme de composant
+     */
     private void sendSuccessMessage(Player player, int itemsRemoved, int shellsEarned, Component tradeName) {
         MessagesManager.sendMessage(player,
                 Component.text("§7Vous avez échangé §e" + itemsRemoved + " ")
@@ -204,6 +237,11 @@ public class TradeMenu extends Menu {
                 Prefix.CONTEST, MessageType.SUCCESS, true);
     }
 
+    /**
+     * Envoie un message d'erreur indiquant que le joueur ne possède pas assez d'items pour l'échange.
+     *
+     * @param player le joueur destinataire du message
+     */
     private void sendNotEnoughMessage(Player player) {
         MessagesManager.sendMessage(player,
                 Component.text("§cVous n'avez pas assez de cette ressource pour l'échanger !"),
