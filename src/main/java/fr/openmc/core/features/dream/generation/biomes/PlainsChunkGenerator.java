@@ -39,7 +39,7 @@ public class PlainsChunkGenerator {
 
             if (noise3 > Math.min(function, -.3)) {
                 // Set sculk if the block closest to the surface.
-                if (distanceToSurface < 3 && y > 63) {
+                if (distanceToSurface < 6 && y > 63) {
                     chunkData.setBlock(x, y, z, PLAINS_SURFACE_MATERIAL);
                 } else {
                     chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));

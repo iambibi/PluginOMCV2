@@ -1,4 +1,4 @@
-package fr.openmc.core.features.dream;
+package fr.openmc.core.features.dream.displays;
 
 import fr.openmc.core.features.displays.bossbar.BossbarManager;
 import fr.openmc.core.features.displays.bossbar.BossbarsType;
@@ -6,15 +6,20 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
+/**
+ * Classe utilitaire pour la gestion de la BossBar dans la Dimension des Rêves.
+ *
+ * <p>Cette classe permet d'ajouter, mettre à jour et cacher la BossBar associée à un joueur.</p>
+ */
 public class DreamBossBar {
 
     private static final Component TEXTURE_BOSSBAR = Component.text("");
 
     /**
-     * Adds a tutorial boss bar for the player with the given message and progress.
+     * Ajoute une BossBar pour le joueur spécifié dans la Dimension des Rêves.
      *
-     * @param player   The player to add the boss bar for.
-     * @param progress The progress of the dream (0.0 to 1.0).
+     * @param player le joueur auquel ajouter la BossBar
+     * @param progress la progression de la BossBar
      */
     public static void addDreamBossBarForPlayer(Player player, float progress) {
         BossBar bar = BossBar.bossBar(
@@ -27,23 +32,22 @@ public class DreamBossBar {
     }
 
     /**
-     * Updates the tutorial boss bar for the player with the given message and progress.
+     * Met à jour la progression de la BossBar pour le joueur spécifié.
      *
-     * @param player   The player to update the boss bar for.
-     * @param progress The new progress of the tutorial step (0.0 to 1.0).
+     * @param player le joueur dont la BossBar doit être mise à jour
+     * @param progress la nouvelle progression de la BossBar
      */
     public static void update(Player player, float progress) {
         BossBar bar = BossbarManager.getBossBar(BossbarsType.DREAM, player);
-
         if (bar != null) {
             bar.progress(progress);
         }
     }
 
     /**
-     * Hides the tutorial boss bar for the player.
+     * Cache (supprime) la BossBar du joueur spécifié.
      *
-     * @param player The player to hide the boss bar for.
+     * @param player le joueur dont la BossBar doit être supprimée
      */
     public static void hide(Player player) {
         BossbarManager.removeBossBar(BossbarsType.DREAM, player);

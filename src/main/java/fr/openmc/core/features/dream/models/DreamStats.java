@@ -1,8 +1,8 @@
 package fr.openmc.core.features.dream.models;
 
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.DreamBossBar;
 import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.displays.DreamBossBar;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

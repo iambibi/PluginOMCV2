@@ -5,6 +5,7 @@ import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.listeners.PlayerChangeWorldListener;
 import fr.openmc.core.features.dream.listeners.PlayerQuitListener;
 import fr.openmc.core.features.dream.models.DreamStats;
+import fr.openmc.core.features.dream.spawning.DreamSpawningManager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -20,7 +21,9 @@ public class DreamManager {
                 new PlayerQuitListener()
         );
 
+        // ** MANAGERS **
         new DreamDimensionManager();
+        new DreamSpawningManager();
     }
 
     public static DreamStats getDreamStats(Player player) {
