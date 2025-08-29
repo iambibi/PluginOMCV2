@@ -3,8 +3,8 @@ package fr.openmc.core.features.city;
 import fr.openmc.api.cooldown.DynamicCooldownManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.events.*;
-import fr.openmc.core.features.city.models.DBCityRank;
 import fr.openmc.core.features.city.models.DBCity;
+import fr.openmc.core.features.city.models.DBCityRank;
 import fr.openmc.core.features.city.sub.bank.CityBankManager;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mascots.models.Mascot;
@@ -706,9 +706,7 @@ public class City {
             throw new IllegalArgumentException("Cannot delete the default rank (priority 0).");
         }
         cityRanks.remove(rank);
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            CityRankManager.removeCityRank(rank);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> CityRankManager.removeCityRank(rank));
     }
     
     /**
@@ -720,9 +718,7 @@ public class City {
      */
     public void updateRank(DBCityRank oldRank, DBCityRank newRank) {
         if (cityRanks.contains(oldRank)) {
-            Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-                CityRankManager.updateCityRank(newRank);
-            });
+            Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> CityRankManager.updateCityRank(newRank));
             cityRanks.remove(oldRank);
             cityRanks.add(newRank);
         } else {

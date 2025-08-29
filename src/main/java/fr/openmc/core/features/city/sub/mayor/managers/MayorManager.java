@@ -242,22 +242,22 @@ public class MayorManager {
 
     public static void removeCity(City city) throws SQLException {
         DeleteBuilder<Mayor, String> mayorsDelete = mayorsDao.deleteBuilder();
-        mayorsDelete.where().eq("cityUUID", city.getUniqueId());
+        mayorsDelete.where().eq("city_uuid", city.getUniqueId());
         mayorsDao.delete(mayorsDelete.prepare());
         cityMayor.remove(city.getUniqueId());
 
         DeleteBuilder<MayorCandidate, UUID> candidatesDelete = candidatesDao.deleteBuilder();
-        candidatesDelete.where().eq("city", city.getUniqueId());
+        candidatesDelete.where().eq("city_uuid", city.getUniqueId());
         candidatesDao.delete(candidatesDelete.prepare());
         cityElections.remove(city.getUniqueId());
 
         DeleteBuilder<MayorVote, UUID> votesDelete = votesDao.deleteBuilder();
-        votesDelete.where().eq("city", city.getUniqueId());
+        votesDelete.where().eq("city_uuid", city.getUniqueId());
         votesDao.delete(votesDelete.prepare());
         playerVote.remove(city.getUniqueId());
 
         DeleteBuilder<CityLaw, String> lawsDelete = lawsDao.deleteBuilder();
-        lawsDelete.where().eq("cityUUID", city.getUniqueId());
+        lawsDelete.where().eq("city_uuid", city.getUniqueId());
         lawsDao.delete(lawsDelete.prepare());
         cityLaws.remove(city.getUniqueId());
     }
@@ -334,7 +334,7 @@ public class MayorManager {
                 §8§m                                                     §r"""));
     }
 
-    public static void initCityPhase1(City city, HashMap<String, Mayor> copyCityMayor) {
+    public static void initCityPhase1(City city, Map<UUID, Mayor> copyCityMayor) {
         // PERKS INIT
         if (copyCityMayor != null) {
             for (UUID uuid : city.getMembers()) {
@@ -344,7 +344,7 @@ public class MayorManager {
 
                     if (player == null) continue;
 
-                    Mayor oldMayor = copyCityMayor.get(city.getUUID());
+                    Mayor oldMayor = copyCityMayor.get(city.getUniqueId());
 
                     // Fou de Rage
                     if (PerkManager.hasPerk(oldMayor, Perks.FOU_DE_RAGE.getId())) {
@@ -460,11 +460,11 @@ public class MayorManager {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 DeleteBuilder<MayorCandidate, UUID> candidatesDelete = candidatesDao.deleteBuilder();
-                candidatesDelete.where().eq("city", city.getUniqueId());
+                candidatesDelete.where().eq("city_uuid", city.getUniqueId());
                 candidatesDao.delete(candidatesDelete.prepare());
 
                 DeleteBuilder<MayorVote, UUID> votesDelete = votesDao.deleteBuilder();
-                votesDelete.where().eq("city", city.getUniqueId());
+                votesDelete.where().eq("city_uuid", city.getUniqueId());
                 votesDao.delete(votesDelete.prepare());
             } catch (SQLException e) {
                 e.printStackTrace();

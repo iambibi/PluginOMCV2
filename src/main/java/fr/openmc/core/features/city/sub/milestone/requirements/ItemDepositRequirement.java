@@ -65,7 +65,7 @@ public class ItemDepositRequirement implements CityRequirement {
     @Override
     public boolean isPredicateDone(City city) {
         return Objects.requireNonNull(
-                CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+                CityStatisticsManager.getOrCreateStat(city.getUniqueId(), getScope())
         ).asInt() >= amountRequired;
     }
 
@@ -113,7 +113,7 @@ public class ItemDepositRequirement implements CityRequirement {
                 amountRequired,
                 ItemUtils.getItemName(itemType),
                 Objects.requireNonNull(
-                        CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+                        CityStatisticsManager.getOrCreateStat(city.getUniqueId(), getScope())
                 ).asInt(),
                 amountRequired
         ));
@@ -140,7 +140,7 @@ public class ItemDepositRequirement implements CityRequirement {
     public void runAction(Menu menu, City city, InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player player)) return;
         int current = Objects.requireNonNull(
-                CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+                CityStatisticsManager.getOrCreateStat(city.getUniqueId(), getScope())
         ).asInt();
 
         int remaining = amountRequired - current;
@@ -157,7 +157,7 @@ public class ItemDepositRequirement implements CityRequirement {
                                     .color(NamedTextColor.DARK_AQUA)
                                     .decoration(TextDecoration.ITALIC, false)),
                     Prefix.CITY, MessageType.SUCCESS, false);
-            CityStatisticsManager.increment(city.getUUID(), getScope(), removed);
+            CityStatisticsManager.increment(city.getUniqueId(), getScope(), removed);
             menu.open();
         }
     }

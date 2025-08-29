@@ -50,7 +50,7 @@ public class CommandRequirement implements EventCityRequirement {
     @Override
     public boolean isPredicateDone(City city) {
         return Objects.requireNonNull(
-                CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+                CityStatisticsManager.getOrCreateStat(city.getUniqueId(), getScope())
         ).asInt() >= amountRequired;
     }
 
@@ -96,7 +96,7 @@ public class CommandRequirement implements EventCityRequirement {
                 "Exécuter %d fois %s (%d/%d)",
                 amountRequired, command,
                 Objects.requireNonNull(
-                        CityStatisticsManager.getOrCreateStat(city.getUUID(), getScope())
+                        CityStatisticsManager.getOrCreateStat(city.getUniqueId(), getScope())
                 ).asInt(), amountRequired
         ));
     }
@@ -129,9 +129,9 @@ public class CommandRequirement implements EventCityRequirement {
 
         if (playerCity == null) return;
 
-        if (Objects.requireNonNull(CityStatisticsManager.getOrCreateStat(playerCity.getUUID(), getScope())).asInt() >= amountRequired)
+        if (Objects.requireNonNull(CityStatisticsManager.getOrCreateStat(playerCity.getUniqueId(), getScope())).asInt() >= amountRequired)
             return;
 
-        CityStatisticsManager.increment(playerCity.getUUID(), getScope(), 1);
+        CityStatisticsManager.increment(playerCity.getUniqueId(), getScope(), 1);
     }
 }

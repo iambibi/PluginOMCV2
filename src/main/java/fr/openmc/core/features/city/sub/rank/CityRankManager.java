@@ -8,33 +8,30 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
-import fr.openmc.core.features.city.models.CityRank;
+import fr.openmc.core.features.city.models.DBCityRank;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class CityRankManager {
 
-    private static Dao<CityRank, String> ranksDao;
+    private static Dao<DBCityRank, String> ranksDao;
 
     public CityRankManager() {
         loadRanks();
     }
 
     public static void initDB(ConnectionSource connectionSource) throws SQLException {
-        TableUtils.createTableIfNotExists(connectionSource, CityRank.class);
-        ranksDao = DaoManager.createDao(connectionSource, CityRank.class);
+        TableUtils.createTableIfNotExists(connectionSource, DBCityRank.class);
+        ranksDao = DaoManager.createDao(connectionSource, DBCityRank.class);
     }
 
     public void loadRanks() {
         try {
-            ranksDao.queryForAll()
-                    .forEach(rank -> {
-                        City city = CityManager.getCity(rank.getCityUUID());
-                        if (city != null) {
-                            city.getRanks().add(rank);
-                        }
-                    });
+            for (DBCityRank rank : ranksDao.queryForAll()) {
+                City city = CityManager.getCity(rank.getCityUUID());
+                if (city != null) city.getRanks().add(rank);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,8 +39,8 @@ public class CityRankManager {
     }
 
     public static void removeRanks(City city) throws SQLException {
-        DeleteBuilder<CityRank, String> ranksDelete = ranksDao.deleteBuilder();
-        ranksDelete.where().eq("city_uuid", city.getUUID());
+        DeleteBuilder<DBCityRank, String> ranksDelete = ranksDao.deleteBuilder();
+        ranksDelete.where().eq("city_uuid", city.getUniqueId());
         ranksDao.delete(ranksDelete.prepare());
     }
 
@@ -52,7 +49,7 @@ public class CityRankManager {
      *
      * @param rank The rank to add
      */
-    public static void addCityRank(CityRank rank) {
+    public static void addCityRank(DBCityRank rank) {
         try {
             ranksDao.create(rank);
         } catch (SQLException e) {
@@ -65,9 +62,9 @@ public class CityRankManager {
      *
      * @param rank The rank to remove
      */
-    public static void removeCityRank(CityRank rank) {
+    public static void removeCityRank(DBCityRank rank) {
         try {
-            DeleteBuilder<CityRank, String> delete = ranksDao.deleteBuilder();
+            DeleteBuilder<DBCityRank, String> delete = ranksDao.deleteBuilder();
             delete.where().eq("city_uuid", rank.getCityUUID()).and().eq("name", rank.getName());
             ranksDao.delete(delete.prepare());
         } catch (SQLException e) {
@@ -80,7 +77,7 @@ public class CityRankManager {
      *
      * @param rank The rank to update
      */
-    public static void updateCityRank(CityRank rank) {
+    public static void updateCityRank(DBCityRank rank) {
         try {
             ranksDao.update(rank);
         } catch (SQLException e) {
@@ -95,11 +92,11 @@ public class CityRankManager {
      */
     public static void loadCityRanks(City city) {
         try {
-            QueryBuilder<CityRank, String> query = ranksDao.queryBuilder();
-            query.where().eq("city_uuid", city.getUUID());
-            List<CityRank> dbRanks = ranksDao.query(query.prepare());
+            QueryBuilder<DBCityRank, String> query = ranksDao.queryBuilder();
+            query.where().eq("city_uuid", city.getUniqueId());
+            List<DBCityRank> dbRanks = ranksDao.query(query.prepare());
 
-            for (CityRank dbRank : dbRanks) {
+            for (DBCityRank dbRank : dbRanks) {
                 city.getRanks().add(dbRank);
             }
         } catch (SQLException e) {

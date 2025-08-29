@@ -5,7 +5,7 @@ import fr.openmc.api.menulib.default_menu.ConfirmMenu;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
-import fr.openmc.core.features.city.models.CityRank;
+import fr.openmc.core.features.city.models.DBCityRank;
 import fr.openmc.core.features.city.sub.milestone.rewards.FeaturesRewards;
 import fr.openmc.core.features.city.sub.rank.menus.CityRankDetailsMenu;
 import fr.openmc.core.features.city.sub.rank.menus.CityRankMemberMenu;

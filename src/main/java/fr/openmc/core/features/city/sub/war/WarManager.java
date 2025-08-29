@@ -40,7 +40,7 @@ public class WarManager {
 
     private static Dao<WarHistory, String> warHistoryDeo;
 
-    public static final Map<String, WarHistory> warHistory = new HashMap<>();
+    public static final Map<UUID, WarHistory> warHistory = new HashMap<>();
 
     /**
      * Initializes the WarManager by registering commands and listeners.
@@ -73,7 +73,7 @@ public class WarManager {
             List<WarHistory> warHistories = warHistoryDeo.queryForAll();
 
             warHistories.forEach(war -> {
-                String cityUUID = war.getCityUUID();
+                UUID cityUUID = war.getCityUUID();
 
                 warHistory.computeIfAbsent(cityUUID, k -> war);
             });
@@ -94,10 +94,10 @@ public class WarManager {
     }
 
     public static WarHistory createOrGetWarHistory(City city) throws SQLException {
-        WarHistory history = warHistory.get(city.getUUID());
+        WarHistory history = warHistory.get(city.getUniqueId());
 
         if (history == null) {
-            history = new WarHistory(city.getUUID());
+            history = new WarHistory(city.getUniqueId());
             warHistoryDeo.createOrUpdate(history);
 
             warHistory.put(history.getCityUUID(), history);

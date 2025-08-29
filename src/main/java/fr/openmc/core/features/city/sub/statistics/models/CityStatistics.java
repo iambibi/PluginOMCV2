@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @DatabaseTable(tableName = "city_statistics")
@@ -15,8 +16,8 @@ public class CityStatistics {
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(canBeNull = false)
-    private String cityUUID;
+    @DatabaseField(canBeNull = false, columnName = "city_uuid")
+    private UUID cityUUID;
 
     @DatabaseField(canBeNull = false)
     @Setter
@@ -29,11 +30,7 @@ public class CityStatistics {
     CityStatistics() {
     }
 
-    public CityStatistics(String cityUUID) {
-        this.cityUUID = cityUUID;
-    }
-
-    public CityStatistics(String cityUUID, String scope, Serializable value) {
+    public CityStatistics(UUID cityUUID, String scope, Serializable value) {
         this.cityUUID = cityUUID;
         this.scope = scope;
         this.value = value;

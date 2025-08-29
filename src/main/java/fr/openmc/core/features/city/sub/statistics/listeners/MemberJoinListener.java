@@ -22,6 +22,6 @@ public class MemberJoinListener implements Listener {
 
         if (playerCity == null) return;
 
-        CityStatisticsManager.setStat(playerCity.getUUID(), "last_activity", LocalDate.now());
+        CityStatisticsManager.setStat(playerCity.getUniqueId(), "last_activity", LocalDate.now());
     }
 }

@@ -87,9 +87,9 @@ public class CityMilestoneMenu extends Menu {
                     .setOnClick(e -> {
                         if (!active) return;
 
-                        if (DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") > 0) return;
+                        if (DynamicCooldownManager.getRemaining(city.getUniqueId(), "city:upgrade-level") > 0) return;
 
-                        if (level.isCompleted(city) && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
+                        if (level.isCompleted(city) && DynamicCooldownManager.getRemaining(city.getUniqueId(), "city:upgrade-level") == 0) {
                             level.runUpgradeTime(city);
                             new CityMilestoneMenu(player, city).open();
                             return;
@@ -98,7 +98,7 @@ public class CityMilestoneMenu extends Menu {
                         new LevelMilestoneMenu(player, city, level).open();
                     });
 
-            if (!DynamicCooldownManager.isReady(city.getUUID(), "city:upgrade-level") && active) {
+            if (!DynamicCooldownManager.isReady(city.getUniqueId(), "city:upgrade-level") && active) {
                 MenuUtils.runDynamicItem(player, this, slot, upgradeItemSupplier)
                         .runTaskTimer(OMCPlugin.getInstance(), 0L, 20L);
             } else {
@@ -115,9 +115,7 @@ public class CityMilestoneMenu extends Menu {
             }
         }
 
-        inventory.put(45, new ItemBuilder(this, Material.ARROW, itemMeta -> {
-            itemMeta.itemName(Component.text("§aRetour"));
-        }, true));
+        inventory.put(45, new ItemBuilder(this, Material.ARROW, itemMeta -> itemMeta.itemName(Component.text("§aRetour")), true));
 
         inventory.put(49, new ItemBuilder(this, Material.BARRIER, meta ->
                 meta.displayName(Component.text("§cFermer"))).setCloseButton());
@@ -182,9 +180,9 @@ public class CityMilestoneMenu extends Menu {
             lore.add(Component.text("§a§lDÉBLOQUÉ"));
         } else {
             lore.add(Component.empty());
-            if (DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") != 0) {
+            if (DynamicCooldownManager.getRemaining(city.getUniqueId(), "city:upgrade-level") != 0) {
                 lore.add(Component.text("§fIl reste §3" +
-                        DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level")) +
+                        DateUtils.convertMillisToTime(DynamicCooldownManager.getRemaining(city.getUniqueId(), "city:upgrade-level")) +
                         " §fde débloquage"));
             } else {
                 lore.add(Component.text("§3" +
@@ -193,9 +191,9 @@ public class CityMilestoneMenu extends Menu {
             }
         }
 
-        if (active && DynamicCooldownManager.isReady(city.getUUID(), "city:upgrade-level") && level.isCompleted(city)) {
+        if (active && DynamicCooldownManager.isReady(city.getUniqueId(), "city:upgrade-level") && level.isCompleted(city)) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR LANCER l'AMÉLIORATION"));
-        } else if (active && DynamicCooldownManager.getRemaining(city.getUUID(), "city:upgrade-level") == 0) {
+        } else if (active && DynamicCooldownManager.getRemaining(city.getUniqueId(), "city:upgrade-level") == 0) {
             lore.add(Component.text("§e§lCLIQUEZ ICI POUR CONTRIBUER"));
         }
 

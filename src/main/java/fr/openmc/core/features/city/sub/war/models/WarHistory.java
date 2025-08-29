@@ -5,12 +5,14 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @DatabaseTable(tableName = "war_history")
 @Getter
 @Setter
 public class WarHistory {
-    @DatabaseField(id = true, columnName = "uuid")
-    private String cityUUID;
+    @DatabaseField(id = true, columnName = "city_uuid")
+    private UUID cityUUID;
     @DatabaseField
     private int numberWon;
     @DatabaseField
@@ -20,7 +22,7 @@ public class WarHistory {
         // required for ORMLite
     }
 
-    public WarHistory(String uuid) {
+    public WarHistory(UUID uuid) {
         this.cityUUID = uuid;
     }
 

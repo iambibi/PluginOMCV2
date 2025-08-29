@@ -151,7 +151,7 @@ public enum CityLevels {
             Component.text("Démocratie"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && !NotationManager.cityNotations.get(city.getUUID()).isEmpty(),
+                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && !NotationManager.cityNotations.get(city.getUniqueId()).isEmpty(),
                             city -> ItemStack.of(Material.DIAMOND),
                             (city, level) -> Component.text("Recevoir une Notation")
                     ),
@@ -189,7 +189,7 @@ public enum CityLevels {
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:courgette").getBest(), 8),
                     new EventTemplateRequirement(
                             (city, scope) -> Objects.requireNonNull(CityStatisticsManager
-                                            .getOrCreateStat(city.getUUID(), scope))
+                                            .getOrCreateStat(city.getUniqueId(), scope))
                                     .asInt() >= 1,
 
                             city -> CustomItemRegistry.getByName("omc_blocks:urne").getBest(),
@@ -206,10 +206,10 @@ public enum CityLevels {
                                 Player player = (Player) eventCraft.getWhoClicked();
                                 City playerCity = CityManager.getPlayerCity(player.getUniqueId());
 
-                                if (Objects.requireNonNull(CityStatisticsManager.getOrCreateStat(playerCity.getUUID(), scope)).asInt() >= 1)
+                                if (Objects.requireNonNull(CityStatisticsManager.getOrCreateStat(playerCity.getUniqueId(), scope)).asInt() >= 1)
                                     return;
 
-                                CityStatisticsManager.increment(playerCity.getUUID(), scope, 1);
+                                CityStatisticsManager.increment(playerCity.getUniqueId(), scope, 1);
                             }
                     )
             ),
@@ -229,13 +229,13 @@ public enum CityLevels {
             Component.text("Développement Economique"),
             List.of(
                     new TemplateRequirement(
-                            city -> NPCManager.hasNPCS(city.getUUID()),
+                            city -> NPCManager.hasNPCS(city.getUniqueId()),
                             city -> CustomItemRegistry.getByName("omc_blocks:urne").getBest(),
                             (city, level) -> Component.text("Poser l'Urne")
                     ),
 
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 10),
+                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 10),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 10 points sur une des Notations")
                     ),
@@ -287,7 +287,7 @@ public enum CityLevels {
             Component.text("Capitale"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 20),
+                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 20),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 20 points sur une des Notations")
                     ),
@@ -345,7 +345,7 @@ public enum CityLevels {
             Component.text("Royaume ?"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 30),
+                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 30),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 30 points sur une des Notations")
                     ),
@@ -403,7 +403,7 @@ public enum CityLevels {
             Component.text("Empire ?"),
             List.of(
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWar() >= 2,
+                            city -> WarManager.warHistory.get(city.getUniqueId()) != null && WarManager.warHistory.get(city.getUniqueId()).getNumberWar() >= 2,
                             city -> ItemStack.of(Material.IRON_SWORD),
                             (city, level) -> {
                                 if (city.getLevel() > level.ordinal()) {
@@ -412,17 +412,17 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir fait 2 guerres (%s/2)",
-                                        WarManager.warHistory.get(city.getUUID()) != null ? WarManager.warHistory.get(city.getUUID()).getNumberWar() : 0
+                                        WarManager.warHistory.get(city.getUniqueId()) != null ? WarManager.warHistory.get(city.getUniqueId()).getNumberWar() : 0
                                 ));
                             }
                     ),
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWon() >= 1,
+                            city -> WarManager.warHistory.get(city.getUniqueId()) != null && WarManager.warHistory.get(city.getUniqueId()).getNumberWon() >= 1,
                             city -> ItemStack.of(Material.DIAMOND_SWORD),
                             (city, level) -> Component.text("Gagner une guerre")
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 40) && NotationManager.cityNotations.get(city.getUUID()) != null,
+                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 40) && NotationManager.cityNotations.get(city.getUniqueId()) != null,
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 40 points sur une des Notations")
                     ),
@@ -479,7 +479,7 @@ public enum CityLevels {
             Component.text("Puissance militaire"),
             List.of(
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWon() >= 3,
+                            city -> WarManager.warHistory.get(city.getUniqueId()) != null && WarManager.warHistory.get(city.getUniqueId()).getNumberWon() >= 3,
                             city -> ItemStack.of(Material.DIAMOND_SWORD),
                             (city, level) -> {
                                 if (city.getLevel() > level.ordinal()) {
@@ -488,12 +488,12 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Gagner 3 guerres (%s/3)",
-                                        WarManager.warHistory.get(city.getUUID()) != null ? WarManager.warHistory.get(city.getUUID()).getNumberWon() : 0
+                                        WarManager.warHistory.get(city.getUniqueId()) != null ? WarManager.warHistory.get(city.getUniqueId()).getNumberWon() : 0
                                 ));
                             }
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 50),
+                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 50),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 50 points sur une des Notations")
                     ),
@@ -535,17 +535,17 @@ public enum CityLevels {
             Component.text("Métropole"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.top10Cities.contains(city.getUUID()),
+                            city -> NotationManager.top10Cities.contains(city.getUniqueId()),
                             city -> ItemStack.of(Material.HONEYCOMB),
                             (city, level) -> Component.text("Etre dans le top 10 des notations sur une des Notations")
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUUID()) != null && NotationManager.cityNotations.get(city.getUUID()).stream().anyMatch(notation -> notation.getTotalNote() >= 60),
+                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 60),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 60 points sur une des Notations")
                     ),
                     new TemplateRequirement(
-                            city -> WarManager.warHistory.get(city.getUUID()) != null && WarManager.warHistory.get(city.getUUID()).getNumberWar() >= 10,
+                            city -> WarManager.warHistory.get(city.getUniqueId()) != null && WarManager.warHistory.get(city.getUniqueId()).getNumberWar() >= 10,
                             city -> ItemStack.of(Material.NETHERITE_SWORD),
                             (city, level) -> {
                                 if (city.getLevel() > level.ordinal()) {
@@ -554,7 +554,7 @@ public enum CityLevels {
 
                                 return Component.text(String.format(
                                         "Avoir fait 10 guerres (%s/10)",
-                                        WarManager.warHistory.get(city.getUUID()) != null ? WarManager.warHistory.get(city.getUUID()).getNumberWar() : 0
+                                        WarManager.warHistory.get(city.getUniqueId()) != null ? WarManager.warHistory.get(city.getUniqueId()).getNumberWar() : 0
                                 ));
                             }
                     ),
@@ -636,6 +636,6 @@ public enum CityLevels {
      * @param city la ville concernée
      */
     public void runUpgradeTime(City city) {
-        DynamicCooldownManager.use(city.getUUID(), "city:upgrade-level", upgradeTime * 1000);
+        DynamicCooldownManager.use(city.getUniqueId(), "city:upgrade-level", upgradeTime * 1000);
     }
 }

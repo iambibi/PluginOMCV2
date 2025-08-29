@@ -16,8 +16,8 @@ public class AdminCityMilestoneCommands {
     @Command({"admcity milestone skipUpgrade"})
     @CommandPermission("omc.admins.commands.milestone")
     @Description("Skip l'upgrade d'un level")
-    void adminSkinUpgrade(Player sender, String uuid) {
-        City city = CityManager.getCity(uuid);
+    void adminSkinUpgrade(Player sender, String name) {
+        City city = CityManager.getCityByName(name);
 
         if (city == null) {
             MessagesManager.sendMessage(sender, Component.text("§cVille inexistante"), Prefix.STAFF, MessageType.ERROR, false);
@@ -25,14 +25,14 @@ public class AdminCityMilestoneCommands {
         }
 
         MessagesManager.sendMessage(sender, Component.text("Upgrade du level skip"), Prefix.STAFF, MessageType.SUCCESS, false);
-        DynamicCooldownManager.clear(uuid, "city:upgrade-level", true);
+        DynamicCooldownManager.clear(city.getUniqueId(), "city:upgrade-level", true);
     }
 
     @Command({"admcity milestone setlevel"})
     @CommandPermission("omc.admins.commands.milestone")
     @Description("Skip l'upgrade d'un level")
-    void setLevel(Player sender, String uuid, int level) {
-        City city = CityManager.getCity(uuid);
+    void setLevel(Player sender, String name, int level) {
+        City city = CityManager.getCityByName(name);
 
         if (city == null) {
             MessagesManager.sendMessage(sender, Component.text("§cVille inexistante"), Prefix.STAFF, MessageType.ERROR, false);

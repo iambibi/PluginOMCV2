@@ -59,7 +59,7 @@ public class NotationManager {
     /**
      * Ensemble des 10 meilleures villes.
      */
-    public static final Set<String> top10Cities = new HashSet<>();
+    public static final Set<UUID> top10Cities = new HashSet<>();
 
     /**
      * DAO pour la table des temps d'activité.

@@ -199,7 +199,7 @@ public class CityManager implements Listener {
 
         try {
             QueryBuilder<DBCityPermission, String> query = permissionsDao.queryBuilder();
-            query.where().eq("city", city.getUniqueId());
+            query.where().eq("city_uuid", city.getUniqueId());
             List<DBCityPermission> dbPermissions = permissionsDao.query(query.prepare());
 
             dbPermissions.forEach(dbPermission -> {
@@ -227,7 +227,7 @@ public class CityManager implements Listener {
         try {
             DeleteBuilder<DBCityPermission, String> delete = permissionsDao.deleteBuilder();
             delete.where()
-                    .eq("city", city.getUniqueId())
+                    .eq("city_uuid", city.getUniqueId())
                     .and()
                     .eq("player", player)
                     .and()
@@ -243,7 +243,7 @@ public class CityManager implements Listener {
 
         try {
             QueryBuilder<DBCityChest, String> query = chestsDao.queryBuilder();
-            query.where().eq("city", city.getUniqueId());
+            query.where().eq("city_uuid", city.getUniqueId());
             List<DBCityChest> dbChestPages = chestsDao.query(query.prepare());
 
             dbChestPages.forEach(page -> pages.put(page.getPage(), page.getContent()));
@@ -257,7 +257,7 @@ public class CityManager implements Listener {
     public static void saveChestPage(City city, int page, ItemStack[] content) {
         try {
             DeleteBuilder<DBCityChest, String> delete = chestsDao.deleteBuilder();
-            delete.where().eq("city", city.getUniqueId()).and().eq("page", page);
+            delete.where().eq("city_uuid", city.getUniqueId()).and().eq("page", page);
             chestsDao.delete(delete.prepare());
 
             chestsDao.create(new DBCityChest(city.getUniqueId(), page, content));
@@ -286,7 +286,7 @@ public class CityManager implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 DeleteBuilder<DBCityClaim, String> delete = claimsDao.deleteBuilder();
-                delete.where().eq("city", city.getUniqueId()).and().eq("x", chunk.x()).and().eq("z", chunk.z());
+                delete.where().eq("city_uuid", city.getUniqueId()).and().eq("x", chunk.x()).and().eq("z", chunk.z());
 
                 claimsDao.delete(delete.prepare());
             } catch (SQLException e) {
@@ -515,21 +515,21 @@ public class CityManager implements Listener {
                 citiesDao.delete(city.serialize());
 
                 DeleteBuilder<DBCityMember, String> membersDelete = membersDao.deleteBuilder();
-                membersDelete.where().eq("city", city.getUniqueId());
+                membersDelete.where().eq("city_uuid", city.getUniqueId());
                 membersDao.delete(membersDelete.prepare());
 
                 DeleteBuilder<DBCityPermission, String> permissionsDelete = permissionsDao.deleteBuilder();
-                permissionsDelete.where().eq("city", city.getUniqueId());
+                permissionsDelete.where().eq("city_uuid", city.getUniqueId());
                 permissionsDao.delete(permissionsDelete.prepare());
 
                 CityRankManager.removeRanks(city);
 
                 DeleteBuilder<DBCityClaim, String> claimsDelete = claimsDao.deleteBuilder();
-                claimsDelete.where().eq("city", city.getUniqueId());
+                claimsDelete.where().eq("city_uuid", city.getUniqueId());
                 claimsDao.delete(claimsDelete.prepare());
 
                 DeleteBuilder<DBCityChest, String> chestsDelete = chestsDao.deleteBuilder();
-                chestsDelete.where().eq("city", city.getUniqueId());
+                chestsDelete.where().eq("city_uuid", city.getUniqueId());
                 chestsDao.delete(chestsDelete.prepare());
 
                 MayorManager.removeCity(city);

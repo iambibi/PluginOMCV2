@@ -23,7 +23,7 @@ public class CooldownEndListener implements Listener {
 
         if (!Objects.equals(group, "city:upgrade-level")) return;
 
-        City city = CityManager.getCity(event.getUUID());
+        City city = CityManager.getCity(event.getCooldownUUID());
 
         int oldLevel = city.getLevel();
         boolean hadMayorBefore = FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.MAYOR);
@@ -35,7 +35,7 @@ public class CooldownEndListener implements Listener {
 
         MessagesManager.broadcastMessage(Component.text("La ville §d" + city.getName() + " §fa passé au §3Niveau " + city.getLevel() + " §f! Un maximum de GG!"), Prefix.CITY, MessageType.INFO);
 
-        CityStatisticsManager.removeStats(city.getUUID());
+        CityStatisticsManager.removeStats(city.getUniqueId());
 
         boolean hasMayorNow = FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.MAYOR);
 

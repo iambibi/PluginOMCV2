@@ -11,10 +11,7 @@ import org.bukkit.Bukkit;
 
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Gestionnaire des statistiques des villes.
@@ -26,7 +23,7 @@ public class CityStatisticsManager {
     /**
      * Map des statistiques par ville (clé : identifiant de la ville, valeur : ensemble de statistiques).
      */
-    public static HashMap<String, Set<CityStatistics>> cityStatistics = new HashMap<>();
+    public static HashMap<UUID, Set<CityStatistics>> cityStatistics = new HashMap<>();
 
     private static Dao<CityStatistics, String> statisticsDao;
 
@@ -79,7 +76,7 @@ public class CityStatisticsManager {
      * @param cityUUID l'identifiant de la ville
      * @return l'ensemble des statistiques associées à la ville
      */
-    public static Set<CityStatistics> getOrCreate(String cityUUID) {
+    public static Set<CityStatistics> getOrCreate(UUID cityUUID) {
         return cityStatistics.computeIfAbsent(cityUUID, k -> new HashSet<>());
     }
 
@@ -90,7 +87,7 @@ public class CityStatisticsManager {
      * @param scope    le scope de la statistique
      * @return la statistique correspondante
      */
-    public static CityStatistics getOrCreateStat(String cityUUID, String scope) {
+    public static CityStatistics getOrCreateStat(UUID cityUUID, String scope) {
         Set<CityStatistics> stats = getOrCreate(cityUUID);
         for (CityStatistics stat : stats) {
             if (stat != null && scope.equals(stat.getScope())) {
@@ -109,7 +106,7 @@ public class CityStatisticsManager {
      * @param scope    le scope de la statistique
      * @param value    la nouvelle valeur
      */
-    public static void setStat(String cityUUID, String scope, Serializable value) {
+    public static void setStat(UUID cityUUID, String scope, Serializable value) {
         CityStatistics stat = getOrCreateStat(cityUUID, scope);
         stat.setValue(value);
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
@@ -126,13 +123,13 @@ public class CityStatisticsManager {
      *
      * @param cityUUID l'identifiant de la ville
      */
-    public static void removeStats(String cityUUID) {
+    public static void removeStats(UUID cityUUID) {
         if (!cityStatistics.containsKey(cityUUID)) return;
         cityStatistics.remove(cityUUID);
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 DeleteBuilder<CityStatistics, String> statisticsDelete = statisticsDao.deleteBuilder();
-                statisticsDelete.where().eq("cityUUID", cityUUID);
+                statisticsDelete.where().eq("city_uuid", cityUUID);
                 statisticsDao.delete(statisticsDelete.prepare());
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -147,7 +144,7 @@ public class CityStatisticsManager {
      * @param scope    le scope de la statistique
      * @param amount   le montant à ajouter
      */
-    public static void increment(String cityUUID, String scope, long amount) {
+    public static void increment(UUID cityUUID, String scope, long amount) {
         CityStatistics stat = getOrCreateStat(cityUUID, scope);
         long current = stat.asLong();
         stat.setValue(current + amount);
@@ -167,7 +164,7 @@ public class CityStatisticsManager {
      * @param scope    le scope de la statistique
      * @return la valeur de la statistique
      */
-    public static Object getStatValue(String cityUUID, String scope) {
+    public static Object getStatValue(UUID cityUUID, String scope) {
         CityStatistics stat = getOrCreateStat(cityUUID, scope);
         return stat.getValue();
     }
