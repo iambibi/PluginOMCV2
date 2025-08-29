@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
 import java.io.File;
@@ -108,12 +107,28 @@ public class StructureUtils {
                         return;
                     }
 
+                    BlockData air = Bukkit.createBlockData(Material.AIR);
+
                     for (int[] e : blocksToPlace) {
-                        int rx = e[0], ry = e[1], rz = e[2], sIdx = e[3];
-                        Block block = world.getBlockAt(baseX + rx, baseY + ry, baseZ + rz);
-                        if (block.getType().isSolid() && !block.getType().isAir()) continue;
-                        block.setBlockData(states[sIdx], false);
+                        int x = baseX + e[0];
+                        int y = baseY + e[1];
+                        int z = baseZ + e[2];
+                        BlockData data = states[e[3]];
+
+                        world.setBlockData(x, y, z, data);
                     }
+//                    for (int[] e : blocksToPlace) {
+//                        int rx = e[0], ry = e[1], rz = e[2], sIdx = e[3];
+//                        Block block = world.getBlockAt(baseX + rx, baseY + ry, baseZ + rz);
+//
+//                        if (block.getBlockData().matches(air)) {
+//                            block.setBlockData(states[sIdx], false);
+//                        }
+//
+//                        if (block.getType().isSolid() && !block.getType().isAir()) continue;
+//
+//                        block.setBlockData(states[sIdx], false);
+//                    }
                 });
 
             } catch (IOException ex) {

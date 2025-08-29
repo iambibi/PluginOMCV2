@@ -146,6 +146,8 @@ public class OMCPlugin extends JavaPlugin {
             HologramLoader.unloadAll();
         }
 
+        DreamManager.saveAllDreamPlayerData();
+
         // - Settings
         PlayerSettingsManager.saveAllSettings();
 

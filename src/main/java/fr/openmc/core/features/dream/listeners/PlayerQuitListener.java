@@ -2,7 +2,7 @@ package fr.openmc.core.features.dream.listeners;
 
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
-import fr.openmc.core.features.dream.models.DreamStats;
+import fr.openmc.core.features.dream.models.DreamPlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,15 +18,15 @@ public class PlayerQuitListener implements Listener {
 
         if (!world.getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
 
-        DreamStats stats = DreamManager.getDreamStats(player);
+        DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
 
-        if (stats == null) {
-            DreamManager.removePlayer(player);
+        if (dreamPlayer == null) {
+            DreamManager.removeDreamPlayer(player);
             return;
         }
 
-        stats.cancelTask();
+        dreamPlayer.cancelTask();
 
-        DreamManager.removePlayer(player);
+        DreamManager.removeDreamPlayer(player);
     }
 }
