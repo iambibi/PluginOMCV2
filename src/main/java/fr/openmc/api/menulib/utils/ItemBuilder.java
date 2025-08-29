@@ -29,10 +29,10 @@ import java.util.function.Consumer;
  */
 public class ItemBuilder extends ItemStack {
 	private final Menu itemMenu;
-    @Getter
-    private boolean previousButton;
-    @Getter
-    private boolean nextButton;
+	@Getter
+	private boolean previousButton;
+	@Getter
+	private boolean nextButton;
 	@Getter
 	private boolean backButton;
 	private ItemMeta meta;
