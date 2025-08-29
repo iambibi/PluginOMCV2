@@ -3,7 +3,7 @@ package fr.openmc.core.features.city;
 import fr.openmc.api.cooldown.DynamicCooldownManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.city.events.*;
-import fr.openmc.core.features.city.models.CityRank;
+import fr.openmc.core.features.city.models.DBCityRank;
 import fr.openmc.core.features.city.models.DBCity;
 import fr.openmc.core.features.city.sub.bank.CityBankManager;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
@@ -44,11 +44,11 @@ import static fr.openmc.core.features.city.actions.CityCreateAction.FREE_CLAIMS;
 public class City {
     @Getter
     private String name;
-    private final String cityUUID;
+    @Getter private final UUID uniqueId;
     private Set<UUID> members;
     private Set<ChunkPos> chunks; // Liste des chunks claims par la ville
     private HashMap<UUID, Set<CityPermission>> permissions;
-    private Set<CityRank> cityRanks;
+    private Set<DBCityRank> cityRanks;
     private HashMap<Integer, ItemStack[]> chestContent;
     @Getter
     @Setter
@@ -67,8 +67,8 @@ public class City {
     /**
      * Constructor used for City creation
      */
-    public City(String id, String name, Player owner, CityType type, Chunk chunk) {
-        this.cityUUID = id;
+    public City(UUID uniqueId, String name, Player owner, CityType type, Chunk chunk) {
+        this.uniqueId = uniqueId;
         this.name = name;
         this.type = type;
         this.freeClaims = FREE_CLAIMS;
@@ -101,15 +101,14 @@ public class City {
     /**
      * Constructor used to deserialize City database object
      */
-    public City(String id, String name, double balance, String type, int power, int freeClaims, int level) {
-        this.cityUUID = id;
+    public City(UUID uniqueId, String name, double balance, String type, int power, int freeClaims, int level) {
+        this.uniqueId = uniqueId;
         this.name = name;
         this.balance = balance;
         this.freeClaims = freeClaims;
         this.powerPoints = power;
+        this.type = CityType.valueOf(type.toUpperCase());
         this.level = level;
-
-        setType(type);
 
         CityManager.registerCity(this);
     }
@@ -118,7 +117,7 @@ public class City {
      * Serialize a city to be saved in the database
      */
     public DBCity serialize() {
-        return new DBCity(cityUUID, name, balance, type.name(), powerPoints, freeClaims, level);
+        return new DBCity(uniqueId, name, balance, type.name(), powerPoints, freeClaims, level);
     }
 
     // ==================== Global Methods ====================
@@ -143,15 +142,6 @@ public class City {
         return this.chunks;
     }
 
-    /**
-     * Retrieves the UUID of a city.
-     *
-     * @return The UUID of the city.
-     */
-    public String getUUID() {
-        return cityUUID;
-    }
-
     public void rename(String newName) {
         this.name = newName;
 
@@ -160,24 +150,9 @@ public class City {
         );
     }
 
-    public void setType(String type) {
-        if ("war".equalsIgnoreCase(type)) {
-            this.type = CityType.WAR;
-        } else if ("peace".equalsIgnoreCase(type)) {
-            this.type = CityType.PEACE;
-        }
-
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
-                CityManager.saveCity(this)
-        );
-    }
-
     public void changeType() {
-        if (this.type == CityType.WAR) {
-            this.type = CityType.PEACE;
-        } else if (this.type == CityType.PEACE) {
-            this.type = CityType.WAR;
-        }
+        if (this.type == CityType.WAR) this.type = CityType.PEACE;
+        else if (this.type == CityType.PEACE) this.type = CityType.WAR;
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () ->
                 CityManager.saveCity(this)
@@ -255,6 +230,8 @@ public class City {
 
     /**
      * Updates the number of free claims of the city
+     *
+     * @param diff The amount to be added or removed to the existing free claims.
      */
     public void updateFreeClaims(int diff) {
         freeClaims += diff;
@@ -338,16 +315,6 @@ public class City {
      * Removes a chunk from the city's claimed chunks and updates the database
      * asynchronously.
      *
-     * @param chunk The chunk to be removed.
-     */
-    public void removeChunk(Chunk chunk) {
-        removeChunk(chunk.getX(), chunk.getZ());
-    }
-
-    /**
-     * Removes a chunk from the city's claimed chunks and updates the database
-     * asynchronously.
-     *
      * @param chunkX The X coordinate of the chunk to be removed.
      * @param chunkZ The Z coordinate of the chunk to be removed.
      */
@@ -373,19 +340,6 @@ public class City {
             this.chunks = CityManager.getCityChunks(this);
 
         return chunks.contains(new ChunkPos(x, z));
-    }
-
-    /**
-     * Checks if a specific chunk is claimed by the city.
-     *
-     * @param chunk The chunk
-     * @return True if the chunk is claimed, false otherwise.
-     */
-    public boolean hasChunk(Chunk chunk) {
-        if (this.chunks == null)
-            this.chunks = CityManager.getCityChunks(this);
-
-        return chunks.contains(new ChunkPos(chunk.getX(), chunk.getZ()));
     }
 
     // ==================== Economy Methods ====================
@@ -508,9 +462,8 @@ public class City {
         if (playerPerms.contains(CityPermission.OWNER)) {
             return true;
         }
-        
 
-        return playerPerms.contains(permission);
+        return playerPerms.contains(CityPermission.OWNER) || playerPerms.contains(permission);
     }
 
     /**
@@ -556,7 +509,7 @@ public class City {
         
         if (playerPerms == null) return;
         
-        if (! playerPerms.contains(permission)) return;
+        if (!playerPerms.contains(permission)) return;
 
         playerPerms.remove(permission);
         permissions.put(playerUUID, playerPerms);
@@ -571,7 +524,7 @@ public class City {
     // ==================== Mascots Methods ====================
 
     public Mascot getMascot() {
-        return MascotsManager.mascotsByCityUUID.get(cityUUID);
+        return MascotsManager.mascotsByCityUUID.get(this.getUniqueId());
     }
 
     // ==================== Mayor Methods ====================
@@ -582,7 +535,7 @@ public class City {
      * @return The mayor of the city, or null if not found.
      */
     public Mayor getMayor() {
-        return MayorManager.cityMayor.get(this.getUUID());
+        return MayorManager.cityMayor.get(this.getUniqueId());
     }
 
     /**
@@ -591,10 +544,10 @@ public class City {
      * @return True if the city has a mayor, false otherwise.
      */
     public boolean hasMayor() {
-        Mayor mayor = MayorManager.cityMayor.get(this.getUUID());
+        Mayor mayor = MayorManager.cityMayor.get(this.getUniqueId());
         if (mayor == null) return false;
 
-        return mayor.getUUID() != null;
+        return mayor.getMayorUUID() != null;
     }
 
     /**
@@ -603,7 +556,7 @@ public class City {
      * @return The election type of the city, or null if not found.
      */
     public ElectionType getElectionType() {
-        Mayor mayor = MayorManager.cityMayor.get(this.getUUID());
+        Mayor mayor = MayorManager.cityMayor.get(this.getUniqueId());
         if (mayor == null) return null;
 
         return mayor.getElectionType();
@@ -615,7 +568,7 @@ public class City {
      * @return The law of the city, or null if not found.
      */
     public CityLaw getLaw() {
-        return MayorManager.cityLaws.get(cityUUID);
+        return MayorManager.cityLaws.get(this.getUniqueId());
     }
 
     // ==================== War Methods ====================
@@ -626,7 +579,7 @@ public class City {
      * @return True if the city is in war, false otherwise.
      */
     public boolean isInWar() {
-        return WarManager.isCityInWar(cityUUID);
+        return WarManager.isCityInWar(this.getUniqueId());
     }
 
     /**
@@ -635,7 +588,7 @@ public class City {
      * @return The War object associated with the city or null if not in war.
      */
     public War getWar() {
-        return WarManager.getWarByCity(cityUUID);
+        return WarManager.getWarByCity(this.getUniqueId());
     }
 
     /**
@@ -646,7 +599,7 @@ public class City {
     public boolean isImmune() {
         if (this.getMascot() == null) return false;
 
-        return this.getMascot().isImmunity() && !DynamicCooldownManager.isReady(cityUUID, "city:immunity");
+        return this.getMascot().isImmunity() && !DynamicCooldownManager.isReady(this.getUniqueId(), "city:immunity");
     }
 
 
@@ -669,7 +622,7 @@ public class City {
      *
      * @return A set of CityRank objects representing the ranks of the city.
      */
-    public Set<CityRank> getRanks() {
+    public Set<DBCityRank> getRanks() {
         return cityRanks;
     }
     
@@ -682,8 +635,8 @@ public class City {
         return cityRanks.size() >= RankLimitRewards.getRankLimit(this.getLevel());
     }
     
-    public CityRank getRankByName(String rankName) {
-        for (CityRank rank : cityRanks) {
+    public DBCityRank getRankByName(String rankName) {
+        for (DBCityRank rank : cityRanks) {
             if (rank.getName().equalsIgnoreCase(rankName)) {
                 return rank;
             }
@@ -697,7 +650,7 @@ public class City {
      * @param rank The CityRank object to check.
      * @return True if the rank exists, false otherwise.
      */
-    public boolean isRankExists(CityRank rank) {
+    public boolean isRankExists(DBCityRank rank) {
         return cityRanks.contains(rank);
     }
     
@@ -708,7 +661,7 @@ public class City {
      * @return True if the rank name exists, false otherwise.
      */
     public boolean isRankExists(String rankName) {
-        for (CityRank rank : cityRanks) {
+        for (DBCityRank rank : cityRanks) {
             if (rank.getName().equalsIgnoreCase(rankName)) {
                 return true;
             }
@@ -731,7 +684,7 @@ public class City {
      * @param rank The CityRank object to be created.
      * @throws IllegalStateException if the city already has 18 ranks.
      */
-    public void createRank(CityRank rank) {
+    public void createRank(DBCityRank rank) {
         if (isRanksFull()) {
             throw new IllegalStateException("Cannot add more than 18 ranks to a city.");
         }
@@ -745,8 +698,8 @@ public class City {
      * @param rank The CityRank object to be deleted.
      * @throws IllegalArgumentException if the rank is not found, or if it is the default rank (priority 0).
      */
-    public void deleteRank(CityRank rank) {
-        if (! cityRanks.contains(rank)) {
+    public void deleteRank(DBCityRank rank) {
+        if (!cityRanks.contains(rank)) {
             throw new IllegalArgumentException("Rank not found in the city's ranks.");
         }
         if (rank.getPriority() == 0) {
@@ -765,7 +718,7 @@ public class City {
      * @param newRank The new CityRank object to replace the old one.
      * @throws IllegalArgumentException if the old rank is not found in the city's ranks.
      */
-    public void updateRank(CityRank oldRank, CityRank newRank) {
+    public void updateRank(DBCityRank oldRank, DBCityRank newRank) {
         if (cityRanks.contains(oldRank)) {
             Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
                 CityRankManager.updateCityRank(newRank);
@@ -783,8 +736,8 @@ public class City {
      * @param member The UUID of the member to check.
      * @return The CityRank object representing the member's rank, or null if not found.
      */
-    public CityRank getRankOfMember(UUID member) {
-        for (CityRank rank : cityRanks) {
+    public DBCityRank getRankOfMember(UUID member) {
+        for (DBCityRank rank : cityRanks) {
             if (rank.getMembersSet().contains(member)) {
                 return rank;
             }
@@ -801,10 +754,10 @@ public class City {
     public String getRankName(UUID member) {
         if (this.hasPermission(member, CityPermission.OWNER)) {
             return "Propriétaire";
-        } else if (this.hasMayor() && this.getMayor().getUUID().equals(member)) {
+        } else if (this.hasMayor() && this.getMayor().getMayorUUID().equals(member)) {
             return "Maire";
         } else {
-            for (CityRank rank : cityRanks) {
+            for (DBCityRank rank : cityRanks) {
                 if (rank.getMembersSet().contains(member)) {
                     return rank.getName();
                 }
@@ -822,8 +775,8 @@ public class City {
      * @param newRank    The new CityRank to assign to the player.
      * @throws IllegalArgumentException if the specified rank does not exist in the city's ranks.
      */
-    public void changeRank(Player sender, UUID playerUUID, CityRank newRank) {
-        if (! cityRanks.contains(newRank)) {
+    public void changeRank(Player sender, UUID playerUUID, DBCityRank newRank) {
+        if (!cityRanks.contains(newRank)) {
             throw new IllegalArgumentException("The specified rank does not exist in the city's ranks.");
         }
         
@@ -832,7 +785,7 @@ public class City {
             return;
         }
         
-        CityRank currentRank = getRankOfMember(playerUUID);
+        DBCityRank currentRank = getRankOfMember(playerUUID);
         OfflinePlayer player = CacheOfflinePlayer.getOfflinePlayer(playerUUID);
         
         if (currentRank != null) {
@@ -873,7 +826,7 @@ public class City {
             return null;
         }
         return NotationManager.notationPerWeek.get(weekStr).stream()
-                .filter(notation -> notation.getCityUUID().equals(cityUUID))
+                .filter(notation -> notation.getCityUUID().equals(this.getUniqueId()))
                 .findFirst()
                 .orElse(null);
     }
@@ -887,7 +840,7 @@ public class City {
      * @param description      A description of the notation.
      */
     public void setNotationOfWeek(String weekStr, double architecturalNote, double coherenceNote, String description) {
-        NotationManager.createOrUpdateNotation(new CityNotation(cityUUID, architecturalNote, coherenceNote, description, weekStr));
+        NotationManager.createOrUpdateNotation(new CityNotation(this.getUniqueId(), architecturalNote, coherenceNote, description, weekStr));
     }
 
     public void setLevel(int newLevel) {

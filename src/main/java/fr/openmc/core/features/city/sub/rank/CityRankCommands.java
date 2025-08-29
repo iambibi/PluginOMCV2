@@ -56,7 +56,7 @@ public class CityRankCommands {
 			MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_ACCESS_PERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
 			return;
 		}
-		CityRank rank = city.getRankByName(rankName);
+		DBCityRank rank = city.getRankByName(rankName);
 		if (rank == null) {
 			MessagesManager.sendMessage(player, MessagesManager.Message.CITY_RANKS_NOT_EXIST.getMessage(), Prefix.CITY, MessageType.ERROR, false);
 			return;
@@ -71,7 +71,7 @@ public class CityRankCommands {
 	 * @param rank       The rank to swap the permission for.
 	 * @param permission The permission to swap.
 	 */
-	public static void swapPermission(Player player, CityRank rank, CityPermission permission) {
+	public static void swapPermission(Player player, DBCityRank rank, CityPermission permission) {
 		City city = CityManager.getPlayerCity(player.getUniqueId());
 		if (city == null) {
 			MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_CITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);

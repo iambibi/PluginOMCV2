@@ -137,7 +137,7 @@ public class NotationEditionDialog {
                                             }
 
                                             CityNotation cityNotation = new CityNotation(
-                                                    cityEdited.getUUID(),
+                                                    cityEdited.getUniqueId(),
                                                     noteArchitectural,
                                                     noteCoherence,
                                                     description,

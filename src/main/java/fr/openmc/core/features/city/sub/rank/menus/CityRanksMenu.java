@@ -75,9 +75,9 @@ public class CityRanksMenu extends PaginatedMenu {
 
 		boolean canManagerRanks = city.hasPermission(player.getUniqueId(), CityPermission.MANAGE_RANKS);
 
-		Set<CityRank> cityRanks = city.getRanks();
-		if (! cityRanks.isEmpty()) {
-			for (CityRank rank : cityRanks) {
+		Set<DBCityRank> cityRanks = city.getRanks();
+		if (!cityRanks.isEmpty()) {
+			for (DBCityRank rank : cityRanks) {
 				String rankName = rank.getName();
 				int priority = rank.getPriority();
 				Material icon = rank.getIcon() != null ? rank.getIcon() : Material.PAPER;

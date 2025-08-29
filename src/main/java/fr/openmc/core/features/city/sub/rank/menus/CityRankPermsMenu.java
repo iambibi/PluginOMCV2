@@ -27,7 +27,7 @@ public class CityRankPermsMenu {
 	 * @param sender The player who is opening the book.
 	 * @param rank   The city rank for which permissions are being managed.
 	 */
-	public static void openBook(Player sender, CityRank rank, boolean canEdit) {
+	public static void openBook(Player sender, DBCityRank rank, boolean canEdit) {
 		City city = CityManager.getPlayerCity(sender.getUniqueId());
 
 		if (city == null) {

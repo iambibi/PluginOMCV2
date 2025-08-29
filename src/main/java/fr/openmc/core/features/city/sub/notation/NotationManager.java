@@ -49,7 +49,7 @@ public class NotationManager {
     /**
      * Map des notations par ville (clé : UUID de la ville, valeur : liste de CityNotation).
      */
-    public static final Map<String, List<CityNotation>> cityNotations = new HashMap<>();
+    public static final Map<UUID, List<CityNotation>> cityNotations = new HashMap<>();
 
     /**
      * Map des temps d'activité des joueurs (clé : UUID du joueur, valeur : temps).
@@ -115,9 +115,10 @@ public class NotationManager {
         try {
             List<CityNotation> notations = notationDao.queryForAll();
             for (CityNotation notation : notations) {
-                String cityUUID = notation.getCityUUID();
+                UUID cityUUID = notation.getCityUUID();
                 City city = CityManager.getCity(cityUUID);
                 if (city == null) continue;
+
                 String weekStr = notation.getWeekStr();
                 cityNotations.computeIfAbsent(cityUUID, k -> new ArrayList<>()).add(notation);
                 notationPerWeek.computeIfAbsent(weekStr, k -> new ArrayList<>()).add(notation);
@@ -157,6 +158,7 @@ public class NotationManager {
                 list.add(notation);
                 return list;
             });
+
             cityNotations.compute(notation.getCityUUID(), (k, list) -> {
                 if (list == null) list = new ArrayList<>();
                 list.removeIf(n -> Objects.equals(n.getCityUUID(), notation.getCityUUID()));
@@ -299,7 +301,7 @@ public class NotationManager {
             notation.setNoteMilitary(getMilitaryScore(city));
             double economyScore = getEconomyScore(
                     city,
-                    getMaxPib(cityNotations.get(city.getUUID()).stream()
+                    getMaxPib(cityNotations.get(city.getUniqueId()).stream()
                             .map(CityNotation::getCityUUID)
                             .map(CityManager::getCity)
                             .collect(Collectors.toList()))

@@ -64,7 +64,7 @@ public class CityRankCondition {
             return false;
         }
 
-        CityRank rank = city.getRankByName(oldRankName);
+        DBCityRank rank = city.getRankByName(oldRankName);
         if (rank == null) {
             MessagesManager.sendMessage(player, MessagesManager.Message.CITY_RANKS_NOT_EXIST.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;
@@ -98,7 +98,7 @@ public class CityRankCondition {
             MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_ACCESS_PERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
-        CityRank rank = city.getRankByName(rankName);
+        DBCityRank rank = city.getRankByName(rankName);
         if (rank == null) {
             MessagesManager.sendMessage(player, MessagesManager.Message.CITY_RANKS_NOT_EXIST.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;

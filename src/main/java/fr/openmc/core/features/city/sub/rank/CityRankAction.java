@@ -57,13 +57,13 @@ public class CityRankAction {
                 return;
             }
 
-            CityRank rank = city.getRankByName(oldName);
+            DBCityRank rank = city.getRankByName(oldName);
             if (rank == null) {
                 MessagesManager.sendMessage(player, MessagesManager.Message.CITY_RANKS_NOT_EXIST.getMessage(), Prefix.CITY, MessageType.ERROR, false);
                 return;
             }
 
-            city.updateRank(rank, new CityRank(rank.getRankUUID(), city.getUUID(), input, rank.getPriority(), rank.getPermissionsSet(), rank.getIcon()));
+            city.updateRank(rank, new DBCityRank(rank.getRankUUID(), city.getUniqueId(), input, rank.getPriority(), rank.getPermissionsSet(), rank.getIcon()));
             MessagesManager.sendMessage(player, Component.text("Le nom du grade a été mis à jour : " + oldName + " → " + input), Prefix.CITY, MessageType.SUCCESS, false);
         });
     }
@@ -79,7 +79,7 @@ public class CityRankAction {
             return;
         }
 
-        CityRank rank = city.getRankByName(rankName);
+        DBCityRank rank = city.getRankByName(rankName);
         if (rank == null) {
             MessagesManager.sendMessage(player, MessagesManager.Message.CITY_RANKS_NOT_EXIST.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return;
@@ -122,7 +122,7 @@ public class CityRankAction {
             MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_ACCESS_PERMS.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return;
         }
-        CityRank rank = city.getRankByName(rankName);
+        DBCityRank rank = city.getRankByName(rankName);
         if (member == null && rank == null) {
             new CityRankMemberMenu(player, city).open();
             return;

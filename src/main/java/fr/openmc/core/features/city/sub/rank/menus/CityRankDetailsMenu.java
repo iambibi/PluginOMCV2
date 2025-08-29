@@ -26,17 +26,17 @@ import java.util.*;
 
 public class CityRankDetailsMenu extends Menu {
 	
-	private final CityRank rank;
+	private final DBCityRank rank;
 	private final City city;
 	
-	public CityRankDetailsMenu(Player owner, City city, CityRank rank) {
+	public CityRankDetailsMenu(Player owner, City city, DBCityRank rank) {
 		super(owner);
 		this.rank = rank;
 		this.city = city;
 	}
 	
 	public CityRankDetailsMenu(Player owner, City city, String rankName) {
-		this(owner, city, new CityRank(UUID.randomUUID(), city.getUUID(), rankName, 0, new HashSet<>(), Material.GOLD_BLOCK));
+		this(owner, city, new DBCityRank(UUID.randomUUID(), city.getUniqueId(), rankName, 0, new HashSet<>(), Material.GOLD_BLOCK));
 	}
 	
 	@Override
