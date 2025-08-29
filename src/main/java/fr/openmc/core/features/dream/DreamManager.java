@@ -118,12 +118,12 @@ public class DreamManager {
 
     public static void removeDreamPlayer(Player player) {
         DreamPlayer dreamPlayer = dreamPlayerData.remove(player.getUniqueId());
-        OldInventory oldInventory = dreamPlayer.getOldInventory();
+        dreamPlayer.cancelTask();
 
+        OldInventory oldInventory = dreamPlayer.getOldInventory();
         PlayerInventory dreamInventory = player.getInventory();
 
         DBDreamPlayer cacheDreamPlayer = getCacheDreamPlayer(player);
-
         String serializedDreamInventory = BukkitSerializer.playerInventoryToBase64(dreamInventory);
         if (cacheDreamPlayer != null) {
             cacheDreamPlayer.setDreamInventory(serializedDreamInventory);

@@ -24,7 +24,7 @@ public class DreamPlayer {
 
     private Long dreamTime;
     private Long maxDreamTime;
-    private final BukkitTask task;
+    private BukkitTask task;
 
     public DreamPlayer(Player player, OldInventory oldInv, PlayerInventory dreamInv) {
         this.player = player;
@@ -36,7 +36,7 @@ public class DreamPlayer {
         this.maxDreamTime = cacheData == null ? DreamManager.BASE_DREAM_TIME : cacheData.getMaxDreamTime();
         this.dreamTime = maxDreamTime;
 
-        this.task = this.scheduleTask();
+        scheduleTask();
     }
 
     public UUID getUniqueId() {
@@ -81,8 +81,8 @@ public class DreamPlayer {
         if (task != null) task.cancel();
     }
 
-    public BukkitTask scheduleTask() {
-        return Bukkit.getScheduler().runTaskTimer(OMCPlugin.getInstance(), () -> {
+    public void scheduleTask() {
+        this.task = Bukkit.getScheduler().runTaskTimer(OMCPlugin.getInstance(), () -> {
             this.dreamTime -= 1;
 
             if (dreamTime <= 0) {

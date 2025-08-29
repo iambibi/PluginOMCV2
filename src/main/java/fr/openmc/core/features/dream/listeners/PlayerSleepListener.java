@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import java.io.IOException;
 
-public class PlayerChangeWorldListener implements Listener {
+public class PlayerSleepListener implements Listener {
 
     @EventHandler
     public void onDreamEntrered(PlayerChangedWorldEvent event) {
