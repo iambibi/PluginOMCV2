@@ -1,13 +1,16 @@
 package fr.openmc.core.utils;
 
+import com.flowpowered.nbt.Tag;
 import com.flowpowered.nbt.*;
 import com.flowpowered.nbt.stream.NBTInputStream;
 import fr.openmc.core.OMCPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class StructureUtils {
     /**
@@ -92,43 +96,66 @@ public class StructureUtils {
                     }
                 }
 
-                Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-                    World world = target.getWorld();
-                    int baseX = target.getBlockX();
-                    int baseY = target.getBlockY();
-                    int baseZ = target.getBlockZ();
+                World world = target.getWorld();
+                int baseX = target.getBlockX();
+                int baseY = target.getBlockY();
+                int baseZ = target.getBlockZ();
 
-                    int floating = 0;
-                    for (int[] rc : baseSolidCells) {
-                        Material below = world.getBlockAt(baseX + rc[0], baseY - 1, baseZ + rc[1]).getType();
-                        if (below.isAir() || !below.isSolid()) floating++;
+                int chunkMinX = (baseX) >> 4;
+                int chunkMaxX = (baseX + size[0]) >> 4;
+                int chunkMinZ = (baseZ) >> 4;
+                int chunkMaxZ = (baseZ + size[2]) >> 4;
+
+                List<CompletableFuture<Chunk>> futures = new ArrayList<>();
+                for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
+                    for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
+                        futures.add(world.getChunkAtAsync(cx, cz, true));
                     }
-                    if (!baseSolidCells.isEmpty() && ((double) floating / baseSolidCells.size()) > 0.40D) {
-                        return;
-                    }
+                }
 
-                    BlockData air = Bukkit.createBlockData(Material.AIR);
+                CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).thenRun(() -> {
+                    Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
+                        ServerLevel handle = ((CraftWorld) world).getHandle();
 
-                    for (int[] e : blocksToPlace) {
-                        int x = baseX + e[0];
-                        int y = baseY + e[1];
-                        int z = baseZ + e[2];
-                        BlockData data = states[e[3]];
+                        int floating = 0;
+                        int checked = 0;
+                        for (int i = 0; i < baseSolidCells.size(); i += 3) {
+                            int[] rc = baseSolidCells.get(i);
+                            BlockPos pos = new BlockPos(baseX + rc[0], baseY - 1, baseZ + rc[1]);
+                            net.minecraft.world.level.block.state.BlockState state = handle.getBlockState(pos);
+                            if (state.isAir() || !state.getBukkitMaterial().isSolid()) {
+                                floating++;
+                            }
+                            checked++;
+                        }
 
-                        world.setBlockData(x, y, z, data);
-                    }
-//                    for (int[] e : blocksToPlace) {
-//                        int rx = e[0], ry = e[1], rz = e[2], sIdx = e[3];
-//                        Block block = world.getBlockAt(baseX + rx, baseY + ry, baseZ + rz);
-//
-//                        if (block.getBlockData().matches(air)) {
-//                            block.setBlockData(states[sIdx], false);
-//                        }
-//
-//                        if (block.getType().isSolid() && !block.getType().isAir()) continue;
-//
-//                        block.setBlockData(states[sIdx], false);
-//                    }
+                        if (checked > 0 && ((double) floating / checked) > 0.40D) {
+                            return;
+                        }
+
+                        final int batchSize = 500;
+                        new BukkitRunnable() {
+                            int index = 0;
+
+                            @Override
+                            public void run() {
+                                int placed = 0;
+                                while (index < blocksToPlace.size() && placed < batchSize) {
+                                    int[] e = blocksToPlace.get(index++);
+                                    BlockPos pos = new BlockPos(baseX + e[0], baseY + e[1], baseZ + e[2]);
+                                    BlockData data = states[e[3]];
+
+                                    if (data.getMaterial().equals(Material.AIR)) continue;
+
+                                    handle.setBlock(pos, ((CraftBlockData) data).getState(), 2 | 16);
+                                    placed++;
+                                }
+                                if (index >= blocksToPlace.size()) {
+                                    cancel();
+                                }
+                            }
+                        }.runTaskTimer(OMCPlugin.getInstance(), 1L, 1L);
+                    });
                 });
 
             } catch (IOException ex) {
