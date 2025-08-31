@@ -16,9 +16,7 @@ import org.bukkit.entity.Player;
  * touchant aux mascottes (utile pour faire une modif sur menu et commandes).
  */
 public class CityTypeConditions {
-
     private static final int REQUIRED_MONEY_TYPE = 40000;
-
 
     /**
      * Retourne un booleen pour dire si la ville peut changer de typê
@@ -28,7 +26,6 @@ public class CityTypeConditions {
      * @return booleen
      */
     public static boolean canCityChangeType(City city, Player player) {
-
         if (city == null) {
             MessagesManager.sendMessage(player, MessagesManager.Message.PLAYER_NO_CITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);
             return false;
@@ -51,5 +48,4 @@ public class CityTypeConditions {
 
         return true;
     }
-
 }
