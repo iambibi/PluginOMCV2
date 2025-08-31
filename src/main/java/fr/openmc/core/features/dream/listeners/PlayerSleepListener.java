@@ -1,66 +1,36 @@
 package fr.openmc.core.features.dream.listeners;
 
-import fr.openmc.core.features.displays.bossbar.BossbarManager;
-import fr.openmc.core.features.displays.bossbar.BossbarsType;
-import fr.openmc.core.features.displays.scoreboards.ScoreboardManager;
 import fr.openmc.core.features.dream.DreamManager;
-import fr.openmc.core.features.dream.displays.DreamBossBar;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
-import fr.openmc.core.features.dream.models.DreamPlayer;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.world.TimeSkipEvent;
 
-import java.io.IOException;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 public class PlayerSleepListener implements Listener {
 
+    private Set<UUID> playersDreaming = new HashSet<>();
+
     @EventHandler
-    public void onDreamEntrered(PlayerChangedWorldEvent event) {
+    public void onPlayerSleep(PlayerBedEnterEvent event) {
         Player player = event.getPlayer();
-        World world = player.getLocation().getWorld();
 
-        if (!world.getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!event.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK)) return;
 
-        ScoreboardManager.removePlayerScoreboard(player);
-        ScoreboardManager.createNewScoreboard(player);
+        Random random = new Random();
 
-        for (BossbarsType type : BossbarsType.values()) {
-            BossbarManager.removeBossBar(type, player);
-        }
+        if (random.nextDouble() > DreamManager.calculateDreamProbability(player)) return;
 
-        try {
-            DreamManager.addDreamPlayer(player);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
-
-        if (dreamPlayer == null) return;
-
-        DreamBossBar.addDreamBossBarForPlayer(player, (float) dreamPlayer.getDreamTime() / dreamPlayer.getMaxDreamTime());
     }
 
     @EventHandler
-    public void onDreamLeave(PlayerChangedWorldEvent event) {
-        Player player = event.getPlayer();
-
-        if (!event.getFrom().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
-
-        ScoreboardManager.removePlayerScoreboard(player);
-        ScoreboardManager.createNewScoreboard(player);
-
-        for (BossbarsType type : BossbarsType.values()) {
-            if (type.equals(BossbarsType.DREAM)) continue;
-
-            BossbarManager.addBossBar(type, BossbarManager.bossBarHelp, player);
-        }
-
-        BossbarManager.removeBossBar(BossbarsType.DREAM, player);
-
-        DreamManager.removeDreamPlayer(player);
+    public void onNightSkip(TimeSkipEvent event) {
+        if (event.getSkipReason() == TimeSkipEvent.SkipReason.NIGHT_SKIP) playersDreaming.clear();
     }
 }

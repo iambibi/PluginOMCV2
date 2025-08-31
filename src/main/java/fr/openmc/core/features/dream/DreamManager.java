@@ -12,7 +12,12 @@ import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.DreamPlayer;
 import fr.openmc.core.features.dream.models.OldInventory;
 import fr.openmc.core.features.dream.spawning.DreamSpawningManager;
+import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -132,5 +137,26 @@ public class DreamManager {
         }
 
         oldInventory.restoreOldInventory(player);
+    }
+
+    public static double calculateDreamProbability(Player player) {
+        double base = 0.4;
+        // si le joueur porte un pijama proba augmenté / armure ornique
+        // maire ect...
+
+        return base;
+    }
+
+    public static void tpPlayerDream(Player player) {
+        Biome biome = Biome.PLAINS;
+        World dreamWorld = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
+
+        if (dreamWorld == null) return;
+
+        Location spawningLocation = LocationUtils.findLocationInBiome(dreamWorld, biome);
+
+        if (spawningLocation == null) return;
+
+        player.teleportAsync(spawningLocation);
     }
 }
