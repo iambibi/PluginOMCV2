@@ -32,13 +32,7 @@ public abstract class DreamItem {
 
     public ItemStack getItemsAdder() {
         CustomStack stack = CustomStack.getInstance(getName());
-        if (stack == null) return null;
-
-        ItemStack item = stack.getItemStack();
-
-        item.lore(this.getGeneratedLore());
-
-        return item;
+        return stack != null ? stack.getItemStack() : null;
     }
 
     @Override
@@ -85,6 +79,15 @@ public abstract class DreamItem {
      * @return Best ItemStack to use for the server
      */
     public ItemStack getBest() {
-        return !ItemsAdderHook.hasItemAdder() || getItemsAdder() == null ? getVanilla() : getItemsAdder();
+        ItemStack item;
+        if (!ItemsAdderHook.hasItemAdder() || getItemsAdder() == null) {
+            item = getVanilla();
+        } else {
+            item = getItemsAdder();
+        }
+
+        item.lore(this.getGeneratedLore());
+
+        return item;
     }
 }
