@@ -21,7 +21,7 @@ public class CustomItemRegistry {
     public CustomItemRegistry() {
         CommandsManager.getHandler().register(new CustomItemsDebugCommand());
 
-        // Ici, enregistrer tous les items custom
+        // ** REGISTRER ITEMSTACK OF ITEM ADDER **
 
         /* Buttons */
         registerSimpleItem("_iainternal:icon_cancel", Material.DARK_OAK_DOOR, "Fermer");
@@ -59,7 +59,7 @@ public class CustomItemRegistry {
         registerSimpleItem("omc_homes:omc_homes_icon_upgrade", Material.CHEST);
         registerSimpleItem("omc_homes:omc_homes_invisible", Material.CHEST);
 
-        /* Bloc */
+        /* Blocs */
         registerSimpleItem("omc_blocks:urne", Material.GLASS);
 
         /* Homes icons */
