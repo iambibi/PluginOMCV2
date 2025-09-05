@@ -46,6 +46,7 @@ public class CustomItemRegistry {
         registerSimpleItem("omc_foods:the_mixture", Material.HONEY_BOTTLE);
         registerSimpleItem("omc_items:mascot_stick", Material.STICK);
         registerSimpleItem("omc_items:warp_stick", Material.STICK);
+        registerSimpleItem("omc_items:aywen_cap", Material.IRON_HELMET);
         registerSimpleItem("omc_items:suit_helmet", Material.IRON_HELMET);
         registerSimpleItem("omc_items:suit_chestplate", Material.IRON_CHESTPLATE);
         registerSimpleItem("omc_items:suit_leggings", Material.IRON_LEGGINGS);
