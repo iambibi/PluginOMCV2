@@ -95,26 +95,6 @@ public class ItemUtils {
     }
 
     /**
-     * Retourne le nombre d'item qui peut aller dans un Stack
-     *
-     * @param player Joueur pour acceder a son inventaire
-     * @param item   Item recherché pour completer un stack
-     * @return Le nombre d'item qui peut completer un stack
-     */
-    public static int getNumberItemToStack(Player player, ItemStack item) {
-        Inventory inventory = player.getInventory();
-        int numberitemtostack = 0;
-
-        for (ItemStack stack : inventory.getStorageContents()) {
-            if (stack != null && stack.isSimilar(item)) {
-                numberitemtostack = stack.getMaxStackSize() - stack.getAmount();
-            }
-        }
-        return numberitemtostack;
-    }
-
-
-    /**
      * Retourne le nombre de slot vide
      *
      * @param player Joueur pour acceder a son inventaire
@@ -241,17 +221,7 @@ public class ItemUtils {
      * @return {@code true} if the player has enough items, {@code false} otherwise
      */
     public static boolean hasEnoughItems(Player player, Material material, int amount) {
-        int totalItems = 0;
-        ItemStack[] contents = player.getInventory().getContents();
-
-        for (ItemStack is : contents) {
-            if (is != null && is.getType() == material) {
-                totalItems += is.getAmount();
-            }
-        }
-
-        if (amount == 0) return false;
-        return totalItems >= amount;
+        hasEnoughItems(player, new ItemStack(material), amount);
     }
 
 
@@ -282,23 +252,8 @@ public class ItemUtils {
      * @param item     Objet a retirer
      * @param quantity Quantité a retirer
      */
-    public static void removeItemsFromInventory(Player player, Material item, int quantity) {
-        ItemStack[] contents = player.getInventory().getContents();
-        int remaining = quantity;
-
-        for (int i = 0; i < contents.length && remaining > 0; i++) {
-            ItemStack stack = contents[i];
-            if (stack != null && stack.getType() == item) {
-                int stackAmount = stack.getAmount();
-                if (stackAmount <= remaining) {
-                    player.getInventory().setItem(i, null);
-                    remaining -= stackAmount;
-                } else {
-                    stack.setAmount(stackAmount - remaining);
-                    remaining = 0;
-                }
-            }
-        }
+    public static void removeItemsFromInventory(Player player, Material material, int quantity) {
+        removeItemsFromInventory(player, new ItemStack(material), quantity);
     }
 
     public static void removeItemsFromInventory(Player player, ItemStack item, int quantity) {
