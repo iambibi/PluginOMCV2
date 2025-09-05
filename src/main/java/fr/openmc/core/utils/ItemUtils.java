@@ -221,9 +221,8 @@ public class ItemUtils {
      * @return {@code true} if the player has enough items, {@code false} otherwise
      */
     public static boolean hasEnoughItems(Player player, Material material, int amount) {
-        hasEnoughItems(player, new ItemStack(material), amount);
+        return hasEnoughItems(player, new ItemStack(material), amount);
     }
-
 
     /**
      * Dire si le joueur a des ou un slot de libre
@@ -249,7 +248,7 @@ public class ItemUtils {
      * Retirer le nombre d'objet au joueur (vérification obligatoire avant execution)
      *
      * @param player   Joueur pour acceder a son inventaire
-     * @param item     Objet a retirer
+     * @param material     Objet a retirer
      * @param quantity Quantité a retirer
      */
     public static void removeItemsFromInventory(Player player, Material material, int quantity) {
