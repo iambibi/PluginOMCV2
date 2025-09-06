@@ -37,12 +37,10 @@ public class CustomItemRegistry {
         registerSimpleItem("omc_menus:64_btn", Material.PAPER);
         registerSimpleItem("omc_menus:minus_btn", Material.PAPER);
         registerSimpleItem("omc_menus:plus_btn", Material.PAPER);
-        registerSimpleItem("omc_plush:peluche_seinyy", Material.PAPER);
 
         /* Items */
         registerSimpleItem("omc_contest:contest_shell", Material.NAUTILUS_SHELL);
         registerSimpleItem("omc_items:aywenite", Material.AMETHYST_SHARD);
-        registerSimpleItem("omc_blocks:aywenite_block", Material.AMETHYST_BLOCK);
         registerSimpleItem("omc_foods:kebab", Material.COOKED_BEEF);
         registerSimpleItem("omc_foods:the_mixture", Material.HONEY_BOTTLE);
         registerSimpleItem("omc_foods:courgette", Material.SEA_PICKLE);
@@ -60,6 +58,8 @@ public class CustomItemRegistry {
         registerSimpleItem("omc_homes:omc_homes_invisible", Material.CHEST);
 
         /* Blocs */
+        registerSimpleItem("omc_blocks:aywenite_block", Material.AMETHYST_BLOCK);
+        registerSimpleItem("omc_plush:peluche_seinyy", Material.PAPER);
         registerSimpleItem("omc_blocks:urne", Material.GLASS);
 
         /* Homes icons */
