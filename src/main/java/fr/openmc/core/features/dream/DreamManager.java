@@ -8,6 +8,7 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.listeners.PlayerChangeWorldListener;
 import fr.openmc.core.features.dream.listeners.PlayerQuitListener;
+import fr.openmc.core.features.dream.listeners.PlayerSleepListener;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.DreamPlayer;
 import fr.openmc.core.features.dream.models.OldInventory;
@@ -40,7 +41,8 @@ public class DreamManager {
     public DreamManager() {
         OMCPlugin.registerEvents(
                 new PlayerChangeWorldListener(),
-                new PlayerQuitListener()
+                new PlayerQuitListener(),
+                new PlayerSleepListener()
         );
 
         // ** MANAGERS **
@@ -118,7 +120,7 @@ public class DreamManager {
 
         PlayerInventory dreamPlayerInv = player.getInventory();
 
-        dreamPlayerData.put(player.getUniqueId(), new DreamPlayer(player, oldInv, dreamPlayerInv));
+        dreamPlayerData.put(player.getUniqueId(), new DreamPlayer(player, oldInv, player.getLocation(), dreamPlayerInv));
     }
 
     public static void removeDreamPlayer(Player player) {
@@ -158,5 +160,17 @@ public class DreamManager {
         if (spawningLocation == null) return;
 
         player.teleportAsync(spawningLocation);
+    }
+
+    public static void tpPlayerToLastDreamLocation(Player player) {
+        DBDreamPlayer dbDreamPlayer = getCacheDreamPlayer(player);
+        if (dbDreamPlayer == null) return;
+
+        player.teleportAsync(new Location(
+                Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME),
+                dbDreamPlayer.getDreamX(),
+                dbDreamPlayer.getDreamY(),
+                dbDreamPlayer.getDreamZ()
+        ));
     }
 }

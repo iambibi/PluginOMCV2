@@ -21,6 +21,13 @@ public class DBDreamPlayer {
     @DatabaseField(canBeNull = false, columnName = "dream_inventory", dataType = DataType.LONG_STRING)
     private String dreamInventory;
 
+    @DatabaseField(columnName = "dream_x")
+    private Double dreamX;
+    @DatabaseField(columnName = "dream_y")
+    private Double dreamY;
+    @DatabaseField(columnName = "dream_z")
+    private Double dreamZ;
+
     DBDreamPlayer() {
         // Default constructor for ORMLite
     }
@@ -30,5 +37,16 @@ public class DBDreamPlayer {
         this.maxDreamTime = maxDreamTime;
 
         this.dreamInventory = serializedDreamInv;
+    }
+
+    public DBDreamPlayer(UUID playerUUID, Long maxDreamTime, String serializedDreamInv, double dreamX, double dreamY, double dreamZ) {
+        this.playerUUID = playerUUID;
+        this.maxDreamTime = maxDreamTime;
+
+        this.dreamInventory = serializedDreamInv;
+
+        this.dreamX = dreamX;
+        this.dreamY = dreamY;
+        this.dreamZ = dreamZ;
     }
 }
