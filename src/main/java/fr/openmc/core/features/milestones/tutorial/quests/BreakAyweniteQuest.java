@@ -68,6 +68,8 @@ public class BreakAyweniteQuest extends Quest implements Listener {
             this.incrementProgress(player.getUniqueId());
 
             int progress = this.getProgress(player.getUniqueId());
+
+            if (progress >= 30) return;
             TutorialBossBar.update(
                     player,
                     Component.text(TutorialBossBar.PLACEHOLDER_TUTORIAL_BOSSBAR.formatted(
