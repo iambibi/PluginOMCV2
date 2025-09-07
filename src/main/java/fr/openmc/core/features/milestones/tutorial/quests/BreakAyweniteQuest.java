@@ -2,6 +2,7 @@ package fr.openmc.core.features.milestones.tutorial.quests;
 
 import dev.lone.itemsadder.api.CustomBlock;
 import fr.openmc.api.hooks.ItemsAdderHook;
+import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.milestones.MilestoneType;
 import fr.openmc.core.features.milestones.MilestonesManager;
 import fr.openmc.core.features.milestones.tutorial.TutorialBossBar;
@@ -66,6 +67,10 @@ public class BreakAyweniteQuest extends Quest implements Listener {
         ) {
             Player player = event.getPlayer();
             this.incrementProgress(player.getUniqueId());
+
+            if (CityManager.getPlayerCity(player.getUniqueId()) != null) {
+                this.incrementProgress(player.getUniqueId());
+            }
 
             int progress = this.getProgress(player.getUniqueId());
 
