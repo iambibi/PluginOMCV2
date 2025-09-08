@@ -72,7 +72,7 @@ public class CityCreateQuest extends Quest implements Listener {
         if (player.isOnline()) {
             this.incrementProgress(player.getUniqueId());
             if (event.getCity().getLevel() >= 2) {
-                this.incrementProgress(player.getUniqueId());
+                TutorialStep.CITY_LEVEL_2.getQuest().incrementProgress(player.getUniqueId());
             }
         }
     }

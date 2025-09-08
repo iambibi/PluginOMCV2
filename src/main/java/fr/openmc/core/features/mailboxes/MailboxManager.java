@@ -45,6 +45,7 @@ public class MailboxManager {
     }
 
     public static boolean sendItems(Player sender, OfflinePlayer receiver, ItemStack[] items) {
+        System.out.println("sendItems");
         if (!canSend(sender, receiver))
             return false;
         String receiverName = receiver.getName();
@@ -52,21 +53,30 @@ public class MailboxManager {
         LocalDateTime sent = LocalDateTime.now();
 
         try {
+            System.out.println("1");
             byte[] itemsBytes = BukkitSerializer.serializeItemStacks(items);
             Letter letter = new Letter(sender.getUniqueId(), receiver.getUniqueId(), itemsBytes, numItems,
                     Timestamp.valueOf(LocalDateTime.now()), false);
             if (letterDao.create(letter) == 0)
                 return false;
+
+            System.out.println("2");
             int id = letter.getId();
 
             Player receiverPlayer = receiver.getPlayer();
             if (receiverPlayer != null) {
+                System.out.println("3");
                 if (MailboxMenuManager.playerInventories.get(receiverPlayer) instanceof PlayerMailbox receiverMailbox) {
+                    System.out.println("4");
                     LetterHead letterHead = new LetterHead(sender, numItems, id, sent);
                     receiverMailbox.addLetter(letterHead);
-                } else
+                } else {
+                    System.out.println("4bu");
                     sendNotification(receiverPlayer, numItems, id, sender.getName());
+                }
             }
+
+            System.out.println("5");
             sendSuccessSendingMessage(sender, receiverName, numItems);
             return true;
         } catch (Exception ex) {
@@ -187,8 +197,9 @@ public class MailboxManager {
         }
     }
 
-    // todo
     public static boolean canSend(Player sender, OfflinePlayer receiver) {
+        if (sender.getUniqueId().equals(receiver.getUniqueId()))
+            return true;
         PlayerSettings settings = PlayerSettingsManager.getPlayerSettings(receiver.getUniqueId());
         return settings.canPerformAction(SettingType.MAILBOX_RECEIVE_POLICY, sender.getUniqueId());
     }

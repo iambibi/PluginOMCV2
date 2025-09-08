@@ -48,7 +48,13 @@ public class BreakAyweniteQuest extends Quest implements Listener {
                 new QuestMoneyReward(3500),
                 new QuestTextReward("Bien Joué! Vous avez fini l'§6Étape " + (step.ordinal() + 1) + " §f! Comme dit précédemment l'§dAywenite §fest un minerai, précieux pour les features. D'ailleurs vous pouvez l'utiliser pour faire votre ville ! ", Prefix.MILLESTONE, MessageType.SUCCESS),
                 new QuestMethodsReward(
-                        player -> TutorialUtils.completeStep(type, player, step)
+                        player -> {
+                            TutorialUtils.completeStep(type, player, step);
+
+                            if (CityManager.getPlayerCity(player.getUniqueId()) != null) {
+                                TutorialStep.CITY_CREATE.getQuest().incrementProgress(player.getUniqueId());
+                            }
+                        }
                 )
         ));
     }
@@ -67,10 +73,6 @@ public class BreakAyweniteQuest extends Quest implements Listener {
         ) {
             Player player = event.getPlayer();
             this.incrementProgress(player.getUniqueId());
-
-            if (CityManager.getPlayerCity(player.getUniqueId()) != null) {
-                this.incrementProgress(player.getUniqueId());
-            }
 
             int progress = this.getProgress(player.getUniqueId());
 
