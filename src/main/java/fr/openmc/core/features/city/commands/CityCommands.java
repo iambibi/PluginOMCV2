@@ -123,6 +123,12 @@ public class CityCommands {
     @Description("Accepter une invitation")
     public static void acceptInvitation(Player player, Player inviter) {
         List<Player> playerInvitations = invitations.get(player);
+
+        if (playerInvitations == null) {
+            MessagesManager.sendMessage(player, Component.text("Tu n'as aucune invitation en attente"), Prefix.CITY, MessageType.ERROR, false);
+            return;
+        }
+
         if (!playerInvitations.contains(inviter)) {
             MessagesManager.sendMessage(player, Component.text(inviter.getName() + " ne vous a pas invité"), Prefix.CITY, MessageType.ERROR, false);
             return;
