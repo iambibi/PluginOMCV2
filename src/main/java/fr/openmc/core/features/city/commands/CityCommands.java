@@ -4,13 +4,13 @@ import fr.openmc.api.chronometer.Chronometer;
 import fr.openmc.api.input.DialogInput;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
-import fr.openmc.core.features.city.CityMessages;
 import fr.openmc.core.features.city.actions.*;
 import fr.openmc.core.features.city.conditions.*;
 import fr.openmc.core.features.city.menu.CityChunkMenu;
 import fr.openmc.core.features.city.menu.CityMenu;
 import fr.openmc.core.features.city.menu.CityTypeMenu;
 import fr.openmc.core.features.city.menu.NoCityMenu;
+import fr.openmc.core.features.city.menu.list.CityListDetailsMenu;
 import fr.openmc.core.features.city.menu.list.CityListMenu;
 import fr.openmc.core.features.city.view.CityViewManager;
 import fr.openmc.core.utils.InputUtils;
@@ -63,7 +63,7 @@ public class CityCommands {
             return;
         }
 
-        CityMessages.sendInfo(player, city);
+        new CityListDetailsMenu(player, city).open();
     }
 
 
