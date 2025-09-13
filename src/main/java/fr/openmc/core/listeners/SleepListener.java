@@ -1,10 +1,12 @@
 package fr.openmc.core.listeners;
 
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -19,7 +21,7 @@ public class SleepListener implements Listener {
 	 */
 	private static final NavigableMap<Integer, Integer> PLAYER_THRESHOLDS = new TreeMap<>();
 	static {
-		PLAYER_THRESHOLDS.put(4, 51);
+		PLAYER_THRESHOLDS.put(3, 50);
 		PLAYER_THRESHOLDS.put(10, 43);
 		PLAYER_THRESHOLDS.put(20, 31);
 		PLAYER_THRESHOLDS.put(27, 26);
@@ -37,8 +39,21 @@ public class SleepListener implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		if (event.getPlayer().getGameMode() != GameMode.SURVIVAL) return;
+
 		World world = event.getPlayer().getWorld();
 		world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, getPercentage(world.getPlayers().size() + 1));
+	}
+
+	@EventHandler
+	public void onPlayerChangeGameMode(PlayerGameModeChangeEvent event) {
+		if (event.getNewGameMode() == GameMode.SURVIVAL && event.getPlayer().getGameMode() != GameMode.SURVIVAL) {
+			World world = event.getPlayer().getWorld();
+			world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, getPercentage(world.getPlayers().size() + 1));
+		} else if (event.getNewGameMode() != GameMode.SURVIVAL && event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+			World world = event.getPlayer().getWorld();
+			world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, getPercentage(world.getPlayers().size() - 1));
+		}
 	}
 	
 	@EventHandler
