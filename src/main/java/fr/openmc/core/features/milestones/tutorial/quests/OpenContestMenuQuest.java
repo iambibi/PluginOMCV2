@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,14 @@ public class OpenContestMenuQuest extends Quest implements Listener {
                             ItemStack aywenite = CustomItemRegistry.getByName("omc_items:aywenite").getBest();
                             aywenite.setAmount(30);
                             items.add(aywenite);
+
+                            LocalDate today = LocalDate.now();
+                            LocalDate limitDate = LocalDate.of(2025, 11, 3);
+
+                            if (!limitDate.isBefore(today)) {
+                                ItemStack aywenPlush = CustomItemRegistry.getByName("omc_plush:peluche_awyen").getBest();
+                                items.add(aywenPlush);
+                            }
 
                             ItemStack[] itemsArray = items.toArray(new ItemStack[0]);
 
