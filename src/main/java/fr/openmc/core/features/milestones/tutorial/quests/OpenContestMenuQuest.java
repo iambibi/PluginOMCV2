@@ -64,9 +64,9 @@ public class OpenContestMenuQuest extends Quest implements Listener {
                             if (config != null) {
                                 LocalDate today = LocalDate.now();
                                 LocalDate limitDate = LocalDate.of(
-                                        config.getInt("features.aywen.pelush", 2025),
-                                        config.getInt("features.aywen.pelush", 11),
-                                        config.getInt("features.aywen.pelush", 3)
+                                        config.getInt("features.aywen_pelush.year", 2025),
+                                        config.getInt("features.aywen_pelush.month", 11),
+                                        config.getInt("features.aywen_pelush.day", 3)
                                 );
 
                                 if (!limitDate.isBefore(today)) {
