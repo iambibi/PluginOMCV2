@@ -1,5 +1,6 @@
 package fr.openmc.core.features.milestones.tutorial.quests;
 
+import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.mailboxes.MailboxManager;
 import fr.openmc.core.features.milestones.MilestoneType;
 import fr.openmc.core.features.milestones.MilestonesManager;
@@ -13,6 +14,7 @@ import fr.openmc.core.features.quests.rewards.QuestTextReward;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.Prefix;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,12 +60,19 @@ public class OpenContestMenuQuest extends Quest implements Listener {
                             aywenite.setAmount(30);
                             items.add(aywenite);
 
-                            LocalDate today = LocalDate.now();
-                            LocalDate limitDate = LocalDate.of(2025, 11, 3);
+                            FileConfiguration config = OMCPlugin.getConfigs();
+                            if (config != null) {
+                                LocalDate today = LocalDate.now();
+                                LocalDate limitDate = LocalDate.of(
+                                        config.getInt("features.aywen.pelush", 2025),
+                                        config.getInt("features.aywen.pelush", 11),
+                                        config.getInt("features.aywen.pelush", 3)
+                                );
 
-                            if (!limitDate.isBefore(today)) {
-                                ItemStack aywenPlush = CustomItemRegistry.getByName("omc_plush:peluche_awyen").getBest();
-                                items.add(aywenPlush);
+                                if (!limitDate.isBefore(today)) {
+                                    ItemStack aywenPlush = CustomItemRegistry.getByName("omc_plush:peluche_awyen").getBest();
+                                    items.add(aywenPlush);
+                                }
                             }
 
                             ItemStack[] itemsArray = items.toArray(new ItemStack[0]);
