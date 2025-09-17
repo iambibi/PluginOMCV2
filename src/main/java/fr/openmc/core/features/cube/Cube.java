@@ -3,6 +3,9 @@ package fr.openmc.core.features.cube;
 import fr.openmc.core.OMCPlugin;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.Powerable;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -94,5 +97,73 @@ public class Cube extends MultiBlock {
         }, 2L);
 
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 1.0f, 2.0f);
+    }
+
+    public void startMagneticShock() {
+        World world = this.origin.getWorld();
+
+        world.strikeLightningEffect(this.getCenter());
+
+        int shockRadius = this.radius * 4;
+
+        Location center = this.getCenter();
+        int rays = 60;
+        for (int i = 0; i < rays; i++) {
+            double theta = Math.random() * 2 * Math.PI;
+            double phi = Math.acos(2 * Math.random() - 1);
+            Vector dir = new Vector(
+                    Math.sin(phi) * Math.cos(theta),
+                    Math.cos(phi),
+                    Math.sin(phi) * Math.sin(theta)
+            ).normalize();
+
+            for (int j = 1; j <= shockRadius; j++) {
+                Location point = center.clone().add(dir.clone().multiply(j));
+                world.spawnParticle(
+                        Particle.ELECTRIC_SPARK,
+                        point,
+                        2,
+                        0.05, 0.05, 0.05,
+                        0.01
+                );
+            }
+        }
+
+        for (int x = -shockRadius; x <= shockRadius; x++) {
+            for (int y = -shockRadius; y <= shockRadius; y++) {
+                for (int z = -shockRadius; z <= shockRadius; z++) {
+                    Location loc = this.getCenter().clone().add(x, y, z);
+                    Block block = loc.getBlock();
+                    BlockData data = block.getBlockData();
+
+                    if (data instanceof Powerable powerable) {
+                        powerable.setPowered(!powerable.isPowered());
+                        block.setBlockData(powerable, true);
+
+                        world.spawnParticle(Particle.ELECTRIC_SPARK, loc.add(0.5, 0.5, 0.5), 8,
+                                0.2, 0.2, 0.2
+                        );
+                    }
+
+                    if (data instanceof Lightable lightable && data instanceof Powerable) {
+                        lightable.setLit(!lightable.isLit());
+                        block.setBlockData(lightable, true);
+
+                        world.spawnParticle(Particle.ENCHANT, loc.add(0.5, 0.5, 0.5), 8,
+                                0.2, 0.2, 0.2
+                        );
+                    }
+                }
+            }
+        }
+
+        for (Player player : world.getPlayers()) {
+            if (player.getLocation().distance(this.getCenter()) <= shockRadius) {
+                world.spawnParticle(Particle.FLASH, player.getLocation().add(0, 1, 0), 5, 0.3, 0.5, 0.3, 0.01);
+                world.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1f, 1f);
+            } else {
+                world.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.2f, 2f);
+            }
+        }
     }
 }
