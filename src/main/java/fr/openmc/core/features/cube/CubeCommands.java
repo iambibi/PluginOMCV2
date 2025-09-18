@@ -64,4 +64,53 @@ public class CubeCommands {
             MessagesManager.sendMessage(player, Component.text("Ce n'est pas un cube"), Prefix.STAFF, MessageType.ERROR, false);
         }
     }
+
+    @Subcommand("startBubble")
+    @CommandPermission("omc.admins.commands.cube.bubble")
+    @AutoComplete("@cubes")
+    public void startCorruptedBubble(Player player, String cubeLoc) {
+        // cubeLoc ressemble à "world:123,65,200"
+        String[] split = cubeLoc.split(":");
+        if (split.length != 2) {
+            MessagesManager.sendMessage(player, Component.text("Format invalide !"), Prefix.STAFF, MessageType.ERROR, false);
+            return;
+        }
+
+        World world = Bukkit.getWorld(split[0]);
+        if (world == null) {
+            MessagesManager.sendMessage(player, Component.text("Monde introuvable"), Prefix.STAFF, MessageType.ERROR, false);
+            return;
+        }
+
+        String[] coords = split[1].split(",");
+        if (coords.length != 3) {
+            MessagesManager.sendMessage(player, Component.text("Coordonnées invalides"), Prefix.STAFF, MessageType.ERROR, false);
+            return;
+        }
+
+        int x = Integer.parseInt(coords[0]);
+        int y = Integer.parseInt(coords[1]);
+        int z = Integer.parseInt(coords[2]);
+
+        MultiBlock mb = MultiBlockManager.getMultiBlocks().stream()
+                .filter(m -> m instanceof Cube)
+                .filter(m -> m.origin.getBlockX() == x
+                        && m.origin.getBlockY() == y
+                        && m.origin.getBlockZ() == z
+                        && m.origin.getWorld().equals(world))
+                .findFirst()
+                .orElse(null);
+
+        if (mb == null) {
+            MessagesManager.sendMessage(player, Component.text("Aucun cube trouvé"), Prefix.STAFF, MessageType.ERROR, false);
+            return;
+        }
+
+        if (mb instanceof Cube cube) {
+            cube.startCorruptedBubble();
+            MessagesManager.sendMessage(player, Component.text("Bulle Corrompue lancé"), Prefix.STAFF, MessageType.SUCCESS, false);
+        } else {
+            MessagesManager.sendMessage(player, Component.text("Ce n'est pas un cube"), Prefix.STAFF, MessageType.ERROR, false);
+        }
+    }
 }

@@ -7,11 +7,14 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.Powerable;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 // Les Restes du Cube. Aucun mouvement possible, juste pour le lore, les souvenirs, l'easter egg, bref :)
 // - iambibi_
 public class Cube extends MultiBlock {
+    public BukkitTask corruptedBubbleTask;
     public Cube(Location origin, int size, Material material) {
         super(origin, size, material);
     }
@@ -104,7 +107,7 @@ public class Cube extends MultiBlock {
 
         world.strikeLightningEffect(this.getCenter());
 
-        int shockRadius = this.radius * 4;
+        int shockRadius = this.radius * 5;
 
         Location center = this.getCenter();
         int rays = 60;
@@ -165,5 +168,90 @@ public class Cube extends MultiBlock {
                 world.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 0.2f, 2f);
             }
         }
+    }
+
+    public final int RADIUS_BUBBLE = this.radius * 3;
+
+    public void startCorruptedBubble() {
+        Location center = this.getCenter();
+
+        int totalTicks = 20 * 3600;
+
+        startBubbleParticles();
+
+        int intervalCorruption = 20 * 20;
+        corruptedBubbleTask = new BukkitRunnable() {
+            int elapsed = 0;
+
+            @Override
+            public void run() {
+                if (elapsed >= totalTicks) {
+                    cancel();
+                    corruptedBubbleTask = null;
+                    return;
+                }
+
+                for (int i = 0; i < 30; i++) {
+                    double theta = Math.random() * 2 * Math.PI;
+                    double phi = Math.random() * Math.PI;
+                    double r = Math.random() * RADIUS_BUBBLE;
+
+                    double x = r * Math.sin(phi) * Math.cos(theta);
+                    double y = r * Math.cos(phi);
+                    double z = r * Math.sin(phi) * Math.sin(theta);
+
+                    if (isPartOf(new Location(origin.getWorld(), x, y, z))) continue;
+
+                    Location loc = center.clone().add(x, y, z);
+                    Block block = loc.getBlock();
+                    Material type = block.getType();
+
+                    switch (type) {
+                        case DIRT, GRASS_BLOCK, SAND, GRAVEL -> block.setType(Material.WARPED_NYLIUM);
+                        case OAK_LOG, BIRCH_LOG, SPRUCE_LOG, JUNGLE_LOG, DARK_OAK_LOG,
+                             ACACIA_LOG, MANGROVE_LOG -> block.setType(Material.WARPED_STEM);
+                        case AIR -> {
+                        }
+                        case LAPIS_BLOCK -> {
+                        }
+                        default -> block.setType(Material.SCULK);
+                    }
+                }
+
+                elapsed += intervalCorruption;
+            }
+        }.runTaskTimer(OMCPlugin.getInstance(), 0L, intervalCorruption);
+    }
+
+    public void startBubbleParticles() {
+        World world = this.origin.getWorld();
+        Location center = this.getCenter();
+        double radius = RADIUS_BUBBLE;
+
+        Bukkit.getScheduler().runTaskTimer(OMCPlugin.getInstance(), () -> {
+            for (int i = 0; i < 50; i++) {
+                double theta = Math.random() * 2 * Math.PI;
+                double phi = Math.random() * Math.PI;
+                double x = radius * Math.sin(phi) * Math.cos(theta);
+                double y = radius * Math.cos(phi);
+                double z = radius * Math.sin(phi) * Math.sin(theta);
+
+                Location particleLoc = center.clone().add(x, y, z);
+                world.spawnParticle(Particle.OMINOUS_SPAWNING, particleLoc, 1, 0.1, 0.1, 0.1, 0);
+            }
+
+            for (double theta = 0; theta < Math.PI; theta += Math.PI / 16) {
+                for (double phi = 0; phi < 2 * Math.PI; phi += Math.PI / 16) {
+                    double x = radius * Math.sin(theta) * Math.cos(phi);
+                    double y = radius * Math.cos(theta);
+                    double z = radius * Math.sin(theta) * Math.sin(phi);
+
+                    Location particleLoc = center.clone().add(x, y, z);
+
+                    Vector dir = center.clone().subtract(particleLoc).toVector().normalize();
+                    world.spawnParticle(Particle.SNEEZE, particleLoc, 1, dir.getX(), dir.getY(), dir.getZ(), 0.1);
+                }
+            }
+        }, 0L, 20L);
     }
 }
