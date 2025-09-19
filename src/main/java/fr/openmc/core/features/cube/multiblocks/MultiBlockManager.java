@@ -64,11 +64,12 @@ public class MultiBlockManager {
             String matName = (String) map.get("material");
             Material material = Material.valueOf(matName);
             boolean vulnerable = (boolean) map.get("vulnerable");
+            boolean bossbar = (boolean) map.get("bossbar");
 
             Location loc = new Location(world, x, y, z);
 
             if ("CUBE".equalsIgnoreCase(type)) {
-                Cube cube = new Cube(loc, size, material);
+                Cube cube = new Cube(loc, size, material, bossbar);
                 cube.setVulnerable(vulnerable);
                 cube.build();
                 multiBlocks.add(cube);
@@ -92,6 +93,9 @@ public class MultiBlockManager {
             map.put("size", mb.radius);
             map.put("material", mb.material.name());
             map.put("vulnerable", mb.vulnerable);
+
+            if (mb instanceof Cube cube)
+                map.put("bossbar", cube.showBossBar);
 
             list.add(map);
         }

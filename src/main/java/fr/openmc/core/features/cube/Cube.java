@@ -23,15 +23,19 @@ public class Cube extends MultiBlock {
     public BukkitTask corruptedBubbleTask;
     public ReproductionTask reproductionTask;
     public BossBar cubeBossBar;
+    public boolean showBossBar;
 
-    public Cube(Location origin, int size, Material material) {
+    public Cube(Location origin, int size, Material material, boolean showBossBar) {
         super(origin, size, material);
 
         // ## BOSS BAR ##
-        cubeBossBar = Bukkit.createBossBar("Le Cube", BarColor.BLUE, BarStyle.SEGMENTED_6, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
-        cubeBossBar.setVisible(true);
+        if (showBossBar) {
+            cubeBossBar = Bukkit.createBossBar("Le Cube", BarColor.BLUE, BarStyle.SEGMENTED_6, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
+            cubeBossBar.setVisible(true);
 
-        startBossBarUpdater();
+            startBossBarUpdater();
+        }
+
         startEventsCycle();
     }
 
@@ -289,7 +293,7 @@ public class Cube extends MultiBlock {
         int babyY = world.getHighestBlockYAt(babyX, babyZ);
 
         Location babyOrigin = new Location(world, babyX, babyY, babyZ);
-        Cube babyCube = new Cube(babyOrigin, babySize, this.material);
+        Cube babyCube = new Cube(babyOrigin, babySize, this.material, false);
 
         int totalTicks = 20 * 3600;
         int interval = 20;

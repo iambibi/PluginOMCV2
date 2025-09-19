@@ -7,3 +7,4 @@ multiblocks:
     size: 5
     material: LAPIS_BLOCK
     vulnerable: false
+    bossbar: true
