@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -50,11 +51,11 @@ public class CubeListener implements Listener {
             Location center = cube.getCenter();
             double radius = cube.RADIUS_BUBBLE;
 
-            if (!player.getWorld().equals(center.getWorld())) return;
+            if (!player.getWorld().equals(center.getWorld())) continue;
 
             boolean inside = player.getLocation().distance(center) <= radius;
             AttributeInstance attr = player.getAttribute(Attribute.GRAVITY);
-            if (attr == null) return;
+            if (attr == null) continue;
 
             if (inside) {
                 attr.setBaseValue(0.04);
@@ -63,6 +64,31 @@ public class CubeListener implements Listener {
                 attr.setBaseValue(0.08);
                 player.removePotionEffect(PotionEffectType.JUMP_BOOST);
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        for (MultiBlock mb : MultiBlockManager.getMultiBlocks()) {
+            if (!(mb instanceof Cube cube)) continue;
+
+            if (cube.corruptedBubbleTask == null) continue;
+
+            Location center = cube.getCenter();
+            double radius = cube.RADIUS_BUBBLE;
+
+            if (!player.getWorld().equals(center.getWorld())) continue;
+
+            boolean inside = player.getLocation().distance(center) <= radius;
+
+            if (!inside) continue;
+
+            AttributeInstance attr = player.getAttribute(Attribute.GRAVITY);
+            if (attr != null) {
+                attr.setBaseValue(0.08);
+            }
+            player.removePotionEffect(PotionEffectType.JUMP_BOOST);
         }
     }
 }

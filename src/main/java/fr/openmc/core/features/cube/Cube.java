@@ -15,6 +15,8 @@ import org.bukkit.util.Vector;
 // - iambibi_
 public class Cube extends MultiBlock {
     public BukkitTask corruptedBubbleTask;
+    public ReproductionTask reproductionTask;
+
     public Cube(Location origin, int size, Material material) {
         super(origin, size, material);
     }
@@ -254,4 +256,32 @@ public class Cube extends MultiBlock {
             }
         }, 0L, 20L);
     }
+
+    public void startReproduction() {
+        World world = this.origin.getWorld();
+        Location parentCenter = this.getCenter();
+
+        int babySize = (int) Math.ceil(this.radius / 2.0);
+
+        double angle = Math.random() * 2 * Math.PI;
+        int distance = this.radius + babySize;
+
+        int offsetX = (int) Math.round(Math.cos(angle) * distance);
+        int offsetZ = (int) Math.round(Math.sin(angle) * distance);
+
+        int babyX = this.origin.getBlockX() + offsetX;
+        int babyZ = this.origin.getBlockZ() + offsetZ;
+
+        int babyY = world.getHighestBlockYAt(babyX, babyZ);
+
+        Location babyOrigin = new Location(world, babyX, babyY, babyZ);
+        Cube babyCube = new Cube(babyOrigin, babySize, this.material);
+
+        int totalTicks = 20 * 3600;
+        int interval = 20;
+
+        this.reproductionTask = new ReproductionTask(this, babyCube, parentCenter, babyOrigin, babySize, world, totalTicks, interval);
+        this.reproductionTask.runTaskTimer(OMCPlugin.getInstance(), 0L, interval);
+    }
+
 }

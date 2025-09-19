@@ -103,6 +103,12 @@ public class MultiBlockManager {
         }
     }
 
+    public static void register(MultiBlock multiBlock) {
+        multiBlocks.add(multiBlock);
+
+        save();
+    }
+
     public static void initCommandSuggestion() {
         CommandsManager.getHandler().getAutoCompleter().registerSuggestion("cubes", (args, sender, command) -> {
             return MultiBlockManager.getMultiBlocks().stream()
