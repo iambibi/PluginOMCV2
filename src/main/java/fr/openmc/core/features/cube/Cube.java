@@ -1,11 +1,17 @@
 package fr.openmc.core.features.cube;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.cube.listeners.RepulseEffectListener;
+import fr.openmc.core.features.cube.multiblocks.MultiBlock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.Powerable;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -16,9 +22,17 @@ import org.bukkit.util.Vector;
 public class Cube extends MultiBlock {
     public BukkitTask corruptedBubbleTask;
     public ReproductionTask reproductionTask;
+    public BossBar cubeBossBar;
 
     public Cube(Location origin, int size, Material material) {
         super(origin, size, material);
+
+        // ## BOSS BAR ##
+        cubeBossBar = Bukkit.createBossBar("Le Cube", BarColor.BLUE, BarStyle.SEGMENTED_6, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
+        cubeBossBar.setVisible(true);
+
+        startBossBarUpdater();
+        startEventsCycle();
     }
 
     @Override
@@ -284,4 +298,39 @@ public class Cube extends MultiBlock {
         this.reproductionTask.runTaskTimer(OMCPlugin.getInstance(), 0L, interval);
     }
 
+    private void startBossBarUpdater() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.getWorld().equals(getCenter().getWorld())) {
+                        double distance = player.getLocation().distanceSquared(getCenter());
+
+                        if (distance <= 50 * 50) {
+                            if (!cubeBossBar.getPlayers().contains(player)) {
+                                cubeBossBar.addPlayer(player);
+                            }
+                        } else {
+                            cubeBossBar.removePlayer(player);
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(OMCPlugin.getInstance(), 0, 20);
+    }
+
+    public void startEventsCycle() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                double roll = Math.random();
+
+                if (roll < 0.5) {
+                    startMagneticShock();
+                } else {
+                    startCorruptedBubble();
+                }
+            }
+        }.runTaskTimer(OMCPlugin.getInstance(), 20L * 60 * 5, 20L * 60 * 20);
+    }
 }

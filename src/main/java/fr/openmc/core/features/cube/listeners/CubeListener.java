@@ -1,5 +1,8 @@
-package fr.openmc.core.features.cube;
+package fr.openmc.core.features.cube.listeners;
 
+import fr.openmc.core.features.cube.Cube;
+import fr.openmc.core.features.cube.multiblocks.MultiBlock;
+import fr.openmc.core.features.cube.multiblocks.MultiBlockManager;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;

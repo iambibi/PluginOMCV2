@@ -1,4 +1,4 @@
-package fr.openmc.core.features.cube;
+package fr.openmc.core.features.cube.multiblocks;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

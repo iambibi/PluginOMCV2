@@ -1,7 +1,8 @@
-package fr.openmc.core.features.cube;
+package fr.openmc.core.features.cube.multiblocks;
 
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.cube.Cube;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

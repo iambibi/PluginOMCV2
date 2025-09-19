@@ -1,4 +1,4 @@
-package fr.openmc.core.features.cube;
+package fr.openmc.core.features.cube.listeners;
 
 import fr.openmc.core.OMCPlugin;
 import org.bukkit.Bukkit;

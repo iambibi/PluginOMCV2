@@ -1,4 +1,4 @@
-package fr.openmc.core.features.cube;
+package fr.openmc.core.features.cube.multiblocks;
 
 import lombok.Setter;
 import org.bukkit.Location;
@@ -11,7 +11,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public abstract class MultiBlock {
-    protected final Location origin;
+    public final Location origin;
     protected final int radius;
     protected final Material material;
 
