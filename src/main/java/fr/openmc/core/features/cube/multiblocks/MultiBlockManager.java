@@ -53,12 +53,7 @@ public class MultiBlockManager {
             int x = (int) origin.get("x");
             int z = (int) origin.get("z");
 
-            int y;
-            if (origin.containsKey("y")) {
-                y = (int) origin.get("y");
-            } else {
-                y = world.getHighestBlockYAt(x, z);
-            }
+            int y = origin.containsKey("y") ? (int) origin.get("y") : world.getHighestBlockYAt(x, z);
 
             int size = (int) map.get("size");
             String matName = (String) map.get("material");
