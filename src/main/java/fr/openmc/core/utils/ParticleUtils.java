@@ -25,6 +25,19 @@ public class ParticleUtils {
     public static Color color1;
     public static Color color2;
 
+    public static void sendRandomCubeParticles(Player player, Particle particle, double radius, int amount) {
+        Location center = player.getLocation();
+
+        for (int i = 0; i < amount; i++) {
+            double x = (Math.random() * 2 - 1) * radius; // de -radius à +radius
+            double y = (Math.random() * 2 - 1) * radius;
+            double z = (Math.random() * 2 - 1) * radius;
+
+            Location loc = center.clone().add(x, y, z);
+            sendParticlePacket(player, particle, loc);
+        }
+    }
+
     public static void spawnParticlesInRegion(String regionId, World world, Particle particle, int amountPer2Tick, int minHeight, int maxHeight) {
         RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
         if (regionManager == null) return;
