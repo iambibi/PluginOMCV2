@@ -96,9 +96,7 @@ public class OMCPlugin extends JavaPlugin {
 
         logLoadMessage();
 
-        String webhookUrl = getConfig().getString("error-discord-webhook", "");
-        new ErrorReporter(webhookUrl);
-
+        new ErrorReporter();
         getLogger().info("\u001B[32m✔ ErrorHandler activé\u001B[0m");
 
         /* MANAGERS */

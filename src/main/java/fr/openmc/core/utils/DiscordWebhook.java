@@ -41,9 +41,7 @@ public class DiscordWebhook {
                     errorResponse = new String(err.readAllBytes(), StandardCharsets.UTF_8);
                 }
             }
-            System.err.println("Echec du webhook Discord");
-            System.err.println("Code : " + status);
-            System.err.println("Réponse Discord : " + errorResponse);
+
             throw new RuntimeException("Echec du webhook, code HTTP : " + status + " → " + errorResponse);
         }
     }

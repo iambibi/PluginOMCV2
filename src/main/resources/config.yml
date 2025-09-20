@@ -33,4 +33,6 @@ repoV2: "https://github.com/ServerOpenMC/PluginV2"
 #####
 # Webhook
 #####
-error-discord-webhook: "https://discord.com/api/webhooks/ID/TOKEN"
+error:
+  notif: [ ]
+  webhook: "https://discord.com/api/webhooks/..."

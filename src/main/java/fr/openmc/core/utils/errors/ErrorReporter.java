@@ -9,17 +9,17 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ErrorReporter {
-    private static String webhookUrl;
     private final PrintStream originalErr;
     private static final Set<String> reportedErrors = new HashSet<>();
 
 
-    public ErrorReporter(String webhookUrl) {
+    public ErrorReporter() {
         originalErr = System.err;
-        ErrorReporter.webhookUrl = webhookUrl;
 
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> handleException(throwable, "Uncaught in thread " + thread.getName()));
 
@@ -65,7 +65,17 @@ public class ErrorReporter {
         }
 
         String prefix = alreadyReported ? "⚠️" : "🚨";
-        String mention = alreadyReported ? "" : "<@487272702051090434>";
+        List<String> notifIds = OMCPlugin.getInstance().getConfig().getStringList("error.notif");
+        String webhookUrl = OMCPlugin.getInstance().getConfig().getString("error.webhook");
+
+        String mention;
+        if (alreadyReported || notifIds.isEmpty()) {
+            mention = "";
+        } else {
+            mention = notifIds.stream()
+                    .map(id -> "<@" + id + ">")
+                    .collect(Collectors.joining(" "));
+        }
 
         String discordMsg = prefix + " **Erreur interceptée !** " + mention + "\n"
                 + "Date: `" + timestamp + "`\n"
