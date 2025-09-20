@@ -10,6 +10,7 @@ import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.contest.managers.ContestManager;
+import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.economy.BankManager;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.features.economy.TransactionsManager;
@@ -48,6 +49,7 @@ public class DatabaseManager {
             String password = config.getString("database.password");
             connectionSource = new JdbcPooledConnectionSource(databaseUrl, username, password);
 
+            DreamManager.initDB(connectionSource);
             NotationManager.initDB(connectionSource);
             MayorManager.initDB(connectionSource);
             MilestonesManager.initDB(connectionSource);
