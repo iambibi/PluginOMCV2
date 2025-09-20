@@ -12,9 +12,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -172,6 +170,30 @@ public class StructureUtils {
      */
     public static File getStructureFile(String group, String name) {
         name = name.replace(".nbt", "");
-        return new File("world/generated/" + group + "/structures/" + name + ".nbt");
+        String relativePath = "structures/" + group + "/" + name + ".nbt";
+
+        File destFile = new File(OMCPlugin.getInstance().getDataFolder(), relativePath);
+
+        if (!destFile.exists()) {
+            destFile.getParentFile().mkdirs();
+
+            try (InputStream in = OMCPlugin.getInstance().getResource(relativePath)) {
+                if (in == null) {
+                    throw new IllegalArgumentException("Structure introuvable dans resources: " + relativePath);
+                }
+
+                try (OutputStream out = new FileOutputStream(destFile)) {
+                    byte[] buffer = new byte[8192];
+                    int len;
+                    while ((len = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, len);
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Impossible de copier la structure: " + relativePath, e);
+            }
+        }
+
+        return destFile;
     }
 }
