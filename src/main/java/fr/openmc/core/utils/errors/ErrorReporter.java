@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,6 +46,8 @@ public class ErrorReporter {
     }
 
     public static void handleException(Throwable throwable, String context) {
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
         String pluginVersion = OMCPlugin.getInstance().getPluginMeta().getVersion();
         String mcVersion = Bukkit.getBukkitVersion();
 
@@ -64,6 +68,7 @@ public class ErrorReporter {
         String mention = alreadyReported ? "" : "<@487272702051090434>";
 
         String discordMsg = prefix + " **Erreur interceptée !** " + mention + "\n"
+                + "Date: `" + timestamp + "`\n"
                 + "Plugin: `" + OMCPlugin.getInstance().getName() + " " + pluginVersion + "`\n"
                 + "MC: `" + mcVersion + "`\n"
                 + "Context: `" + context + "`\n"
