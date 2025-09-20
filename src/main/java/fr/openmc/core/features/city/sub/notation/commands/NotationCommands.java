@@ -20,6 +20,11 @@ public class NotationCommands {
     @Description("Ouvre le menu des notations")
     void notationTest(Player sender) {
         City playerCity = CityManager.getPlayerCity(sender.getUniqueId());
+        if (playerCity == null) {
+            MessagesManager.sendMessage(sender, MessagesManager.Message.PLAYER_NO_CITY.getMessage(), Prefix.CITY, MessageType.ERROR, false);
+            return;
+        }
+
         String weekStr = DateUtils.getWeekFormat();
         if (NotationManager.getSortedNotationForWeek(weekStr) == null) {
             MessagesManager.sendMessage(sender, Component.text("Aucune Notation ont été mise pour cette semaine !"), Prefix.CITY, MessageType.INFO, false);
