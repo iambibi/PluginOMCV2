@@ -50,7 +50,7 @@ public class ProtectionsManager {
      * @param loc La localisation pour vérifier la ville
      */
     public static boolean canInteract(Player player, Location loc) {
-        if (! player.getWorld().getName().equals("world")) return true;
+        if (!player.getWorld().getName().equals("world")) return true;
 		
         if (canBypassPlayer.contains(player.getUniqueId())) return true; // Le joueur peut bypass les protections
 
@@ -80,16 +80,15 @@ public class ProtectionsManager {
     }
     
     public static void checkCity(Player player, Cancellable event, City city) {
-        if (! player.getWorld().getName().equals("world")) return;
+        if (!player.getWorld().getName().equals("world")) return;
         
         if (city == null) return; // Pas de ville, pas de protection
 	    
 	    if (canBypassPlayer.contains(player.getUniqueId())) return; // Le joueur peut bypass les protections
 	    
 	    if (city.isInWar()) return; // En guerre, pas de protection
-        
-        
-        if (! city.isMember(player)) {
+
+        if (!city.isMember(player)) {
             event.setCancelled(true);
             cancelMessage(player);
         }
@@ -99,10 +98,17 @@ public class ProtectionsManager {
 		if (!entity.getWorld().getName().equals("world")) return;
 		
 		City city = CityManager.getCityFromChunk(loc.getChunk().getX(), loc.getChunk().getZ()); // on regarde le claim ou l'action a été fait
-		if (city == null || !CityType.WAR.equals(city.getType()))
-			return;
-		
-		event.setCancelled(true);
+		if (city == null || city.isInWar()) return;
+
+		if (entity instanceof Player player) {
+			if (canInteract(player, loc)) return;
+
+			event.setCancelled(true);
+			cancelMessage(player);
+		} else {
+			event.setCancelled(true);
+		}
+
 	}
 	
 	/**
@@ -127,14 +133,14 @@ public class ProtectionsManager {
 	}
 	
 	public static void checkPermissions(@NotNull Player player, Cancellable event, City city, CityPermission permission) {
-		if (! player.getWorld().getName().equals("world")) return;
+		if (!player.getWorld().getName().equals("world")) return;
 		
 		if (canBypassPlayer.contains(player.getUniqueId())) return; // Le joueur peut bypass les protections
 		if (city == null) return; // Pas de ville, pas de protection
 		if (city.isInWar()) return; // En guerre, pas de protection
 		
 		if (city.isMember(player)) {
-			if (! city.hasPermission(player.getUniqueId(), permission)) {
+			if (!city.hasPermission(player.getUniqueId(), permission)) {
 				event.setCancelled(true);
 				cancelMessage(player);
 			}

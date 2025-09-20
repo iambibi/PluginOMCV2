@@ -162,6 +162,16 @@ public abstract class Menu implements InventoryHolder {
 	public final void setItem(Player player, Inventory inventory, int slot, ItemBuilder item) {
 		if (item.isBackButton() && !MenuLib.hasPreviousMenu(player)) return;
 
+		if (this instanceof PaginatedMenu paginatedMenu) {
+			if (item.isPreviousButton() && paginatedMenu.isFirstPage()) {
+				return;
+			}
+
+			if (item.isNextButton() && paginatedMenu.isLastPage()) {
+				return;
+			}
+		}
+
 		if (item.isBackButton()) {
 			item = new ItemBuilder(this, item, itemMeta -> {
 				itemMeta.displayName(Component.text("§aRetour"));
@@ -185,10 +195,10 @@ public abstract class Menu implements InventoryHolder {
 	 * @return A {@link Map} where the key represents the inventory slot index, and the value is the {@link ItemStack} placed
 	 * in that slot.
 	 */
-	public final Map<Integer, ItemStack> fill(Material material) {
-		Map<Integer, ItemStack> map = new HashMap<>();
+	public final Map<Integer, ItemBuilder> fill(Material material) {
+		Map<Integer, ItemBuilder> map = new HashMap<>();
 		for (int i = 0; i < getInventorySize().getSize(); i++) {
-			ItemStack filler = ItemUtils.createItem(" ", material);
+            ItemBuilder filler = new ItemBuilder(this, material, itemMeta -> itemMeta.displayName(Component.text(" "))).hideTooltip(true);
 			map.put(i, filler);
 		}
 		return map;

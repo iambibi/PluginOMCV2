@@ -8,11 +8,15 @@ import fr.openmc.api.packetmenulib.PacketMenuLib;
 import fr.openmc.core.commands.admin.freeze.FreezeManager;
 import fr.openmc.core.commands.utils.SpawnManager;
 import fr.openmc.core.features.adminshop.AdminShopManager;
+import fr.openmc.core.features.animations.AnimationsManager;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.mascots.MascotsManager;
 import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
+import fr.openmc.core.features.city.sub.statistics.CityStatisticsManager;
+import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.contest.managers.ContestManager;
+import fr.openmc.core.features.cube.multiblocks.MultiBlockManager;
 import fr.openmc.core.features.displays.TabList;
 import fr.openmc.core.features.displays.bossbar.BossbarManager;
 import fr.openmc.core.features.displays.holograms.HologramLoader;
@@ -29,6 +33,7 @@ import fr.openmc.core.features.privatemessage.PrivateMessageManager;
 import fr.openmc.core.features.quests.QuestProgressSaveManager;
 import fr.openmc.core.features.quests.QuestsManager;
 import fr.openmc.core.features.settings.PlayerSettingsManager;
+import fr.openmc.core.features.tickets.TicketManager;
 import fr.openmc.core.features.tpa.TPAManager;
 import fr.openmc.core.features.updates.UpdateManager;
 import fr.openmc.core.items.CustomItemRegistry;
@@ -93,11 +98,11 @@ public class OMCPlugin extends JavaPlugin {
         logLoadMessage();
 
         /* MANAGERS */
+        TicketManager.loadPlayerStats(new File(this.getDataFolder(), "data/stats"));
         new DatabaseManager();
         new CommandsManager();
         new SpawnManager();
         new UpdateManager();
-        new CityManager();
         new ListenersManager();
         new EconomyManager();
         new BankManager();
@@ -114,22 +119,20 @@ public class OMCPlugin extends JavaPlugin {
         }
         new AdminShopManager();
         new BossbarManager();
-        new ContestManager();
         new PrivateMessageManager();
+        new AnimationsManager();
 
         new MotdUtils();
         new TranslationManager(new File(this.getDataFolder(), "translations"), "fr");
         new DynamicCooldownManager();
         new DreamManager();
 
+        new MascotsManager();
         HomeIconCacheManager.initialize();
 
-        PlayerSettingsManager.loadAllPlayerSettings();
+        new MultiBlockManager();
 
-        if (WorldGuardHook.hasWorldGuard()) {
-            ParticleUtils.spawnParticlesInRegion("spawn", Bukkit.getWorld("world"), Particle.CHERRY_LEAVES, 50, 70, 130);
-            ParticleUtils.spawnContestParticlesInRegion("spawn", Bukkit.getWorld("world"), 10, 70, 135);
-        }
+        PlayerSettingsManager.loadAllPlayerSettings();
     }
 
     public void loadWithItemsAdder() {
@@ -137,6 +140,12 @@ public class OMCPlugin extends JavaPlugin {
         new CustomUsableItemRegistry();
         new MilestonesManager();
         new QuestsManager();
+        new CityManager();
+        new ContestManager();
+        if (WorldGuardHook.hasWorldGuard()) {
+            ParticleUtils.spawnParticlesInRegion("spawn", Bukkit.getWorld("world"), Particle.CHERRY_LEAVES, 50, 70, 130);
+            ParticleUtils.spawnContestParticlesInRegion("spawn", Bukkit.getWorld("world"), 10, 70, 135);
+        }
     }
 
     @Override
@@ -148,10 +157,19 @@ public class OMCPlugin extends JavaPlugin {
 
         DreamManager.saveAllDreamPlayerData();
 
+        // - MultiBlocks
+        MultiBlockManager.save();
+
+        // - War
+        WarManager.saveWarHistories();
+
+        // - CityStatistics
+        CityStatisticsManager.saveCityStatistics();
+
         // - Settings
         PlayerSettingsManager.saveAllSettings();
 
-        // Notation des Villes
+        // - Notation des Villes
         NotationManager.saveNotations();
 
         // - Maires
