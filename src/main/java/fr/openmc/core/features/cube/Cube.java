@@ -230,9 +230,7 @@ public class Cube extends MultiBlock {
                         case DIRT, GRASS_BLOCK, SAND, GRAVEL -> block.setType(Material.WARPED_NYLIUM);
                         case OAK_LOG, BIRCH_LOG, SPRUCE_LOG, JUNGLE_LOG, DARK_OAK_LOG,
                              ACACIA_LOG, MANGROVE_LOG -> block.setType(Material.WARPED_STEM);
-                        case AIR -> {
-                        }
-                        case LAPIS_BLOCK -> {
+                        case AIR, LAPIS_BLOCK -> {
                         }
                         default -> block.setType(Material.SCULK);
                     }
