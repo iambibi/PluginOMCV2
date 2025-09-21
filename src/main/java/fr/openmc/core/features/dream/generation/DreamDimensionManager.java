@@ -3,6 +3,7 @@ package fr.openmc.core.features.dream.generation;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.biomes.*;
 import fr.openmc.core.features.dream.generation.effects.BiomeParticleListener;
+import fr.openmc.core.features.dream.generation.populators.glacite.SpikePopulator;
 import fr.openmc.core.features.dream.generation.populators.mud.RockPopulator;
 import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopulator;
 import fr.openmc.core.features.dream.generation.populators.soulforest.SoulTreePopulator;
@@ -44,21 +45,24 @@ public class DreamDimensionManager {
         WorldCreator creator = new WorldCreator(DIMENSION_NAME);
 
         File worldFolder = new File(Bukkit.getWorldContainer(), DIMENSION_NAME);
+        long seed;
 
         if (!worldFolder.exists()) {
-            long seed = createSeed();
+            seed = createSeed();
             creator.seed(seed);
             plugin.getLogger().info("New Dream world created with seed: " + seed);
         } else {
-            plugin.getLogger().info("Loading existing Dream world...");
+            World existing = Bukkit.getWorld(DIMENSION_NAME);
+            seed = (existing != null) ? existing.getSeed() : creator.seed();
+            plugin.getLogger().info("Loading existing Dream world with seed: " + seed);
         }
 
-        creator.generator(new DreamChunkGenerator(creator.seed()));
-        new SoulForestChunkGenerator(creator.seed());
-        new PlainsChunkGenerator(creator.seed());
-        new MudBeachChunkGenerator(creator.seed());
-        new CloudChunkGenerator(creator.seed());
-        new GlaciteCaveChunkGenerator(creator.seed());
+        creator.generator(new DreamChunkGenerator(seed));
+        new SoulForestChunkGenerator(seed);
+        new PlainsChunkGenerator(seed);
+        new MudBeachChunkGenerator(seed);
+        new CloudChunkGenerator(seed);
+        new GlaciteCaveChunkGenerator(seed);
         creator.environment(World.Environment.NORMAL);
 
         World dream = creator.createWorld();
@@ -67,6 +71,7 @@ public class DreamDimensionManager {
         dream.getPopulators().add(new RockPopulator());
         dream.getPopulators().add(new PlainsTreePopulator());
         dream.getPopulators().add(new SoulTreePopulator());
+        dream.getPopulators().add(new SpikePopulator());
 
         // ** STRUCTURES POPULATORS REGISTER **
         dream.getPopulators().add(new CloudCastleStructure());
