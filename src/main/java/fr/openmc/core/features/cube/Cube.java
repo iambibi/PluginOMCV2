@@ -17,6 +17,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.Random;
+
 // Les Restes du Cube. Aucun mouvement possible, juste pour le lore, les souvenirs, l'easter egg, bref :)
 // - iambibi_
 public class Cube extends MultiBlock {
@@ -200,7 +202,7 @@ public class Cube extends MultiBlock {
 
         startBubbleParticles();
 
-        int intervalCorruption = 20 * 20;
+        int intervalCorruption = 20 * 15;
         corruptedBubbleTask = new BukkitRunnable() {
             int elapsed = 0;
 
@@ -281,7 +283,7 @@ public class Cube extends MultiBlock {
         int babySize = (int) Math.ceil(this.radius / 2.0);
 
         double angle = Math.random() * 2 * Math.PI;
-        int distance = this.radius + babySize;
+        int distance = this.radius + babySize + 5;
 
         int offsetX = (int) Math.round(Math.cos(angle) * distance);
         int offsetZ = (int) Math.round(Math.sin(angle) * distance);
@@ -289,7 +291,7 @@ public class Cube extends MultiBlock {
         int babyX = this.origin.getBlockX() + offsetX;
         int babyZ = this.origin.getBlockZ() + offsetZ;
 
-        int babyY = world.getHighestBlockYAt(babyX, babyZ);
+        int babyY = world.getHighestBlockYAt(babyX, babyZ) + 1;
 
         Location babyOrigin = new Location(world, babyX, babyY, babyZ);
         Cube babyCube = new Cube(babyOrigin, babySize, this.material, false);
@@ -331,7 +333,8 @@ public class Cube extends MultiBlock {
                 if (roll < 0.5) {
                     startMagneticShock();
                 } else {
-                    startCorruptedBubble();
+                    if (corruptedBubbleTask == null)
+                        startCorruptedBubble();
                 }
             }
         }.runTaskTimer(OMCPlugin.getInstance(), 20L * 60 * 5, 20L * 60 * 20);
@@ -343,23 +346,31 @@ public class Cube extends MultiBlock {
             public void run() {
                 double roll = Math.random();
 
-                if (roll < 0.5) {
-                    playSoundArrondCube("omc_sounds:ambient.cube.idle_1");
-                } else {
-                    playSoundArrondCube("omc_sounds:ambient.cube.idle_2");
+                System.out.println("sound");
+
+                if (roll < 0.8) {
+                    playSoundArrondCube("omc_sounds:cube_idle1");
+                } else if (roll < 0.4) {
+                    playSoundArrondCube("omc_sounds:cube_idle2");
                 }
             }
-        }.runTaskTimer(OMCPlugin.getInstance(), 0, 20L * 60 * 3);
+        }.runTaskTimer(OMCPlugin.getInstance(), new Random().nextLong(20L, 20L * 60), 20L * 60);
     }
 
     private void playSoundArrondCube(String soundName) {
-        for (Player player : getCenter().getWorld().getPlayers()) {
-            if (player.getLocation().distance(getCenter()) <= 50) {
-                player.playSound(getCenter(),
-                        soundName,
-                        SoundCategory.MASTER,
-                        1f, 1f
-                );
+        System.out.println("sound s");
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getWorld().equals(getCenter().getWorld())) {
+                double distance = player.getLocation().distanceSquared(getCenter());
+
+                if (distance <= 50 * 50) {
+                    System.out.println("sound start " + player.getName());
+                    player.playSound(player.getEyeLocation(),
+                            soundName,
+                            SoundCategory.MASTER,
+                            1f, 1f
+                    );
+                }
             }
         }
     }
