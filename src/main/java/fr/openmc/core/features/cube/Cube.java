@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 // Les Restes du Cube. Aucun mouvement possible, juste pour le lore, les souvenirs, l'easter egg, bref :)
 // - iambibi_
@@ -328,7 +329,7 @@ public class Cube extends MultiBlock {
         new BukkitRunnable() {
             @Override
             public void run() {
-                double roll = Math.random();
+                double roll = ThreadLocalRandom.current().nextDouble();
 
                 if (roll < 0.5) {
                     startMagneticShock();
@@ -344,9 +345,7 @@ public class Cube extends MultiBlock {
         new BukkitRunnable() {
             @Override
             public void run() {
-                double roll = Math.random();
-
-                System.out.println("sound");
+                double roll = ThreadLocalRandom.current().nextDouble();
 
                 if (roll < 0.8) {
                     playSoundArrondCube("omc_sounds:cube_idle1");
@@ -358,13 +357,11 @@ public class Cube extends MultiBlock {
     }
 
     private void playSoundArrondCube(String soundName) {
-        System.out.println("sound s");
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getWorld().equals(getCenter().getWorld())) {
                 double distance = player.getLocation().distanceSquared(getCenter());
 
                 if (distance <= 50 * 50) {
-                    System.out.println("sound start " + player.getName());
                     player.playSound(player.getEyeLocation(),
                             soundName,
                             SoundCategory.MASTER,
