@@ -37,6 +37,7 @@ public class Cube extends MultiBlock {
         }
 
         startEventsCycle();
+        startSoundCycle();
     }
 
     @Override
@@ -334,5 +335,32 @@ public class Cube extends MultiBlock {
                 }
             }
         }.runTaskTimer(OMCPlugin.getInstance(), 20L * 60 * 5, 20L * 60 * 20);
+    }
+
+    public void startSoundCycle() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                double roll = Math.random();
+
+                if (roll < 0.5) {
+                    playSoundArrondCube("omc_sounds:ambient.cube.idle_1");
+                } else {
+                    playSoundArrondCube("omc_sounds:ambient.cube.idle_2");
+                }
+            }
+        }.runTaskTimer(OMCPlugin.getInstance(), 0, 20L * 60 * 3);
+    }
+
+    private void playSoundArrondCube(String soundName) {
+        for (Player player : getCenter().getWorld().getPlayers()) {
+            if (player.getLocation().distance(getCenter()) <= 50) {
+                player.playSound(getCenter(),
+                        soundName,
+                        SoundCategory.MASTER,
+                        1f, 1f
+                );
+            }
+        }
     }
 }
