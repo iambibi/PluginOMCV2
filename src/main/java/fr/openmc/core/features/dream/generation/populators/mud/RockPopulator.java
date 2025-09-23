@@ -28,7 +28,7 @@ public class RockPopulator extends BlockPopulator {
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        if (random.nextDouble() > ROCK_PROBABILITY) return;
+        if (random.nextDouble() >= ROCK_PROBABILITY) return;
 
         int x = (chunk.getX() << 4) + random.nextInt(16);
         int z = (chunk.getZ() << 4) + random.nextInt(16);

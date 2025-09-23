@@ -57,10 +57,7 @@ public class DreamChunkGenerator extends ChunkGenerator {
                 }
             }
         }
-    }
 
-    @Override
-    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, ChunkData chunkData) {
         for (int y = MIN_CAVE_HEIGHT; y < MAX_CAVE_HEIGHT; y++) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
@@ -83,5 +80,9 @@ public class DreamChunkGenerator extends ChunkGenerator {
                 }
             }
         }
+    }
+
+    @Override
+    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, ChunkData chunkData) {
     }
 }

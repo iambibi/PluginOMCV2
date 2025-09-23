@@ -144,6 +144,7 @@ public class StructureUtils {
                                     BlockData data = states[e[3]];
 
                                     if (data.getMaterial().equals(Material.AIR)) continue;
+                                    if (data.getMaterial().equals(Material.STRUCTURE_VOID)) continue;
 
                                     handle.setBlock(pos, ((CraftBlockData) data).getState(), 2 | 16);
                                     placed++;
