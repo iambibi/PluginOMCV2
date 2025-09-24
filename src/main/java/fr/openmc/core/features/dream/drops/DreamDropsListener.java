@@ -20,15 +20,10 @@ public class DreamDropsListener implements Listener {
 
         ItemStack customDrop = DreamDropsManager.getCustomDrop(type);
 
-        System.out.println(customDrop);
-
         event.setDropItems(false);
         event.setExpToDrop(0);
 
-        System.out.println(event.getPlayer().getGameMode());
         if (customDrop != null && !event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-
-            System.out.println("dop");
             block.getWorld().dropItemNaturally(block.getLocation(), customDrop);
         }
     }
