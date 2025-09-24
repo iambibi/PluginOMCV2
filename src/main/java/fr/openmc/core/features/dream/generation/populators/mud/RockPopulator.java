@@ -40,8 +40,10 @@ public class RockPopulator extends BlockPopulator {
 
         try {
             StructureUtils.placeStructure(
-                    StructureUtils.getStructureFile("omc_dream",
-                            ROCK_FEATURES.get(random.nextInt(ROCK_FEATURES.size()))),
+                    StructureUtils.getStructureNBT(
+                            "omc_dream",
+                            ROCK_FEATURES.get(random.nextInt(ROCK_FEATURES.size()))
+                    ),
                     loc,
                     random.nextBoolean(),
                     random.nextBoolean(),

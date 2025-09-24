@@ -38,8 +38,10 @@ public class PlainsTreePopulator extends BlockPopulator {
 
         try {
             StructureUtils.placeStructure(
-                    StructureUtils.getStructureFile("omc_dream",
-                            TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))),
+                    StructureUtils.getStructureNBT(
+                            "omc_dream",
+                            TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))
+                    ),
                     loc,
                     false,
                     false,

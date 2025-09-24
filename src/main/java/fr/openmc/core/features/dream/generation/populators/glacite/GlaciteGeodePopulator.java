@@ -39,8 +39,10 @@ public class GlaciteGeodePopulator extends BlockPopulator {
 
         try {
             StructureUtils.placeStructure(
-                    StructureUtils.getStructureFile("omc_dream",
-                            GEODE_FEATURES.get(random.nextInt(GEODE_FEATURES.size()))),
+                    StructureUtils.getStructureNBT(
+                            "omc_dream",
+                            GEODE_FEATURES.get(random.nextInt(GEODE_FEATURES.size()))
+                    ),
                     loc,
                     random.nextBoolean(),
                     random.nextBoolean(),

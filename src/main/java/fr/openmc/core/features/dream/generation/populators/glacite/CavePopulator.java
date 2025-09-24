@@ -1,6 +1,5 @@
 package fr.openmc.core.features.dream.generation.populators.glacite;
 
-import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.utils.StructureUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -49,21 +48,21 @@ public class CavePopulator extends BlockPopulator {
                     Block above = block.getRelative(BlockFace.UP);
 
                     if (above.isEmpty() || above.getType() == Material.SNOW) {
-                        if (world.getBiome(x, y, z).equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
-                            if (random.nextDouble() < perSolProbability) {
-                                Location loc = new Location(world, x, y + 1, z);
-                                try {
-                                    StructureUtils.placeStructure(
-                                            StructureUtils.getStructureFile("omc_dream",
-                                                    features.get(random.nextInt(features.size()))),
-                                            loc,
-                                            random.nextBoolean(),
-                                            random.nextBoolean(),
-                                            false
-                                    );
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                        if (random.nextDouble() < perSolProbability) {
+                            Location loc = new Location(world, x, y + 1, z);
+                            try {
+                                StructureUtils.placeStructure(
+                                        StructureUtils.getStructureNBT(
+                                                "omc_dream",
+                                                features.get(random.nextInt(features.size()))
+                                        ),
+                                        loc,
+                                        random.nextBoolean(),
+                                        random.nextBoolean(),
+                                        false
+                                );
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
                         }
                     }

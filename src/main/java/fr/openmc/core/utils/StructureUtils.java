@@ -12,7 +12,8 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class StructureUtils {
-    private static final Map<String, File> FILE_CACHE = new HashMap<>();
+    private static final Map<String, CompoundTag> STRUCTURE_CACHE = new HashMap<>();
 
     /**
      * Places a structure from an NBT file into the world at the given location.
@@ -31,18 +32,16 @@ public class StructureUtils {
      * - Réduction des appels coûteux à world.getBlockAt() / getBlockData().
      * - Pré-calcul des positions et cache du BlockData pour palette.
      *
-     * @param file    The NBT file of the structure.
+     * @param structureNbt the NBT structure.
      * @param target  The lowest (min corner) location where to place the structure.
      * @param mirrorX Whether to mirror the structure on the X axis (ignores block rotation).
      * @param mirrorZ Whether to mirror the structure on the Z axis (ignores block rotation).
      * @throws IOException If the NBT file is malformed or unreadable.
      */
-    public static void placeStructure(File file, Location target, boolean mirrorX, boolean mirrorZ, boolean placeAir) throws IOException {
+    public static void placeStructure(CompoundTag structureNbt, Location target, boolean mirrorX, boolean mirrorZ, boolean placeAir) throws IOException {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            try (NBTInputStream input = new NBTInputStream(new FileInputStream(file))) {
-                Tag baseCompound = input.readTag();
-                if (!(baseCompound instanceof CompoundTag)) return;
-                CompoundMap compound = ((CompoundTag) baseCompound).getValue();
+            try {
+                CompoundMap compound = structureNbt.getValue();
 
                 ListTag sizeList = (ListTag) compound.get("size");
                 if (sizeList == null || sizeList.getValue().size() != 3) return;
@@ -159,7 +158,7 @@ public class StructureUtils {
                     });
                 });
 
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         });
@@ -171,38 +170,27 @@ public class StructureUtils {
      * @param name Nom du fichier
      * @return Fichier de structure
      */
-    public static File getStructureFile(String group, String name) {
+    public static CompoundTag getStructureNBT(String group, String name) {
         String key = group + "/" + name;
-        if (FILE_CACHE.containsKey(key)) {
-            return FILE_CACHE.get(key);
+        if (STRUCTURE_CACHE.containsKey(key)) {
+            return STRUCTURE_CACHE.get(key);
         }
 
-        name = name.replace(".nbt", "");
-        String relativePath = "structures/" + group + "/" + name + ".nbt";
-
-        File destFile = new File(OMCPlugin.getInstance().getDataFolder(), relativePath);
-
-        if (!destFile.exists()) {
-            destFile.getParentFile().mkdirs();
-
-            try (InputStream in = OMCPlugin.getInstance().getResource(relativePath)) {
-                if (in == null) {
-                    throw new IllegalArgumentException("Structure introuvable: " + relativePath);
-                }
-
-                try (OutputStream out = new FileOutputStream(destFile)) {
-                    byte[] buffer = new byte[8192];
-                    int len;
-                    while ((len = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, len);
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException("Impossible de copier la structure: " + relativePath, e);
+        String relativePath = "structures/" + group + "/" + name.replace(".nbt", "") + ".nbt";
+        try (InputStream in = OMCPlugin.getInstance().getResource(relativePath)) {
+            if (in == null) {
+                throw new IllegalArgumentException("Structure introuvable: " + relativePath);
             }
+            try (NBTInputStream nbtIn = new NBTInputStream(in)) {
+                Tag base = nbtIn.readTag();
+                if (!(base instanceof CompoundTag compound)) {
+                    throw new IllegalStateException("Structure NBT invalide: " + relativePath);
+                }
+                STRUCTURE_CACHE.put(key, compound);
+                return compound;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Impossible de lire la structure: " + relativePath, e);
         }
-
-        FILE_CACHE.put(key, destFile);
-        return destFile;
     }
 }
