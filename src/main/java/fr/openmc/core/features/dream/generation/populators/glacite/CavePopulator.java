@@ -1,0 +1,74 @@
+package fr.openmc.core.features.dream.generation.populators.glacite;
+
+import fr.openmc.core.features.dream.generation.DreamBiome;
+import fr.openmc.core.utils.StructureUtils;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.generator.BlockPopulator;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT;
+import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT;
+
+public class CavePopulator extends BlockPopulator {
+    private final double chunkProbability;
+    private final double perSolProbability;
+    private final List<String> features;
+
+    protected CavePopulator(double chunkProbability, double perSolProbability, List<String> features) {
+        this.chunkProbability = chunkProbability;
+        this.perSolProbability = perSolProbability;
+        this.features = features;
+    }
+
+    @Override
+    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+        if (random.nextDouble() >= chunkProbability) return;
+
+        int startX = chunk.getX() << 4;
+        int startZ = chunk.getZ() << 4;
+
+        int attempts = 32;
+
+        for (int i = 0; i < attempts; i++) {
+            int x = startX + random.nextInt(16);
+            int z = startZ + random.nextInt(16);
+
+            for (int y = MAX_CAVE_HEIGHT - 1; y > MIN_CAVE_HEIGHT; y--) {
+                Block block = world.getBlockAt(x, y, z);
+
+                if (!block.getType().isAir() || !block.getRelative(BlockFace.DOWN).getType().equals(Material.ICE)) {
+                    Block above = block.getRelative(BlockFace.UP);
+
+                    if (above.isEmpty() || above.getType() == Material.SNOW) {
+                        if (world.getBiome(x, y, z).equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
+                            if (random.nextDouble() < perSolProbability) {
+                                Location loc = new Location(world, x, y + 1, z);
+                                try {
+                                    StructureUtils.placeStructure(
+                                            StructureUtils.getStructureFile("omc_dream",
+                                                    features.get(random.nextInt(features.size()))),
+                                            loc,
+                                            random.nextBoolean(),
+                                            random.nextBoolean(),
+                                            false
+                                    );
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

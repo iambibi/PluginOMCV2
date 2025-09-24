@@ -43,7 +43,8 @@ public class GlaciteGeodePopulator extends BlockPopulator {
                             GEODE_FEATURES.get(random.nextInt(GEODE_FEATURES.size()))),
                     loc,
                     random.nextBoolean(),
-                    random.nextBoolean()
+                    random.nextBoolean(),
+                    true
             );
         } catch (IOException e) {
             throw new RuntimeException(e);

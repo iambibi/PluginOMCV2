@@ -14,11 +14,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class StructureUtils {
+    private static final Map<String, File> FILE_CACHE = new HashMap<>();
+
     /**
      * Places a structure from an NBT file into the world at the given location.
      * Structure files can be exported using a Minecraft Structure Block.
@@ -34,7 +37,7 @@ public class StructureUtils {
      * @param mirrorZ Whether to mirror the structure on the Z axis (ignores block rotation).
      * @throws IOException If the NBT file is malformed or unreadable.
      */
-    public static void placeStructure(File file, Location target, boolean mirrorX, boolean mirrorZ) throws IOException {
+    public static void placeStructure(File file, Location target, boolean mirrorX, boolean mirrorZ, boolean placeAir) throws IOException {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try (NBTInputStream input = new NBTInputStream(new FileInputStream(file))) {
                 Tag baseCompound = input.readTag();
@@ -143,8 +146,7 @@ public class StructureUtils {
                                     BlockPos pos = new BlockPos(baseX + e[0], baseY + e[1], baseZ + e[2]);
                                     BlockData data = states[e[3]];
 
-                                    if (data.getMaterial().equals(Material.AIR)) continue;
-                                    if (data.getMaterial().equals(Material.STRUCTURE_VOID)) continue;
+                                    if (!placeAir && data.getMaterial().equals(Material.AIR)) continue;
 
                                     handle.setBlock(pos, ((CraftBlockData) data).getState(), 2 | 16);
                                     placed++;
@@ -170,6 +172,11 @@ public class StructureUtils {
      * @return Fichier de structure
      */
     public static File getStructureFile(String group, String name) {
+        String key = group + "/" + name;
+        if (FILE_CACHE.containsKey(key)) {
+            return FILE_CACHE.get(key);
+        }
+
         name = name.replace(".nbt", "");
         String relativePath = "structures/" + group + "/" + name + ".nbt";
 
@@ -180,7 +187,7 @@ public class StructureUtils {
 
             try (InputStream in = OMCPlugin.getInstance().getResource(relativePath)) {
                 if (in == null) {
-                    throw new IllegalArgumentException("Structure introuvable dans resources: " + relativePath);
+                    throw new IllegalArgumentException("Structure introuvable: " + relativePath);
                 }
 
                 try (OutputStream out = new FileOutputStream(destFile)) {
@@ -195,6 +202,7 @@ public class StructureUtils {
             }
         }
 
+        FILE_CACHE.put(key, destFile);
         return destFile;
     }
 }

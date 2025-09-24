@@ -39,7 +39,14 @@ public class RockPopulator extends BlockPopulator {
         if (!world.getBiome(loc).equals(DreamBiome.MUD_BEACH.getBiome())) return;
 
         try {
-            StructureUtils.placeStructure(StructureUtils.getStructureFile("omc_dream", ROCK_FEATURES.get(random.nextInt(ROCK_FEATURES.size()))), loc, random.nextBoolean(), random.nextBoolean());
+            StructureUtils.placeStructure(
+                    StructureUtils.getStructureFile("omc_dream",
+                            ROCK_FEATURES.get(random.nextInt(ROCK_FEATURES.size()))),
+                    loc,
+                    random.nextBoolean(),
+                    random.nextBoolean(),
+                    false
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

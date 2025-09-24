@@ -36,7 +36,14 @@ public class SoulTreePopulator extends BlockPopulator {
         if (!world.getBiome(loc).equals(DreamBiome.SOUL_FOREST.getBiome())) return;
 
         try {
-            StructureUtils.placeStructure(StructureUtils.getStructureFile("omc_dream", TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))), loc, false, false);
+            StructureUtils.placeStructure(
+                    StructureUtils.getStructureFile("omc_dream",
+                            TREE_FEATURES.get(random.nextInt(TREE_FEATURES.size()))),
+                    loc,
+                    false,
+                    false,
+                    false
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

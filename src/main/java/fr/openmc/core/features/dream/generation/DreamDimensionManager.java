@@ -75,8 +75,8 @@ public class DreamDimensionManager {
         dream.getPopulators().add(new RockPopulator());
         dream.getPopulators().add(new PlainsTreePopulator());
         dream.getPopulators().add(new SoulTreePopulator());
-        dream.getPopulators().add(new GroundSpikePopulator());
         dream.getPopulators().add(new VerticalSpikePopulator());
+        dream.getPopulators().add(new GroundSpikePopulator());
         dream.getPopulators().add(new GlaciteGeodePopulator());
 
         // ** STRUCTURES POPULATORS REGISTER **
