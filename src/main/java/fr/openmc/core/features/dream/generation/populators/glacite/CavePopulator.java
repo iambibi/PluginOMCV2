@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Random;
 
-import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT;
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT;
+import static fr.openmc.core.features.dream.generation.biomes.MudBeachChunkGenerator.MIN_HEIGHT_MUD;
 
 public class CavePopulator extends FeaturesPopulator {
 
@@ -38,7 +38,7 @@ public class CavePopulator extends FeaturesPopulator {
             int x = startX + random.nextInt(16);
             int z = startZ + random.nextInt(16);
 
-            for (int y = MAX_CAVE_HEIGHT - 1; y > MIN_CAVE_HEIGHT; y--) {
+            for (int y = MIN_HEIGHT_MUD - 1; y > MIN_CAVE_HEIGHT; y--) {
                 Block block = world.getBlockAt(x, y, z);
 
                 if (!block.getType().isAir() || !block.getRelative(BlockFace.DOWN).getType().equals(Material.ICE)) {
