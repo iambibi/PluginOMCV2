@@ -28,7 +28,7 @@ public abstract class DreamItem {
 
     public abstract boolean isTransferable();
 
-    public abstract DreamItem getTransferableItem();
+    public abstract ItemStack getTransferableItem();
 
     public ItemStack getItemsAdder() {
         CustomStack stack = CustomStack.getInstance(getName());
@@ -56,9 +56,16 @@ public abstract class DreamItem {
     }
 
     private List<Component> getGeneratedLore() {
-        CustomStack stack = CustomStack.getInstance(getName());
+        ItemStack baseItem;
 
-        List<Component> lore = new ArrayList<>(stack.getItemStack().lore());
+        if (!ItemsAdderHook.hasItemAdder() || getItemsAdder() == null) {
+            baseItem = getVanilla();
+        } else {
+            baseItem = getItemsAdder();
+        }
+
+        List<Component> lore = baseItem.lore();
+        if (lore == null) lore = new ArrayList<>();
 
         lore.add(Component.empty());
 

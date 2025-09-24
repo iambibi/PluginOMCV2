@@ -125,7 +125,6 @@ public class OMCPlugin extends JavaPlugin {
         new MotdUtils();
         new TranslationManager(new File(this.getDataFolder(), "translations"), "fr");
         new DynamicCooldownManager();
-        new DreamManager();
 
         new MascotsManager();
         HomeIconCacheManager.initialize();
@@ -142,6 +141,7 @@ public class OMCPlugin extends JavaPlugin {
         new QuestsManager();
         new CityManager();
         new ContestManager();
+        new DreamManager();
         if (WorldGuardHook.hasWorldGuard()) {
             ParticleUtils.spawnParticlesInRegion("spawn", Bukkit.getWorld("world"), Particle.CHERRY_LEAVES, 50, 70, 130);
             ParticleUtils.spawnContestParticlesInRegion("spawn", Bukkit.getWorld("world"), 10, 70, 135);

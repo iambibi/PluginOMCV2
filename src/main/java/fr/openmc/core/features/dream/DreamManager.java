@@ -5,10 +5,12 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
-import fr.openmc.core.features.dream.listeners.PlayerChangeWorldListener;
-import fr.openmc.core.features.dream.listeners.PlayerQuitListener;
-import fr.openmc.core.features.dream.listeners.PlayerSleepListener;
+import fr.openmc.core.features.dream.items.DreamItemRegister;
+import fr.openmc.core.features.dream.listeners.dream.PlayerChangeWorldListener;
+import fr.openmc.core.features.dream.listeners.dream.PlayerQuitListener;
+import fr.openmc.core.features.dream.listeners.dream.PlayerSleepListener;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.DreamPlayer;
 import fr.openmc.core.features.dream.models.OldInventory;
@@ -42,12 +44,15 @@ public class DreamManager {
         OMCPlugin.registerEvents(
                 new PlayerChangeWorldListener(),
                 new PlayerQuitListener(),
+                //new PlayerDreamTimeEndListener(),
                 new PlayerSleepListener()
         );
 
         // ** MANAGERS **
         new DreamDimensionManager();
+        new DreamItemRegister();
         new DreamSpawningManager();
+        new DreamDropsManager();
 
         // ** LOAD DATAS **
         loadAllDreamPlayerData();

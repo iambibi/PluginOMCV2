@@ -1,23 +1,19 @@
-package fr.openmc.core.features.dream.items.orb;
+package fr.openmc.core.features.dream.items.blocks;
 
 import fr.openmc.core.features.dream.items.DreamItem;
 import fr.openmc.core.features.dream.items.DreamRarity;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class GlaciteOrb extends DreamItem {
-    /**
-     * Creates a new DreamItem with the specified name.
-     *
-     * @param name The namespaced ID of the item, e.g., "omc_dream:orb".
-     */
-    public GlaciteOrb(String name) {
+public class CorruptedSculk extends DreamItem {
+    public CorruptedSculk(String name) {
         super(name);
     }
 
     @Override
     public DreamRarity getRarity() {
-        return DreamRarity.ONIRISIME;
+        return DreamRarity.COMMON;
     }
 
     @Override
@@ -27,11 +23,14 @@ public class GlaciteOrb extends DreamItem {
 
     @Override
     public ItemStack getTransferableItem() {
-        return this.getBest();
+        return new ItemStack(Material.SCULK);
     }
 
     @Override
     public ItemStack getVanilla() {
-        return ItemStack.of(Material.HEART_OF_THE_SEA);
+        ItemStack item = new ItemStack(Material.SCULK);
+
+        item.getItemMeta().displayName(Component.text("Sculk Corrompu"));
+        return item;
     }
 }

@@ -1,5 +1,6 @@
 package fr.openmc.core.features.dream.items;
 
+import fr.openmc.core.features.dream.items.blocks.CorruptedSculk;
 import fr.openmc.core.features.dream.items.orb.*;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.NamespacedKey;
@@ -14,11 +15,16 @@ public class DreamItemRegister {
     static final NamespacedKey customNameKey = new NamespacedKey("aywen", "dream_item");
 
     public DreamItemRegister() {
+        // # ORBES
         registerDreamItem(new DominationOrb("omc_dream:domination_orb"));
         registerDreamItem(new SoulOrb("omc_dream:ame_orb"));
         registerDreamItem(new MudOrb("omc_dream:mud_orb"));
         registerDreamItem(new CloudOrb("omc_dream:cloud_orb"));
         registerDreamItem(new GlaciteOrb("omc_dream:glacite_orb"));
+
+        // # BLOCS
+        System.out.println("register " + new CorruptedSculk("corrupted_sculk").getBest());
+        registerDreamItem(new CorruptedSculk("corrupted_sculk"));
     }
 
     public static void register(String name, DreamItem item) {

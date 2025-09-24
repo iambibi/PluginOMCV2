@@ -26,8 +26,8 @@ public class DominationOrb extends DreamItem {
     }
 
     @Override
-    public DreamItem getTransferableItem() {
-        return this;
+    public ItemStack getTransferableItem() {
+        return this.getBest();
     }
 
     @Override
