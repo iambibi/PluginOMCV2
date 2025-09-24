@@ -12,6 +12,7 @@ import fr.openmc.core.features.dream.generation.populators.soulforest.SoulTreePo
 import fr.openmc.core.features.dream.generation.structures.cloud.CloudCastleStructure;
 import fr.openmc.core.features.dream.generation.structures.glacite.BaseCampStructure;
 import fr.openmc.core.utils.SchematicsUtils;
+import fr.openmc.core.utils.StructureUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -20,6 +21,9 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class DreamDimensionManager {
@@ -94,6 +98,18 @@ public class DreamDimensionManager {
         dream.setTime(18000);
 
         plugin.getLogger().info("Dream Dimension ready!");
+    }
+
+    private void preloadAllStructures() {
+        Map<String, List<String>> structuresByGroup = new HashMap<>();
+
+        structuresByGroup.put("omc_dream", List.of(
+                "cave1.nbt",
+                "cave2.nbt",
+                "cave3.nbt"
+        ));
+
+        StructureUtils.preloadStructures(structuresByGroup);
     }
 
     private long createSeed() {

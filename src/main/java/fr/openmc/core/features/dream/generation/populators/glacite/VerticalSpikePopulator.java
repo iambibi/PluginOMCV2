@@ -4,7 +4,7 @@ import java.util.List;
 
 public class VerticalSpikePopulator extends CavePopulator {
     public VerticalSpikePopulator() {
-        super(0.5, 0.01, List.of(
+        super(0.4, 0.007, List.of(
                 "glacite/spike_vertical_1",
                 "glacite/spike_vertical_2",
                 "glacite/spike_vertical_3",
