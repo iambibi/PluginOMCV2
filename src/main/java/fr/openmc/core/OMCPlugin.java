@@ -129,8 +129,6 @@ public class OMCPlugin extends JavaPlugin {
         new MascotsManager();
         HomeIconCacheManager.initialize();
 
-        new MultiBlockManager();
-
         PlayerSettingsManager.loadAllPlayerSettings();
     }
 
@@ -142,6 +140,7 @@ public class OMCPlugin extends JavaPlugin {
         new CityManager();
         new ContestManager();
         new DreamManager();
+        new MultiBlockManager();
         if (WorldGuardHook.hasWorldGuard()) {
             ParticleUtils.spawnParticlesInRegion("spawn", Bukkit.getWorld("world"), Particle.CHERRY_LEAVES, 50, 70, 130);
             ParticleUtils.spawnContestParticlesInRegion("spawn", Bukkit.getWorld("world"), 10, 70, 135);
