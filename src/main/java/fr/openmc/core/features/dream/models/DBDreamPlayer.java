@@ -28,6 +28,9 @@ public class DBDreamPlayer {
     @DatabaseField(columnName = "dream_z")
     private Double dreamZ;
 
+    @DatabaseField(columnName = "progression_orb")
+    private int progressionOrb;
+
     DBDreamPlayer() {
         // Default constructor for ORMLite
     }
@@ -37,6 +40,8 @@ public class DBDreamPlayer {
         this.maxDreamTime = maxDreamTime;
 
         this.dreamInventory = serializedDreamInv;
+
+        this.progressionOrb = 0;
     }
 
     public DBDreamPlayer(UUID playerUUID, Long maxDreamTime, String serializedDreamInv, double dreamX, double dreamY, double dreamZ) {

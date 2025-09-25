@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class PlainsTreePopulator extends FeaturesPopulator {
-    private static final double TREE_PROBABILITY = 0.15;
+    private static final double TREE_PROBABILITY = 0.2;
 
     public PlainsTreePopulator() {
         super("omc_dream", List.of(

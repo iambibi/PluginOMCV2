@@ -8,6 +8,7 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
+import fr.openmc.core.features.dream.listeners.biomes.PlayerEnteredBiome;
 import fr.openmc.core.features.dream.listeners.dream.PlayerChangeWorldListener;
 import fr.openmc.core.features.dream.listeners.dream.PlayerQuitListener;
 import fr.openmc.core.features.dream.listeners.dream.PlayerSleepListener;
@@ -45,7 +46,8 @@ public class DreamManager {
                 new PlayerChangeWorldListener(),
                 new PlayerQuitListener(),
                 //new PlayerDreamTimeEndListener(),
-                new PlayerSleepListener()
+                new PlayerSleepListener(),
+                new PlayerEnteredBiome()
         );
 
         // ** MANAGERS **
