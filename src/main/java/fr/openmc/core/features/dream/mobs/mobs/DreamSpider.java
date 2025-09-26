@@ -1,8 +1,10 @@
-package fr.openmc.core.features.dream.spawning.mobs;
+package fr.openmc.core.features.dream.mobs.mobs;
 
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.features.dream.spawning.DreamMob;
-import fr.openmc.core.features.dream.spawning.DreamSpawningManager;
+import fr.openmc.core.features.dream.items.DreamItemRegister;
+import fr.openmc.core.features.dream.mobs.DreamLoot;
+import fr.openmc.core.features.dream.mobs.DreamMob;
+import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.utils.RandomUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -13,15 +15,24 @@ import org.bukkit.entity.Spider;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.List;
+
 public class DreamSpider extends DreamMob {
 
     public DreamSpider() {
-        super("Arraignée Infestée",
+        super("dream_spider",
+                "Arraignée Infestée",
                 EntityType.SPIDER,
-                40.0,
-                6.0,
+                8.0,
+                3.0,
                 RandomUtils.randomBetween(0.6, 0.8),
                 RandomUtils.randomBetween(1.5, 2.0),
+                List.of(new DreamLoot(
+                        DreamItemRegister.getByName("omc_dream:corrupted_string"),
+                        0.80,
+                        1,
+                        3
+                )),
                 DreamBiome.SCULK_PLAINS.getBiome()
         );
     }
@@ -42,9 +53,9 @@ public class DreamSpider extends DreamMob {
         spider.setPersistent(true);
 
         spider.getPersistentDataContainer().set(
-                DreamSpawningManager.mobKey,
-                PersistentDataType.BYTE,
-                (byte) 1
+                DreamMobManager.mobKey,
+                PersistentDataType.STRING,
+                this.getId()
         );
 
         return spider;

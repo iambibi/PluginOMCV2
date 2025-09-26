@@ -1,10 +1,10 @@
-package fr.openmc.core.features.dream.spawning.listeners;
+package fr.openmc.core.features.dream.mobs.listeners;
 
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
-import fr.openmc.core.features.dream.spawning.DreamSpawningManager;
-import fr.openmc.core.features.dream.spawning.mobs.DreamCreaking;
-import fr.openmc.core.features.dream.spawning.mobs.DreamSpider;
+import fr.openmc.core.features.dream.mobs.DreamMobManager;
+import fr.openmc.core.features.dream.mobs.mobs.DreamCreaking;
+import fr.openmc.core.features.dream.mobs.mobs.DreamSpider;
 import org.bukkit.Location;
 import org.bukkit.entity.Creaking;
 import org.bukkit.entity.EntityType;
@@ -24,14 +24,14 @@ public class PlainsMobSpawningListener implements Listener {
      * Gère l'événement de spawn de créature.
      * <p>
      * L'événement est annulé si la créature se trouve dans le biome SCULK_PLAINS
-     * de la dimension Dream et qu'un mob est généré selon une probabilité définie dans le {@link DreamSpawningManager}.
+     * de la dimension Dream et qu'un mob est généré selon une probabilité définie dans le {@link DreamMobManager}.
      * </p>
      *
      * @param e l'événement de spawn de créature
      */
     @EventHandler
     void onCreatureSpawn(CreatureSpawnEvent e) {
-        if (e.getEntity().getPersistentDataContainer().has(DreamSpawningManager.mobKey)) {
+        if (DreamMobManager.isDreamMob(e.getEntity())) {
             return;
         }
 

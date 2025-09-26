@@ -1,6 +1,9 @@
 package fr.openmc.core.features.dream.items;
 
 import fr.openmc.core.features.dream.items.blocks.CorruptedSculk;
+import fr.openmc.core.features.dream.items.blocks.OldPaleOakWood;
+import fr.openmc.core.features.dream.items.loots.CorruptedString;
+import fr.openmc.core.features.dream.items.loots.CreakingHeart;
 import fr.openmc.core.features.dream.items.orb.*;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.NamespacedKey;
@@ -23,8 +26,10 @@ public class DreamItemRegister {
         registerDreamItem(new GlaciteOrb("omc_dream:glacite_orb"));
 
         // # BLOCS
-        System.out.println("register " + new CorruptedSculk("corrupted_sculk").getBest());
-        registerDreamItem(new CorruptedSculk("corrupted_sculk"));
+        registerDreamItem(new CorruptedSculk("omc_dream:corrupted_sculk"));
+        registerDreamItem(new OldPaleOakWood("omc_dream:old_pale_oak"));
+        registerDreamItem(new CorruptedString("omc_dream:corrupted_string"));
+        registerDreamItem(new CreakingHeart("omc_dream:creaking_heart"));
     }
 
     public static void register(String name, DreamItem item) {

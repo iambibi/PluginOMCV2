@@ -12,10 +12,10 @@ import fr.openmc.core.features.dream.listeners.biomes.PlayerEnteredBiome;
 import fr.openmc.core.features.dream.listeners.dream.PlayerChangeWorldListener;
 import fr.openmc.core.features.dream.listeners.dream.PlayerQuitListener;
 import fr.openmc.core.features.dream.listeners.dream.PlayerSleepListener;
+import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.DreamPlayer;
 import fr.openmc.core.features.dream.models.OldInventory;
-import fr.openmc.core.features.dream.spawning.DreamSpawningManager;
 import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
 import org.bukkit.Bukkit;
@@ -53,7 +53,7 @@ public class DreamManager {
         // ** MANAGERS **
         new DreamDimensionManager();
         new DreamItemRegister();
-        new DreamSpawningManager();
+        new DreamMobManager();
         new DreamDropsManager();
 
         // ** LOAD DATAS **

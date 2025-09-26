@@ -16,7 +16,10 @@ public class DreamDropsManager {
                 new DreamDropsListener()
         );
 
-        registerCustomDrop(Material.SCULK, DreamItemRegister.getByName("corrupted_sculk").getBest());
+        registerCustomDrop(Material.SCULK, DreamItemRegister.getByName("omc_dream:corrupted_sculk").getBest());
+        registerCustomDrop(Material.PALE_OAK_WOOD, DreamItemRegister.getByName("omc_dream:old_pale_oak").getBest());
+        registerCustomDrop(Material.ACACIA_WOOD, DreamItemRegister.getByName("omc_dream:old_pale_oak").getBest());
+        registerCustomDrop(Material.CREAKING_HEART, DreamItemRegister.getByName("omc_dream:creaking_heart").getBest());
     }
 
     public void registerCustomDrop(Material mat, ItemStack item) {

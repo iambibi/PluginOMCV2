@@ -1,8 +1,8 @@
-package fr.openmc.core.features.dream.spawning.mobs;
+package fr.openmc.core.features.dream.mobs.mobs;
 
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.features.dream.spawning.DreamMob;
-import fr.openmc.core.features.dream.spawning.DreamSpawningManager;
+import fr.openmc.core.features.dream.mobs.DreamMob;
+import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.utils.RandomUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -15,12 +15,14 @@ import org.bukkit.persistence.PersistentDataType;
 public class DreamCreaking extends DreamMob {
 
     public DreamCreaking() {
-        super("Creaking Insomiaque",
+        super("dream_creaking",
+                "Creaking Insomiaque",
                 EntityType.CREAKING,
                 0,
-                6.0,
+                4.0,
                 RandomUtils.randomBetween(0.4, 0.6),
                 RandomUtils.randomBetween(1.2, 1.7),
+                null,
                 DreamBiome.SCULK_PLAINS.getBiome()
         );
     }
@@ -39,9 +41,9 @@ public class DreamCreaking extends DreamMob {
         this.setAttributeIfPresent(creaking, Attribute.SCALE, this.getScale());
 
         creaking.getPersistentDataContainer().set(
-                DreamSpawningManager.mobKey,
-                PersistentDataType.BYTE,
-                (byte) 1
+                DreamMobManager.mobKey,
+                PersistentDataType.STRING,
+                this.getId()
         );
     }
 }
