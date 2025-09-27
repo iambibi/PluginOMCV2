@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
@@ -55,6 +56,7 @@ public class DreamManager {
         new DreamItemRegister();
         new DreamMobManager();
         new DreamDropsManager();
+        new DreamCraftingRegister();
 
         // ** LOAD DATAS **
         loadAllDreamPlayerData();
