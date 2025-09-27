@@ -45,8 +45,8 @@ import static fr.openmc.core.features.mailboxes.utils.MailboxUtils.getRunCommand
 
 public class ContestManager {
 
-    private static final DayOfWeek START_CONTEST_DAY = DayOfWeek.SATURDAY;
-    private static final DayOfWeek START_TRADE_CONTEST_DAY = DayOfWeek.MONDAY;
+    private static final DayOfWeek START_CONTEST_DAY = DayOfWeek.FRIDAY;
+    private static final DayOfWeek START_TRADE_CONTEST_DAY = DayOfWeek.SATURDAY;
     private static final DayOfWeek END_CONTEST_DAY = DayOfWeek.MONDAY;
 
     public static Contest data;
