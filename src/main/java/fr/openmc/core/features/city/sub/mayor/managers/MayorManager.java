@@ -42,7 +42,7 @@ public class MayorManager {
     @Getter
     private static ConnectionSource connectionSource;
 
-    public static final int MEMBER_REQUEST_ELECTION = 3;
+    public static final int MEMBER_REQUEST_ELECTION = 2;
 
     private static final List<NamedTextColor> LIST_MAYOR_COLOR = List.of(
             NamedTextColor.RED,
@@ -558,7 +558,7 @@ public class MayorManager {
 
         return playerVote.get(playerCity.getUniqueId())
                 .stream()
-                .anyMatch(mayorVote -> mayorVote.getVoter().equals(player.getUniqueId()));
+                .anyMatch(mayorVote -> mayorVote.getVoter().equals(player.getUniqueId()) && mayorVote.getCandidate() != null);
     }
 
     /**
