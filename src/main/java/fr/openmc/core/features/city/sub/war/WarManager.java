@@ -156,6 +156,9 @@ public class WarManager {
         War warRemoved = warsByAttacker.remove(war.getCityAttacker().getUniqueId());
         warsByDefender.remove(war.getCityDefender().getUniqueId());
 
+        pendingDefenses.remove(war.getCityAttacker().getUniqueId());
+        pendingDefenses.remove(war.getCityDefender().getUniqueId());
+
         if (warRemoved == null) return;
 
         war.setPhase(War.WarPhase.ENDED);
