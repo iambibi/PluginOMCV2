@@ -216,7 +216,7 @@ public class HomesManager {
                 if (homeLimit.getLimit() == 0) homeLimit.setLimit(HomeLimits.LIMIT_0.getLimit());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erreur de chargement des HomesLimit ", e);
         }
     }
 
@@ -225,7 +225,7 @@ public class HomesManager {
             TableUtils.clearTable(DatabaseManager.getConnectionSource(), HomeLimit.class);
             limitsDao.create(homeLimits);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erreur de sauvegarde des HomesLimit ", e);
         }
     }
 
@@ -233,7 +233,7 @@ public class HomesManager {
         try {
             homes.addAll(homesDao.queryForAll());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erreur de chargement des Homes ", e);
         }
     }
 
@@ -244,7 +244,7 @@ public class HomesManager {
                 homesDao.createOrUpdate(home);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erreur de sauvegarde des Homes ", e);
         }
     }
 }

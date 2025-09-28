@@ -151,8 +151,8 @@ public class MailboxManager {
                 sendSuccessMessage(player, message);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             sendFailureMessage(player, "Une erreur est survenue.");
+            throw new RuntimeException(e);
         }
     }
 

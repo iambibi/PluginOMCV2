@@ -78,7 +78,7 @@ public class WarManager {
                 warHistory.computeIfAbsent(cityUUID, k -> war);
             });
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -87,7 +87,7 @@ public class WarManager {
                     try {
                         warHistoryDeo.createOrUpdate(warHistory);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 }
         );
@@ -223,7 +223,7 @@ public class WarManager {
                 warHistoryDeo.update(loserHistory);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         int claimsWon = -1;

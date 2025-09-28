@@ -105,7 +105,7 @@ public class AnimationsManager {
 
                 Files.copy(in, targetFile.toPath());
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }

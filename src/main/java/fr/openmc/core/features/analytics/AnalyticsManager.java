@@ -78,7 +78,7 @@ public class AnalyticsManager {
                 Statistic statistic = new Statistic(player, scope, stats.getFirst().getValue() + value);
                 statsDao.create(statistic);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }
