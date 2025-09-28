@@ -71,7 +71,8 @@ public class MascotsManager {
                 new MascotsDeathListener(),
                 new MascotImmuneListener(),
                 new MascotsTargetListener(),
-                new MascotsRenameListener()
+                new MascotsRenameListener(),
+                new MascotsPotionListener()
         );
         if (!OMCPlugin.isUnitTestVersion()) {
             new MascotsSoundListener();

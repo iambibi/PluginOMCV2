@@ -161,8 +161,6 @@ public class WarManager {
 
         if (warRemoved == null) return;
 
-        war.setPhase(War.WarPhase.ENDED);
-
         Mascot attackerMascot = war.getCityAttacker().getMascot();
         Mascot defenderMascot = war.getCityDefender().getMascot();
 
@@ -207,6 +205,8 @@ public class WarManager {
                     loser = war.getCityAttacker();
                     winReason = WinReason.KILLS;
                 } else {
+                    winner = war.getCityDefender();
+                    loser = war.getCityAttacker();
                     winReason = WinReason.DRAW;
                 }
             }

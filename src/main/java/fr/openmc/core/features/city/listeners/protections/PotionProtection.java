@@ -3,7 +3,6 @@ package fr.openmc.core.features.city.listeners.protections;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityType;
-import fr.openmc.core.features.city.sub.mascots.utils.MascotUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -34,12 +33,6 @@ public class PotionProtection implements Listener {
         for (LivingEntity affectedEntity : event.getAffectedEntities()) {
             if (!(affectedEntity instanceof Player player))
                 continue;
-
-            if (MascotUtils.canBeAMascot(affectedEntity)) {
-                if (isCityInWar) {
-                    event.setCancelled(true);
-                }
-            }
 
             boolean isNotMember = !city.isMember(player);
             if (!isNotMember || isCityInWar)
