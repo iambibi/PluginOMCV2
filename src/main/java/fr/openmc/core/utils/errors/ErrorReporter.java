@@ -116,7 +116,7 @@ public class ErrorReporter {
                 try {
                     DiscordWebhook.sendMessage(webhookUrl, discordMsg);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("");
                 }
                 currentError.clear();
             }
