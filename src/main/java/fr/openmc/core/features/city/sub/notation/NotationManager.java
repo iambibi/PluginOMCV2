@@ -203,7 +203,7 @@ public class NotationManager {
         List<CityNotation> notations = notationPerWeek.getOrDefault(weekStr, Collections.emptyList());
         return notations.stream()
                 .sorted(Comparator.comparingDouble(
-                        (CityNotation n) -> n.getNoteArchitectural() + n.getNoteCoherence()
+                        CityNotation::getTotalNote
                 ).reversed())
                 .toList();
     }
