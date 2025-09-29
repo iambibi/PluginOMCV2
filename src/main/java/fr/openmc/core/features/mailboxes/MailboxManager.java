@@ -31,6 +31,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.logging.Level;
 
 import static fr.openmc.core.features.mailboxes.utils.MailboxUtils.*;
 
@@ -83,7 +84,7 @@ public class MailboxManager {
             sendSuccessSendingMessage(sender, receiverName, numItems);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to send lettre", ex);
             sendFailureSendingMessage(sender, receiverName);
             return false;
         }
@@ -160,7 +161,7 @@ public class MailboxManager {
         try {
             return letterDao.createOrUpdate(letter) != null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to save letter in database", e);
             return false;
         }
     }
@@ -169,7 +170,7 @@ public class MailboxManager {
         try {
             return letterDao.deleteById(id) != 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to delete lettre in database", e);
             return false;
         }
     }
@@ -182,7 +183,7 @@ public class MailboxManager {
 
             return letter;
         } catch (Exception e) {
-            e.printStackTrace();
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to get lettre by id", e);
             sendFailureMessage(player, "Une erreur est survenue.");
             return null;
         }
@@ -195,7 +196,7 @@ public class MailboxManager {
             query.orderBy("sent", false);
             return letterDao.query(query.prepare());
         } catch (SQLException e) {
-            e.printStackTrace();
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to get sent letters", e);
             return null;
         }
     }
@@ -207,7 +208,7 @@ public class MailboxManager {
             query.orderBy("sent", false);
             return letterDao.query(query.prepare());
         } catch (SQLException e) {
-            e.printStackTrace();
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to get received letters", e);
             return null;
         }
     }
