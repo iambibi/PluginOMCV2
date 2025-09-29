@@ -15,5 +15,4 @@ public class ItemsAdderHook {
     public static boolean hasItemAdder() {
         return hasItemAdder;
     }
-
 }

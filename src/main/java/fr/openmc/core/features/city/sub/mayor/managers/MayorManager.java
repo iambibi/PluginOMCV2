@@ -492,12 +492,12 @@ public class MayorManager {
     /**
      * Get the candidate for the player in the city.
      *
-     * @param player The player to get a candidate
+     * @param playerUUID The playerUUID to get a candidate
      */
-    public static MayorCandidate getCandidate(UUID player) {
+    public static MayorCandidate getCandidate(UUID playerUUID) {
         for (List<MayorCandidate> candidates : cityElections.values()) {
             for (MayorCandidate candidate : candidates) {
-                if (candidate.getCandidateUUID().equals(player)) {
+                if (candidate.getCandidateUUID().equals(playerUUID)) {
                     return candidate;
                 }
             }

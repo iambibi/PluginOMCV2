@@ -21,14 +21,14 @@ public class TransactionsManager {
         transactionsDao = DaoManager.createDao(connectionSource, Transaction.class);
     }
 
-    public static List<Transaction> getTransactionsByPlayers(UUID player, int limit) {
+    public static List<Transaction> getTransactionsByPlayers(UUID playerUUID, int limit) {
         if (!OMCPlugin.getConfigs().getBoolean("features.transactions", false)) {
             return List.of(new Transaction("CONSOLE", "CONSOLE", 0, "Désactivé"));
         }
 
         try {
             QueryBuilder<Transaction, String> query = transactionsDao.queryBuilder();
-            query.where().eq("recipient", player.toString()).or().eq("sender", player.toString());
+            query.where().eq("recipient", playerUUID.toString()).or().eq("sender", playerUUID.toString());
             return transactionsDao.query(query.prepare());
         } catch (SQLException err) {
             err.printStackTrace();

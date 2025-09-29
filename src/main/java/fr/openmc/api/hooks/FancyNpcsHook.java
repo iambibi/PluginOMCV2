@@ -15,13 +15,4 @@ public class FancyNpcsHook {
     public static boolean hasFancyNpc() {
         return hasFancyNpc;
     }
-
-    /**
-     * Set if the instance has FancyNpc
-     *
-     * @param hasFancyNpc true if the instance has FancyNpc, false otherwise
-     */
-    public static void setHasFancyNpc(boolean hasFancyNpc) {
-        FancyNpcsHook.hasFancyNpc = hasFancyNpc;
-    }
 }

@@ -15,6 +15,4 @@ public class PapiHook {
     public static boolean hasPAPI() {
         return hasPAPI;
     }
-
-
 }
