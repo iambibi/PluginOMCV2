@@ -89,11 +89,11 @@ public class MayorManager {
                 new MilitaryDissuasion(),
                 new IdyllicRain());
 
-        if (ItemsAdderHook.hasItemAdder()) {
+        if (ItemsAdderHook.isHasItemAdder()) {
             OMCPlugin.registerEvents(
                     new UrneListener());
         }
-        if (FancyNpcsHook.hasFancyNpc()) {
+        if (FancyNpcsHook.isHasFancyNpc()) {
             OMCPlugin.registerEvents(
                     new NPCManager());
         }

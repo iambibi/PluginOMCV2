@@ -1,6 +1,9 @@
 package fr.openmc.api.chronometer;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -202,7 +205,7 @@ public class Chronometer{
 
     private static void sendMessage(Player player, ChronometerType type, Component content) {
         if (Objects.requireNonNull(type) == ChronometerType.CHAT) {
-            player.sendMessage(content);
+            MessagesManager.sendMessage(player, content, Prefix.OPENMC, MessageType.INFO, false);
         } else {
             player.sendActionBar(content);
         }

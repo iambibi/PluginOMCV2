@@ -68,7 +68,7 @@ public class ContestManager {
      */
     public ContestManager() {
         // ** LISTENERS **
-        if (ItemsAdderHook.hasItemAdder()) {
+        if (ItemsAdderHook.isHasItemAdder()) {
             OMCPlugin.registerEvents(
                     new ContestIntractEvents()
             );
