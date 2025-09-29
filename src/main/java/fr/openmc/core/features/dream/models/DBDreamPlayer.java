@@ -28,6 +28,7 @@ public class DBDreamPlayer {
     @DatabaseField(columnName = "dream_z")
     private Double dreamZ;
 
+    @Setter
     @DatabaseField(columnName = "progression_orb")
     private int progressionOrb;
 
