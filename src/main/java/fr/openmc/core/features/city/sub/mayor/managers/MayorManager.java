@@ -42,7 +42,7 @@ public class MayorManager {
     @Getter
     private static ConnectionSource connectionSource;
 
-    public static final int MEMBER_REQUEST_ELECTION = 3;
+    public static final int MEMBER_REQUEST_ELECTION = 2;
 
     private static final List<NamedTextColor> LIST_MAYOR_COLOR = List.of(
             NamedTextColor.RED,
@@ -432,7 +432,12 @@ public class MayorManager {
 
                 MayorCandidate electedMayor = candidateQueue.peek();
 
-                Perks perk1 = PerkManager.getPerkById(mayor.getIdPerk1());
+                Perks perk1;
+                if (mayor == null || (mayor.getIdPerk1() == 0)) {
+                    perk1 = PerkManager.getRandomPerkEvent();
+                } else {
+                    perk1 = PerkManager.getPerkById(mayor.getIdPerk1());
+                }
                 Perks perk2 = PerkManager.getPerkById(electedMayor.getIdChoicePerk2());
                 Perks perk3 = PerkManager.getPerkById(electedMayor.getIdChoicePerk3());
 
@@ -558,7 +563,7 @@ public class MayorManager {
 
         return playerVote.get(playerCity.getUniqueId())
                 .stream()
-                .anyMatch(mayorVote -> mayorVote.getVoter().equals(player.getUniqueId()));
+                .anyMatch(mayorVote -> mayorVote.getVoter().equals(player.getUniqueId()) && mayorVote.getCandidate() != null);
     }
 
     /**
