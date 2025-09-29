@@ -169,7 +169,7 @@ public class HomesManager {
 
     public static int getHomeLimit(UUID playerUUID) {
         HomeLimit homeLimit = homeLimits.stream()
-                .filter(hl -> hl.getPlayer().equals(playerUUID))
+                .filter(hl -> hl.getPlayerUUID().equals(playerUUID))
                 .findFirst()
                 .orElse(null);
 
@@ -183,7 +183,7 @@ public class HomesManager {
 
     public static void updateHomeLimit(UUID playerUUID) {
         HomeLimit homeLimit = homeLimits.stream()
-                .filter(hl -> hl.getPlayer().equals(playerUUID))
+                .filter(hl -> hl.getPlayerUUID().equals(playerUUID))
                 .findFirst()
                 .orElse(null);
         if (homeLimit == null) {
