@@ -11,6 +11,7 @@ import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopu
 import fr.openmc.core.features.dream.generation.populators.soulforest.SoulTreePopulator;
 import fr.openmc.core.features.dream.generation.structures.cloud.CloudCastleStructure;
 import fr.openmc.core.features.dream.generation.structures.glacite.BaseCampStructure;
+import fr.openmc.core.features.dream.generation.structures.soulforest.SoulAltarStructure;
 import fr.openmc.core.utils.SchematicsUtils;
 import fr.openmc.core.utils.StructureUtils;
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ public class DreamDimensionManager {
         // ** STRUCTURES SCHEMATICS REGISTER **
         SchematicsUtils.extractSchematic(CloudCastleStructure.schemCloudCastleName);
         SchematicsUtils.extractSchematic(BaseCampStructure.schemBaseCampName);
+        SchematicsUtils.extractSchematic(SoulAltarStructure.schemSoulAltarName);
 
         // ** DIMENSION INIT **
         OMCPlugin.registerEvents(
@@ -75,6 +77,11 @@ public class DreamDimensionManager {
 
         World dream = creator.createWorld();
 
+        // ** STRUCTURES POPULATORS REGISTER **
+        dream.getPopulators().add(new CloudCastleStructure());
+        dream.getPopulators().add(new BaseCampStructure());
+        dream.getPopulators().add(new SoulAltarStructure());
+
         // ** POPULATORS REGISTER **
         dream.getPopulators().add(new RockPopulator());
         dream.getPopulators().add(new PlainsTreePopulator());
@@ -82,10 +89,6 @@ public class DreamDimensionManager {
         dream.getPopulators().add(new VerticalSpikePopulator());
         dream.getPopulators().add(new GroundSpikePopulator());
         dream.getPopulators().add(new GlaciteGeodePopulator());
-
-        // ** STRUCTURES POPULATORS REGISTER **
-        dream.getPopulators().add(new CloudCastleStructure());
-        dream.getPopulators().add(new BaseCampStructure());
 
         // ** SET GAMERULE FOR THE WORLD **
         dream.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);

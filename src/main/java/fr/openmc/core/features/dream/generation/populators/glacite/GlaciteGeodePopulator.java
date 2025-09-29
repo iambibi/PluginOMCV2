@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Random;
 
-import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT;
 import static fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT;
+import static fr.openmc.core.features.dream.generation.biomes.MudBeachChunkGenerator.MIN_HEIGHT_MUD;
 
 
 public class GlaciteGeodePopulator extends FeaturesPopulator {
@@ -27,7 +27,7 @@ public class GlaciteGeodePopulator extends FeaturesPopulator {
 
         int x = (chunk.getX() << 4) + random.nextInt(16);
         int z = (chunk.getZ() << 4) + random.nextInt(16);
-        int y = MIN_CAVE_HEIGHT + random.nextInt(MAX_CAVE_HEIGHT - MIN_CAVE_HEIGHT);
+        int y = MIN_CAVE_HEIGHT + random.nextInt(MIN_HEIGHT_MUD - MIN_CAVE_HEIGHT);
 
         Location loc = new Location(world, x, y, z);
 

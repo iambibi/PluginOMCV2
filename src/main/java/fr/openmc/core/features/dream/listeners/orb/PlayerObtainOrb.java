@@ -24,9 +24,11 @@ public class PlayerObtainOrb implements Listener {
 
         if (recipe instanceof Keyed keyed) {
             NamespacedKey key = keyed.getKey();
-            if (key.getNamespace().contains("omc_dream") && key.getNamespace().contains("domination_orb")) { // contains beacuse key is ex zzzfake_omc_items:aywenite
+            if (key.toString().contains("omc_dream") && key.toString().contains("domination_orb")) { // contains beacuse key is ex zzzfake_omc_items:aywenite
                 DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
-                if (cache != null && cache.getProgressionOrb() < 1) cache.setProgressionOrb(1);
+                if (cache != null && cache.getProgressionOrb() < 1) {
+                    cache.setProgressionOrb(1);
+                }
             }
         }
     }
