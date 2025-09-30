@@ -147,7 +147,7 @@ public class CityManager implements Listener {
 
             cities.values().forEach(City::initializeRanks);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erreur du chargements des Villes ", e);
         }
     }
 
@@ -155,7 +155,7 @@ public class CityManager implements Listener {
         try {
             citiesDao.createOrUpdate(city.serialize());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erreur des sauvegardes des villes ", e);
         }
     }
 
@@ -175,7 +175,7 @@ public class CityManager implements Listener {
             try {
                 membersDao.create(new DBCityMember(playerUUID, city.getUniqueId()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Erreur d'ajout de membre dans une ville '", e);
             }
         });
     }
@@ -196,7 +196,7 @@ public class CityManager implements Listener {
             try {
                 membersDao.delete(new DBCityMember(playerUUID, city.getUniqueId()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }
@@ -216,7 +216,7 @@ public class CityManager implements Listener {
                 permissions.put(dbPermission.getPlayer(), playerPermissions);
             });
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return permissions;
@@ -226,7 +226,7 @@ public class CityManager implements Listener {
         try {
             permissionsDao.create(new DBCityPermission(city.getUniqueId(), playerUUID, permission.name()));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -241,7 +241,7 @@ public class CityManager implements Listener {
                     .eq("permission", permission.name());
             permissionsDao.delete(delete.prepare());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -255,7 +255,7 @@ public class CityManager implements Listener {
 
             dbChestPages.forEach(page -> pages.put(page.getPage(), page.getContent()));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return pages;
@@ -269,7 +269,7 @@ public class CityManager implements Listener {
 
             chestsDao.create(new DBCityChest(city.getUniqueId(), page, content));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -281,7 +281,7 @@ public class CityManager implements Listener {
             try {
                 claimsDao.create(new DBCityClaim(chunkPos, city.getUniqueId()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }
@@ -299,7 +299,7 @@ public class CityManager implements Listener {
 
                 claimsDao.delete(delete.prepare());
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }
@@ -539,7 +539,7 @@ public class CityManager implements Listener {
 
                 MayorManager.removeCity(city);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
 
