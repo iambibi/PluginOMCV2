@@ -32,7 +32,7 @@ public class TransactionsManager {
             query.where().eq("recipient", playerUUID.toString()).or().eq("sender", playerUUID.toString());
             return transactionsDao.query(query.prepare());
         } catch (SQLException err) {
-            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to get transactions " + player, err);
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to get transactions " + playerUUID, err);
             return List.of(new Transaction("CONSOLE", "CONSOLE", 0, "ERREUR"));
         }
     }

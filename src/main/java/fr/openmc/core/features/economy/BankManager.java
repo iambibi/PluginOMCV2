@@ -95,7 +95,7 @@ public class BankManager {
             banksDao.createOrUpdate(bank);
             return true;
         } catch (SQLException e) {
-            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to save bank " + bank.getPlayer(), e);
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to save bank " + bank.getPlayerUUID(), e);
             return false;
         }
     }
