@@ -20,7 +20,6 @@ public class DreamMobLootListener implements Listener {
         DamageSource source = event.getDamageSource();
         if (!(source.getCausingEntity() instanceof Player)) return;
 
-
         if (!DreamMobManager.isDreamMob(entity)) return;
 
         DreamMob dreamMob = DreamMobManager.getFromEntity(entity);

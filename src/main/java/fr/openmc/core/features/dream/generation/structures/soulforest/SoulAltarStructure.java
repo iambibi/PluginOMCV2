@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.generation.structures.soulforest;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.utils.SchematicsUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -12,7 +13,7 @@ import java.io.File;
 import java.util.Random;
 
 public class SoulAltarStructure extends BlockPopulator {
-    private static final double SOUL_ALTAR_PROBABILITY = 0.001;
+    private static final double SOUL_ALTAR_PROBABILITY = 0.0005;
 
     public static final String schemSoulAltarName = "soul_altar";
     public static final File soulAltarFile = new File(OMCPlugin.getInstance().getDataFolder() + "/schem", schemSoulAltarName + ".schem");
@@ -27,7 +28,9 @@ public class SoulAltarStructure extends BlockPopulator {
 
         Location loc = new Location(world, x, y, z);
 
-        System.out.println("SOUL ALTAR TROUVE");
+        if (!world.getBiome(loc).equals(DreamBiome.SOUL_FOREST.getBiome())) return;
+
+        System.out.println("SOUL ALTAR TROUVE x=" + x + " y=" + y + " z=" + z);
 
         SchematicsUtils.pasteSchem(world, soulAltarFile, loc);
     }

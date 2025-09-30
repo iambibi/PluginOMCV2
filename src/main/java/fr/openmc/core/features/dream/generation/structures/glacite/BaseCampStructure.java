@@ -28,7 +28,7 @@ public class BaseCampStructure extends BlockPopulator {
 
         Location loc = new Location(world, x, y, z);
 
-        System.out.println("BASE CAMP TROUVE");
+        System.out.println("BASE CAMP TROUVE x=" + x + " y=" + y + " z=" + z);
 
         SchematicsUtils.pasteSchem(world, baseCampFile, loc.add(0, 57, 0));
     }

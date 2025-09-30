@@ -29,7 +29,7 @@ public class CloudCastleStructure extends BlockPopulator {
 
         Location loc = new Location(world, x, y, z);
 
-        System.out.println("CLOUD CASTLE TROUVE");
+        System.out.println("CLOUD CASTLE TROUVE x=" + x + " y=" + y + " z=" + z);
 
         SchematicsUtils.pasteSchem(world, cloudCastleFile, loc.add(0, 75, 0));
     }
