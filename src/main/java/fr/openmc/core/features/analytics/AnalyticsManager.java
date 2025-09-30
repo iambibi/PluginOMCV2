@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class AnalyticsManager {
     static Dao<Statistic, String> statsDao;
@@ -47,7 +48,7 @@ public class AnalyticsManager {
 
             return stats.getFirst().getValue();
         } catch (SQLException e) {
-            e.printStackTrace();
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to get Statistics from " + player, e);
             return defaultValue;
         }
     }
@@ -78,7 +79,7 @@ public class AnalyticsManager {
                 Statistic statistic = new Statistic(player, scope, stats.getFirst().getValue() + value);
                 statsDao.create(statistic);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }

@@ -146,7 +146,7 @@ public class MayorManager {
 
             phaseMayor = constant.getPhase();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -154,7 +154,7 @@ public class MayorManager {
         try {
             constantsDao.createOrUpdate(new MayorConstant(phaseMayor));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -164,7 +164,7 @@ public class MayorManager {
 
             mayors.forEach(mayor -> cityMayor.put(mayor.getCityUUID(), mayor));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -173,7 +173,7 @@ public class MayorManager {
             try {
                 mayorsDao.createOrUpdate(mayor);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }
@@ -186,7 +186,7 @@ public class MayorManager {
                 cityElections.computeIfAbsent(candidate.getCityUUID(), k -> new ArrayList<>()).add(candidate);
             });
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -196,7 +196,7 @@ public class MayorManager {
                     try {
                         candidatesDao.createOrUpdate(candidate);
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 }));
     }
@@ -206,7 +206,7 @@ public class MayorManager {
             votesDao.queryForAll().forEach(
                     vote -> playerVote.computeIfAbsent(vote.getCity().getUniqueId(), k -> new ArrayList<>()).add(vote));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -215,7 +215,7 @@ public class MayorManager {
             try {
                 votesDao.createOrUpdate(vote);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }));
     }
@@ -226,7 +226,7 @@ public class MayorManager {
 
             laws.forEach(law -> cityLaws.put(law.getCityUUID(), law));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -235,7 +235,7 @@ public class MayorManager {
             try {
                 lawsDao.createOrUpdate(law);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
     }
@@ -286,7 +286,7 @@ public class MayorManager {
                 TableUtils.createTableIfNotExists(connectionSource, MayorVote.class);
                 votesDao = DaoManager.createDao(connectionSource, MayorVote.class);
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
 
@@ -472,7 +472,7 @@ public class MayorManager {
                 votesDelete.where().eq("city_uuid", city.getUniqueId());
                 votesDao.delete(votesDelete.prepare());
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
         

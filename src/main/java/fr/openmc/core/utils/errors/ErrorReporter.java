@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class ErrorReporter {
@@ -113,7 +114,7 @@ public class ErrorReporter {
                 try {
                     DiscordWebhook.sendMessage(webhookUrl, discordMsg);
                 } catch (Exception e) {
-                    throw new RuntimeException("");
+                    OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to send Discord Webhook", e);
                 }
                 currentError.clear();
             }

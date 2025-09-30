@@ -172,7 +172,7 @@ public class ContestManager {
             TableUtils.clearTable(DatabaseManager.getConnectionSource(), Contest.class);
             TableUtils.clearTable(DatabaseManager.getConnectionSource(), ContestPlayer.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -507,17 +507,19 @@ public class ContestManager {
         try {
             Bukkit.getServer().getPluginManager().callEvent(new ContestEndEvent(data, winners, losers));
         } catch (IllegalStateException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         
         // Exécuter les requêtes SQL dans un autre thread
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             TradeYMLManager.addOneToLastContest(data.getCamp1()); // on ajoute 1 au contest précédant dans data/contest.yml pour signifier qu'il n'est plus prioritaire
-                    try {
-                        TableUtils.clearTable(DatabaseManager.getConnectionSource(), ContestPlayer.class);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+
+            try {
+                TableUtils.clearTable(DatabaseManager.getConnectionSource(), ContestPlayer.class);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
             TradeYMLManager.selectRandomlyContest(); // on pioche un contest qui a une valeur selected la + faible
             dataPlayer = new HashMap<>(); // on supprime les données précédentes des joueurs
             MailboxManager.sendItemsToAOfflinePlayerBatch(playerItemsMap);
