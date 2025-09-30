@@ -28,6 +28,7 @@ public class PlayerObtainOrb implements Listener {
                 DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
                 if (cache != null && cache.getProgressionOrb() < 1) {
                     cache.setProgressionOrb(1);
+                    DreamManager.saveDreamPlayerData(cache);
                 }
             }
         }

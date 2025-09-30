@@ -87,8 +87,12 @@ public class DreamManager {
     }
 
     public static void saveDreamPlayerData(DreamPlayer dreamPlayer) {
+        saveDreamPlayerData(dreamPlayer.serialize());
+    }
+
+    public static void saveDreamPlayerData(DBDreamPlayer dbDreamPlayer) {
         try {
-            dreamPlayerDao.createOrUpdate(dreamPlayer.serialize());
+            dreamPlayerDao.createOrUpdate(dbDreamPlayer);
         } catch (SQLException e) {
             e.printStackTrace();
         }
