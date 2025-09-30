@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.Random;
 
 public class BaseCampStructure extends BlockPopulator {
-    private static final double BASE_CAMP_PROBABILITY = 0.0001;
+    private static final double BASE_CAMP_PROBABILITY = 0.001;
 
     public static final String schemBaseCampName = "base_camp";
     public static final File baseCampFile = new File(OMCPlugin.getInstance().getDataFolder() + "/schem", schemBaseCampName + ".schem");

@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.Random;
 
 public class SoulAltarStructure extends BlockPopulator {
-    private static final double SOUL_ALTAR_PROBABILITY = 0.0005;
+    private static final double SOUL_ALTAR_PROBABILITY = 0.001;
 
     public static final String schemSoulAltarName = "soul_altar";
     public static final File soulAltarFile = new File(OMCPlugin.getInstance().getDataFolder() + "/schem", schemSoulAltarName + ".schem");

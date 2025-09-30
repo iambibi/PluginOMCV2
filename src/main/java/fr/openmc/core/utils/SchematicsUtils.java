@@ -8,16 +8,21 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.block.BlockState;
 import fr.openmc.core.OMCPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SchematicsUtils {
 
@@ -53,31 +58,69 @@ public class SchematicsUtils {
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 var format = ClipboardFormats.findByFile(schemFile);
-                if (format == null) {
-                    Bukkit.getLogger().warning("Format inconnu pour " + schemFile.getName());
-                    return;
-                }
+                if (format == null) return;
 
                 Clipboard clipboard;
                 try (ClipboardReader reader = format.getReader(new FileInputStream(schemFile))) {
                     clipboard = reader.read();
                 }
 
-                World weWorld = BukkitAdapter.adapt(bukkitWorld);
+                Region region = clipboard.getRegion();
+                BlockVector3 min = region.getMinimumPoint();
 
-                try (EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld)) {
-                    var operation = new ClipboardHolder(clipboard)
-                            .createPaste(editSession)
-                            .to(BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
-                            .ignoreAirBlocks(true)
-                            .build();
+                List<BlockVector3> baseSolidCells = new ArrayList<>();
 
-                    Operations.complete(operation);
-
-                    editSession.flushSession();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                for (BlockVector3 pos : region) {
+                    if (pos.y() == min.y()) {
+                        BlockState block = clipboard.getBlock(pos);
+                        if (block.getBlockType().getMaterial().isSolid()) {
+                            baseSolidCells.add(pos.subtract(min));
+                        }
+                    }
                 }
+
+                int baseX = loc.getBlockX();
+                int baseY = loc.getBlockY();
+                int baseZ = loc.getBlockZ();
+
+                int floating = 0;
+                int checked = 0;
+
+                for (int i = 0; i < baseSolidCells.size(); i += 3) {
+                    BlockVector3 rel = baseSolidCells.get(i);
+                    int worldX = baseX + rel.x();
+                    int worldZ = baseZ + rel.z();
+
+                    if (baseY - 1 < bukkitWorld.getMinHeight()) {
+                        floating++;
+                        checked++;
+                        continue;
+                    }
+
+                    Material below = bukkitWorld.getBlockAt(worldX, baseY - 1, worldZ).getType();
+                    if (below.isAir() || !below.isSolid()) {
+                        floating++;
+                    }
+                    checked++;
+                }
+
+                if (checked > 0 && ((double) floating / checked) > 0.40D) return;
+
+                World weWorld = BukkitAdapter.adapt(bukkitWorld);
+                Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
+                    try (EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld)) {
+                        var operation = new ClipboardHolder(clipboard)
+                                .createPaste(editSession)
+                                .to(BlockVector3.at(baseX, baseY, baseZ))
+                                .ignoreAirBlocks(true)
+                                .build();
+
+                        Operations.complete(operation);
+                        editSession.flushSession();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
             } catch (IOException e) {
                 e.printStackTrace();
