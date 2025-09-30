@@ -163,17 +163,17 @@ public class CityManager implements Listener {
      * Will add a player to a city in the database
      *
      * @param city   The city to add the player to
-     * @param player The player to add to the city
+     * @param playerUUID The playerUUID to add to the city
      */
-    public static void addPlayerToCity(City city, UUID player) {
-        if (city == null || player == null) return;
+    public static void addPlayerToCity(City city, UUID playerUUID) {
+        if (city == null || playerUUID == null) return;
 
-        playerCities.put(player, city);
-        CityViewManager.updateView(player);
+        playerCities.put(playerUUID, city);
+        CityViewManager.updateView(playerUUID);
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
-                membersDao.create(new DBCityMember(player, city.getUniqueId()));
+                membersDao.create(new DBCityMember(playerUUID, city.getUniqueId()));
             } catch (SQLException e) {
                 throw new RuntimeException("Erreur d'ajout de membre dans une ville '", e);
             }
@@ -184,17 +184,17 @@ public class CityManager implements Listener {
      * Will remove a player from a city in the database
      *
      * @param city   The city to remove the player from
-     * @param player The player to remove from the city
+     * @param playerUUID The playerUUID to remove from the city
      */
-    public static void removePlayerFromCity(City city, UUID player) {
-        if (city == null || player == null) return;
+    public static void removePlayerFromCity(City city, UUID playerUUID) {
+        if (city == null || playerUUID == null) return;
 
-        playerCities.remove(player);
-        CityViewManager.updateView(player);
+        playerCities.remove(playerUUID);
+        CityViewManager.updateView(playerUUID);
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
-                membersDao.delete(new DBCityMember(player, city.getUniqueId()));
+                membersDao.delete(new DBCityMember(playerUUID, city.getUniqueId()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -222,21 +222,21 @@ public class CityManager implements Listener {
         return permissions;
     }
 
-    public static void addPlayerPermission(City city, UUID player, CityPermission permission) {
+    public static void addPlayerPermission(City city, UUID playerUUID, CityPermission permission) {
         try {
-            permissionsDao.create(new DBCityPermission(city.getUniqueId(), player, permission.name()));
+            permissionsDao.create(new DBCityPermission(city.getUniqueId(), playerUUID, permission.name()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void removePlayerPermission(City city, UUID player, CityPermission permission) {
+    public static void removePlayerPermission(City city, UUID playerUUID, CityPermission permission) {
         try {
             DeleteBuilder<DBCityPermission, String> delete = permissionsDao.deleteBuilder();
             delete.where()
                     .eq("city_uuid", city.getUniqueId())
                     .and()
-                    .eq("player", player)
+                    .eq("player", playerUUID)
                     .and()
                     .eq("permission", permission.name());
             permissionsDao.delete(delete.prepare());
@@ -273,27 +273,29 @@ public class CityManager implements Listener {
         }
     }
 
-    public static void claimChunk(City city, ChunkPos chunk) {
-        claimedChunks.put(chunk, city);
+    public static void claimChunk(City city, ChunkPos chunkPos) {
+        claimedChunks.put(chunkPos, city);
         CityViewManager.updateAllViews();
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
-                claimsDao.create(new DBCityClaim(chunk, city.getUniqueId()));
+                claimsDao.create(new DBCityClaim(chunkPos, city.getUniqueId()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
-    public static void unclaimChunk(City city, ChunkPos chunk) {
-        claimedChunks.remove(chunk);
+    public static void unclaimChunk(City city, ChunkPos chunkPos) {
+        claimedChunks.remove(chunkPos);
         CityViewManager.updateAllViews();
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             try {
                 DeleteBuilder<DBCityClaim, String> delete = claimsDao.deleteBuilder();
-                delete.where().eq("city_uuid", city.getUniqueId()).and().eq("x", chunk.x()).and().eq("z", chunk.z());
+                delete.where().eq("city_uuid", city.getUniqueId())
+                        .and().eq("x", chunkPos.x())
+                        .and().eq("z", chunkPos.z());
 
                 claimsDao.delete(delete.prepare());
             } catch (SQLException e) {
@@ -411,11 +413,11 @@ public class CityManager implements Listener {
     /**
      * Get a city by its member
      *
-     * @param player The UUID of the member
+     * @param playerUUID The UUID of the member
      * @return The city object, or null if not found
      */
-    public static City getPlayerCity(UUID player) {
-        return playerCities.get(player);
+    public static City getPlayerCity(UUID playerUUID) {
+        return playerCities.get(playerUUID);
     }
 
     /**

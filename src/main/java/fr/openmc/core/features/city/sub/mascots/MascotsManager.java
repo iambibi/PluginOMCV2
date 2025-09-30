@@ -115,10 +115,10 @@ public class MascotsManager {
         });
     }
 
-    public static void createMascot(City city, UUID cityUUID, String cityName, World player_world, Location mascot_spawn) {
-        LivingEntity mob = (LivingEntity) player_world.spawnEntity(mascot_spawn, EntityType.ZOMBIE);
+    public static void createMascot(City city, UUID cityUUID, String cityName, World playerWorld, Location mascotSpawn) {
+        LivingEntity mob = (LivingEntity) playerWorld.spawnEntity(mascotSpawn, EntityType.ZOMBIE);
 
-        Chunk chunk = mascot_spawn.getChunk();
+        Chunk chunk = mascotSpawn.getChunk();
         setMascotsData(mob, cityName, 300, 300);
         mob.setGlowing(true);
 

@@ -91,11 +91,11 @@ public class BankManager {
 
     private static boolean saveBank(Bank bank) {
         try {
-            banks.put(bank.getPlayer(), bank);
+            banks.put(bank.getPlayerUUID(), bank);
             banksDao.createOrUpdate(bank);
             return true;
         } catch (SQLException e) {
-            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to save bank " + bank.getPlayer(), e);
+            OMCPlugin.getInstance().getLogger().log(Level.SEVERE, "Failed to save bank " + bank.getPlayerUUID(), e);
             return false;
         }
     }
@@ -185,7 +185,7 @@ public class BankManager {
         try {
             List<Bank> dbBanks = banksDao.queryForAll();
             for (Bank bank : dbBanks) {
-                newBanks.put(bank.getPlayer(), bank);
+                newBanks.put(bank.getPlayerUUID(), bank);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
