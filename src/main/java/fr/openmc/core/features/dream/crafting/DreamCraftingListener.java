@@ -1,6 +1,8 @@
 package fr.openmc.core.features.dream.crafting;
 
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.items.DreamItem;
+import fr.openmc.core.features.dream.items.DreamItemRegister;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,7 +26,14 @@ public class DreamCraftingListener implements Listener {
 
         if (recipe instanceof Keyed keyed) {
             NamespacedKey key = keyed.getKey();
-            if (key.getNamespace().contains("omc_dream")) { // contains beacuse key is ex zzzfake_omc_items:aywenite
+            if (key.toString().contains("omc_dream")) {
+                DreamItem dreamItem = DreamItemRegister.getByName(key.toString());
+
+                if (dreamItem != null) {
+                    event.getInventory().setResult(dreamItem.getBest());
+                } else {
+                    event.getInventory().setResult(null);
+                }
                 return;
             }
         }

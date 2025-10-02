@@ -1,10 +1,15 @@
 package fr.openmc.core.features.dream.items;
 
+import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingBoots;
+import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingChestplate;
+import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingHelmet;
+import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingLeggings;
 import fr.openmc.core.features.dream.items.blocks.CorruptedSculk;
 import fr.openmc.core.features.dream.items.blocks.OldPaleOakWood;
 import fr.openmc.core.features.dream.items.loots.CorruptedString;
 import fr.openmc.core.features.dream.items.loots.CreakingHeart;
 import fr.openmc.core.features.dream.items.orb.*;
+import fr.openmc.core.features.dream.items.tools.OldCreakingAxe;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +35,15 @@ public class DreamItemRegister {
         registerDreamItem(new OldPaleOakWood("omc_dream:old_pale_oak"));
         registerDreamItem(new CorruptedString("omc_dream:corrupted_string"));
         registerDreamItem(new CreakingHeart("omc_dream:creaking_heart"));
+
+        // # ARMURES
+        registerDreamItem(new OldCreakingHelmet("omc_dream:old_creaking_helmet"));
+        registerDreamItem(new OldCreakingChestplate("omc_dream:old_creaking_chestplate"));
+        registerDreamItem(new OldCreakingLeggings("omc_dream:old_creaking_leggings"));
+        registerDreamItem(new OldCreakingBoots("omc_dream:old_creaking_boots"));
+
+        // # WEAPONS
+        registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
     }
 
     public static void register(String name, DreamItem item) {
