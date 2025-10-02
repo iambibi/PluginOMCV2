@@ -26,16 +26,23 @@ public class DreamCraftingListener implements Listener {
 
         if (recipe instanceof Keyed keyed) {
             NamespacedKey key = keyed.getKey();
-            if (key.toString().contains("omc_dream")) {
-                DreamItem dreamItem = DreamItemRegister.getByName(key.toString());
 
-                if (dreamItem != null) {
-                    event.getInventory().setResult(dreamItem.getBest());
-                } else {
-                    event.getInventory().setResult(null);
-                }
-                return;
+            String itemId = key.getKey(); // "old_creaking_helmet_0"
+
+            if (itemId.matches(".*_\\d+$")) {
+                itemId = itemId.replaceAll("_\\d+$", "");
             }
+
+            String fullId = key.getNamespace() + ":" + itemId;
+
+            DreamItem dreamItem = DreamItemRegister.getByName(fullId);
+
+            if (dreamItem != null) {
+                event.getInventory().setResult(dreamItem.getBest());
+            } else {
+                event.getInventory().setResult(null);
+            }
+            return;
         }
 
         event.getInventory().setResult(new ItemStack(Material.AIR));
