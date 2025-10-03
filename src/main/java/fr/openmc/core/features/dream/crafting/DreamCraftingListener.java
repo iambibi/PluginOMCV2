@@ -8,13 +8,14 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 public class DreamCraftingListener implements Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onCraft(PrepareItemCraftEvent event) {
         Recipe recipe = event.getRecipe();
         if (recipe == null) return;
@@ -26,23 +27,23 @@ public class DreamCraftingListener implements Listener {
 
         if (recipe instanceof Keyed keyed) {
             NamespacedKey key = keyed.getKey();
+            String keyStr = key.toString();
+            if (keyStr.contains("omc_dream")) {
+                String namespace = key.getNamespace();
+                String rawKey = key.getKey();
+                String formatKey = rawKey.replaceAll("_\\d+$", "");
+                String formatIaKey = namespace + ":" + formatKey;
 
-            String itemId = key.getKey(); // "old_creaking_helmet_0"
 
-            if (itemId.matches(".*_\\d+$")) {
-                itemId = itemId.replaceAll("_\\d+$", "");
+                DreamItem dreamItem = DreamItemRegister.getByName(formatIaKey);
+
+                if (dreamItem != null) {
+                    event.getInventory().setResult(dreamItem.getBest());
+                } else {
+                    event.getInventory().setResult(null);
+                }
+                return;
             }
-
-            String fullId = key.getNamespace() + ":" + itemId;
-
-            DreamItem dreamItem = DreamItemRegister.getByName(fullId);
-
-            if (dreamItem != null) {
-                event.getInventory().setResult(dreamItem.getBest());
-            } else {
-                event.getInventory().setResult(null);
-            }
-            return;
         }
 
         event.getInventory().setResult(new ItemStack(Material.AIR));
