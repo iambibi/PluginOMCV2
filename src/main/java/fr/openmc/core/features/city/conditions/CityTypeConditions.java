@@ -38,7 +38,7 @@ public class CityTypeConditions {
         }
 
         if (city.getType().equals(toType)) {
-            MessagesManager.sendMessage(player, Component.text("Tu est déjà dans ce type de ville "), Prefix.CITY, MessageType.ERROR, false);
+            MessagesManager.sendMessage(player, Component.text("Tu es déjà dans ce type de ville"), Prefix.CITY, MessageType.ERROR, false);
             return false;
         }
 
