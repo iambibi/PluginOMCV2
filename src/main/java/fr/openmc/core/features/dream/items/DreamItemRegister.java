@@ -4,23 +4,27 @@ import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingBoots;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingChestplate;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingHelmet;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingLeggings;
+import fr.openmc.core.features.dream.items.armors.soul.SoulBoots;
+import fr.openmc.core.features.dream.items.armors.soul.SoulChestplate;
+import fr.openmc.core.features.dream.items.armors.soul.SoulHelmet;
+import fr.openmc.core.features.dream.items.armors.soul.SoulLeggings;
 import fr.openmc.core.features.dream.items.blocks.CorruptedSculk;
 import fr.openmc.core.features.dream.items.blocks.OldPaleOakWood;
 import fr.openmc.core.features.dream.items.loots.CorruptedString;
 import fr.openmc.core.features.dream.items.loots.CreakingHeart;
+import fr.openmc.core.features.dream.items.loots.Soul;
 import fr.openmc.core.features.dream.items.orb.*;
 import fr.openmc.core.features.dream.items.tools.OldCreakingAxe;
-import io.papermc.paper.persistence.PersistentDataContainerView;
-import org.bukkit.NamespacedKey;
+import fr.openmc.core.features.dream.items.tools.SoulAxe;
+import fr.openmc.core.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class DreamItemRegister {
     static final HashMap<String, DreamItem> dreamItems = new HashMap<>();
-    static final NamespacedKey customNameKey = new NamespacedKey("aywen", "dream_item");
+    static final String customNameKey = "dream_item";
 
     public DreamItemRegister() {
         // # ORBES
@@ -33,8 +37,11 @@ public class DreamItemRegister {
         // # BLOCS
         registerDreamItem(new CorruptedSculk("omc_dream:corrupted_sculk"));
         registerDreamItem(new OldPaleOakWood("omc_dream:old_pale_oak"));
+
+        // # DROPS
         registerDreamItem(new CorruptedString("omc_dream:corrupted_string"));
         registerDreamItem(new CreakingHeart("omc_dream:creaking_heart"));
+        registerDreamItem(new Soul("omc_dream:soul"));
 
         // # ARMURES
         registerDreamItem(new OldCreakingHelmet("omc_dream:old_creaking_helmet"));
@@ -42,7 +49,13 @@ public class DreamItemRegister {
         registerDreamItem(new OldCreakingLeggings("omc_dream:old_creaking_leggings"));
         registerDreamItem(new OldCreakingBoots("omc_dream:old_creaking_boots"));
 
+        registerDreamItem(new SoulHelmet("omc_dream:soul_helmet"));
+        registerDreamItem(new SoulChestplate("omc_dream:soul_chestplate"));
+        registerDreamItem(new SoulLeggings("omc_dream:soul_leggings"));
+        registerDreamItem(new SoulBoots("omc_dream:soul_boots"));
+
         // # WEAPONS
+        registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
     }
 
@@ -65,8 +78,7 @@ public class DreamItemRegister {
 
     @Nullable
     public static DreamItem getByItemStack(ItemStack stack) {
-        PersistentDataContainerView view = stack.getPersistentDataContainer();
-        String name = view.get(customNameKey, PersistentDataType.STRING);
+        String name = ItemUtils.getTag(stack, customNameKey);
 
         return name == null ? null : getByName(name);
     }

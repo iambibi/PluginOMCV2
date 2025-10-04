@@ -3,8 +3,10 @@ package fr.openmc.core.features.dream.mobs;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.mobs.listeners.DreamMobLootListener;
 import fr.openmc.core.features.dream.mobs.listeners.PlainsMobSpawningListener;
+import fr.openmc.core.features.dream.mobs.listeners.SoulForestMobSpawningListener;
 import fr.openmc.core.features.dream.mobs.mobs.DreamCreaking;
 import fr.openmc.core.features.dream.mobs.mobs.DreamSpider;
+import fr.openmc.core.features.dream.mobs.mobs.Soul;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -31,11 +33,13 @@ public class DreamMobManager {
     public DreamMobManager() {
         OMCPlugin.registerEvents(
                 new PlainsMobSpawningListener(),
+                new SoulForestMobSpawningListener(),
                 new DreamMobLootListener()
         );
 
         register(new DreamCreaking());
         register(new DreamSpider());
+        register(new Soul());
     }
 
     public static void register(DreamMob mob) {

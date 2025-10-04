@@ -15,6 +15,7 @@ import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
 import fr.openmc.core.utils.CacheOfflinePlayer;
+import fr.openmc.core.utils.SkullUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -85,7 +86,7 @@ public class OwnerNpcMenu extends Menu {
             loreOwner.add(Component.text(perk1.getName()));
             loreOwner.addAll(perk1.getLore());
 
-            inventory.put(4, new ItemBuilder(this, ItemUtils.getPlayerSkull(uuidOwner), itemMeta -> {
+            inventory.put(4, new ItemBuilder(this, SkullUtils.getPlayerSkull(uuidOwner), itemMeta -> {
                 itemMeta.displayName(Component.text("§ePropriétaire " + nameOwner));
                 itemMeta.lore(loreOwner);
             }));
@@ -115,7 +116,7 @@ public class OwnerNpcMenu extends Menu {
             loreOwner.add(Component.text(perk3.getName()));
             loreOwner.addAll(perk3.getLore());
 
-            inventory.put(4, new ItemBuilder(this, ItemUtils.getPlayerSkull(uuidOwner), itemMeta -> {
+            inventory.put(4, new ItemBuilder(this, SkullUtils.getPlayerSkull(uuidOwner), itemMeta -> {
                 itemMeta.displayName(Component.text("§ePropriétaire " + nameOwner));
                 itemMeta.lore(loreOwner);
             }));

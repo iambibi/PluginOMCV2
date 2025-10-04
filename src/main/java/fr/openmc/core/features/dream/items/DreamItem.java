@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.items;
 
 import dev.lone.itemsadder.api.CustomStack;
 import fr.openmc.api.hooks.ItemsAdderHook;
+import fr.openmc.core.utils.ItemUtils;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
@@ -93,6 +94,7 @@ public abstract class DreamItem {
             item = getItemsAdder();
         }
 
+        ItemUtils.setTag(item, DreamItemRegister.customNameKey, this.getName());
         item.lore(this.getGeneratedLore());
 
         return item;

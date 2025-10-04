@@ -154,7 +154,7 @@ public class OMCPlugin extends JavaPlugin {
             HologramLoader.unloadAll();
         }
 
-        DreamManager.saveAllDreamPlayerData();
+        DreamManager.disable();
 
         // - MultiBlocks
         MultiBlockManager.save();

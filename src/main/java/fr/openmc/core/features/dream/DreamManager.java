@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
@@ -13,6 +14,7 @@ import fr.openmc.core.features.dream.listeners.biomes.PlayerEnteredBiome;
 import fr.openmc.core.features.dream.listeners.dream.PlayerChangeWorldListener;
 import fr.openmc.core.features.dream.listeners.dream.PlayerQuitListener;
 import fr.openmc.core.features.dream.listeners.dream.PlayerSleepListener;
+import fr.openmc.core.features.dream.listeners.generation.ReplaceBlockListener;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
 import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
@@ -24,6 +26,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -50,12 +53,14 @@ public class DreamManager {
                 //new PlayerDreamTimeEndListener(),
                 new PlayerSleepListener(),
                 new PlayerEnteredBiome(),
-                new PlayerObtainOrb()
+                new PlayerObtainOrb(),
+                new ReplaceBlockListener()
         );
 
         // ** MANAGERS **
         new DreamDimensionManager();
         new DreamItemRegister();
+        new DreamBlocksManager();
         new DreamMobManager();
         new DreamDropsManager();
         new DreamCraftingRegister();
@@ -67,6 +72,20 @@ public class DreamManager {
     public static void initDB(ConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, DBDreamPlayer.class);
         dreamPlayerDao = DaoManager.createDao(connectionSource, DBDreamPlayer.class);
+    }
+
+    public static void disable() {
+        DreamManager.saveAllDreamPlayerData();
+
+        World dreamWorld = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
+
+        if (dreamWorld == null) return;
+
+        for (Entity entity : dreamWorld.getEntities()) {
+            if (!(entity instanceof org.bukkit.entity.Player)) {
+                entity.remove();
+            }
+        }
     }
 
     private static void loadAllDreamPlayerData() {

@@ -17,6 +17,7 @@ import fr.openmc.core.features.city.sub.mayor.menu.create.MayorModifyMenu;
 import fr.openmc.core.features.city.sub.mayor.menu.create.MenuType;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
 import fr.openmc.core.utils.DateUtils;
+import fr.openmc.core.utils.SkullUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -151,7 +152,7 @@ public class MayorElectionMenu extends Menu {
                 );
             }
 
-            inventory.put(22, new ItemBuilder(this, ItemUtils.getPlayerSkull(player.getUniqueId()), itemMeta -> {
+            inventory.put(22, new ItemBuilder(this, SkullUtils.getPlayerSkull(player.getUniqueId()), itemMeta -> {
                 itemMeta.displayName(Component.text("§7Choix d'une §3Réforme"));
                 itemMeta.lore(lorePerkOwner);
             }).setOnClick(inventoryClickEvent -> {
