@@ -17,7 +17,7 @@ public class AltarParticlesTask extends BukkitRunnable {
         if (altars.isEmpty()) return;
 
         for (DreamBlock altar : altars) {
-            Location center = altar.getLocation().clone().add(0.5, 1.5, 0.5);
+            Location center = altar.location().clone().add(0.5, 1.5, 0.5);
 
             boolean nearby = false;
             for (Player player : center.getWorld().getPlayers()) {

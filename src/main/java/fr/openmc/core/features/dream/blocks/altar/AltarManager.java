@@ -8,6 +8,7 @@ import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.ItemDisplay;
@@ -101,6 +102,10 @@ public class AltarManager {
         ItemUtils.removeItemsFromInventory(player, hand, 1);
 
         player.getInventory().addItem(recipe.getOutput().getBest());
+
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
+                Bukkit.getServer().getPluginManager().callEvent(new AltarCraftingEvent(player, recipe.getOutput()))
+        );
 
         unbind(altarLoc);
         MessagesManager.sendMessage(player, Component.text("§5Rituel accompli !"), Prefix.DREAM, MessageType.SUCCESS, false);

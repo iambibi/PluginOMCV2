@@ -89,16 +89,16 @@ public class DreamBlocksManager {
     }
 
     public static void removeDreamBlock(Location loc) {
-        dreamBlocks.removeIf(e -> e.getLocation().equals(loc));
+        dreamBlocks.removeIf(e -> e.location().equals(loc));
         save();
     }
 
     public static boolean isDreamBlock(Location loc) {
-        return dreamBlocks.stream().anyMatch(e -> e.getLocation().equals(loc));
+        return dreamBlocks.stream().anyMatch(e -> e.location().equals(loc));
     }
 
     public static boolean isDreamBlock(Location loc, String type) {
-        return dreamBlocks.stream().anyMatch(e -> e.getLocation().equals(loc) && e.getType().equalsIgnoreCase(type));
+        return dreamBlocks.stream().anyMatch(e -> e.location().equals(loc) && e.type().equalsIgnoreCase(type));
     }
 
     public static List<DreamBlock> getDreamBlocks() {
@@ -106,6 +106,6 @@ public class DreamBlocksManager {
     }
 
     public static List<DreamBlock> getDreamBlocksByType(String type) {
-        return dreamBlocks.stream().filter(e -> e.getType().equalsIgnoreCase(type)).toList();
+        return dreamBlocks.stream().filter(e -> e.type().equalsIgnoreCase(type)).toList();
     }
 }

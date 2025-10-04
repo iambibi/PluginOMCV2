@@ -1,20 +1,10 @@
 package fr.openmc.core.features.dream.blocks;
 
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-@Getter
-public class DreamBlock {
-    private final String type;
-    private final Location location;
-
-    public DreamBlock(String type, Location location) {
-        this.type = type;
-        this.location = location;
-    }
-
+public record DreamBlock(String type, Location location) {
     public static DreamBlock fromString(String s) {
         String[] parts = s.split(",");
         if (parts.length != 5) return null;

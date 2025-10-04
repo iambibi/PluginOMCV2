@@ -34,7 +34,6 @@ public class DreamCraftingListener implements Listener {
                 String formatKey = rawKey.replaceAll("_\\d+$", "");
                 String formatIaKey = namespace + ":" + formatKey;
 
-
                 DreamItem dreamItem = DreamItemRegister.getByName(formatIaKey);
 
                 if (dreamItem != null) {

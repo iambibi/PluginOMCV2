@@ -1,7 +1,9 @@
 package fr.openmc.core.features.dream.listeners.orb;
 
 import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.blocks.altar.AltarCraftingEvent;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.items.DreamItem;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
@@ -31,6 +33,20 @@ public class PlayerObtainOrb implements Listener {
                     DreamManager.saveDreamPlayerData(cache);
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onCraft(AltarCraftingEvent event) {
+        DreamItem item = event.getCraftedItem();
+        if (item == null) return;
+
+        if (!item.getName().equals("omc_dream:ame_orb")) return;
+
+        DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(event.getPlayer());
+        if (cache != null && cache.getProgressionOrb() < 1) {
+            cache.setProgressionOrb(1);
+            DreamManager.saveDreamPlayerData(cache);
         }
     }
 }
