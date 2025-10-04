@@ -44,8 +44,8 @@ public class PlayerObtainOrb implements Listener {
         if (!item.getName().equals("omc_dream:ame_orb")) return;
 
         DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(event.getPlayer());
-        if (cache != null && cache.getProgressionOrb() < 1) {
-            cache.setProgressionOrb(1);
+        if (cache != null && cache.getProgressionOrb() < 2) {
+            cache.setProgressionOrb(2);
             DreamManager.saveDreamPlayerData(cache);
         }
     }
