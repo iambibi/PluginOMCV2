@@ -10,8 +10,8 @@ import java.util.Random;
 
 public abstract class FeaturesPopulator extends BlockPopulator {
 
-    private final String group;
-    private final List<String> features;
+    public final String group;
+    public final List<String> features;
 
     public FeaturesPopulator(String group, List<String> features) {
         this.group = group;

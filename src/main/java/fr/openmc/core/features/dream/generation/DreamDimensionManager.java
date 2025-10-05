@@ -14,6 +14,7 @@ import fr.openmc.core.features.dream.generation.structures.glacite.BaseCampStruc
 import fr.openmc.core.features.dream.generation.structures.soulforest.SoulAltarStructure;
 import fr.openmc.core.utils.SchematicsUtils;
 import fr.openmc.core.utils.StructureUtils;
+import fr.openmc.core.utils.structure.FeaturesPopulator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -25,10 +26,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class DreamDimensionManager {
 
@@ -38,6 +36,8 @@ public class DreamDimensionManager {
     private static File seedFile;
     private static FileConfiguration seedConfig;
 
+    private static Set<FeaturesPopulator> registeredFeatures = new HashSet<>();
+
     public DreamDimensionManager() {
         this.plugin = OMCPlugin.getInstance();
 
@@ -46,10 +46,21 @@ public class DreamDimensionManager {
         SchematicsUtils.extractSchematic(BaseCampStructure.schemBaseCampName);
         SchematicsUtils.extractSchematic(SoulAltarStructure.schemSoulAltarName);
 
+        // ** REGISTER STRUCTURES NBT **
+        registrerFeatures(new RockPopulator());
+        registrerFeatures(new PlainsTreePopulator());
+        registrerFeatures(new SoulTreePopulator());
+        registrerFeatures(new VerticalSpikePopulator());
+        registrerFeatures(new GroundSpikePopulator());
+        registrerFeatures(new GlaciteGeodePopulator());
+
+        preloadAllStructures();
+
         // ** DIMENSION INIT **
         OMCPlugin.registerEvents(
                 new BiomeParticleListener()
         );
+
         init();
     }
 
@@ -102,12 +113,7 @@ public class DreamDimensionManager {
         dream.getPopulators().add(new SoulAltarStructure());
 
         // ** POPULATORS REGISTER **
-        dream.getPopulators().add(new RockPopulator());
-        dream.getPopulators().add(new PlainsTreePopulator());
-        dream.getPopulators().add(new SoulTreePopulator());
-        dream.getPopulators().add(new VerticalSpikePopulator());
-        dream.getPopulators().add(new GroundSpikePopulator());
-        dream.getPopulators().add(new GlaciteGeodePopulator());
+        registeredFeatures.forEach(populator -> dream.getPopulators().add(populator));
 
         // ** SET GAMERULE FOR THE WORLD **
         dream.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
@@ -126,13 +132,15 @@ public class DreamDimensionManager {
     private void preloadAllStructures() {
         Map<String, List<String>> structuresByGroup = new HashMap<>();
 
-        structuresByGroup.put("omc_dream", List.of(
-                "cave1.nbt",
-                "cave2.nbt",
-                "cave3.nbt"
-        ));
+        registeredFeatures.forEach(populator ->
+                structuresByGroup.put(populator.group, populator.features)
+        );
 
         StructureUtils.preloadStructures(structuresByGroup);
+    }
+
+    private void registrerFeatures(FeaturesPopulator populator) {
+        registeredFeatures.add(populator);
     }
 
     // ** BIOME MANAGING **
