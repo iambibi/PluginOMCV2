@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum DreamRarity {
-    COMMON("§b§lITEM COMMUN"),
-    RARE("§b§lITEM RARE"),
-    EPIC("§b§lITEM EPIQUE"),
-    LEGENDARY("§b§lITEM LEGENDAIRE"),
+    COMMON("§f§lITEM COMMUN"),
+    RARE("§9§lITEM RARE"),
+    EPIC("§5§lITEM EPIQUE"),
+    LEGENDARY("§6§lITEM LEGENDAIRE"),
     ONIRISIME("§b§lITEM ONIRISME");
 
     private final String templateLore;
