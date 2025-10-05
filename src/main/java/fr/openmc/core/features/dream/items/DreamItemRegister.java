@@ -1,5 +1,6 @@
 package fr.openmc.core.features.dream.items;
 
+import fr.openmc.core.CommandsManager;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingBoots;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingChestplate;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingHelmet;
@@ -18,9 +19,11 @@ import fr.openmc.core.features.dream.items.tools.OldCreakingAxe;
 import fr.openmc.core.features.dream.items.tools.SoulAxe;
 import fr.openmc.core.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
+import revxrsal.commands.autocomplete.SuggestionProvider;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class DreamItemRegister {
     static final HashMap<String, DreamItem> dreamItems = new HashMap<>();
@@ -57,6 +60,12 @@ public class DreamItemRegister {
         // # WEAPONS
         registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
+
+        CommandsManager.getHandler().register(
+                new DreamItemCommand()
+        );
+        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("dream_item", SuggestionProvider.of(getNames()));
+
     }
 
     public static void register(String name, DreamItem item) {
@@ -81,5 +90,9 @@ public class DreamItemRegister {
         String name = ItemUtils.getTag(stack, customNameKey);
 
         return name == null ? null : getByName(name);
+    }
+
+    public static HashSet<String> getNames() {
+        return new HashSet<>(dreamItems.keySet());
     }
 }
