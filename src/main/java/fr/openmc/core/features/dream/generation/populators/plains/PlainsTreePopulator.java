@@ -1,8 +1,8 @@
 package fr.openmc.core.features.dream.generation.populators.plains;
 
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.utils.StructureUtils;
 import fr.openmc.core.utils.structure.FeaturesPopulator;
+import fr.openmc.core.utils.structure.StructureUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;

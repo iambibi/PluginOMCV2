@@ -2,7 +2,7 @@ package fr.openmc.core.features.dream.generation.structures.glacite;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator;
-import fr.openmc.core.utils.SchematicsUtils;
+import fr.openmc.core.utils.structure.SchematicsUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;

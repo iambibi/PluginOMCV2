@@ -1,6 +1,5 @@
 package fr.openmc.core.utils.structure;
 
-import fr.openmc.core.utils.StructureUtils;
 import org.bukkit.Location;
 import org.bukkit.generator.BlockPopulator;
 

@@ -1,4 +1,4 @@
-package fr.openmc.core.utils;
+package fr.openmc.core.utils.structure;
 
 import com.flowpowered.nbt.Tag;
 import com.flowpowered.nbt.*;
