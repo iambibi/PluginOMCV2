@@ -61,11 +61,10 @@ public class DreamItemRegister {
         registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
 
+        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("dream_item", SuggestionProvider.of(getNames()));
         CommandsManager.getHandler().register(
                 new DreamItemCommand()
         );
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("dream_item", SuggestionProvider.of(getNames()));
-
     }
 
     public static void register(String name, DreamItem item) {
