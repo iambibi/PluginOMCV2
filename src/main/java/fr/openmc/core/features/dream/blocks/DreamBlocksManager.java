@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.blocks;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.blocks.altar.AltarManager;
+import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -38,21 +39,16 @@ public class DreamBlocksManager {
 
         config = YamlConfiguration.loadConfiguration(file);
 
-        World dream = Bukkit.getWorld("world_dream");
+        World dream = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
         if (dream == null) {
-            OMCPlugin.getInstance().getLogger().warning("[DreamBlocks] Le monde world_dream est introuvable !");
+            OMCPlugin.getInstance().getLogger().warning("[DreamBlocks] Le monde " + DreamDimensionManager.DIMENSION_NAME + " est introuvable !");
             return;
         }
 
-        long seed = dream.getSeed();
-        long savedSeed = config.getLong("world_seed", -1);
-
-        if (savedSeed != seed) {
+        if (dream.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME) && DreamDimensionManager.hasSeedChanged()) {
             dreamBlocks.clear();
-            config.set("world_seed", seed);
             config.set("blocks", new ArrayList<>());
             save();
-            OMCPlugin.getInstance().getLogger().info("[DreamBlocks] Seed changée, reset du fichier !");
             return;
         }
 

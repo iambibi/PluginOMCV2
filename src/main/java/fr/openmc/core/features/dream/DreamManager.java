@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class DreamManager {
+    //TODO: REMPLACE ALL PLUGIN.LOGGER BY getSLF4JLogger
 
     // ** CONSTANTS **
     public static final Long BASE_DREAM_TIME = 300L;

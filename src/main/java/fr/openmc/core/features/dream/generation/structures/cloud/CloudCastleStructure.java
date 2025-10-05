@@ -17,6 +17,8 @@ public class CloudCastleStructure extends BlockPopulator {
 
     public static final String schemCloudCastleName = "cloud_castle";
 
+    public static final Integer sizeStructure = 75;
+
     public static final File cloudCastleFile = new File(OMCPlugin.getInstance().getDataFolder() + "/schem", schemCloudCastleName + ".schem");
 
     @Override
@@ -31,6 +33,6 @@ public class CloudCastleStructure extends BlockPopulator {
 
         System.out.println("CLOUD CASTLE TROUVE x=" + x + " y=" + y + " z=" + z);
 
-        SchematicsUtils.pasteSchem(world, cloudCastleFile, loc.add(0, 75, 0));
+        SchematicsUtils.pasteSchem(world, cloudCastleFile, loc.add(0, sizeStructure, 0));
     }
 }

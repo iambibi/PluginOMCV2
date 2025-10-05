@@ -3,6 +3,7 @@ package fr.openmc.core.features.cube.multiblocks;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.cube.Cube;
+import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -53,7 +54,13 @@ public class MultiBlockManager {
             int x = (int) origin.get("x");
             int z = (int) origin.get("z");
 
-            int y = origin.containsKey("y") ? (int) origin.get("y") : world.getHighestBlockYAt(x, z);
+            int y;
+            if (world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME) && DreamDimensionManager.hasSeedChanged()) {
+                plugin.getSLF4JLogger().warn("Changing y pos for '{}' because Dream Dimension seed changed", type);
+                y = world.getHighestBlockYAt(x, z);
+            } else {
+                y = origin.containsKey("y") ? (int) origin.get("y") : world.getHighestBlockYAt(x, z);
+            }
 
             int size = (int) map.get("size");
             String matName = (String) map.get("material");

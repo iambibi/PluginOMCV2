@@ -19,9 +19,12 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,9 @@ public class DreamDimensionManager {
 
     public static final String DIMENSION_NAME = "world_dream";
     private final OMCPlugin plugin;
+
+    private static File seedFile;
+    private static FileConfiguration seedConfig;
 
     public DreamDimensionManager() {
         this.plugin = OMCPlugin.getInstance();
@@ -49,7 +55,20 @@ public class DreamDimensionManager {
 
     public void init() {
         createDimension();
+
+        seedFile = new File(OMCPlugin.getInstance().getDataFolder() + "/data/dream", "seed.yml");
+        loadSeed();
     }
+
+    public static void postInit() {
+        World dream = Bukkit.getWorld(DIMENSION_NAME);
+        if (dream == null) return;
+
+        OMCPlugin.getInstance().getSLF4JLogger().info("Saving seed: {}", dream.getSeed());
+        saveSeed(dream.getSeed());
+    }
+
+    // ** DIMENSION MANAGING **
 
     public void createDimension() {
         WorldCreator creator = new WorldCreator(DIMENSION_NAME);
@@ -60,11 +79,11 @@ public class DreamDimensionManager {
         if (!worldFolder.exists()) {
             seed = createSeed();
             creator.seed(seed);
-            plugin.getLogger().info("New Dream world created with seed: " + seed);
+            plugin.getSLF4JLogger().info("New Dream world created with seed: {}", seed);
         } else {
             World existing = Bukkit.getWorld(DIMENSION_NAME);
             seed = (existing != null) ? existing.getSeed() : creator.seed();
-            plugin.getLogger().info("Loading existing Dream world with seed: " + seed);
+            plugin.getSLF4JLogger().info("Loading existing Dream world with seed: {}", seed);
         }
 
         creator.generator(new DreamChunkGenerator(seed));
@@ -103,6 +122,7 @@ public class DreamDimensionManager {
         plugin.getLogger().info("Dream Dimension ready!");
     }
 
+    // ** STRUCTURE NBT MANAGING **
     private void preloadAllStructures() {
         Map<String, List<String>> structuresByGroup = new HashMap<>();
 
@@ -115,17 +135,7 @@ public class DreamDimensionManager {
         StructureUtils.preloadStructures(structuresByGroup);
     }
 
-    private long createSeed() {
-        Random random = new Random();
-
-        long seed = random.nextLong();
-
-        while (seed == 0) {
-            seed = random.nextLong();
-        }
-
-        return seed;
-    }
+    // ** BIOME MANAGING **
 
     public static DreamBiome getDreamBiome(Biome biome) {
         for (DreamBiome dreamBiome : DreamBiome.values()) {
@@ -143,6 +153,44 @@ public class DreamDimensionManager {
         if (!world.getName().equals(DIMENSION_NAME)) return null;
 
         return getDreamBiome(world.getBiome(player.getLocation()));
+    }
+
+    // ** SEED MANAGING **
+
+    private long createSeed() {
+        Random random = new Random();
+
+        long seed = random.nextLong();
+
+        while (seed == 0) {
+            seed = random.nextLong();
+        }
+
+        return seed;
+    }
+
+    private static void loadSeed() {
+        if (!seedFile.exists()) {
+            OMCPlugin.getInstance().getLogger().info("Fichier seed.yml manquant, il sera créé au saveSeed().");
+        }
+        seedConfig = YamlConfiguration.loadConfiguration(seedFile);
+    }
+
+    private static void saveSeed(long seed) {
+        seedConfig.set("world_seed", seed);
+        try {
+            seedConfig.save(seedFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean hasSeedChanged() {
+        long saved = seedConfig.getLong("world_seed", -1);
+        World dream = Bukkit.getWorld(DIMENSION_NAME);
+        if (dream == null) return false;
+        long current = dream.getSeed();
+        return saved != current;
     }
 }
 
