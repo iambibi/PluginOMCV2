@@ -33,12 +33,12 @@ public record DreamStructure(DreamType type, BlockVector3 min, BlockVector3 max)
             String[] split = s.split(";");
             String typeId = split[0];
 
-            double minX = Double.parseDouble(split[2]);
-            double minY = Double.parseDouble(split[3]);
-            double minZ = Double.parseDouble(split[4]);
-            double maxX = Double.parseDouble(split[5]);
-            double maxY = Double.parseDouble(split[6]);
-            double maxZ = Double.parseDouble(split[7]);
+            double minX = Double.parseDouble(split[1]);
+            double minY = Double.parseDouble(split[2]);
+            double minZ = Double.parseDouble(split[3]);
+            double maxX = Double.parseDouble(split[4]);
+            double maxY = Double.parseDouble(split[5]);
+            double maxZ = Double.parseDouble(split[6]);
 
             return new DreamStructure(
                     DreamType.fromId(typeId),
