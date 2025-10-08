@@ -35,7 +35,7 @@ public class GlaciteCaveChunkGenerator {
     private static final FastNoiseLite noiseA = new FastNoiseLite();
     private static final FastNoiseLite noiseB = new FastNoiseLite();
 
-    public GlaciteCaveChunkGenerator(long seed) {
+    public static void init(long seed) {
         noiseA.SetSeed((int) seed);
         noiseA.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noiseA.SetFractalType(FastNoiseLite.FractalType.Ridged);

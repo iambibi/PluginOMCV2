@@ -1,26 +1,31 @@
 package fr.openmc.core.features.dream.generation.structures.soulforest;
 
-import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.DreamBiome;
+import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.generation.structures.DreamStructure;
+import fr.openmc.core.features.dream.generation.structures.DreamStructurePopulator;
 import fr.openmc.core.utils.structure.SchematicsUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
+import java.util.List;
 import java.util.Random;
 
-public class SoulAltarStructure extends BlockPopulator {
-    private static final double SOUL_ALTAR_PROBABILITY = 0.002;
+public class SoulAltarStructure extends DreamStructurePopulator {
 
-    public static final String schemSoulAltarName = "soul_altar";
-    public static final File soulAltarFile = new File(OMCPlugin.getInstance().getDataFolder() + "/schem", schemSoulAltarName + ".schem");
+    private static final double BASE_CAMP_PROBABILITY = 0.002;
+    public static final String STRUCTURE_NAME = "soul_altar";
+
+    public SoulAltarStructure() {
+        super("dream_structures", List.of(STRUCTURE_NAME));
+    }
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        if (random.nextDouble() >= SOUL_ALTAR_PROBABILITY) return;
+        if (!world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (random.nextDouble() >= BASE_CAMP_PROBABILITY) return;
 
         int x = (chunk.getX() << 4) + random.nextInt(16);
         int z = (chunk.getZ() << 4) + random.nextInt(16);
@@ -30,8 +35,8 @@ public class SoulAltarStructure extends BlockPopulator {
 
         if (!world.getBiome(loc).equals(DreamBiome.SOUL_FOREST.getBiome())) return;
 
-        System.out.println("SOUL ALTAR TROUVE x=" + x + " y=" + y + " z=" + z);
+        SchematicsUtils.CachedSchematic schematic = getRandomSchematic(random);
 
-        SchematicsUtils.pasteSchem(world, soulAltarFile, loc);
+        placeAndRegisterSchematic(schematic, loc, DreamStructure.DreamType.fromId(STRUCTURE_NAME), true);
     }
 }

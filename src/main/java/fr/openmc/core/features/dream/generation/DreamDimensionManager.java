@@ -14,7 +14,6 @@ import fr.openmc.core.features.dream.generation.structures.glacite.BaseCampStruc
 import fr.openmc.core.features.dream.generation.structures.soulforest.SoulAltarStructure;
 import fr.openmc.core.utils.structure.FeaturesPopulator;
 import fr.openmc.core.utils.structure.SchematicsUtils;
-import fr.openmc.core.utils.structure.StructureUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -26,25 +25,27 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class DreamDimensionManager {
 
     public static final String DIMENSION_NAME = "world_dream";
-    private final OMCPlugin plugin;
+    private static OMCPlugin plugin;
 
     private static File seedFile;
     private static FileConfiguration seedConfig;
 
     private static Set<FeaturesPopulator> registeredFeatures = new HashSet<>();
 
-    public DreamDimensionManager() {
-        this.plugin = OMCPlugin.getInstance();
+    public static void init() {
+        plugin = OMCPlugin.getInstance();
 
         // ** STRUCTURES SCHEMATICS REGISTER **
-        SchematicsUtils.extractSchematic(CloudCastleStructure.schemCloudCastleName);
-        SchematicsUtils.extractSchematic(BaseCampStructure.schemBaseCampName);
-        SchematicsUtils.extractSchematic(SoulAltarStructure.schemSoulAltarName);
+        SchematicsUtils.extractSchematic(CloudCastleStructure.STRUCTURE_NAME);
+        SchematicsUtils.extractSchematic(BaseCampStructure.STRUCTURE_NAME);
+        SchematicsUtils.extractSchematic(SoulAltarStructure.STRUCTURE_NAME);
 
         // ** REGISTER STRUCTURES NBT **
         registrerFeatures(new RockPopulator());
@@ -54,17 +55,11 @@ public class DreamDimensionManager {
         registrerFeatures(new GroundSpikePopulator());
         registrerFeatures(new GlaciteGeodePopulator());
 
-        preloadAllStructures();
-
         // ** DIMENSION INIT **
         OMCPlugin.registerEvents(
                 new BiomeParticleListener()
         );
 
-        init();
-    }
-
-    public void init() {
         createDimension();
 
         seedFile = new File(OMCPlugin.getInstance().getDataFolder() + "/data/dream", "seed.yml");
@@ -81,7 +76,7 @@ public class DreamDimensionManager {
 
     // ** DIMENSION MANAGING **
 
-    public void createDimension() {
+    public static void createDimension() {
         WorldCreator creator = new WorldCreator(DIMENSION_NAME);
 
         File worldFolder = new File(Bukkit.getWorldContainer(), DIMENSION_NAME);
@@ -98,11 +93,12 @@ public class DreamDimensionManager {
         }
 
         creator.generator(new DreamChunkGenerator(seed));
-        new SoulForestChunkGenerator(seed);
-        new PlainsChunkGenerator(seed);
-        new MudBeachChunkGenerator(seed);
-        new CloudChunkGenerator(seed);
-        new GlaciteCaveChunkGenerator(seed);
+        SoulForestChunkGenerator.init(seed);
+        PlainsChunkGenerator.init(seed);
+        MudBeachChunkGenerator.init(seed);
+        CloudChunkGenerator.init(seed);
+        GlaciteCaveChunkGenerator.init(seed);
+
         creator.environment(World.Environment.NORMAL);
 
         World dream = creator.createWorld();
@@ -129,17 +125,7 @@ public class DreamDimensionManager {
     }
 
     // ** STRUCTURE NBT MANAGING **
-    private void preloadAllStructures() {
-        Map<String, List<String>> structuresByGroup = new HashMap<>();
-
-        registeredFeatures.forEach(populator ->
-                structuresByGroup.put(populator.group, populator.features)
-        );
-
-        StructureUtils.preloadStructures(structuresByGroup);
-    }
-
-    private void registrerFeatures(FeaturesPopulator populator) {
+    private static void registrerFeatures(FeaturesPopulator populator) {
         registeredFeatures.add(populator);
     }
 
@@ -165,7 +151,7 @@ public class DreamDimensionManager {
 
     // ** SEED MANAGING **
 
-    private long createSeed() {
+    private static long createSeed() {
         Random random = new Random();
 
         long seed = random.nextLong();

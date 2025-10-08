@@ -21,7 +21,7 @@ public class DreamBlocksManager {
 
     private static final List<DreamBlock> dreamBlocks = new ArrayList<>();
 
-    public DreamBlocksManager() {
+    public static void init() {
         OMCPlugin.registerEvents(
                 new DreamBlocksListeners()
         );

@@ -2,6 +2,8 @@ package fr.openmc.core.features.dream.displays;
 
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.generation.structures.DreamStructure;
+import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -33,8 +35,14 @@ public class DreamScoreboard {
         objective.getScore("§7").setScore(19);
         objective.getScore("§8• §fNom: §7" + player.getName()).setScore(18);
         objective.getScore("   ").setScore(17);
-        objective.getScore("§8• §fLocation: §7" + dreamBiome.getName()).setScore(16);
+        objective.getScore("§8• §fBiome: §7" + dreamBiome.getName()).setScore(16);
 
+        DreamStructure dreamStructure = DreamStructuresManager.getStructureAt(player.getLocation());
+        if (dreamStructure != null) {
+            String nameLocation = dreamStructure.type().getName();
+
+            objective.getScore("§8• §fLocation: §7" + nameLocation).setScore(15);
+        }
         // temps
         // nb orbe
 

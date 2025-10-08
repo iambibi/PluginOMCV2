@@ -9,6 +9,7 @@ import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
 import fr.openmc.core.features.dream.listeners.biomes.PlayerEnteredBiome;
 import fr.openmc.core.features.dream.listeners.dream.PlayerChangeWorldListener;
@@ -59,12 +60,13 @@ public class DreamManager {
         );
 
         // ** MANAGERS **
-        new DreamDimensionManager();
-        new DreamItemRegister();
-        new DreamBlocksManager();
-        new DreamMobManager();
-        new DreamDropsManager();
-        new DreamCraftingRegister();
+        DreamDimensionManager.init();
+        DreamStructuresManager.init();
+        DreamItemRegister.init();
+        DreamBlocksManager.init();
+        DreamMobManager.init();
+        DreamDropsManager.init();
+        DreamCraftingRegister.init();
 
         // ** LOAD DATAS **
         loadAllDreamPlayerData();

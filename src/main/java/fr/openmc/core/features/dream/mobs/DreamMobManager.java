@@ -27,10 +27,7 @@ public class DreamMobManager {
 
     private static final Map<String, DreamMob> mobsByName = new HashMap<>();
 
-    /**
-     * Constructeur qui initialise la probabilité d'apparition et enregistre les événements.
-     */
-    public DreamMobManager() {
+    public static void init() {
         OMCPlugin.registerEvents(
                 new PlainsMobSpawningListener(),
                 new SoulForestMobSpawningListener(),

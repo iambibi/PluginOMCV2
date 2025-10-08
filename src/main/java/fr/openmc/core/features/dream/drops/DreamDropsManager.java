@@ -11,7 +11,7 @@ public class DreamDropsManager {
 
     private final static HashMap<Material, ItemStack> customDrops = new HashMap<>();
 
-    public DreamDropsManager() {
+    public static void init() {
         OMCPlugin.registerEvents(
                 new DreamDropsListener()
         );
@@ -22,7 +22,7 @@ public class DreamDropsManager {
         registerCustomDrop(Material.CREAKING_HEART, DreamItemRegister.getByName("omc_dream:creaking_heart").getBest());
     }
 
-    public void registerCustomDrop(Material mat, ItemStack item) {
+    public static void registerCustomDrop(Material mat, ItemStack item) {
         customDrops.put(mat, item);
     }
 

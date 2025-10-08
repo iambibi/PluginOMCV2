@@ -13,7 +13,7 @@ public class CloudChunkGenerator {
 
     public static final FastNoiseLite cloudNoise = new FastNoiseLite();
 
-    public CloudChunkGenerator(long seed) {
+    public static void init(long seed) {
         cloudNoise.SetSeed((int) seed);
         cloudNoise.SetFrequency(0.06f);
     }

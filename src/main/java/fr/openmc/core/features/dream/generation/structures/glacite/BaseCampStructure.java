@@ -1,7 +1,11 @@
 package fr.openmc.core.features.dream.generation.structures.glacite;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
 import fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator;
+import fr.openmc.core.features.dream.generation.structures.DreamStructure;
+import fr.openmc.core.features.dream.generation.structures.DreamStructurePopulator;
 import fr.openmc.core.utils.structure.SchematicsUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -10,16 +14,21 @@ import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 
-public class BaseCampStructure extends BlockPopulator {
-    private static final double BASE_CAMP_PROBABILITY = 0.001;
+public class BaseCampStructure extends DreamStructurePopulator {
 
-    public static final String schemBaseCampName = "base_camp";
-    public static final File baseCampFile = new File(OMCPlugin.getInstance().getDataFolder() + "/schem", schemBaseCampName + ".schem");
+    private static final double BASE_CAMP_PROBABILITY = 0.001;
+    public static final String STRUCTURE_NAME = "base_camp";
+
+    public BaseCampStructure() {
+        super("dream_structures", List.of(STRUCTURE_NAME));
+    }
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
+        if (!world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME)) return;
         if (random.nextDouble() >= BASE_CAMP_PROBABILITY) return;
 
         int x = (chunk.getX() << 4) + random.nextInt(16);
@@ -28,8 +37,8 @@ public class BaseCampStructure extends BlockPopulator {
 
         Location loc = new Location(world, x, y, z);
 
-        System.out.println("BASE CAMP TROUVE x=" + x + " y=" + y + " z=" + z);
+        SchematicsUtils.CachedSchematic schematic = getRandomSchematic(random);
 
-        SchematicsUtils.pasteSchem(world, baseCampFile, loc.add(0, 57, 0));
+        placeAndRegisterSchematic(schematic, loc, DreamStructure.DreamType.fromId(STRUCTURE_NAME), false);
     }
 }

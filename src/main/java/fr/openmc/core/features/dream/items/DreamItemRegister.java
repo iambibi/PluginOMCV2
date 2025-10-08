@@ -29,7 +29,7 @@ public class DreamItemRegister {
     static final HashMap<String, DreamItem> dreamItems = new HashMap<>();
     static final String customNameKey = "dream_item";
 
-    public DreamItemRegister() {
+    public static void init() {
         // # ORBES
         registerDreamItem(new DominationOrb("omc_dream:domination_orb"));
         registerDreamItem(new SoulOrb("omc_dream:ame_orb"));

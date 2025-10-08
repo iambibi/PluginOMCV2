@@ -16,7 +16,7 @@ public class PlainsChunkGenerator {
     public static final FastNoiseLite terrainNoise = new FastNoiseLite();
     public static final FastNoiseLite detailNoise = new FastNoiseLite();
 
-    public PlainsChunkGenerator(long seed) {
+    public static void init(long seed) {
         terrainNoise.SetSeed((int) seed);
         terrainNoise.SetFrequency(0.003f);
         detailNoise.SetSeed((int) seed);
