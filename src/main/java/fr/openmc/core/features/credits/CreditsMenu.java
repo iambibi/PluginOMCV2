@@ -4,6 +4,7 @@ import fr.openmc.api.menulib.PaginatedMenu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.StaticSlots;
+import fr.openmc.core.items.CustomItemRegistry;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
@@ -14,10 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CreditsMenu extends PaginatedMenu {
 
@@ -32,7 +30,7 @@ public class CreditsMenu extends PaginatedMenu {
 
     @Override
     public @NotNull InventorySize getInventorySize() {
-        return InventorySize.LARGE;
+        return InventorySize.LARGEST;
     }
 
     @Override
@@ -76,12 +74,8 @@ public class CreditsMenu extends PaginatedMenu {
     public Map<Integer, ItemBuilder> getButtons() {
         Map<Integer, ItemBuilder> map = new HashMap<>();
 
-        map.put(48, new ItemBuilder(this, Material.ARROW, meta ->
-                meta.displayName(Component.text("§cPage précédente"))).setPreviousPageButton());
-
-        map.put(50, new ItemBuilder(this, Material.ARROW, meta ->
-                meta.displayName(Component.text("§aPage suivante"))).setNextPageButton());
-
+        map.put(48, new ItemBuilder(this, Objects.requireNonNull(CustomItemRegistry.getByName("_iainternal:icon_back_orange")).getBest(), itemMeta -> itemMeta.displayName(Component.text("§cPage précédente"))).setPreviousPageButton());
+        map.put(50, new ItemBuilder(this, Objects.requireNonNull(CustomItemRegistry.getByName("_iainternal:icon_next_orange")).getBest(), itemMeta -> itemMeta.displayName(Component.text("§aPage suivante"))).setNextPageButton());
         map.put(49, new ItemBuilder(this, Material.BARRIER, meta -> {
             meta.displayName(Component.text("§cFermer le menu"));
         }).setOnClick(e -> getOwner().closeInventory()));
