@@ -50,12 +50,12 @@ public class CreditsMenu extends PaginatedMenu {
         for (Credits credit : Credits.values()) {
             List<Component> lore = new ArrayList<>();
 
-            lore.add(Component.text("§7Développeurs: §9" + String.join(", ", credit.getDeveloppers())));
+            lore.add(Component.text("§7Développeur(s): §9" + String.join(", ", credit.getDeveloppers())));
             if (!credit.getGraphists().isEmpty()) {
-                lore.add(Component.text("§7Graphistes: §6" + String.join(", ", credit.getGraphists())));
+                lore.add(Component.text("§7Graphiste(s): §6" + String.join(", ", credit.getGraphists())));
             }
             if (!credit.getBuilders().isEmpty()) {
-                lore.add(Component.text("§7Builders: §a" + String.join(", ", credit.getBuilders())));
+                lore.add(Component.text("§7Builder(s): §a" + String.join(", ", credit.getBuilders())));
             }
 
             ItemBuilder item = new ItemBuilder(this, Material.BOOK, itemMeta -> {
