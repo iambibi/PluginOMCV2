@@ -1,6 +1,10 @@
 package fr.openmc.core.features.dream.items;
 
 import fr.openmc.core.CommandsManager;
+import fr.openmc.core.features.dream.items.armors.cloud.CloudBoots;
+import fr.openmc.core.features.dream.items.armors.cloud.CloudChestplate;
+import fr.openmc.core.features.dream.items.armors.cloud.CloudHelmet;
+import fr.openmc.core.features.dream.items.armors.cloud.CloudLeggings;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingBoots;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingChestplate;
 import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingHelmet;
@@ -45,6 +49,7 @@ public class DreamItemRegister {
         registerDreamItem(new CorruptedString("omc_dream:corrupted_string"));
         registerDreamItem(new CreakingHeart("omc_dream:creaking_heart"));
         registerDreamItem(new Soul("omc_dream:soul"));
+        registerDreamItem(new Soul("omc_dream:cloud_key"));
 
         // # ARMURES
         registerDreamItem(new OldCreakingHelmet("omc_dream:old_creaking_helmet"));
@@ -57,9 +62,16 @@ public class DreamItemRegister {
         registerDreamItem(new SoulLeggings("omc_dream:soul_leggings"));
         registerDreamItem(new SoulBoots("omc_dream:soul_boots"));
 
+        registerDreamItem(new CloudHelmet("omc_dream:cloud_helmet"));
+        registerDreamItem(new CloudChestplate("omc_dream:cloud_chestplate"));
+        registerDreamItem(new CloudLeggings("omc_dream:cloud_leggings"));
+        registerDreamItem(new CloudBoots("omc_dream:cloud_boots"));
+
         // # WEAPONS
         registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
+
+        registerDreamItem(new OldCreakingAxe("omc_dream:cloud_fishing_rod"));
 
         CommandsManager.getHandler().getAutoCompleter().registerSuggestion("dream_item", SuggestionProvider.of(getNames()));
         CommandsManager.getHandler().register(

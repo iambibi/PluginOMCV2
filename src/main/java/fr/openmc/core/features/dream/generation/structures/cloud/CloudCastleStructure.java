@@ -1,6 +1,5 @@
 package fr.openmc.core.features.dream.generation.structures.cloud;
 
-import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
@@ -11,13 +10,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.List;
 import java.util.Random;
 
 public class CloudCastleStructure extends DreamStructurePopulator {
 
-    private static final double CLOUD_CASTLE_PROBABILITY = 0.0004;
+    private static final double CLOUD_CASTLE_PROBABILITY = 0.0007;
     public static final String STRUCTURE_NAME = "cloud_castle";
 
     public CloudCastleStructure() {

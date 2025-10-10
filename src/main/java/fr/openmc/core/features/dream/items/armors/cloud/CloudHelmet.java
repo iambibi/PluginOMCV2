@@ -1,4 +1,4 @@
-package fr.openmc.core.features.dream.items.armors.soul;
+package fr.openmc.core.features.dream.items.armors.cloud;
 
 import fr.openmc.core.features.dream.items.DreamItem;
 import fr.openmc.core.features.dream.items.DreamRarity;
@@ -6,14 +6,14 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class SoulHelmet extends DreamItem {
-    public SoulHelmet(String name) {
+public class CloudHelmet extends DreamItem {
+    public CloudHelmet(String name) {
         super(name);
     }
 
     @Override
     public DreamRarity getRarity() {
-        return DreamRarity.RARE;
+        return DreamRarity.EPIC;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SoulHelmet extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_HELMET);
 
-        item.getItemMeta().displayName(Component.text("Casque des Ames"));
+        item.getItemMeta().displayName(Component.text("Casque des Nuages"));
         return item;
     }
 }

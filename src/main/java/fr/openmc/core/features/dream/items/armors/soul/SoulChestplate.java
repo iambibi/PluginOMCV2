@@ -13,7 +13,7 @@ public class SoulChestplate extends DreamItem {
 
     @Override
     public DreamRarity getRarity() {
-        return DreamRarity.COMMON;
+        return DreamRarity.RARE;
     }
 
     @Override

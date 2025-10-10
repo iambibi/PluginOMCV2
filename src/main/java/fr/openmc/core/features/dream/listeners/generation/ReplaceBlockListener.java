@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.listeners.generation;
 
 import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
+import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
 import fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator;
@@ -26,6 +27,12 @@ public class ReplaceBlockListener implements Listener {
                     if (block.getType() == Material.GRAY_GLAZED_TERRACOTTA) {
                         block.setType(Material.ENCHANTING_TABLE);
                         DreamBlocksManager.addDreamBlock("altar", block.getLocation());
+                    }
+                }
+                for (int y = CloudChunkGenerator.MAX_HEIGHT_CLOUD; y <= CloudChunkGenerator.MAX_HEIGHT_CLOUD + 85; y++) {
+                    Block block = chunk.getBlock(x, y, z);
+                    if (block.getType() == Material.DIAMOND_BLOCK) {
+                        CloudVault.replaceBlockWithVault(block);
                     }
                 }
             }

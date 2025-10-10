@@ -13,7 +13,7 @@ public class SoulLeggings extends DreamItem {
 
     @Override
     public DreamRarity getRarity() {
-        return DreamRarity.COMMON;
+        return DreamRarity.RARE;
     }
 
     @Override

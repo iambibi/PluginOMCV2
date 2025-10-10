@@ -1,4 +1,4 @@
-package fr.openmc.core.features.dream.items.armors.soul;
+package fr.openmc.core.features.dream.items.loots;
 
 import fr.openmc.core.features.dream.items.DreamItem;
 import fr.openmc.core.features.dream.items.DreamRarity;
@@ -6,8 +6,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class SoulHelmet extends DreamItem {
-    public SoulHelmet(String name) {
+public class CloudKey extends DreamItem {
+    public CloudKey(String name) {
         super(name);
     }
 
@@ -18,19 +18,19 @@ public class SoulHelmet extends DreamItem {
 
     @Override
     public boolean isTransferable() {
-        return true;
+        return false;
     }
 
     @Override
     public ItemStack getTransferableItem() {
-        return this.getBest();
+        return null;
     }
 
     @Override
     public ItemStack getVanilla() {
-        ItemStack item = new ItemStack(Material.IRON_HELMET);
+        ItemStack item = new ItemStack(Material.OMINOUS_TRIAL_KEY);
 
-        item.getItemMeta().displayName(Component.text("Casque des Ames"));
+        item.getItemMeta().displayName(Component.text("Clé nuageuse"));
         return item;
     }
 }

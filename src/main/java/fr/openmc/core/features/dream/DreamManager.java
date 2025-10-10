@@ -6,6 +6,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
+import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
@@ -56,7 +57,8 @@ public class DreamManager {
                 new PlayerSleepListener(),
                 new PlayerEnteredBiome(),
                 new PlayerObtainOrb(),
-                new ReplaceBlockListener()
+                new ReplaceBlockListener(),
+                new CloudVault()
         );
 
         // ** MANAGERS **
