@@ -3,6 +3,7 @@ package fr.openmc.core.features.credits;
 import fr.openmc.api.menulib.PaginatedMenu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
+import fr.openmc.api.menulib.utils.ItemUtils;
 import fr.openmc.api.menulib.utils.StaticSlots;
 import fr.openmc.core.items.CustomItemRegistry;
 import net.kyori.adventure.text.Component;
@@ -58,11 +59,11 @@ public class CreditsMenu extends PaginatedMenu {
                 lore.add(Component.text("§7Builder(s): §a" + String.join(", ", credit.getBuilders())));
             }
 
-            ItemBuilder item = new ItemBuilder(this, Material.BOOK, itemMeta -> {
+            ItemBuilder item = new ItemBuilder(this, credit.getIcon(), itemMeta -> {
                 itemMeta.displayName(Component.text("§e" + credit.getFeatureName())
                         .decoration(TextDecoration.ITALIC, false));
                 itemMeta.lore(lore);
-            });
+            }).hide(ItemUtils.getAllDataComponentTypes());
 
             items.add(item);
         }

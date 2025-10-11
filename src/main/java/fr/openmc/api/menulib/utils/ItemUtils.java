@@ -2,6 +2,8 @@ package fr.openmc.api.menulib.utils;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import fr.openmc.api.menulib.MenuLib;
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -68,4 +70,26 @@ public class ItemUtils {
 		}
 		return skull;
 	}
+
+    public static DataComponentType[] getAllDataComponentTypes() {
+        return new DataComponentType[]{
+                DataComponentTypes.CONSUMABLE,
+                DataComponentTypes.FOOD,
+                DataComponentTypes.BUNDLE_CONTENTS,
+                DataComponentTypes.ENCHANTMENTS,
+                DataComponentTypes.DAMAGE,
+                DataComponentTypes.DAMAGE_RESISTANT,
+                DataComponentTypes.UNBREAKABLE,
+                DataComponentTypes.ATTRIBUTE_MODIFIERS,
+                DataComponentTypes.TRIM,
+                DataComponentTypes.PROVIDES_TRIM_MATERIAL,
+                DataComponentTypes.JUKEBOX_PLAYABLE,
+                DataComponentTypes.FIREWORKS,
+                DataComponentTypes.FIREWORK_EXPLOSION,
+                DataComponentTypes.POTION_CONTENTS,
+                DataComponentTypes.POTION_DURATION_SCALE,
+                DataComponentTypes.TOOLTIP_DISPLAY,
+                DataComponentTypes.ITEM_NAME
+        };
+    }
 }
