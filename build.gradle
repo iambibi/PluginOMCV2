@@ -60,8 +60,8 @@ dependencies {
     compileOnly "net.dmulloy2:ProtocolLib:${protocolLibVersion}"
 
     implementation "org.jetbrains:annotations:${jetbrainsAnnotationsVersion}"
-    implementation "com.github.Revxrsal.Lamp:common:${revxrsalLampVersion}"
-    implementation "com.github.Revxrsal.Lamp:bukkit:${revxrsalLampVersion}"
+    implementation "io.github.revxrsal:lamp.common:${revxrsalLampVersion}"
+    implementation "io.github.revxrsal:lamp.bukkit:${revxrsalLampVersion}"
     implementation "com.j256.ormlite:ormlite-jdbc:${ormVersion}"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -97,7 +97,7 @@ processResources {
     def pluginProps = ["version": version, "minecraftVersion": minecraftVersion]
     inputs.properties(pluginProps)
 
-    filesMatching('plugin.yml') {
+    filesMatching('paper-plugin.yml') {
         expand(pluginProps)
     }
 

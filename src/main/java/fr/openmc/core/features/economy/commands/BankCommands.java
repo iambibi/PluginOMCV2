@@ -13,7 +13,7 @@ import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.DefaultFor;
+import revxrsal.commands.annotation.CommandPlaceholder;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
@@ -21,7 +21,7 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 @Command({ "bank", "banque" })
 public class BankCommands {
 
-    @DefaultFor("~")
+    @CommandPlaceholder()
     @Description("Ouvre le menu de votre banque personelle")
     public static void openBankMenu(Player player) {
         City playerCity = CityManager.getPlayerCity(player.getUniqueId());

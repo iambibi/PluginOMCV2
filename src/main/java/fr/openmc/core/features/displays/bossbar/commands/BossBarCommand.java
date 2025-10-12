@@ -13,9 +13,9 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.DefaultFor;
+import revxrsal.commands.annotation.CommandPlaceholder;
 import revxrsal.commands.annotation.Subcommand;
-import revxrsal.commands.bukkit.BukkitCommandActor;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 @Command({"omcbossbar", "bb", "bossbaromc"})
 public class BossBarCommand {
 
-    @DefaultFor("~")
+    @CommandPlaceholder()
     public void mainCommand(CommandSender sender) {
         if (!(sender instanceof Player player)) {
             MessagesManager.sendMessage(sender, MessagesManager.Message.NO_PERMISSION.getMessage(), Prefix.OPENMC, MessageType.ERROR, true);
@@ -52,7 +52,7 @@ public class BossBarCommand {
     @CommandPermission("omc.admin.commands.bossbar.manage")
     @Subcommand("manage")
     public void manageCommand(BukkitCommandActor actor) {
-        if (!(actor.getSender() instanceof Player player)) {
+        if (!(actor.sender() instanceof Player player)) {
             return;
         }
 
@@ -104,10 +104,10 @@ public class BossBarCommand {
             Component component = MiniMessage.miniMessage().deserialize(message);
             BossbarManager.addMessage(component);
             BossbarManager.reloadMessages();
-            MessagesManager.sendMessage(actor.getSender(), Component.text("§aMessage ajouté avec succès!"), Prefix.OPENMC, MessageType.SUCCESS, true);
+            MessagesManager.sendMessage(actor.sender(), Component.text("§aMessage ajouté avec succès!"), Prefix.OPENMC, MessageType.SUCCESS, true);
             manageCommand(actor);
         } catch (Exception e) {
-            MessagesManager.sendMessage(actor.getSender(), Component.text("§cErreur lors de l'ajout du message! Assurez-vous que le format est correct."), Prefix.OPENMC, MessageType.ERROR, true);
+            MessagesManager.sendMessage(actor.sender(), Component.text("§cErreur lors de l'ajout du message! Assurez-vous que le format est correct."), Prefix.OPENMC, MessageType.ERROR, true);
         }
     }
 
@@ -118,10 +118,10 @@ public class BossBarCommand {
             Component component = MiniMessage.miniMessage().deserialize(newMessage);
             BossbarManager.updateMessage(index, component);
             BossbarManager.reloadMessages();
-            MessagesManager.sendMessage(actor.getSender(), Component.text("§aMessage mis à jour avec succès!"), Prefix.OPENMC, MessageType.SUCCESS, true);
+            MessagesManager.sendMessage(actor.sender(), Component.text("§aMessage mis à jour avec succès!"), Prefix.OPENMC, MessageType.SUCCESS, true);
             manageCommand(actor);
         } catch (Exception e) {
-            MessagesManager.sendMessage(actor.getSender(), Component.text("§cFormat de message ou index invalide!"), Prefix.OPENMC, MessageType.ERROR, true);
+            MessagesManager.sendMessage(actor.sender(), Component.text("§cFormat de message ou index invalide!"), Prefix.OPENMC, MessageType.ERROR, true);
         }
     }
 
@@ -144,7 +144,7 @@ public class BossBarCommand {
     public void deleteMessage(BukkitCommandActor actor, int index) {
         BossbarManager.removeMessage(index);
         BossbarManager.reloadMessages();
-        MessagesManager.sendMessage(actor.getSender(), Component.text("Message supprimé avec succès."), Prefix.OPENMC, MessageType.SUCCESS, true);
+        MessagesManager.sendMessage(actor.sender(), Component.text("Message supprimé avec succès."), Prefix.OPENMC, MessageType.SUCCESS, true);
         manageCommand(actor);
     }
 }

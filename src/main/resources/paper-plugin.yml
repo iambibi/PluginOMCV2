@@ -2,14 +2,28 @@ name: OpenMC
 version: ${version}
 main: fr.openmc.core.OMCPlugin
 api-version: ${minecraftVersion}
+bootstrapper: fr.openmc.core.OMCBootstrap
 
-softdepend:
-  - FancyNpcs
-  - PlaceholderAPI
-  - LuckPerms
-  - ItemsAdder
-  - ProtocolLib
-  - WorldGuard
+dependencies:
+  server:
+    FancyNpcs:
+      load: BEFORE
+      required: true
+    PlaceholderAPI:
+      load: BEFORE
+      required: true
+    LuckPerms:
+      load: BEFORE
+      required: true
+    ItemsAdder:
+      load: BEFORE
+      required: true
+    ProtocolLib:
+      load: BEFORE
+      required: true
+    WorldGuard:
+      load: BEFORE
+      required: true
 
 prefix: OMC
 authors: [ La communauté ]

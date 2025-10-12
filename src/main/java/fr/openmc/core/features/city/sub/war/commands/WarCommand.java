@@ -17,7 +17,7 @@ import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.DefaultFor;
+import revxrsal.commands.annotation.CommandPlaceholder;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
@@ -29,7 +29,7 @@ import java.util.UUID;
 @Command({"guerre", "war"})
 @CommandPermission("omc.commands.city.war")
 public class WarCommand {
-    @DefaultFor("~")
+    @CommandPlaceholder()
     void mainCommand(Player player) {
         City playerCity = CityManager.getPlayerCity(player.getUniqueId());
         if (playerCity == null) {

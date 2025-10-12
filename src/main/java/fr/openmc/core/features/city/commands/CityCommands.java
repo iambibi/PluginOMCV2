@@ -5,6 +5,7 @@ import fr.openmc.api.input.DialogInput;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.actions.*;
+import fr.openmc.core.features.city.commands.autocomplete.CityMembersAutoComplete;
 import fr.openmc.core.features.city.conditions.*;
 import fr.openmc.core.features.city.menu.CityChunkMenu;
 import fr.openmc.core.features.city.menu.CityMenu;
@@ -36,7 +37,7 @@ import static fr.openmc.core.utils.InputUtils.MAX_LENGTH_CITY;
 public class CityCommands {
     public static final HashMap<Player, List<Player>> invitations = new HashMap<>(); // Invité, Inviteurs
 
-    @DefaultFor("~")
+    @CommandPlaceholder()
     public static void mainCommand(Player player) {
         if (!Chronometer.containsChronometer(player.getUniqueId(), "mascot:stick")) {
             City playerCity = CityManager.getPlayerCity(player.getUniqueId());
@@ -181,8 +182,7 @@ public class CityCommands {
     @Subcommand("transfer")
     @CommandPermission("omc.commands.city.transfer")
     @Description("Transfert la propriété de votre ville")
-    @AutoComplete("@city_members")
-    void transfer(Player sender, @Named("owner") OfflinePlayer player) {
+    void transfer(Player sender, @SuggestWith(CityMembersAutoComplete.class) @Named("owner") OfflinePlayer player) {
         City playerCity = CityManager.getPlayerCity(sender.getUniqueId());
 
         if (!CityManageConditions.canCityTransfer(playerCity, sender, player.getUniqueId())) return;
@@ -195,8 +195,7 @@ public class CityCommands {
     @Subcommand("kick")
     @CommandPermission("omc.commands.city.kick")
     @Description("Exclure un habitant de votre ville")
-    @AutoComplete("@city_members")
-    void kick(Player sender, @Named("exclu") OfflinePlayer player) {
+    void kick(Player sender, @SuggestWith(CityMembersAutoComplete.class) @Named("exclu") OfflinePlayer player) {
         CityKickAction.startKick(sender, player);
     }
 
@@ -213,7 +212,7 @@ public class CityCommands {
     @Subcommand("claim")
     @CommandPermission("omc.commands.city.claim")
     @Description("Claim un chunk pour votre ville")
-    @DefaultFor("~")
+    @CommandPlaceholder()
     void claim(Player sender) {
         City city = CityManager.getPlayerCity(sender.getUniqueId());
 

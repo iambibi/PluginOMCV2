@@ -13,7 +13,7 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 @Command("socialspy")
 public class SocialSpyCommand {
 
-    @DefaultFor("~")
+    @CommandPlaceholder()
     @Description("Active ou désactive le social spy")
     @CommandPermission("omc.admin.commands.privatemessage.socialspy")
     public void toggleSocialSpyCommand(Player player) {

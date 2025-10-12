@@ -9,9 +9,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import revxrsal.commands.annotation.AutoComplete;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 @Command("cube")
@@ -20,8 +20,7 @@ public class CubeCommands {
 
     @Subcommand("startShock")
     @CommandPermission("omc.admins.commands.cube.shock")
-    @AutoComplete("@cubes")
-    public void startShock(Player player, String cubeLoc) {
+    public void startShock(Player player, @SuggestWith(CubeLocationAutoComplete.class) String cubeLoc) {
         Cube cube = getInputCubes(player, cubeLoc);
 
         if (cube == null) return;
@@ -32,8 +31,7 @@ public class CubeCommands {
 
     @Subcommand("startBubble")
     @CommandPermission("omc.admins.commands.cube.bubble")
-    @AutoComplete("@cubes")
-    public void startCorruptedBubble(Player player, String cubeLoc) {
+    public void startCorruptedBubble(Player player, @SuggestWith(CubeLocationAutoComplete.class) String cubeLoc) {
         Cube cube = getInputCubes(player, cubeLoc);
 
         if (cube == null) return;
@@ -44,8 +42,7 @@ public class CubeCommands {
 
     @Subcommand("reproduce")
     @CommandPermission("omc.admins.commands.cube.reproduce")
-    @AutoComplete("@cubes")
-    public void reproduceCube(Player player, String cubeLoc) {
+    public void reproduceCube(Player player, @SuggestWith(CubeLocationAutoComplete.class) String cubeLoc) {
         Cube cube = getInputCubes(player, cubeLoc);
         if (cube == null) return;
 
@@ -55,8 +52,7 @@ public class CubeCommands {
 
     @Subcommand("reproduceForce")
     @CommandPermission("omc.admins.commands.cube.reproduce_force")
-    @AutoComplete("@cubes")
-    public void reproduceForceCube(Player player, String cubeLoc) {
+    public void reproduceForceCube(Player player, @SuggestWith(CubeLocationAutoComplete.class) String cubeLoc) {
         Cube cube = getInputCubes(player, cubeLoc);
 
         if (cube == null) return;

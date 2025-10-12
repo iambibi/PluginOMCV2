@@ -31,7 +31,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import revxrsal.commands.autocomplete.SuggestionProvider;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -75,9 +74,6 @@ public class ContestManager {
         }
 
         // ** COMMANDS **
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("colorContest", SuggestionProvider.of(ContestManager.getColorContestList()));
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("trade", SuggestionProvider.of(TradeYMLManager.getRessListFromConfig()));
-
         CommandsManager.getHandler().register(
                 new ContestCommand()
         );

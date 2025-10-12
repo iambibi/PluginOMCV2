@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
@@ -21,7 +20,7 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 @CommandPermission("omc.commands.money")
 public class Money {
 
-    @DefaultFor("~")
+    @CommandPlaceholder()
     public void getMoney(CommandSender sender, @Optional OfflinePlayer target) {
         if (sender instanceof Player player && target == null) {
             MessagesManager.sendMessage(player, Component.text("§aVous avez §e" + EconomyManager.getFormattedBalance(player.getUniqueId()) + "§a"), Prefix.OPENMC, MessageType.INFO,  true);

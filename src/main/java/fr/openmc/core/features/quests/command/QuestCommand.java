@@ -11,7 +11,7 @@ import revxrsal.commands.annotation.*;
 @Description("Commande pour les quêtes")
 public class QuestCommand {
 
-    @DefaultFor({"~"})
+    @CommandPlaceholder()
     @Description("Ouvre le menu des quêtes")
     public static void onQuest(Player player) {
         new QuestsMenu(player).open();
