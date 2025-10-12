@@ -61,6 +61,10 @@ public class CloudVault implements Listener {
 
         if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
 
+        System.out.println("BlockDispenseLootEvent : In world_dream - Block type : " + event.getBlock().getType().name());
+
+        if (!(event.getBlock().getState() instanceof Vault)) return;
+
         event.setDispensedLoot(getLootCloudVault());
     }
 

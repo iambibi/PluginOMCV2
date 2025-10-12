@@ -17,6 +17,7 @@ public class MobCloudSpawner implements Listener {
 
             normal.setSpawnedType(EntityType.PHANTOM);
 
+            //todo: add loot table
             normal.setSpawnRange(6);
             normal.setBaseSpawnsBeforeCooldown(3.0f);
             normal.setBaseSimultaneousEntities(2.0f);

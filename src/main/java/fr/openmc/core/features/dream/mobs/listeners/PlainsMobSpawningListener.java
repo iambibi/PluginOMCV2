@@ -48,7 +48,7 @@ public class PlainsMobSpawningListener implements Listener {
 
         double choice = Math.random();
 
-        if (choice < DREAM_SPIDER_PROBABILITY) {
+        if (e.getEntity().isOnGround() && choice < DREAM_SPIDER_PROBABILITY) {
             new DreamSpider().spawn(spawningLoc);
             e.setCancelled(true);
             return;
