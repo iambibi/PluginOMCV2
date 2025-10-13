@@ -33,7 +33,6 @@ public enum Credits {
     SETTINGS(Material.REDSTONE_TORCH, "Les Paramêtres", Set.of("Axeno"), Set.of("Gexary")),
     TICKETS(Material.BOOK, "Les Tickets V1", Set.of("Axeno"), Set.of("Tfloa")),
     TPA(Material.ENDER_PEARL, "Le Tpa", Set.of("gab400")),
-    FREEZE_COMMAND(Material.ICE, "Freeze Command", Set.of("gab400")),
     RTP(Material.ENDER_PEARL, "Le RTP", Set.of("miseur")),
     VERSIONNING(Material.COMMAND_BLOCK_MINECART, "Le Versionning", Set.of("Piquel Chips")),
     CUSTOMITEMS(Material.COMMAND_BLOCK, "Les Custom Items", Set.of("Axeno")),
