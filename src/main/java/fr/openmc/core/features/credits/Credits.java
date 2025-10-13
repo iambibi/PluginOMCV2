@@ -12,7 +12,7 @@ public enum Credits {
     ADMINSHOP(Material.GOLD_INGOT, "Adminshop", Set.of("Axeno"), Set.of("Gexary")),
     ANIMATIONS(Material.AMETHYST_BLOCK, "Les Animations", Set.of("iambibi_", "gab400"), Set.of("Tfloa")),
     CUBE(Material.LAPIS_BLOCK, "Le Cube", Set.of("iambibi_")),
-    CITY(CustomItemRegistry.getByName("omc_homes:omc_homes_icon_chateau").getBest(), "Les Villes", Set.of("iambibi_", "Gryo", "gab400", "Nocolm", "Axeno", "PuppyTransGirl"), Set.of("Tfloa", "Gexary")),
+    CITY(CustomItemRegistry.getByName("omc_homes:omc_homes_icon_chateau").getBest(), "Les Villes", Set.of("iambibi_", "Gyro", "gab400", "Nocolm", "Axeno", "PuppyTransGirl"), Set.of("Tfloa", "Gexary")),
     MASCOTS(Material.ZOMBIE_SPAWN_EGG, "Les Mascottes", Set.of("Nocolm")),
     MAYOR(CustomItemRegistry.getByName("omc_homes:omc_homes_icon_bank").getBest(), "Les Maires", Set.of("iambibi_"), Set.of("Gexary")),
     CITY_MILESTONE(Material.NETHER_STAR, "Le Milestone des Villes", Set.of("iambibi_")),
