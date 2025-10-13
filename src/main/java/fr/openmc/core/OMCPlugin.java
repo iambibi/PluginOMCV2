@@ -97,13 +97,14 @@ public class OMCPlugin extends JavaPlugin {
             new PacketMenuLib(this);
 
         logLoadMessage();
-
-        Datapack pack = this.getServer().getDatapackManager().getPack(getPluginMeta().getName() + "/omc");
-        if (pack != null) {
-            if (pack.isEnabled()) {
-                getSLF4JLogger().info("\u001B[32m✔ Lancement du datapack réussi\u001B[0m");
-            } else {
-                getSLF4JLogger().warn("\u001B[31m✘ Lancement du datapack échoué\u001B[0m");
+        if (!OMCPlugin.isUnitTestVersion()) {
+            Datapack pack = this.getServer().getDatapackManager().getPack(getPluginMeta().getName() + "/omc");
+            if (pack != null) {
+                if (pack.isEnabled()) {
+                    getSLF4JLogger().info("\u001B[32m✔ Lancement du datapack réussi\u001B[0m");
+                } else {
+                    getSLF4JLogger().warn("\u001B[31m✘ Lancement du datapack échoué\u001B[0m");
+                }
             }
         }
         new ErrorReporter();

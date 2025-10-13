@@ -38,11 +38,15 @@ public class ListenersManager {
                 new BossbarListener(),
                 new PlayerSettingsManager(),
                 new InteractListener(),
-                new ItemsAddersListener(),
-                new TicketListener(),
                 new AywenCapListener(),
                 new ArmorListener()
         );
+        if (!OMCPlugin.isUnitTestVersion()) {
+            registerEvents(
+                    new ItemsAddersListener(),
+                    new TicketListener()
+            );
+        }
     }
 
     private static void registerEvents(Listener... args) {

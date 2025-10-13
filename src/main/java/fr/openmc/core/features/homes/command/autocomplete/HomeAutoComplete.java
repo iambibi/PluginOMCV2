@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.autocomplete.SuggestionProvider;
 import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 import revxrsal.commands.node.ExecutionContext;
+import revxrsal.commands.stream.StringStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +23,9 @@ public class HomeAutoComplete implements SuggestionProvider<BukkitCommandActor> 
         List<String> suggestions = new ArrayList<>();
 
         Player player = context.actor().requirePlayer();
-        String commandName = context.command().usage();
-        System.out.println("commandName for HomeAutocomplete " + commandName);
+        String commandName = context.command().usage().split(" ")[0];
 
-        String args = context.input().toString();
-
-        System.out.println("args for HomeAutocomplete " + args);
-
-        List<String> argsList = args.isEmpty() ? new ArrayList<>() : List.of(args.split(" ")).subList(1, args.split(" ").length);
-        System.out.println("argsList for HomeAutocomplete " + argsList);
-
+        StringStream args = context.input();
 
         if (player == null)
             return suggestions;
@@ -44,7 +38,7 @@ public class HomeAutoComplete implements SuggestionProvider<BukkitCommandActor> 
                 }
             }
         } else {
-            String arg = argsList.getFirst();
+            String arg = args.peekString();
 
             if (arg.contains(":") && player.hasPermission("omc.admin.homes.teleport.others")) {
                 if (isHomeCommand(commandName)) {
