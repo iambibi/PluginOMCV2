@@ -1,5 +1,6 @@
 package fr.openmc.core.features.friend;
 
+import fr.openmc.core.commands.autocomplete.OnlinePlayerAutoComplete;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.economy.EconomyManager;
@@ -34,7 +35,7 @@ public class FriendCommand {
 
     @Subcommand("add")
     @Description("Envoyer une demande d'ami")
-    public void addCommand(Player player, Player target) {
+    public void addCommand(Player player, @SuggestWith(OnlinePlayerAutoComplete.class) Player target) {
         try {
             if (player.getUniqueId().equals(target.getUniqueId())) {
                 MessagesManager.sendMessage(player, Component.text("§cVous ne pouvez pas vous ajouter vous-même en ami."), Prefix.FRIEND, MessageType.ERROR, true);

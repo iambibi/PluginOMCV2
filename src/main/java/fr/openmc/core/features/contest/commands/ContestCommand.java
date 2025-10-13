@@ -1,5 +1,6 @@
 package fr.openmc.core.features.contest.commands;
 
+import fr.openmc.core.commands.autocomplete.OnlinePlayerAutoComplete;
 import fr.openmc.core.features.contest.commands.autocomplete.ColorContestAutoComplete;
 import fr.openmc.core.features.contest.commands.autocomplete.TradeContestAutoComplete;
 import fr.openmc.core.features.contest.managers.ContestManager;
@@ -110,7 +111,7 @@ public class ContestCommand {
     @Subcommand("addpoints")
     @Description("Permet d'ajouter des points a un membre")
     @CommandPermission("omc.admin.commands.contest.addpoints")
-    public void addPoints(Player player, Player target, Integer points) {
+    public void addPoints(Player player, @SuggestWith(OnlinePlayerAutoComplete.class) Player target, Integer points) {
         if (ContestManager.data.getPhase()!=3) {
             MessagesManager.sendMessage(player, Component.text("§cVous ne pouvez pas donner des points lorsque le Contests n'a pas commencé"), Prefix.STAFF, MessageType.ERROR, true);
             return;

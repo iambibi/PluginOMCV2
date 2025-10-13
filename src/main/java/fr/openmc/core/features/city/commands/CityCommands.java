@@ -2,6 +2,7 @@ package fr.openmc.core.features.city.commands;
 
 import fr.openmc.api.chronometer.Chronometer;
 import fr.openmc.api.input.DialogInput;
+import fr.openmc.core.commands.autocomplete.OnlinePlayerAutoComplete;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.actions.*;
@@ -98,7 +99,7 @@ public class CityCommands {
     @Subcommand("invite")
     @CommandPermission("omc.commands.city.invite")
     @Description("Inviter un joueur dans votre ville")
-    public static void invite(Player sender, @Named("invité") Player target) {
+    public static void invite(Player sender, @Named("invité") @SuggestWith(OnlinePlayerAutoComplete.class) Player target) {
         City city = CityManager.getPlayerCity(sender.getUniqueId());
 
         if (!CityInviteConditions.canCityInvitePlayer(city, sender, target)) return;
@@ -122,7 +123,7 @@ public class CityCommands {
     @Subcommand("accept")
     @CommandPermission("omc.commands.city.accept")
     @Description("Accepter une invitation")
-    public static void acceptInvitation(Player player, Player inviter) {
+    public static void acceptInvitation(Player player, @SuggestWith(OnlinePlayerAutoComplete.class) Player inviter) {
         List<Player> playerInvitations = invitations.get(player);
 
         if (playerInvitations == null) {
@@ -152,7 +153,7 @@ public class CityCommands {
     @Subcommand("deny")
     @CommandPermission("omc.commands.city.deny")
     @Description("Refuser une invitation")
-    public static void denyInvitation(Player player, Player inviter) {
+    public static void denyInvitation(Player player, @SuggestWith(OnlinePlayerAutoComplete.class) Player inviter) {
         if (!CityInviteConditions.canCityInviteDeny(player, inviter)) return;
 
         invitations.remove(player);

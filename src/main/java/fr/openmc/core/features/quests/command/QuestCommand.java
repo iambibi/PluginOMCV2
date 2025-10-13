@@ -1,5 +1,6 @@
 package fr.openmc.core.features.quests.command;
 
+import fr.openmc.core.commands.autocomplete.OnlinePlayerAutoComplete;
 import fr.openmc.core.features.quests.menus.QuestsMenu;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -19,7 +20,7 @@ public class QuestCommand {
 
     @Subcommand("open")
     @Description("Ouvre le menu des quêtes")
-    public void resetProgress(Player sender, @Optional Player target) {
+    public void resetProgress(Player sender, @SuggestWith(OnlinePlayerAutoComplete.class) @Optional Player target) {
         if (target == null || target == sender) {
             new QuestsMenu(sender).open();
         } else {

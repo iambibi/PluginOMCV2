@@ -1,5 +1,6 @@
 package fr.openmc.core.features.city.commands;
 
+import fr.openmc.core.commands.autocomplete.OnlinePlayerAutoComplete;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
@@ -136,7 +137,7 @@ public class AdminCityCommands {
 
     @Subcommand("setOwner")
     @CommandPermission("omc.admins.commands.admincity.setOwner")
-    void setOwner(Player player, @SuggestWith(CityNameAutoComplete.class) String name, @Named("nouveau propriétaire") Player newOwner) {
+    void setOwner(Player player, @SuggestWith(CityNameAutoComplete.class) String name, @Named("nouveau propriétaire") @SuggestWith(OnlinePlayerAutoComplete.class) Player newOwner) {
         City city = CityManager.getCityByName(name);
 
         if (city == null) {
@@ -174,7 +175,7 @@ public class AdminCityCommands {
 
     @Subcommand("addPlayer")
     @CommandPermission("omc.admins.commands.admincity.addplayer")
-    void add(Player player, @SuggestWith(CityNameAutoComplete.class) String name, Player newMember) {
+    void add(Player player, @SuggestWith(CityNameAutoComplete.class) String name, @SuggestWith(OnlinePlayerAutoComplete.class) Player newMember) {
         City city = CityManager.getCityByName(name);
 
         if (city == null) {
@@ -193,7 +194,7 @@ public class AdminCityCommands {
 
     @Subcommand("remove")
     @CommandPermission("omc.admins.commands.admincity.remove")
-    void remove(Player player, Player member) {
+    void remove(Player player, @SuggestWith(OnlinePlayerAutoComplete.class) Player member) {
         City city = CityManager.getPlayerCity(member.getUniqueId());
         if (city == null) {
             MessagesManager.sendMessage(player, Component.text("Le joueur n'est pas dans une ville"), Prefix.STAFF, MessageType.ERROR, false);
@@ -211,7 +212,7 @@ public class AdminCityCommands {
 
     @Subcommand("getPlayer")
     @CommandPermission("omc.admins.commands.admincity.getPlayer")
-    void getPlayer(Player player, Player member) {
+    void getPlayer(Player player, @SuggestWith(OnlinePlayerAutoComplete.class) Player member) {
         City city = CityManager.getPlayerCity(member.getUniqueId());
         if (city == null) {
             MessagesManager.sendMessage(player, Component.text("Le joueur n'est pas dans une ville"), Prefix.STAFF, MessageType.ERROR, false);
