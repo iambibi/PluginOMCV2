@@ -19,6 +19,7 @@ import fr.openmc.core.features.dream.listeners.dream.PlayerQuitListener;
 import fr.openmc.core.features.dream.listeners.dream.PlayerSleepListener;
 import fr.openmc.core.features.dream.listeners.generation.ReplaceBlockListener;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
+import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
 import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.DreamPlayer;
@@ -59,6 +60,7 @@ public class DreamManager {
                 new PlayerEnteredBiome(),
                 new PlayerObtainOrb(),
                 new ReplaceBlockListener(),
+                new PlayerEatSomnifere(),
                 new CloudVault(),
                 new MobCloudSpawner()
         );

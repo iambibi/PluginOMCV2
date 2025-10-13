@@ -15,6 +15,8 @@ import fr.openmc.core.features.dream.items.armors.soul.SoulHelmet;
 import fr.openmc.core.features.dream.items.armors.soul.SoulLeggings;
 import fr.openmc.core.features.dream.items.blocks.CorruptedSculk;
 import fr.openmc.core.features.dream.items.blocks.OldPaleOakWood;
+import fr.openmc.core.features.dream.items.consumable.Somnifere;
+import fr.openmc.core.features.dream.items.fishes.*;
 import fr.openmc.core.features.dream.items.loots.CorruptedString;
 import fr.openmc.core.features.dream.items.loots.CreakingHeart;
 import fr.openmc.core.features.dream.items.loots.Soul;
@@ -51,6 +53,16 @@ public class DreamItemRegister {
         registerDreamItem(new Soul("omc_dream:soul"));
         registerDreamItem(new Soul("omc_dream:cloud_key"));
 
+        // # CONSUMABLES
+        registerDreamItem(new Somnifere("omc_dream:somnifere"));
+
+        // # FISHES
+        registerDreamItem(new CokkedPoissonion("omc_dream:cooked_poissonion"));
+        registerDreamItem(new Poissonion("omc_dream:poissonion"));
+        registerDreamItem(new MoonFish("omc_dream:moon_fish"));
+        registerDreamItem(new SunFish("omc_dream:sun_fish"));
+        registerDreamItem(new DockerFish("omc_dream:dockerfish"));
+
         // # ARMURES
         registerDreamItem(new OldCreakingHelmet("omc_dream:old_creaking_helmet"));
         registerDreamItem(new OldCreakingChestplate("omc_dream:old_creaking_chestplate"));
@@ -67,10 +79,9 @@ public class DreamItemRegister {
         registerDreamItem(new CloudLeggings("omc_dream:cloud_leggings"));
         registerDreamItem(new CloudBoots("omc_dream:cloud_boots"));
 
-        // # WEAPONS
+        // # TOOLS
         registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
-
         registerDreamItem(new OldCreakingAxe("omc_dream:cloud_fishing_rod"));
 
         CommandsManager.getHandler().getAutoCompleter().registerSuggestion("dream_item", SuggestionProvider.of(getNames()));
