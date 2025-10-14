@@ -6,6 +6,7 @@ import fr.openmc.core.features.dream.items.DreamItem;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.DreamPlayer;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,6 +26,11 @@ public class PlayerEatSomnifere implements Listener {
             if (dreamPlayer == null) return;
 
             dreamPlayer.addTime(60L);
+            AttributeInstance attribute = player.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
+
+            if (attribute == null) return;
+
+            player.setHealth(attribute.getValue());
         } else {
             DBDreamPlayer dbDreamPlayer = DreamManager.getCacheDreamPlayer(player);
 
