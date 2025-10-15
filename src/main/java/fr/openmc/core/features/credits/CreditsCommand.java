@@ -2,6 +2,7 @@ package fr.openmc.core.features.credits;
 
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.CommandPlaceholder;
 import revxrsal.commands.annotation.Cooldown;
 import revxrsal.commands.annotation.Description;
 
