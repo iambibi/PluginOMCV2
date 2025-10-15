@@ -10,6 +10,7 @@ import fr.openmc.core.features.dream.blocks.cloudspawner.MobCloudSpawner;
 import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
+import fr.openmc.core.features.dream.fishing.CloudFishingManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
@@ -73,6 +74,7 @@ public class DreamManager {
         DreamMobManager.init();
         DreamDropsManager.init();
         DreamCraftingRegister.init();
+        CloudFishingManager.init();
 
         // ** LOAD DATAS **
         loadAllDreamPlayerData();

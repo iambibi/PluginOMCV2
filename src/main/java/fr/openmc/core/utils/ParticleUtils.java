@@ -214,4 +214,22 @@ public class ParticleUtils {
             }
         }.runTaskTimerAsynchronously(OMCPlugin.getInstance(), 0L, 1L);
     }
+
+    public static void spawnParticleCloud(Player player, Location center, Particle particle, int count, double radius, double height) {
+        World world = center.getWorld();
+        if (world == null) return;
+        double minY = center.getY() - Math.abs(height);
+        double maxY = center.getY();
+        for (int i = 0; i < count; i++) {
+            double angle = Math.random() * 2 * Math.PI;
+            double distance = Math.random() * radius;
+
+            double x = center.getX() + Math.cos(angle) * distance;
+            double y = minY + Math.random() * (maxY - minY);
+            double z = center.getZ() + Math.sin(angle) * distance;
+            Location loc = new Location(world, x, y, z);
+
+            sendParticlePacket(player, particle, loc);
+        }
+    }
 }
