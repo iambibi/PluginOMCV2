@@ -26,7 +26,7 @@ public class CubeCommands {
         if (cube == null) return;
 
         cube.startMagneticShock();
-        MessagesManager.sendMessage(player, Component.text("Choc éléctromagnétique lancé"), Prefix.STAFF, MessageType.SUCCESS, false);
+        MessagesManager.sendMessage(player, Component.text("Choc éléctro-magnétique lancé"), Prefix.STAFF, MessageType.SUCCESS, false);
     }
 
     @Subcommand("startBubble")
@@ -37,7 +37,7 @@ public class CubeCommands {
         if (cube == null) return;
 
         cube.startCorruptedBubble();
-        MessagesManager.sendMessage(player, Component.text("Bulle Corrompue lancé"), Prefix.STAFF, MessageType.SUCCESS, false);
+        MessagesManager.sendMessage(player, Component.text("Bulle corrompue lancé"), Prefix.STAFF, MessageType.SUCCESS, false);
     }
 
     @Subcommand("reproduce")
@@ -58,13 +58,13 @@ public class CubeCommands {
         if (cube == null) return;
 
         if (cube.reproductionTask == null) {
-            MessagesManager.sendMessage(player, Component.text("La reproduction n'est pas en cours, utilisez /cube reproduce"), Prefix.STAFF, MessageType.ERROR, false);
+            MessagesManager.sendMessage(player, Component.text("La reproduction n'est pas en cours, utilisez §6/cube reproduce"), Prefix.STAFF, MessageType.ERROR, false);
             return;
         }
 
         cube.reproductionTask.forceReproduction();
-
-        MessagesManager.sendMessage(player, Component.text("Reproduction forcé du cube!"), Prefix.STAFF, MessageType.SUCCESS, false);
+        
+        MessagesManager.sendMessage(player, Component.text("Reproduction forcée du cube!"), Prefix.STAFF, MessageType.SUCCESS, false);
 
     }
 

@@ -31,7 +31,7 @@ public class HologramCommand {
                 HologramLoader.setHologramLocation(hologramName, player.getLocation());
                 MessagesManager.sendMessage(
                         player,
-                        Component.text("§aPosition du hologramme " + hologramName + " mise à jour."),
+                        Component.text("§aPosition de l'hologramme " + hologramName + " mise à jour."),
                         Prefix.STAFF,
                         MessageType.SUCCESS,
                         true
@@ -39,7 +39,7 @@ public class HologramCommand {
             } catch (IOException e) {
                 MessagesManager.sendMessage(
                         player,
-                        Component.text("§cErreur lors de la mise à jour de la position du hologram " + hologramName + ": " + e.getMessage()),
+                        Component.text("§cErreur lors de la mise à jour de la position de l'hologramme " + hologramName + ": " + e.getMessage()),
                         Prefix.STAFF,
                         MessageType.ERROR,
                         true
@@ -50,7 +50,7 @@ public class HologramCommand {
             String list = String.join(", ", HologramLoader.displays.keySet());
             MessagesManager.sendMessage(
                     player,
-                    Component.text("§cVeuillez spécifier un hologramme valide: " + list),
+                    Component.text("§cVeuillez spécifier un hologramme valide : " + list),
                     Prefix.STAFF,
                     MessageType.WARNING,
                     true
@@ -65,7 +65,7 @@ public class HologramCommand {
         HologramLoader.unloadAll();
         MessagesManager.sendMessage(
                 sender,
-                Component.text("§cHolograms désactivés avec succès."),
+                Component.text("§cHologrammes désactivés avec succès."),
                 Prefix.STAFF,
                 MessageType.SUCCESS,
                 true
@@ -80,7 +80,7 @@ public class HologramCommand {
         HologramLoader.loadAllFromFolder(hologramFolder);
         MessagesManager.sendMessage(
                 sender,
-                Component.text("§aHolograms activés avec succès."),
+                Component.text("§aHologrammes activés avec succès."),
                 Prefix.STAFF,
                 MessageType.SUCCESS,
                 true

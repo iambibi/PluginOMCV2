@@ -126,7 +126,7 @@ public class CityManager implements Listener {
 
             cities.values().forEach(City::initializeRanks);
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur du chargements des Villes ", e);
+            throw new RuntimeException("Erreur du chargement des villes ", e);
         }
     }
 
@@ -134,7 +134,7 @@ public class CityManager implements Listener {
         try {
             citiesDao.createOrUpdate(city.serialize());
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur des sauvegardes des villes ", e);
+            throw new RuntimeException("Erreur de la sauvegarde des villes ", e);
         }
     }
 
