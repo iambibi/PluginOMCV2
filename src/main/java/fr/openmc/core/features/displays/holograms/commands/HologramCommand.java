@@ -1,6 +1,7 @@
 package fr.openmc.core.features.displays.holograms.commands;
 
 import fr.openmc.core.features.displays.holograms.HologramLoader;
+import fr.openmc.core.features.displays.holograms.commands.autocomplete.HologramAutoComplete;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
 import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ public class HologramCommand {
     @Subcommand("setPos")
     @CommandPermission("op")
     @Description("Défini la position d'un Hologram.")
-    void setPosCommand(Player player, String hologramName) {
+    void setPosCommand(Player player, @SuggestWith(HologramAutoComplete.class) String hologramName) {
         if (HologramLoader.displays.containsKey(hologramName)) {
 
             try {

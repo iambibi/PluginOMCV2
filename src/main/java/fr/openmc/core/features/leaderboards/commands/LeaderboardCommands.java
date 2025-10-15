@@ -7,10 +7,7 @@ import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.DefaultFor;
-import revxrsal.commands.annotation.Description;
-import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.io.IOException;
@@ -20,7 +17,7 @@ import static fr.openmc.core.features.leaderboards.LeaderboardManager.*;
 @SuppressWarnings("unused")
 @Command({"leaderboard", "lb"})
 public class LeaderboardCommands {
-    @DefaultFor("~")
+    @CommandPlaceholder()
     void mainCommand(CommandSender sender) {
         sender.sendMessage("§cVeuillez spécifier un leaderboard valide. (Ex: /leaderboard contributeurs)");
     }
@@ -57,7 +54,7 @@ public class LeaderboardCommands {
     @Subcommand("setPos")
     @CommandPermission("op")
     @Description("Défini la position d'un Hologram.")
-    void setPosCommand(Player player, String leaderboard) {
+    void setPosCommand(Player player, @Suggest({"contributors", "money", "ville-money", "playtime"}) String leaderboard) {
         if (leaderboard.equals("contributors") || leaderboard.equals("money") || leaderboard.equals("ville-money") || leaderboard.equals("playtime")) {
             try {
                 LeaderboardManager.setHologramLocation(leaderboard, player.getLocation());

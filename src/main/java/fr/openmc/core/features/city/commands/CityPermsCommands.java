@@ -3,6 +3,8 @@ package fr.openmc.core.features.city.commands;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
+import fr.openmc.core.features.city.commands.autocomplete.CityMembersAutoComplete;
+import fr.openmc.core.features.city.commands.autocomplete.CityPermissionsAutoComplete;
 import fr.openmc.core.features.city.menu.CitizensPermsMenu;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -61,10 +63,9 @@ public class CityPermsCommands {
         return true;
     }
 
-    @DefaultFor("~")
+    @CommandPlaceholder()
     @CommandPermission("omc.commands.city.perm")
-    @AutoComplete("@city_members")
-    void getGUI(Player sender, @Optional OfflinePlayer member) {
+    void getGUI(Player sender, @Optional @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer member) {
         if (member == null) {
             CitizensPermsMenu.openBook(sender);
             return;
@@ -76,8 +77,7 @@ public class CityPermsCommands {
     @Subcommand("switch")
     @CommandPermission("omc.commands.city.perm.switch")
     @Description("Inverse la permission d'un joueur")
-    @AutoComplete("@city_members")
-    public static void swap(Player sender, OfflinePlayer player, CityPermission permission) {
+    public static void swap(Player sender, @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player, @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission) {
         if (!verification(sender, player.getUniqueId())) return;
         if (!verificationForModif(sender, permission)) return;
         City city = CityManager.getPlayerCity(sender.getUniqueId());
@@ -104,8 +104,7 @@ public class CityPermsCommands {
     @Subcommand("add")
     @CommandPermission("omc.commands.city.perm.add")
     @Description("Ajouter des permissions à un membre")
-    @AutoComplete("@city_members")
-    void add(Player sender, OfflinePlayer player, CityPermission permission) {
+    void add(Player sender, @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player, @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission) {
         if (!verification(sender, player.getUniqueId())) return;
         if (!verificationForModif(sender, permission)) return;
         City city = CityManager.getPlayerCity(sender.getUniqueId());
@@ -132,8 +131,7 @@ public class CityPermsCommands {
     @Subcommand("remove")
     @CommandPermission("omc.commands.city.perm.remove")
     @Description("Retirer des permissions à un membre")
-    @AutoComplete("@city_members")
-    void remove(Player sender, OfflinePlayer player, CityPermission permission) {
+    void remove(Player sender, @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player, @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission) {
         if (!verification(sender, player.getUniqueId())) return;
         if (!verificationForModif(sender, permission)) return;
         City city = CityManager.getPlayerCity(sender.getUniqueId());
@@ -161,8 +159,7 @@ public class CityPermsCommands {
     @Subcommand("get")
     @CommandPermission("omc.commands.city.perm.get")
     @Description("Obtenir les permissions d'un membre")
-    @AutoComplete("@city_members")
-    void get(Player sender, OfflinePlayer player) {
+    void get(Player sender, @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player) {
         if (!verification(sender, player.getUniqueId())) return;
         City city = CityManager.getPlayerCity(sender.getUniqueId());
 

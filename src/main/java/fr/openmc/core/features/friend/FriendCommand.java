@@ -1,8 +1,11 @@
 package fr.openmc.core.features.friend;
 
+import fr.openmc.core.commands.autocomplete.OnlinePlayerAutoComplete;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.economy.EconomyManager;
+import fr.openmc.core.features.friend.autocomplete.FriendsAutoComplete;
+import fr.openmc.core.features.friend.autocomplete.FriendsRequestAutoComplete;
 import fr.openmc.core.features.settings.PlayerSettingsManager;
 import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.messages.MessageType;
@@ -32,7 +35,7 @@ public class FriendCommand {
 
     @Subcommand("add")
     @Description("Envoyer une demande d'ami")
-    public void addCommand(Player player, Player target) {
+    public void addCommand(Player player, @SuggestWith(OnlinePlayerAutoComplete.class) Player target) {
         try {
             if (player.getUniqueId().equals(target.getUniqueId())) {
                 MessagesManager.sendMessage(player, Component.text("§cVous ne pouvez pas vous ajouter vous-même en ami."), Prefix.FRIEND, MessageType.ERROR, true);
@@ -81,8 +84,7 @@ public class FriendCommand {
 
     @Subcommand("remove")
     @Description("Supprimer un ami de votre liste")
-    @AutoComplete("@friends *")
-    public void removeCommand(Player player, String targetName) {
+    public void removeCommand(Player player, @SuggestWith(FriendsAutoComplete.class) String targetName) {
         try {
             OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
             if (!target.hasPlayedBefore()) {
@@ -223,8 +225,7 @@ public class FriendCommand {
 
     @Subcommand("accept")
     @Description("Accepter une demande d'ami")
-    @AutoComplete("@friends-request *")
-    public void acceptCommand(Player player, String targetName) {
+    public void acceptCommand(Player player, @SuggestWith(FriendsRequestAutoComplete.class) String targetName) {
         try {
             OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
             if (!target.hasPlayedBefore()) {
@@ -248,8 +249,7 @@ public class FriendCommand {
 
     @Subcommand("deny")
     @Description("Refuser une demande d'ami")
-    @AutoComplete("@friends-request *")
-    public void denyCommand(Player player, String targetName) {
+    public void denyCommand(Player player, @SuggestWith(FriendsRequestAutoComplete.class) String targetName) {
         try {
             OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
             if (!target.hasPlayedBefore()) {

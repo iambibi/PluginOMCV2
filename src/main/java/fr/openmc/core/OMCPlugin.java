@@ -43,6 +43,7 @@ import fr.openmc.core.utils.ShutUpOrmLite;
 import fr.openmc.core.utils.database.DatabaseManager;
 import fr.openmc.core.utils.errors.ErrorReporter;
 import fr.openmc.core.utils.translation.TranslationManager;
+import io.papermc.paper.datapack.Datapack;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -96,7 +97,16 @@ public class OMCPlugin extends JavaPlugin {
             new PacketMenuLib(this);
 
         logLoadMessage();
-
+        if (!OMCPlugin.isUnitTestVersion()) {
+            Datapack pack = this.getServer().getDatapackManager().getPack(getPluginMeta().getName() + "/omc");
+            if (pack != null) {
+                if (pack.isEnabled()) {
+                    getSLF4JLogger().info("\u001B[32m✔ Lancement du datapack réussi\u001B[0m");
+                } else {
+                    getSLF4JLogger().warn("\u001B[31m✘ Lancement du datapack échoué\u001B[0m");
+                }
+            }
+        }
         new ErrorReporter();
 
         /* MANAGERS */
