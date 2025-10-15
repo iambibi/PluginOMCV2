@@ -70,7 +70,7 @@ public class ItemUtils {
 		}
 		return skull;
 	}
-	
+
 	/**
 	 * Get an array of DataComponentType that are allowed for items.
 	 *
