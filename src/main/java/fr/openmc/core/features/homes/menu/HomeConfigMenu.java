@@ -59,12 +59,12 @@ public class HomeConfigMenu extends Menu {
         Map<Integer, ItemBuilder> content = new HashMap<>();
         Player player = getOwner();
 
-        content.put(4, new ItemBuilder(this, home.getIconItem()).hide(ItemUtils.getAllDataComponentTypes()));
+        content.put(4, new ItemBuilder(this, home.getIconItem()).hide(ItemUtils.getDataComponentType()));
 
         content.put(20, new ItemBuilder(this, home.getIcon().getItemStack(), itemMeta -> {
             itemMeta.displayName(Component.text("§aChanger l'icône"));
             itemMeta.lore(List.of(Component.text("§7■ §aClique §2gauche §apour changer l'icône de votre home")));
-        }).hide(ItemUtils.getAllDataComponentTypes()).setOnClick(inventoryClickEvent -> new HomeChangeIconMenu(player, home).open()));
+        }).hide(ItemUtils.getDataComponentType()).setOnClick(inventoryClickEvent -> new HomeChangeIconMenu(player, home).open()));
 
         content.put(22, new ItemBuilder(this, Material.NAME_TAG, itemMeta -> {
             itemMeta.displayName(Component.text("Changer le nom", NamedTextColor.GREEN).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE));

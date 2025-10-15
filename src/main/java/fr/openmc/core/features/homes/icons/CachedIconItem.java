@@ -102,6 +102,6 @@ public class CachedIconItem {
                         HomeIconCacheManager.clearRenderedCache();
                     });
                     player.closeInventory();
-                }).hide(ItemUtils.getAllDataComponentTypes());
+                }).hide(ItemUtils.getDataComponentType());
     }
 }

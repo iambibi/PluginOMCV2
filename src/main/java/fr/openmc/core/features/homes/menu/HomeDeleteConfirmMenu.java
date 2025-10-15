@@ -71,7 +71,7 @@ public class HomeDeleteConfirmMenu extends Menu {
                     this,
                     home.getIconItem(),
                     itemMeta -> itemMeta.displayName(Component.text("§a" + home.getName()))
-            ).hide(ItemUtils.getAllDataComponentTypes()));
+            ).hide(ItemUtils.getDataComponentType()));
 
             content.put(6, new ItemBuilder(
                     this,

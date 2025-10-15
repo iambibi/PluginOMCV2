@@ -95,7 +95,7 @@ public class HomeMenu extends PaginatedMenu {
                             Component.text("§7■ §aClique §2gauche pour vous téléporter"),
                             Component.text("§7■ §cCliquez §4droit §cpour configurer le home")
                     ));
-                }).hide(ItemUtils.getAllDataComponentTypes()).setOnClick(event -> {
+                }).hide(ItemUtils.getDataComponentType()).setOnClick(event -> {
                     if(event.isLeftClick()) {
                         this.getInventory().close();
                         getOwner().teleportAsync(home.getLocation()).thenAccept(success -> {
