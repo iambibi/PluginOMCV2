@@ -6,7 +6,6 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import fr.openmc.core.CommandsManager;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.models.DBCityRank;
@@ -43,20 +42,6 @@ public class CityRankManager {
 		DeleteBuilder<DBCityRank, String> ranksDelete = ranksDao.deleteBuilder();
 		ranksDelete.where().eq("city_uuid", city.getUniqueId());
 		ranksDao.delete(ranksDelete.prepare());
-	}
-	
-	/**
-	 * Initialize command suggestions for city ranks.
-	 */
-	public static void initCommandSuggestion() {
-		CommandsManager.getHandler().getAutoCompleter().registerSuggestion("city_ranks", (args, sender, command) -> {
-			City city = CityManager.getPlayerCity(sender.getUniqueId());
-			if (city == null) return List.of();
-			
-			return city.getRanks().stream()
-					.map(DBCityRank::getName)
-					.toList();
-		});
 	}
 	
 	/**
