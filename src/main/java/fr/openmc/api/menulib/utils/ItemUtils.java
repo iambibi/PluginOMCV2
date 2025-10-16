@@ -1,6 +1,9 @@
 package fr.openmc.api.menulib.utils;
 
 import fr.openmc.api.menulib.MenuLib;
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,5 +49,52 @@ public class ItemUtils {
 			return Objects.equals(dataContainer.get(MenuLib.getItemIdKey(), PersistentDataType.STRING), itemId);
 		}
 		return false;
+	}
+	
+	/**
+	 * Creates a player skull item for the specified player UUID.
+	 *
+	 * @param playerUUID the UUID of the player whose skull is to be created
+	 * @return an {@link ItemStack} representing the player's skull
+	 */
+	public static ItemStack getPlayerSkull(UUID playerUUID) {
+		ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+		SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+		if (skullMeta != null) {
+			PlayerProfile profile = Bukkit.createProfile(playerUUID);
+			skullMeta.setPlayerProfile(profile);
+			skull.setItemMeta(skullMeta);
+		}
+		return skull;
+	}
+
+	/**
+	 * Get an array of DataComponentType that are allowed for items.
+	 *
+	 * @return An array of DataComponentType.
+	 */
+	public static DataComponentType[] getDataComponentType() {
+		return new DataComponentType[] {
+				DataComponentTypes.CONSUMABLE,
+				DataComponentTypes.FOOD,
+				DataComponentTypes.BUNDLE_CONTENTS,
+				DataComponentTypes.ENCHANTMENTS,
+				DataComponentTypes.DAMAGE,
+				DataComponentTypes.DAMAGE_RESISTANT,
+				DataComponentTypes.UNBREAKABLE,
+				DataComponentTypes.ATTRIBUTE_MODIFIERS,
+				DataComponentTypes.TRIM,
+				DataComponentTypes.PROVIDES_TRIM_MATERIAL,
+				DataComponentTypes.JUKEBOX_PLAYABLE,
+				DataComponentTypes.FIREWORKS,
+				DataComponentTypes.FIREWORK_EXPLOSION,
+				DataComponentTypes.POTION_CONTENTS,
+				DataComponentTypes.POTION_DURATION_SCALE,
+				DataComponentTypes.DEATH_PROTECTION,
+				DataComponentTypes.DYED_COLOR,
+				DataComponentTypes.CONTAINER_LOOT,
+				DataComponentTypes.CONTAINER,
+				DataComponentTypes.RARITY
+		};
 	}
 }

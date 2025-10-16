@@ -1,7 +1,5 @@
 package fr.openmc.core.features.city.sub.notation.commands;
 
-import fr.openmc.core.features.city.City;
-import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.notation.NotationManager;
 import fr.openmc.core.features.city.sub.notation.menu.NotationDialog;
 import fr.openmc.core.utils.DateUtils;
@@ -19,10 +17,9 @@ public class NotationCommands {
     @CommandPermission("omc.commands.city.notation")
     @Description("Ouvre le menu des notations")
     void notationTest(Player sender) {
-        City playerCity = CityManager.getPlayerCity(sender.getUniqueId());
         String weekStr = DateUtils.getWeekFormat();
         if (NotationManager.getSortedNotationForWeek(weekStr) == null) {
-            MessagesManager.sendMessage(sender, Component.text("Aucune Notation ont été mise pour cette semaine !"), Prefix.CITY, MessageType.INFO, false);
+	        MessagesManager.sendMessage(sender, Component.text("Aucune notation n'a été mise pour cette semaine !"), Prefix.CITY, MessageType.INFO, false);
             return;
         }
 

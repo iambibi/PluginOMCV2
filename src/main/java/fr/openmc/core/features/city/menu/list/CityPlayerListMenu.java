@@ -56,22 +56,17 @@ public class CityPlayerListMenu extends PaginatedMenu {
     @Override
     public List<ItemStack> getItems() {
         List<ItemStack> items = new ArrayList<>();
-        Player player = getOwner();
 
-        try {
-            for (UUID uuid : city.getMembers()) {
-                OfflinePlayer playerOffline = CacheOfflinePlayer.getOfflinePlayer(uuid);
+        for (UUID uuid : city.getMembers()) {
+            OfflinePlayer playerOffline = CacheOfflinePlayer.getOfflinePlayer(uuid);
 
-                String title = city.getRankName(uuid) + " ";
+            if (playerOffline == null) continue;
 
-                items.add(new ItemBuilder(this, SkullUtils.getPlayerSkull(uuid), itemMeta -> itemMeta.displayName(Component.text(title + playerOffline.getName()).decoration(TextDecoration.ITALIC, false))));
-            }
-            return items;
-        } catch (Exception e) {
-            MessagesManager.sendMessage(player, Component.text("§cUne Erreur est survenue, veuillez contacter le Staff"), Prefix.OPENMC, MessageType.ERROR, false);
-            player.closeInventory();
-            e.printStackTrace();
+            String title = city.getRankName(uuid) + " ";
+
+            items.add(new ItemBuilder(this, SkullUtils.getPlayerSkull(uuid), itemMeta -> itemMeta.displayName(Component.text(title + playerOffline.getName()).decoration(TextDecoration.ITALIC, false))));
         }
+
         return items;
     }
 
@@ -97,7 +92,7 @@ public class CityPlayerListMenu extends PaginatedMenu {
 
     @Override
     public @NotNull String getName() {
-        return "Menu des détails des Membres de " + city.getName();
+	    return "Menu du détail des membres de " + city.getName();
     }
 
     @Override

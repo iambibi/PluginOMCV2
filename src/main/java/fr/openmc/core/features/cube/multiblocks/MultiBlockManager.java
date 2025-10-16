@@ -1,6 +1,5 @@
 package fr.openmc.core.features.cube.multiblocks;
 
-import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.cube.Cube;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
@@ -57,9 +56,9 @@ public class MultiBlockManager {
             int y;
             if (world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME) && DreamDimensionManager.hasSeedChanged()) {
                 plugin.getSLF4JLogger().warn("Changing y pos for '{}' because Dream Dimension seed changed", type);
-                y = world.getHighestBlockYAt(x, z);
+                y = world.getHighestBlockYAt(x, z) + 1;
             } else {
-                y = origin.containsKey("y") ? (int) origin.get("y") : world.getHighestBlockYAt(x, z);
+                y = origin.containsKey("y") ? (int) origin.get("y") : world.getHighestBlockYAt(x, z) + 1;
             }
 
             int size = (int) map.get("size");
@@ -114,17 +113,5 @@ public class MultiBlockManager {
         multiBlocks.add(multiBlock);
 
         save();
-    }
-
-    public static void initCommandSuggestion() {
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("cubes", (args, sender, command) -> {
-            return MultiBlockManager.getMultiBlocks().stream()
-                    .filter(mb -> mb instanceof Cube)
-                    .map(mb -> {
-                        Location loc = mb.origin;
-                        return loc.getWorld().getName() + ":" + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ();
-                    })
-                    .toList();
-        });
     }
 }

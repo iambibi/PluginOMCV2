@@ -13,6 +13,7 @@ import fr.openmc.core.features.city.sub.mayor.managers.MayorManager;
 import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.models.Mayor;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
+import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.city.sub.war.actions.WarActions;
 import fr.openmc.core.features.city.sub.war.menu.MoreInfoMenu;
 import fr.openmc.core.features.economy.EconomyManager;
@@ -73,6 +74,8 @@ public class MainWarMenu extends PaginatedMenu {
                 if (Objects.equals(city.getUniqueId(), CityManager.getPlayerCity(player.getUniqueId()).getUniqueId())) continue;
                 if (city.getType() != CityType.WAR) continue;
                 if (city.isImmune()) continue;
+                if (WarManager.getPendingDefenseFor(city) != null) continue;
+                if (city.isInWar()) continue;
 
                 long onlineCount = city.getOnlineMembers().size();
 
@@ -97,8 +100,8 @@ public class MainWarMenu extends PaginatedMenu {
                     Perks perk1 = PerkManager.getPerkById(mayor.getIdPerk1());
                     Perks perk2 = PerkManager.getPerkById(mayor.getIdPerk2());
                     Perks perk3 = PerkManager.getPerkById(mayor.getIdPerk3());
-
-                    loreCity.add(Component.text("§7Réformes  : "));
+                    
+                    loreCity.add(Component.text("§7Réformes : "));
                     if (perk1 != null) loreCity.add(Component.text("§8 - " + perk1.getName()));
                     if (perk2 != null) loreCity.add(Component.text("§8 - " + perk2.getName()));
                     if (perk3 != null) loreCity.add(Component.text("§8 - " + perk3.getName()));
@@ -139,7 +142,7 @@ public class MainWarMenu extends PaginatedMenu {
 
         List<Component> loreInfo = Arrays.asList(
                 Component.text("§7Apprenez en plus sur les Guerres !"),
-                Component.text("§7La préparation..., le combat, ..."),
+                Component.text("§7La préparation, le combat, ..."),
                 Component.text("§e§lCLIQUEZ ICI POUR EN SAVOIR PLUS!")
         );
 
