@@ -25,7 +25,6 @@ import fr.openmc.core.features.dream.items.tools.OldCreakingAxe;
 import fr.openmc.core.features.dream.items.tools.SoulAxe;
 import fr.openmc.core.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
-import revxrsal.commands.autocomplete.SuggestionProvider;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -84,7 +83,6 @@ public class DreamItemRegister {
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:cloud_fishing_rod"));
 
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("dream_item", SuggestionProvider.of(getNames()));
         CommandsManager.getHandler().register(
                 new DreamItemCommand()
         );

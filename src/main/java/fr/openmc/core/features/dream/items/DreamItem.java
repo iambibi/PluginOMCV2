@@ -59,7 +59,7 @@ public abstract class DreamItem {
     private List<Component> getGeneratedLore() {
         ItemStack baseItem;
 
-        if (!ItemsAdderHook.hasItemAdder() || getItemsAdder() == null) {
+        if (!ItemsAdderHook.isHasItemAdder() || getItemsAdder() == null) {
             baseItem = getVanilla();
         } else {
             baseItem = getItemsAdder();
@@ -88,7 +88,7 @@ public abstract class DreamItem {
      */
     public ItemStack getBest() {
         ItemStack item;
-        if (!ItemsAdderHook.hasItemAdder() || getItemsAdder() == null) {
+        if (!ItemsAdderHook.isHasItemAdder() || getItemsAdder() == null) {
             item = getVanilla();
         } else {
             item = getItemsAdder();
