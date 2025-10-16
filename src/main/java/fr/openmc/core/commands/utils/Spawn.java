@@ -22,7 +22,7 @@ public class Spawn {
     @Description("Permet de se rendre au spawn")
     @CommandPermission("omc.commands.spawn")
     public void spawn(CommandSender sender, @Optional @SuggestWith(OnlinePlayerAutoComplete.class) Player target) {
-        if (target == null) target = (Player) sender;
+        if (target == null && sender instanceof Player pSender) target = pSender;
         Location spawnLocation = SpawnManager.getSpawnLocation();
 
         if(sender instanceof Player player && player == target) {
