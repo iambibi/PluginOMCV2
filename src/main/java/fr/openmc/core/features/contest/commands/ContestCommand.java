@@ -49,7 +49,7 @@ public class ContestCommand {
     @Subcommand("setphase")
     @Description("Permet de lancer une procédure de phase")
     @CommandPermission("omc.admin.commands.contest.setphase")
-    public void setPhase(Integer phase) {
+    public void setPhase(@Named("phase") @Suggest({"1", "2", "3"}) Integer phase) {
         switch(phase) {
             case 2:
                 ContestManager.initPhase2();
