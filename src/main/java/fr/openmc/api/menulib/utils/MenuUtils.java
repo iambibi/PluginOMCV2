@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 public class MenuUtils {
 	/**
