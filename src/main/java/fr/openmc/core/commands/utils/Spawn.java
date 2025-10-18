@@ -24,7 +24,7 @@ public class Spawn {
     public void spawn(CommandSender sender, @Optional @SuggestWith(OnlinePlayerAutoComplete.class) Player target) {
         Location spawnLocation = SpawnManager.getSpawnLocation();
 
-        if (sender instanceof Player player && ((player == target) || (target == null))) {
+        if (sender instanceof Player player && (target == null || player.getUniqueId().equals(target.getUniqueId()))) {
             PlayerUtils.sendFadeTitleTeleport(player, spawnLocation);
             MessagesManager.sendMessage(player, Component.text("§aVous avez été envoyé au spawn"), Prefix.OPENMC, MessageType.SUCCESS, true);
         } else {
