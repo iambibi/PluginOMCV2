@@ -11,6 +11,7 @@ import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.fishing.CloudFishingManager;
+import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
@@ -195,7 +196,7 @@ public class DreamManager {
     }
 
     public static void tpPlayerDream(Player player) {
-        Biome biome = Biome.PLAINS;
+        Biome biome = DreamBiome.SCULK_PLAINS.getBiome();
         World dreamWorld = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
 
         if (dreamWorld == null) return;

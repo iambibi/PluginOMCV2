@@ -1,8 +1,8 @@
 package fr.openmc.core.features.dream.generation.biomes;
 
+import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.utils.FastNoiseLite;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +58,7 @@ public class GlaciteCaveChunkGenerator {
         int worldX = (chunkX << 4) + x;
         int worldZ = (chunkZ << 4) + z;
 
-        if (chunkData.getBiome(x, y, z) == Biome.BEACH) {
+        if (chunkData.getBiome(x, y, z) == DreamBiome.MUD_BEACH.getBiome()) {
             if (y > MIN_HEIGHT_MUD) return;
         }
 

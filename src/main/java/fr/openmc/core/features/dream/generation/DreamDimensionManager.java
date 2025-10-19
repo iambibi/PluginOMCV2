@@ -2,7 +2,6 @@ package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.biomes.*;
-import fr.openmc.core.features.dream.generation.effects.BiomeParticleListener;
 import fr.openmc.core.features.dream.generation.populators.glacite.GlaciteGeodePopulator;
 import fr.openmc.core.features.dream.generation.populators.glacite.GroundSpikePopulator;
 import fr.openmc.core.features.dream.generation.populators.glacite.VerticalSpikePopulator;
@@ -37,7 +36,7 @@ public class DreamDimensionManager {
     private static File seedFile;
     private static FileConfiguration seedConfig;
 
-    private static Set<FeaturesPopulator> registeredFeatures = new HashSet<>();
+    private static final Set<FeaturesPopulator> registeredFeatures = new HashSet<>();
 
     public static void init() {
         plugin = OMCPlugin.getInstance();
@@ -54,11 +53,6 @@ public class DreamDimensionManager {
         registrerFeatures(new VerticalSpikePopulator());
         registrerFeatures(new GroundSpikePopulator());
         registrerFeatures(new GlaciteGeodePopulator());
-
-        // ** DIMENSION INIT **
-        OMCPlugin.registerEvents(
-                new BiomeParticleListener()
-        );
 
         createDimension();
 
