@@ -12,27 +12,24 @@ import org.bukkit.spawner.TrialSpawnerConfiguration;
 
 import java.util.Map;
 
-public class MobCloudSpawner implements Listener {
+public class BossCloudSpawner implements Listener {
     @SuppressWarnings("UnstableApiUsage")
-    public static void replaceBlockWithMobCloudSpawner(Block block) {
+    public static void replaceBlockWithBossCloudSpawner(Block block) {
         block.setType(Material.TRIAL_SPAWNER);
 
         if (block.getState() instanceof TrialSpawner spawner) {
             TrialSpawnerConfiguration normal = spawner.getNormalConfiguration();
 
-            normal.setSpawnedType(EntityType.PHANTOM);
+            normal.setSpawnedType(EntityType.BREEZE);
 
-            NamespacedKey lootKey = new NamespacedKey("openmc", "cloud_castle/mob_spawner");
+            NamespacedKey lootKey = new NamespacedKey("openmc", "cloud_castle/boss_spawner");
             LootTable lootTable = Bukkit.getLootTable(lootKey);
 
             if (lootTable != null) {
                 normal.setPossibleRewards(Map.of(lootTable, 1));
             }
             normal.setSpawnRange(6);
-            normal.setBaseSpawnsBeforeCooldown(3.0f);
-            normal.setBaseSimultaneousEntities(2.0f);
-            normal.setAdditionalSpawnsBeforeCooldown(1.0f);
-            normal.setAdditionalSimultaneousEntities(1.0f);
+            normal.setBaseSpawnsBeforeCooldown(1.0f);
 
             spawner.update();
         }

@@ -1,28 +1,29 @@
 package fr.openmc.core.features.dream.items;
 
 import fr.openmc.core.CommandsManager;
-import fr.openmc.core.features.dream.items.armors.cloud.CloudBoots;
-import fr.openmc.core.features.dream.items.armors.cloud.CloudChestplate;
-import fr.openmc.core.features.dream.items.armors.cloud.CloudHelmet;
-import fr.openmc.core.features.dream.items.armors.cloud.CloudLeggings;
-import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingBoots;
-import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingChestplate;
-import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingHelmet;
-import fr.openmc.core.features.dream.items.armors.creaking.OldCreakingLeggings;
-import fr.openmc.core.features.dream.items.armors.soul.SoulBoots;
-import fr.openmc.core.features.dream.items.armors.soul.SoulChestplate;
-import fr.openmc.core.features.dream.items.armors.soul.SoulHelmet;
-import fr.openmc.core.features.dream.items.armors.soul.SoulLeggings;
-import fr.openmc.core.features.dream.items.blocks.CorruptedSculk;
-import fr.openmc.core.features.dream.items.blocks.OldPaleOakWood;
-import fr.openmc.core.features.dream.items.consumable.Somnifere;
-import fr.openmc.core.features.dream.items.fishes.*;
-import fr.openmc.core.features.dream.items.loots.CorruptedString;
-import fr.openmc.core.features.dream.items.loots.CreakingHeart;
-import fr.openmc.core.features.dream.items.loots.Soul;
-import fr.openmc.core.features.dream.items.orb.*;
-import fr.openmc.core.features.dream.items.tools.OldCreakingAxe;
-import fr.openmc.core.features.dream.items.tools.SoulAxe;
+import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.items.registry.armors.cloud.CloudBoots;
+import fr.openmc.core.features.dream.items.registry.armors.cloud.CloudChestplate;
+import fr.openmc.core.features.dream.items.registry.armors.cloud.CloudHelmet;
+import fr.openmc.core.features.dream.items.registry.armors.cloud.CloudLeggings;
+import fr.openmc.core.features.dream.items.registry.armors.creaking.OldCreakingBoots;
+import fr.openmc.core.features.dream.items.registry.armors.creaking.OldCreakingChestplate;
+import fr.openmc.core.features.dream.items.registry.armors.creaking.OldCreakingHelmet;
+import fr.openmc.core.features.dream.items.registry.armors.creaking.OldCreakingLeggings;
+import fr.openmc.core.features.dream.items.registry.armors.soul.SoulBoots;
+import fr.openmc.core.features.dream.items.registry.armors.soul.SoulChestplate;
+import fr.openmc.core.features.dream.items.registry.armors.soul.SoulHelmet;
+import fr.openmc.core.features.dream.items.registry.armors.soul.SoulLeggings;
+import fr.openmc.core.features.dream.items.registry.blocks.CorruptedSculk;
+import fr.openmc.core.features.dream.items.registry.blocks.OldPaleOakWood;
+import fr.openmc.core.features.dream.items.registry.consumable.Somnifere;
+import fr.openmc.core.features.dream.items.registry.fishes.*;
+import fr.openmc.core.features.dream.items.registry.loots.CorruptedString;
+import fr.openmc.core.features.dream.items.registry.loots.CreakingHeart;
+import fr.openmc.core.features.dream.items.registry.loots.Soul;
+import fr.openmc.core.features.dream.items.registry.orb.*;
+import fr.openmc.core.features.dream.items.registry.tools.OldCreakingAxe;
+import fr.openmc.core.features.dream.items.registry.tools.SoulAxe;
 import fr.openmc.core.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 
@@ -86,6 +87,8 @@ public class DreamItemRegister {
         CommandsManager.getHandler().register(
                 new DreamItemCommand()
         );
+
+        OMCPlugin.registerEvents(new DreamItemConvertorListener());
     }
 
     public static void register(String name, DreamItem item) {
