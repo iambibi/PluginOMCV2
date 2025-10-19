@@ -45,9 +45,9 @@ public class MascotsDamageListener implements Listener {
 
     @EventHandler
     void onMascotDamageCaused(EntityDamageEvent e) {
-        Entity entity = e.getEntity();
+        LivingEntity entity = (LivingEntity) e.getEntity();
 
-        if (!(entity instanceof Player)) return;
+        if (entity instanceof Player) return;
 
         if (!MascotUtils.isMascot(entity)) return;
 
@@ -60,22 +60,21 @@ public class MascotsDamageListener implements Listener {
 
         City city = MascotUtils.getCityFromEntity(entity.getUniqueId());
         if (city == null) return;
-        LivingEntity mob = (LivingEntity) entity;
 
-        double newHealth = Math.floor(mob.getHealth());
-        mob.setHealth(newHealth);
-        double maxHealth = mob.getMaxHealth();
+        double newHealth = Math.floor(entity.getHealth());
+        entity.setHealth(newHealth);
+        double maxHealth = entity.getAttribute(Attribute.MAX_HEALTH).getValue();
 
         Mascot mascot = city.getMascot();
         if (mascot == null) return;
 
-        double healthAfterDamage = mob.getHealth() - e.getFinalDamage();
+        double healthAfterDamage = entity.getHealth() - e.getFinalDamage();
         if (healthAfterDamage < 0) healthAfterDamage = 0;
 
         if (!mascot.isAlive()) {
-            mob.customName(Component.text(DEAD_MASCOT_NAME));
+            entity.customName(Component.text(DEAD_MASCOT_NAME));
         } else {
-            mob.customName(Component.text(MascotsManager.PLACEHOLDER_MASCOT_NAME.formatted(
+            entity.customName(Component.text(MascotsManager.PLACEHOLDER_MASCOT_NAME.formatted(
                     city.getName(),
                     healthAfterDamage,
                     maxHealth
@@ -207,7 +206,7 @@ public class MascotsDamageListener implements Listener {
         mob.customName(Component.text(MascotsManager.PLACEHOLDER_MASCOT_NAME.formatted(
                 cityMob.getName(),
                 mob.getHealth() - e.getFinalDamage(),
-                mob.getMaxHealth()
+                mob.getAttribute(Attribute.MAX_HEALTH).getValue()
         )));
 
         try {
@@ -219,7 +218,6 @@ public class MascotsDamageListener implements Listener {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
 
         if (MascotRegenerationUtils.regenTasks.containsKey(damageEntity.getUniqueId())) {
             MascotRegenerationUtils.regenTasks.get(damageEntity.getUniqueId()).cancel();
