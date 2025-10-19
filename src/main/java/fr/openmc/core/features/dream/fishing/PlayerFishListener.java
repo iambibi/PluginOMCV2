@@ -2,7 +2,10 @@ package fr.openmc.core.features.dream.fishing;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
-import org.bukkit.Bukkit;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.FishHook;
@@ -10,8 +13,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import java.util.List;
 
 public class PlayerFishListener implements Listener {
 
@@ -26,24 +32,45 @@ public class PlayerFishListener implements Listener {
 
         switch (event.getState()) {
             case FISHING -> {
-                Location hookLoc = hook.getLocation();
-                if (hookLoc.getY() > player.getLocation().getY()) return;
                 if (hook.getLocation().getY() < CloudFishingManager.Y_CLOUD_FISHING) return;
 
-                Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
-                    if (!hook.isValid()) return;
+                double targetY = player.getLocation().getY() - 5;
 
-                    stopHookAtY(hook, hook.getLocation().getY());
-                    CloudFishingManager.simulateDreamFishing(player, hook);
-                }, 5L);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (!hook.isValid() || !player.isOnline()) {
+                            cancel();
+                            return;
+                        }
+
+                        double hookY = hook.getLocation().getY();
+
+                        if (hookY <= targetY) {
+                            cancel();
+
+                            stopHookAtY(hook, hookY);
+                            CloudFishingManager.simulateDreamFishing(player, hook);
+                        }
+
+                        if (hook.isOnGround() || hook.isDead()) {
+                            cancel();
+                        }
+                    }
+                }.runTaskTimer(OMCPlugin.getInstance(), 0L, 2L);
             }
 
             case REEL_IN -> {
-                System.out.println("REEL_IN");
                 if (CloudFishingManager.getHookedPlayers().containsKey(player.getUniqueId())) {
                     CloudFishingManager.getHookedPlayers().get(player.getUniqueId()).endBite();
 
-                    player.sendMessage("pechéééééé");
+                    List<ItemStack> rewards = CloudFishingManager.rollFishingLoots();
+
+                    for (ItemStack item : rewards) {
+                        player.getInventory().addItem(item);
+                    }
+
+                    MessagesManager.sendMessage(player, Component.text("Tu as pêché §e" + rewards.size() + " §fobjet(s) dans tes rêves !"), Prefix.DREAM, MessageType.SUCCESS, false);
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f);
                 }
             }

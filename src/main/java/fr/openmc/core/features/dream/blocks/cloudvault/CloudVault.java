@@ -35,7 +35,7 @@ public class CloudVault implements Listener {
 
         int luck = random.nextInt(100);
 
-        if (luck < 75) {
+        if (luck < 65) {
             List<ItemStack> rolls = List.of(
                     DreamItemRegister.getByName("omc_dream:cloud_helmet").getBest(),
                     DreamItemRegister.getByName("omc_dream:cloud_chestplate").getBest(),
@@ -45,9 +45,9 @@ public class CloudVault implements Listener {
 
             loot.add(rolls.get(random.nextInt(rolls.size())));
         } else if (luck < 80) {
+            loot.add(DreamItemRegister.getByName("omc_dream:somnifere").getBest());
+        } else if (luck < 90) {
             loot.add(DreamItemRegister.getByName("omc_dream:cloud_fishing_rod").getBest());
-        } else if (luck < 85) {
-            loot.add(DreamItemRegister.getByName("omc_dream:cloud_orb").getBest());
         }
 
         return loot;
@@ -60,8 +60,6 @@ public class CloudVault implements Listener {
         if (player == null) return;
 
         if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
-
-        System.out.println("BlockDispenseLootEvent : In world_dream - Block type : " + event.getBlock().getType().name());
 
         if (!(event.getBlock().getState() instanceof Vault)) return;
 
