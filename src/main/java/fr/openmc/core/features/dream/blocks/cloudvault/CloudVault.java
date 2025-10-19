@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseLootEvent;
-import org.bukkit.event.block.VaultDisplayItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -64,12 +63,5 @@ public class CloudVault implements Listener {
         if (!(event.getBlock().getState() instanceof Vault)) return;
 
         event.setDispensedLoot(getLootCloudVault());
-    }
-
-    @EventHandler
-    public void onLootDisplay(VaultDisplayItemEvent event) {
-        if (!event.getBlock().getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
-
-        event.setDisplayItem(DreamItemRegister.getByName("omc_dream:cloud_orb").getBest());
     }
 }
