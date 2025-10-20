@@ -27,6 +27,7 @@ public class CityPermsCommands {
     public static void swap(Player sender, @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player, @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission) {
         if (!CityPermsConditions.canSeePerms(sender, player.getUniqueId())) return;
         if (!CityPermsConditions.canModifyPerms(sender, permission)) return;
+
         City city = CityManager.getPlayerCity(sender.getUniqueId());
 
         if (city == null) {
@@ -51,9 +52,14 @@ public class CityPermsCommands {
     @Subcommand("add")
     @CommandPermission("omc.commands.city.perm.add")
     @Description("Ajouter des permissions à un membre")
-    void add(Player sender, @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player, @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission) {
+    void add(
+            Player sender,
+            @Named("membre") @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player,
+            @Named("permission") @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission
+    ) {
         if (!CityPermsConditions.canSeePerms(sender, player.getUniqueId())) return;
         if (!CityPermsConditions.canModifyPerms(sender, permission)) return;
+      
         City city = CityManager.getPlayerCity(sender.getUniqueId());
 
         if (city == null) {
@@ -78,9 +84,14 @@ public class CityPermsCommands {
     @Subcommand("remove")
     @CommandPermission("omc.commands.city.perm.remove")
     @Description("Retirer des permissions à un membre")
-    void remove(Player sender, @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player, @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission) {
+    void remove(
+            Player sender,
+            @Named("membre") @SuggestWith(CityMembersAutoComplete.class) OfflinePlayer player,
+            @Named("permission") @SuggestWith(CityPermissionsAutoComplete.class) CityPermission permission
+    ) {
         if (!CityPermsConditions.canSeePerms(sender, player.getUniqueId())) return;
         if (!CityPermsConditions.canModifyPerms(sender, permission)) return;
+  
         City city = CityManager.getPlayerCity(sender.getUniqueId());
 
         if (city == null) {

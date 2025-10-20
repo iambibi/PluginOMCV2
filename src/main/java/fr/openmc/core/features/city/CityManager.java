@@ -53,7 +53,9 @@ public class CityManager {
                 new CityPermsCommands(),
                 new CityChestCommand(),
                 new CityRankCommands(),
-                new CityTopCommands()
+                new CityTopCommands(),
+                new CityInviteCommands(),
+                new CityClaimCommands()
         );
 
         OMCPlugin.registerEvents(
