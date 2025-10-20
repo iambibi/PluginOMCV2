@@ -24,7 +24,10 @@ public class SocialSpyCommand {
     @Subcommand("toggle")
     @Description("Active ou désactive le social spy pour un joueur spécifique")
     @CommandPermission("omc.admin.commands.privatemessage.socialspy.admin")
-    public void toggleSocialSpyForPlayer(Player admin, @SuggestWith(OnlinePlayerAutoComplete.class) @Named("target") Player target) {
+    public void toggleSocialSpyForPlayer(
+            Player admin,
+            @SuggestWith(OnlinePlayerAutoComplete.class) @Named("target") Player target
+    ) {
         SocialSpyManager.toggleSocialSpy(target);
 
         String status = SocialSpyManager.hasSocialSpyEnabled(target)
