@@ -15,7 +15,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,27 +41,21 @@ public class NotationsButton {
     private static List<Component> getDynamicLore(City city, CityNotation notation) {
         List<Component> lore;
         if (notation != null) {
-            lore = new ArrayList<>() {
-                {
-                    add(Component.text("§7Notation de la ville : §9" + Math.floor(notation.getTotalNote()) + "§7/§9" + NotationNote.getMaxTotalNote()));
-                    add(Component.text("§7Argent remporté : §6" + EconomyManager.getFormattedSimplifiedNumber(notation.getMoney()) + EconomyManager.getEconomyIcon()));
-                    add(Component.empty());
-                    add(Component.text("§e§lCLIQUEZ ICI POUR VOIR LA NOTATION"));
-                }
-            };
+            lore = List.of(
+                    Component.text("§7Notation de la ville : §9" + Math.floor(notation.getTotalNote()) + "§7/§9" + NotationNote.getMaxTotalNote()),
+                    Component.text("§7Argent remporté : §6" + EconomyManager.getFormattedSimplifiedNumber(notation.getMoney()) + EconomyManager.getEconomyIcon()),
+                    Component.empty(),
+                    Component.text("§e§lCLIQUEZ ICI POUR VOIR LA NOTATION")
+            );
         } else {
             if (FeaturesRewards.hasUnlockFeature(city, FeaturesRewards.Feature.NOTATION)) {
-                lore = new ArrayList<>() {
-                    {
-                        add(Component.text("§cVous n'avez pas de notation"));
-                    }
-                };
+                lore = List.of(
+                        Component.text("§cVous n'avez pas de notation")
+                );
             } else {
-                lore = new ArrayList<>() {
-                    {
-                        add(Component.text("§cVous devez être niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.NOTATION) + " pour débloquer ceci"));
-                    }
-                };
+                lore = List.of(
+                        Component.text("§cVous devez être niveau " + FeaturesRewards.getFeatureUnlockLevel(FeaturesRewards.Feature.NOTATION) + " pour débloquer ceci")
+                );
             }
         }
         return lore;
