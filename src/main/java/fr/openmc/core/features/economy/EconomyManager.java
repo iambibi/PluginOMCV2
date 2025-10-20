@@ -37,10 +37,10 @@ public class EconomyManager {
             1_000_000L, "M",
             1_000_000_000L, "B",
             1_000_000_000_000L, "T",
-            1_000_000_000_000_000L, "Q",
+            1_000_000_000_000_000L, "Qa",
             1_000_000_000_000_000_000L, "Qi"));
 
-    public EconomyManager() {
+    public static void init() {
         balances = loadAllBalances();
 
         CommandsManager.getHandler().register(

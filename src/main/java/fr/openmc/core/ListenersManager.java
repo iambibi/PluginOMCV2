@@ -17,11 +17,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ListenersManager {
-    public ListenersManager() {
+    public static void init() {
         registerEvents(
                 new HappyGhastListener(),
                 new SessionsListener(),
-                new JoinMessageListener(),
+                new JoinQuitMessageListener(),
                 new UpdateListener(),
                 new ClockInfos(),
                 new MailboxListener(),
@@ -38,11 +38,15 @@ public class ListenersManager {
                 new BossbarListener(),
                 new PlayerSettingsManager(),
                 new InteractListener(),
-                new ItemsAddersListener(),
-                new TicketListener(),
                 new AywenCapListener(),
                 new ArmorListener()
         );
+        if (!OMCPlugin.isUnitTestVersion()) {
+            registerEvents(
+                    new ItemsAddersListener(),
+                    new TicketListener()
+            );
+        }
     }
 
     private static void registerEvents(Listener... args) {

@@ -49,12 +49,12 @@ public class CityListDetailsMenu extends Menu {
 	
 	@Override
 	public @NotNull String getName() {
-		return "Menu de détails de la Ville " + city.getName();
+		return "Menu de détails de la ville " + city.getName();
 	}
 
 	@Override
 	public String getTexture() {
-		return null;
+		return "§r§f:offset_-48::city_template3x9:";
 	}
 
 	@Override

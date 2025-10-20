@@ -47,9 +47,9 @@ public class MascotsDamageListener implements Listener {
 
     @EventHandler
     void onMascotDamageCaused(EntityDamageEvent e) {
-        Entity entity = e.getEntity();
+        LivingEntity entity = (LivingEntity) e.getEntity();
 
-        if (!(entity instanceof Player mob)) return;
+        if (entity instanceof Player) return;
 
         if (!MascotUtils.canBeAMascot(entity)) return;
 
@@ -63,20 +63,20 @@ public class MascotsDamageListener implements Listener {
         City city = MascotUtils.getCityFromEntity(entity.getUniqueId());
         if (city == null) return;
 
-        double newHealth = Math.floor(mob.getHealth());
-        mob.setHealth(newHealth);
-        double maxHealth = mob.getAttribute(Attribute.MAX_HEALTH).getValue();
+        double newHealth = Math.floor(entity.getHealth());
+        entity.setHealth(newHealth);
+        double maxHealth = entity.getAttribute(Attribute.MAX_HEALTH).getValue();
 
         Mascot mascot = city.getMascot();
         if (mascot == null) return;
 
-        double healthAfterDamage = mob.getHealth() - e.getFinalDamage();
+        double healthAfterDamage = entity.getHealth() - e.getFinalDamage();
         if (healthAfterDamage < 0) healthAfterDamage = 0;
 
         if (!mascot.isAlive()) {
-            mob.customName(Component.text(DEAD_MASCOT_NAME));
+            entity.customName(Component.text(DEAD_MASCOT_NAME));
         } else {
-            mob.customName(Component.text(MascotsManager.PLACEHOLDER_MASCOT_NAME.formatted(
+            entity.customName(Component.text(MascotsManager.PLACEHOLDER_MASCOT_NAME.formatted(
                     city.getName(),
                     healthAfterDamage,
                     maxHealth
@@ -121,7 +121,7 @@ public class MascotsDamageListener implements Listener {
         }
 
         if (cityEnemy == null) {
-            MessagesManager.sendMessage(player, Component.text("§cErreur : La ville enemie n'a pas été reconnu"), Prefix.CITY, MessageType.ERROR, false);
+	        MessagesManager.sendMessage(player, Component.text("§cErreur : La ville ennemie n'a pas été reconnue"), Prefix.CITY, MessageType.ERROR, false);
             e.setCancelled(true);
             return;
         }
@@ -131,13 +131,13 @@ public class MascotsDamageListener implements Listener {
         CityType cityEnemyType = cityEnemy.getType();
 
         if (cityType == null) {
-            MessagesManager.sendMessage(player, Component.text("§cErreur : Le type de votre ville n'a pas été reconnu"), Prefix.CITY, MessageType.ERROR, false);
+	        MessagesManager.sendMessage(player, Component.text("§cErreur : Le type de votre ville n'a pas été reconnue"), Prefix.CITY, MessageType.ERROR, false);
             e.setCancelled(true);
             return;
         }
 
         if (cityEnemyType == null) {
-            MessagesManager.sendMessage(player, Component.text("§cErreur : Le type de la ville enemie n'a pas été reconnu"), Prefix.CITY, MessageType.ERROR, false);
+	        MessagesManager.sendMessage(player, Component.text("§cErreur : Le type de la ville ennemie n'a pas été reconnue"), Prefix.CITY, MessageType.ERROR, false);
             e.setCancelled(true);
             return;
         }
@@ -182,7 +182,7 @@ public class MascotsDamageListener implements Listener {
 
         if (!citiesWar.getAttackers().contains(player.getUniqueId()) &&
                 !citiesWar.getDefenders().contains(player.getUniqueId())) {
-            MessagesManager.sendMessage(player, Component.text("§cVous ne pouvez pas attaquer la mascotte car vous n'avez pas été séléctionné pour la guerre"), Prefix.CITY, MessageType.INFO, false);
+	        MessagesManager.sendMessage(player, Component.text("§cVous ne pouvez pas attaquer la mascotte car vous n'avez pas été sélectionné pour la guerre"), Prefix.CITY, MessageType.INFO, false);
             e.setCancelled(true);
             return;
         }

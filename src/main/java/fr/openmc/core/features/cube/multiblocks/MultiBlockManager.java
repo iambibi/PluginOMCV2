@@ -1,6 +1,5 @@
 package fr.openmc.core.features.cube.multiblocks;
 
-import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.cube.Cube;
 import lombok.Getter;
@@ -25,7 +24,7 @@ public class MultiBlockManager {
     private static FileConfiguration config = null;
     private static File file = null;
 
-    public MultiBlockManager() {
+    public static void init() {
         file = new File(OMCPlugin.getInstance().getDataFolder() + "/data", "multiblocks.yml");
         if (!file.exists()) {
             plugin.saveResource("data/multiblocks.yml", false);
@@ -107,17 +106,5 @@ public class MultiBlockManager {
         multiBlocks.add(multiBlock);
 
         save();
-    }
-
-    public static void initCommandSuggestion() {
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("cubes", (args, sender, command) -> {
-            return MultiBlockManager.getMultiBlocks().stream()
-                    .filter(mb -> mb instanceof Cube)
-                    .map(mb -> {
-                        Location loc = mb.origin;
-                        return loc.getWorld().getName() + ":" + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ();
-                    })
-                    .toList();
-        });
     }
 }

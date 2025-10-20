@@ -28,7 +28,6 @@ import fr.openmc.core.features.homes.icons.HomeIconCacheManager;
 import fr.openmc.core.features.leaderboards.LeaderboardManager;
 import fr.openmc.core.features.mainmenu.MainMenu;
 import fr.openmc.core.features.milestones.MilestonesManager;
-import fr.openmc.core.features.privatemessage.PrivateMessageManager;
 import fr.openmc.core.features.quests.QuestProgressSaveManager;
 import fr.openmc.core.features.quests.QuestsManager;
 import fr.openmc.core.features.settings.PlayerSettingsManager;
@@ -43,6 +42,7 @@ import fr.openmc.core.utils.ShutUpOrmLite;
 import fr.openmc.core.utils.database.DatabaseManager;
 import fr.openmc.core.utils.errors.ErrorReporter;
 import fr.openmc.core.utils.translation.TranslationManager;
+import io.papermc.paper.datapack.Datapack;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -87,64 +87,72 @@ public class OMCPlugin extends JavaPlugin {
         /* EXTERNALS */
         MenuLib.init(this);
 
-        new LuckPermsHook();
-        new PapiHook();
-        new WorldGuardHook();
-        new ItemsAdderHook();
-        new FancyNpcsHook();
+        LuckPermsHook.init();
+        PapiHook.init();
+        WorldGuardHook.init();
+        ItemsAdderHook.init();
+        FancyNpcsHook.init();
         if (!OMCPlugin.isUnitTestVersion())
-            new PacketMenuLib(this);
+            PacketMenuLib.init(this);
 
         logLoadMessage();
-
+        if (!OMCPlugin.isUnitTestVersion()) {
+            Datapack pack = this.getServer().getDatapackManager().getPack(getPluginMeta().getName() + "/omc");
+            if (pack != null) {
+                if (pack.isEnabled()) {
+                    getSLF4JLogger().info("\u001B[32m✔ Lancement du datapack réussi\u001B[0m");
+                } else {
+                    getSLF4JLogger().warn("\u001B[31m✘ Lancement du datapack échoué\u001B[0m");
+                }
+            }
+        }
         new ErrorReporter();
 
         /* MANAGERS */
         TicketManager.loadPlayerStats(new File(this.getDataFolder(), "data/stats"));
-        new DatabaseManager();
-        new CommandsManager();
-        new SpawnManager();
-        new UpdateManager();
-        new ListenersManager();
-        new EconomyManager();
-        new BankManager();
-        new ScoreboardManager();
-        new HomesManager();
+        DatabaseManager.init();
+        CommandsManager.init();
+        SpawnManager.init();
+        UpdateManager.init();
+        ListenersManager.init();
+        EconomyManager.init();
+        BankManager.init();
+        ScoreboardManager.init();
+        HomesManager.init();
         TPAQueue.initCommand();
-        new FreezeManager();
-        new QuestProgressSaveManager();
-        new TabList();
-        if (!OMCPlugin.isUnitTestVersion()) {
-            new LeaderboardManager();
-            new MainMenu(this);
-            new HologramLoader();
-        }
-        new AdminShopManager();
-        new BossbarManager();
-        new PrivateMessageManager();
-        new AnimationsManager();
+        FreezeManager.init();
+        QuestProgressSaveManager.init();
+        TabList.init();
+        AdminShopManager.init();
+        BossbarManager.init();
+        AnimationsManager.init();
 
-        new MotdUtils();
-        new TranslationManager(new File(this.getDataFolder(), "translations"), "fr");
-        new DynamicCooldownManager();
+        MotdUtils.init();
+        TranslationManager.init(new File(this.getDataFolder(), "translations"), "fr");
+        DynamicCooldownManager.init();
 
-        new MascotsManager();
+        MascotsManager.init();
 
-        new MultiBlockManager();
+        MultiBlockManager.init();
 
         PlayerSettingsManager.loadAllPlayerSettings();
     }
 
     public void loadWithItemsAdder() {
-        new CustomItemRegistry();
-        new CustomUsableItemRegistry();
-        new MilestonesManager();
-        new QuestsManager();
-        new CityManager();
-        new ContestManager();
+        CustomItemRegistry.init();
+        CustomUsableItemRegistry.init();
+        MilestonesManager.init();
+        QuestsManager.init();
+        CityManager.init();
+        ContestManager.init();
         if (WorldGuardHook.isHasWorldGuard()) {
             ParticleUtils.spawnParticlesInRegion("spawn", Bukkit.getWorld("world"), Particle.CHERRY_LEAVES, 50, 70, 130);
             ParticleUtils.spawnContestParticlesInRegion("spawn", Bukkit.getWorld("world"), 10, 70, 135);
+        }
+        if (!OMCPlugin.isUnitTestVersion()) {
+            LeaderboardManager.init();
+            MainMenu.init(this);
+            HologramLoader.init();
         }
         HomeIconCacheManager.initialize();
     }

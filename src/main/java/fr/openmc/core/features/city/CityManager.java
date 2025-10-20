@@ -31,44 +31,20 @@ import fr.openmc.core.utils.ChunkPos;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class CityManager implements Listener {
+public class CityManager {
     private static final Map<UUID, City> cities = new HashMap<>();
     public static final Map<String, City> citiesByName = new HashMap<>();
-    private static final Map<UUID, City> playerCities = new HashMap<>();
+    public static final Map<UUID, City> playerCities = new HashMap<>();
     private static final Map<ChunkPos, City> claimedChunks = new HashMap<>();
 
-    public CityManager() {
-        OMCPlugin.registerEvents(this);
-
+    public static void init() {
         loadCities();
-
-        CommandsManager.getHandler().getAutoCompleter().registerSuggestion("city_members", ((args, sender, command) -> {
-            UUID playerCityUUID = playerCities.get(sender.getUniqueId()).getUniqueId();
-
-            if (playerCityUUID == null)
-                return List.of();
-
-            return playerCities.keySet().stream()
-                    .filter(uuid -> playerCities.get(uuid).getUniqueId().equals(playerCityUUID))
-                    .map(uuid -> CacheOfflinePlayer.getOfflinePlayer(uuid).getName())
-                    .collect(Collectors.toList());
-        })).registerSuggestion("city_ranks", ((args, sender, command) -> {
-                    City city = playerCities.get(sender.getUniqueId());
-                    if (city == null) return List.of();
-
-                    return city.getRanks().stream()
-                            .map(DBCityRank::getName)
-                            .collect(Collectors.toList());
-                })
-        );
 
         CommandsManager.getHandler().register(
                 new AdminCityCommands(),
@@ -77,7 +53,9 @@ public class CityManager implements Listener {
                 new CityPermsCommands(),
                 new CityChestCommand(),
                 new CityRankCommands(),
-                new CityTopCommands()
+                new CityTopCommands(),
+                new CityInviteCommands(),
+                new CityClaimCommands()
         );
 
         OMCPlugin.registerEvents(
@@ -85,14 +63,14 @@ public class CityManager implements Listener {
         );
 
         // SUB-FEATURE
-        new MayorManager();
-        new ProtectionsManager();
-        new WarManager();
-        new CityBankManager();
-        new CityStatisticsManager();
-        new NotationManager();
-        new CityRankManager();
-        new CityMilestoneManager();
+        MayorManager.init();
+        ProtectionsManager.init();
+        WarManager.init();
+        CityBankManager.init();
+        CityStatisticsManager.init();
+        NotationManager.init();
+        CityRankManager.init();
+        CityMilestoneManager.init();
     }
 
     private static Dao<DBCity, String> citiesDao;
@@ -147,7 +125,7 @@ public class CityManager implements Listener {
 
             cities.values().forEach(City::initializeRanks);
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur du chargements des Villes ", e);
+            throw new RuntimeException("Erreur du chargement des villes ", e);
         }
     }
 
@@ -155,7 +133,7 @@ public class CityManager implements Listener {
         try {
             citiesDao.createOrUpdate(city.serialize());
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur des sauvegardes des villes ", e);
+            throw new RuntimeException("Erreur de la sauvegarde des villes ", e);
         }
     }
 
