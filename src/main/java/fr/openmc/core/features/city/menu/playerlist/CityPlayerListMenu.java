@@ -12,7 +12,7 @@ import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.actions.CityKickAction;
 import fr.openmc.core.features.city.commands.CityInviteCommands;
-import fr.openmc.core.features.city.menu.CitizensPermsMenu;
+import fr.openmc.core.features.city.menu.CityPermsMenu;
 import fr.openmc.core.features.city.sub.milestone.rewards.MemberLimitRewards;
 import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.CacheOfflinePlayer;
@@ -134,7 +134,7 @@ public class CityPlayerListMenu extends PaginatedMenu {
                     CityPlayerGestionMenu menu = new CityPlayerGestionMenu(player, playerOffline);
                     menu.open();
                 } else if (hasPermissionPerms) {
-                    CitizensPermsMenu.openBookFor(player, playerOffline.getUniqueId());
+                    new CityPermsMenu(player, playerOffline.getUniqueId(), false).open();
                 } else if (hasPermissionKick) {
                     if (player.getUniqueId().equals(playerOffline.getUniqueId()))
                         return;
