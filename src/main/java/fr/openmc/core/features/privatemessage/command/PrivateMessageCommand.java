@@ -19,7 +19,7 @@ public class PrivateMessageCommand {
             @Named("joueur") @SuggestWith(OnlinePlayerAutoComplete.class) Player target,
             @Named("message") String message
     ) {
-        PrivateMessageManager.getInstance().sendPrivateMessage(player, target, message);
+        PrivateMessageManager.sendPrivateMessage(player, target, message);
     }
 
     @Command("r")
@@ -29,7 +29,7 @@ public class PrivateMessageCommand {
             Player player,
             @Named("message") String message
     ) {
-        PrivateMessageManager.getInstance().replyToLastMessage(player, message);
+        PrivateMessageManager.replyToLastMessage(player, message);
     }
 
 }

@@ -20,12 +20,12 @@ public class Spawn {
     @CommandPermission("omc.commands.spawn")
     public void spawn(
             CommandSender sender,
-            @Named("player") @Default("me") @SuggestWith(OnlinePlayerAutoComplete.class) Player target
+            @Named("player") @Optional @SuggestWith(OnlinePlayerAutoComplete.class) Player target
     ) {
         
         Location spawnLocation = SpawnManager.getSpawnLocation();
 
-        if(sender instanceof Player player && player == target) {
+        if (sender instanceof Player player && (target == null || player.getUniqueId().equals(target.getUniqueId()))) {
             PlayerUtils.sendFadeTitleTeleport(player, spawnLocation);
             MessagesManager.sendMessage(player, Component.text("§aVous avez été envoyé au spawn"), Prefix.OPENMC, MessageType.SUCCESS, true);
         } else {
