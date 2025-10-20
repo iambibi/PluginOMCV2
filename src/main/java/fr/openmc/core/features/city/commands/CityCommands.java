@@ -9,15 +9,11 @@ import fr.openmc.core.features.city.commands.autocomplete.CityMembersAutoComplet
 import fr.openmc.core.features.city.conditions.CityCreateConditions;
 import fr.openmc.core.features.city.conditions.CityLeaveCondition;
 import fr.openmc.core.features.city.conditions.CityManageConditions;
-import fr.openmc.core.features.city.menu.CityMenu;
-import fr.openmc.core.features.city.conditions.*;
-import fr.openmc.core.features.city.menu.CityChunkMenu;
 import fr.openmc.core.features.city.menu.CityTypeMenu;
 import fr.openmc.core.features.city.menu.NoCityMenu;
 import fr.openmc.core.features.city.menu.list.CityListDetailsMenu;
 import fr.openmc.core.features.city.menu.list.CityListMenu;
 import fr.openmc.core.features.city.menu.main.CityMenu;
-import fr.openmc.core.features.city.view.CityViewManager;
 import fr.openmc.core.utils.InputUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
