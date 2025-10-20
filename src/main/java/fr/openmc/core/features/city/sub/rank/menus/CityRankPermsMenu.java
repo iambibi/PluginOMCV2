@@ -3,6 +3,7 @@ package fr.openmc.core.features.city.sub.rank.menus;
 import fr.openmc.api.menulib.PaginatedMenu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
+import fr.openmc.api.menulib.utils.ItemUtils;
 import fr.openmc.api.menulib.utils.StaticSlots;
 import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
@@ -79,7 +80,7 @@ public class CityRankPermsMenu extends PaginatedMenu {
 			}).setOnClick(inventoryClickEvent -> {
 				CityRankCommands.swapPermission(getOwner(), newRank, permission);
 				new CityRankPermsMenu(getOwner(), oldRank, newRank, true, page).open();
-			});
+			}).hide(ItemUtils.getDataComponentType());
 			
 			items.add(itemBuilder);
 		}
