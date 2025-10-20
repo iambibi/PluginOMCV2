@@ -11,7 +11,7 @@ import fr.openmc.core.features.city.City;
 import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.CityPermission;
 import fr.openmc.core.features.city.actions.CityKickAction;
-import fr.openmc.core.features.city.commands.CityCommands;
+import fr.openmc.core.features.city.commands.CityInviteCommands;
 import fr.openmc.core.features.city.menu.CityPermsMenu;
 import fr.openmc.core.features.city.sub.milestone.rewards.MemberLimitRewards;
 import fr.openmc.core.items.CustomItemRegistry;
