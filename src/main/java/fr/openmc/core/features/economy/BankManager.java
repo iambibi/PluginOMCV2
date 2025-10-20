@@ -210,13 +210,21 @@ public class BankManager {
     public static void applyPlayerInterest(UUID playerUUID) {
         double interest = calculatePlayerInterest(playerUUID);
         double amount = getBankBalance(playerUUID) * interest;
-        deposit(playerUUID, amount);
+
+        City city = CityManager.getPlayerCity(playerUUID);
+        if (city == null) return;
+
+
+        double allowedAmount = Math.min(amount, Math.max(0, PlayerBankLimitRewards.getBankBalanceLimit(city.getLevel()) - getBankBalance(playerUUID)));
+        if (allowedAmount <= 0) return;
+
+        deposit(playerUUID, allowedAmount);
 
         Player sender = Bukkit.getPlayer(playerUUID);
         if (sender != null)
             MessagesManager.sendMessage(sender,
                     Component.text("Vous venez de percevoir §d" + interest * 100 + "% §rd'intérêt, soit §d"
-                            + EconomyManager.getFormattedSimplifiedNumber(amount) + "§r"
+                            + EconomyManager.getFormattedSimplifiedNumber(allowedAmount) + "§r"
                             + EconomyManager.getEconomyIcon()),
                     Prefix.CITY, MessageType.SUCCESS, false);
     }
