@@ -47,7 +47,7 @@ public class MascotsDamageListener implements Listener {
 
     @EventHandler
     void onMascotDamageCaused(EntityDamageEvent e) {
-        LivingEntity entity = (LivingEntity) e.getEntity();
+        if (!(e.getEntity() instanceof LivingEntity entity)) return;
 
         if (entity instanceof Player) return;
 
