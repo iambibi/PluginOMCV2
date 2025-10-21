@@ -52,7 +52,7 @@ public class PacketListener implements Listener {
                 ItemStack.fromBukkitCopy(getInvisibleItem()),
                 Component.literal("Chargement..."),
                 Component.empty(),
-                Optional.empty(),
+                Optional.of(new ClientAsset.ResourceTexture(ResourceLocation.fromNamespaceAndPath("minecraft", "gui/tab_header_background"))), // Texture transparente par défaut
                 AdvancementType.GOAL,
                 false,
                 false,
