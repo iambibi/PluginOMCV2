@@ -52,7 +52,7 @@ public class PacketListener implements Listener {
                 ItemStack.fromBukkitCopy(getInvisibleItem()),
                 Component.literal("Chargement..."),
                 Component.empty(),
-                Optional.empty(), // Texture transparente par défaut
+                Optional.empty(),
                 AdvancementType.GOAL,
                 false,
                 false,
