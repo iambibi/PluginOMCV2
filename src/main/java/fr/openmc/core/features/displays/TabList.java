@@ -21,7 +21,7 @@ import java.util.UUID;
 public class TabList {
     private static ProtocolManager protocolManager = null;
 
-    public TabList() {
+    public static void init() {
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null)
             protocolManager = ProtocolLibrary.getProtocolManager();
 
