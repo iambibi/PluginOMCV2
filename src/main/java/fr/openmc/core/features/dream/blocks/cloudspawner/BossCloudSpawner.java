@@ -1,13 +1,18 @@
 package fr.openmc.core.features.dream.blocks.cloudspawner;
 
+import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.mobs.mobs.Breezy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.TrialSpawner;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.loot.LootTable;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.spawner.TrialSpawnerConfiguration;
 
 import java.util.Map;
@@ -33,5 +38,19 @@ public class BossCloudSpawner implements Listener {
 
             spawner.update();
         }
+    }
+
+    @EventHandler
+    void onEffect(CreatureSpawnEvent event) {
+        if (!event.getLocation().getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.POTION_EFFECT)) return;
+
+        event.getEntity().addPotionEffect(new PotionEffect(
+                PotionEffectType.WIND_CHARGED,
+                Integer.MAX_VALUE,
+                1,
+                false,
+                true
+        ));
     }
 }

@@ -36,8 +36,8 @@ public class ReplaceBlockListener implements Listener {
                     Block block = chunk.getBlock(x, y, z);
                     switch (block.getType()) {
                         case NETHERITE_BLOCK -> BossCloudSpawner.replaceBlockWithBossCloudSpawner(block);
-                        case LAPIS_BLOCK -> StrayCloudSpawner.replaceBlockWithMobCloudSpawner(block);
-                        case COAL_BLOCK -> PhantomCloudSpawner.replaceBlockWithMobCloudSpawner(block);
+                        case COAL_BLOCK -> StrayCloudSpawner.replaceBlockWithMobCloudSpawner(block);
+                        case LAPIS_BLOCK -> PhantomCloudSpawner.replaceBlockWithMobCloudSpawner(block);
                         case DIAMOND_BLOCK -> CloudVault.replaceBlockWithVault(block);
                     }
                 }

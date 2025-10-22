@@ -24,10 +24,10 @@ public class DreamPhantom extends DreamMob {
         super("dream_phantom",
                 "Phantom Réveillé",
                 EntityType.STRAY,
-                9.0,
+                10.0,
                 3.0,
                 0.4,
-                RandomUtils.randomBetween(0.3, 0.6),
+                RandomUtils.randomBetween(0.4, 0.8),
                 List.of(),
                 Biome.THE_VOID
         );
@@ -52,6 +52,7 @@ public class DreamPhantom extends DreamMob {
         this.setAttributeIfPresent(phantom, Attribute.SCALE, this.getScale());
 
         phantom.setGlowing(true);
+        phantom.setLootTable(null);
 
         phantom.getPersistentDataContainer().set(
                 DreamMobManager.mobKey,

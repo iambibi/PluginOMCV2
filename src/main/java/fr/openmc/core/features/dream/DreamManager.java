@@ -6,7 +6,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
-import fr.openmc.core.features.dream.blocks.cloudspawner.StrayCloudSpawner;
+import fr.openmc.core.features.dream.blocks.cloudspawner.BossCloudSpawner;
 import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
@@ -64,7 +64,7 @@ public class DreamManager {
                 new ReplaceBlockListener(),
                 new PlayerEatSomnifere(),
                 new CloudVault(),
-                new StrayCloudSpawner()
+                new BossCloudSpawner()
         );
 
         // ** MANAGERS **

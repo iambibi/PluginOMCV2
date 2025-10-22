@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.mobs.mobs;
 
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.items.DreamItemRegister;
 import fr.openmc.core.features.dream.mobs.DreamMob;
 import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import net.kyori.adventure.text.Component;
@@ -9,10 +10,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.Breeze;
 import org.bukkit.entity.EntitySnapshot;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Stray;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
@@ -23,10 +26,10 @@ public class DreamStray extends DreamMob {
         super("dream_stray",
                 "Stray Endormi",
                 EntityType.STRAY,
-                9.0,
+                13.0,
                 4.0,
-                0.8,
-                1.0,
+                1,
+                1.2,
                 List.of(),
                 Biome.THE_VOID
         );
@@ -39,25 +42,30 @@ public class DreamStray extends DreamMob {
 
     public EntitySnapshot createSnapshot() {
         World world = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
-        Breeze breeze = world.createEntity(new Location(world, 0, 0, 0), Breeze.class);
+        Stray stray = world.createEntity(new Location(world, 0, 0, 0), Stray.class);
 
-        breeze.customName(Component.text(this.getName()));
-        breeze.setCustomNameVisible(true);
+        stray.customName(Component.text(this.getName()));
+        stray.setCustomNameVisible(true);
 
-        this.setAttributeIfPresent(breeze, Attribute.MAX_HEALTH, this.getHealth());
-        breeze.setHealth(this.getHealth());
-        this.setAttributeIfPresent(breeze, Attribute.ATTACK_DAMAGE, this.getDamage());
-        this.setAttributeIfPresent(breeze, Attribute.MOVEMENT_SPEED, this.getSpeed());
-        this.setAttributeIfPresent(breeze, Attribute.SCALE, this.getScale());
+        this.setAttributeIfPresent(stray, Attribute.MAX_HEALTH, this.getHealth());
+        stray.setHealth(this.getHealth());
+        this.setAttributeIfPresent(stray, Attribute.ATTACK_DAMAGE, this.getDamage());
+        this.setAttributeIfPresent(stray, Attribute.MOVEMENT_SPEED, this.getSpeed());
+        this.setAttributeIfPresent(stray, Attribute.SCALE, this.getScale());
 
-        breeze.setGlowing(true);
+        stray.setGlowing(true);
+        EntityEquipment equipment = stray.getEquipment();
+        if (stray.canUseEquipmentSlot(EquipmentSlot.FEET)) {
+            equipment.setBoots(DreamItemRegister.getByName("omc_dream:cloud_boots").getBest());
+            equipment.setBootsDropChance(0.0f);
+        }
 
-        breeze.getPersistentDataContainer().set(
+        stray.getPersistentDataContainer().set(
                 DreamMobManager.mobKey,
                 PersistentDataType.STRING,
                 this.getId()
         );
 
-        return breeze.createSnapshot();
+        return stray.createSnapshot();
     }
 }

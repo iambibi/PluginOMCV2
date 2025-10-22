@@ -14,6 +14,8 @@ import org.bukkit.entity.EntitySnapshot;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
@@ -23,9 +25,9 @@ public class Breezy extends DreamMob {
         super("brezzy",
                 "Breezy",
                 EntityType.BREEZE,
-                50.0,
-                6.0,
-                1.3,
+                100.0,
+                8.0,
+                2,
                 4.0,
                 List.of(),
                 Biome.THE_VOID
@@ -50,7 +52,15 @@ public class Breezy extends DreamMob {
         this.setAttributeIfPresent(breeze, Attribute.MOVEMENT_SPEED, this.getSpeed());
         this.setAttributeIfPresent(breeze, Attribute.SCALE, this.getScale());
 
+        breeze.addPotionEffect(new PotionEffect(
+                PotionEffectType.INFESTED,
+                Integer.MAX_VALUE,
+                0,
+                false,
+                true
+        ));
         breeze.setGlowing(true);
+        breeze.setLootTable(null);
 
         breeze.getPersistentDataContainer().set(
                 DreamMobManager.mobKey,

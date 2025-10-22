@@ -3,12 +3,8 @@ package fr.openmc.core.features.dream.mobs.listeners;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.mobs.DreamMobManager;
-import fr.openmc.core.features.dream.mobs.mobs.DreamCreaking;
-import fr.openmc.core.features.dream.mobs.mobs.DreamSpider;
 import fr.openmc.core.features.dream.mobs.mobs.Soul;
 import org.bukkit.Location;
-import org.bukkit.entity.Creaking;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -32,9 +28,7 @@ public class SoulForestMobSpawningListener implements Listener {
      */
     @EventHandler
     void onCreatureSpawn(CreatureSpawnEvent e) {
-        if (DreamMobManager.isDreamMob(e.getEntity())) {
-            return;
-        }
+        if (DreamMobManager.isDreamMob(e.getEntity())) return;
 
         Location spawningLoc = e.getEntity().getLocation();
 

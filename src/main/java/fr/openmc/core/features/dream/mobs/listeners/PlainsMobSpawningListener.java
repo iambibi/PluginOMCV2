@@ -31,9 +31,7 @@ public class PlainsMobSpawningListener implements Listener {
      */
     @EventHandler
     void onCreatureSpawn(CreatureSpawnEvent e) {
-        if (DreamMobManager.isDreamMob(e.getEntity())) {
-            return;
-        }
+        if (DreamMobManager.isDreamMob(e.getEntity())) return;
 
         Location spawningLoc = e.getEntity().getLocation();
 

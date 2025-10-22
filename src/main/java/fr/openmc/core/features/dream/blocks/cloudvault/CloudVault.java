@@ -34,7 +34,7 @@ public class CloudVault implements Listener {
 
         int luck = random.nextInt(100);
 
-        if (luck < 65) {
+        if (luck < 50) {
             List<ItemStack> rolls = List.of(
                     DreamItemRegister.getByName("omc_dream:cloud_helmet").getBest(),
                     DreamItemRegister.getByName("omc_dream:cloud_chestplate").getBest(),
@@ -43,9 +43,9 @@ public class CloudVault implements Listener {
             );
 
             loot.add(rolls.get(random.nextInt(rolls.size())));
-        } else if (luck < 80) {
+        } else if (luck < 75) {
             loot.add(DreamItemRegister.getByName("omc_dream:somnifere").getBest());
-        } else if (luck < 90) {
+        } else {
             loot.add(DreamItemRegister.getByName("omc_dream:cloud_fishing_rod").getBest());
         }
 
