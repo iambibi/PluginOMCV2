@@ -1,18 +1,18 @@
 package fr.openmc.core.features.dream.blocks.cloudspawner;
 
+import fr.openmc.core.features.dream.mobs.mobs.DreamPhantom;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.TrialSpawner;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.loot.LootTable;
 import org.bukkit.spawner.TrialSpawnerConfiguration;
 
 import java.util.Map;
 
-public class MobCloudSpawner implements Listener {
+public class PhantomCloudSpawner implements Listener {
     @SuppressWarnings("UnstableApiUsage")
     public static void replaceBlockWithMobCloudSpawner(Block block) {
         block.setType(Material.TRIAL_SPAWNER);
@@ -20,7 +20,7 @@ public class MobCloudSpawner implements Listener {
         if (block.getState() instanceof TrialSpawner spawner) {
             TrialSpawnerConfiguration normal = spawner.getNormalConfiguration();
 
-            normal.setSpawnedType(EntityType.PHANTOM);
+            normal.setSpawnedEntity(new DreamPhantom().createSnapshot());
 
             NamespacedKey lootKey = new NamespacedKey("openmc", "cloud_castle/mob_spawner");
             LootTable lootTable = Bukkit.getLootTable(lootKey);

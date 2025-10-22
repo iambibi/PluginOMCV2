@@ -2,7 +2,8 @@ package fr.openmc.core.features.dream.listeners.generation;
 
 import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
 import fr.openmc.core.features.dream.blocks.cloudspawner.BossCloudSpawner;
-import fr.openmc.core.features.dream.blocks.cloudspawner.MobCloudSpawner;
+import fr.openmc.core.features.dream.blocks.cloudspawner.PhantomCloudSpawner;
+import fr.openmc.core.features.dream.blocks.cloudspawner.StrayCloudSpawner;
 import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
@@ -35,7 +36,8 @@ public class ReplaceBlockListener implements Listener {
                     Block block = chunk.getBlock(x, y, z);
                     switch (block.getType()) {
                         case NETHERITE_BLOCK -> BossCloudSpawner.replaceBlockWithBossCloudSpawner(block);
-                        case COAL_BLOCK -> MobCloudSpawner.replaceBlockWithMobCloudSpawner(block);
+                        case LAPIS_BLOCK -> StrayCloudSpawner.replaceBlockWithMobCloudSpawner(block);
+                        case COAL_BLOCK -> PhantomCloudSpawner.replaceBlockWithMobCloudSpawner(block);
                         case DIAMOND_BLOCK -> CloudVault.replaceBlockWithVault(block);
                     }
                 }

@@ -50,11 +50,11 @@ public class StructureUtils {
     private static CompoundTag loadNBT(String group, String name) throws IOException {
         String path = "structures/" + group + "/" + name.replace(".nbt", "") + ".nbt";
         try (InputStream in = OMCPlugin.getInstance().getResource(path)) {
-            if (in == null) throw new IllegalArgumentException("Structure introuvable: " + path);
+            if (in == null) throw new IllegalArgumentException("Structure introuvable : " + path);
             try (NBTInputStream nbtIn = new NBTInputStream(in)) {
                 Tag base = nbtIn.readTag();
                 if (!(base instanceof CompoundTag compound)) {
-                    throw new IllegalStateException("Structure NBT invalide: " + path);
+                    throw new IllegalStateException("Structure NBT invalide : " + path);
                 }
                 return compound;
             }

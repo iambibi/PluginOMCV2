@@ -145,7 +145,7 @@ public class OMCPlugin extends JavaPlugin {
         QuestsManager.init();
         CityManager.init();
         ContestManager.init();
-        new DreamManager();
+        DreamManager.init();
         MultiBlockManager.init();
         if (WorldGuardHook.isHasWorldGuard()) {
             ParticleUtils.spawnParticlesInRegion("spawn", Bukkit.getWorld("world"), Particle.CHERRY_LEAVES, 50, 70, 130);
