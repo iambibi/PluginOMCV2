@@ -162,8 +162,6 @@ public final class MenuLib implements Listener {
         if (!(e.getInventory().getHolder() instanceof Menu menu))
             return;
 
-        System.out.println("Clicked raw slot: " + e.getRawSlot());
-        System.out.println("Clicked is takable: " + menu.getTakableSlot().contains(e.getRawSlot()));
         if (menu.getTakableSlot().contains(e.getRawSlot()))
             return;
 
