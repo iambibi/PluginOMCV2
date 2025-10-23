@@ -39,6 +39,7 @@ public class ListenersManager {
                 new PlayerSettingsManager(),
                 new InteractListener(),
                 new AywenCapListener(),
+                new NoMoreRabbit(),
                 new ArmorListener()
         );
         if (!OMCPlugin.isUnitTestVersion()) {
