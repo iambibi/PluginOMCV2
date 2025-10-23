@@ -6,6 +6,7 @@ import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.features.dream.mobs.mobs.DreamCreaking;
 import fr.openmc.core.features.dream.mobs.mobs.DreamSpider;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Creaking;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
  */
 public class PlainsMobSpawningListener implements Listener {
 
-    private final double DREAM_SPIDER_PROBABILITY = 0.7;
+    private final double DREAM_SPIDER_PROBABILITY = 0.05;
 
     /**
      * Gère l'événement de spawn de créature.
@@ -33,11 +34,12 @@ public class PlainsMobSpawningListener implements Listener {
     void onCreatureSpawn(CreatureSpawnEvent e) {
         if (DreamMobManager.isDreamMob(e.getEntity())) return;
 
-        Location spawningLoc = e.getEntity().getLocation();
+        Location spawningLoc = e.getEntity().getLocation().add(0, 1, 0);
 
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) return;
-        if (!spawningLoc.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
-        if (!spawningLoc.getWorld().getBiome(spawningLoc).equals(DreamBiome.SCULK_PLAINS.getBiome())) return;
+        World world = spawningLoc.getWorld();
+        if (!world.getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!world.getBiome(spawningLoc).equals(DreamBiome.SCULK_PLAINS.getBiome())) return;
 
         if (e.getEntity().getType().equals(EntityType.CREAKING)) {
             new DreamCreaking().apply((Creaking) e.getEntity());
@@ -45,9 +47,12 @@ public class PlainsMobSpawningListener implements Listener {
         }
 
         double choice = Math.random();
-
-        if (e.getEntity().isOnGround() && choice < DREAM_SPIDER_PROBABILITY) {
-            new DreamSpider().spawn(spawningLoc);
+        if (choice < DREAM_SPIDER_PROBABILITY) {
+            new DreamSpider().spawn(spawningLoc.set(
+                    spawningLoc.getX(),
+                    world.getHighestBlockYAt((int) spawningLoc.getX(), (int) spawningLoc.getZ()),
+                    spawningLoc.getZ()
+            ));
             e.setCancelled(true);
             return;
         }
