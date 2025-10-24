@@ -40,9 +40,7 @@ public class MascotsDamageListener implements Listener {
             EntityDamageEvent.DamageCause.LIGHTNING,
             EntityDamageEvent.DamageCause.BLOCK_EXPLOSION,
             EntityDamageEvent.DamageCause.ENTITY_EXPLOSION,
-            EntityDamageEvent.DamageCause.FIRE_TICK,
-            EntityDamageEvent.DamageCause.ENTITY_ATTACK,
-            EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK
+            EntityDamageEvent.DamageCause.FIRE_TICK
     );
 
     @EventHandler
@@ -69,6 +67,11 @@ public class MascotsDamageListener implements Listener {
 
         Mascot mascot = city.getMascot();
         if (mascot == null) return;
+
+        if (!city.isInWar()) {
+            e.setCancelled(true);
+            return;
+        }
 
         double healthAfterDamage = entity.getHealth() - e.getFinalDamage();
         if (healthAfterDamage < 0) healthAfterDamage = 0;
@@ -187,22 +190,8 @@ public class MascotsDamageListener implements Listener {
             return;
         }
 
-
         LivingEntity mob = (LivingEntity) damageEntity;
         City cityMob = MascotUtils.getCityFromEntity(mob.getUniqueId());
-
-        double newHealth = Math.floor(mob.getHealth());
-
-        mob.setHealth(newHealth);
-        if (newHealth <= 0) {
-            mob.setHealth(0);
-        }
-
-        mob.customName(Component.text(MascotsManager.PLACEHOLDER_MASCOT_NAME.formatted(
-                cityMob.getName(),
-                mob.getHealth() - e.getFinalDamage(),
-                mob.getAttribute(Attribute.MAX_HEALTH).getValue()
-        )));
 
         try {
             if (MayorManager.phaseMayor != 2) return;
@@ -220,7 +209,6 @@ public class MascotsDamageListener implements Listener {
         }
 
         MascotRegenerationUtils.startRegenCooldown(cityMob.getMascot());
-
     }
 
     @EventHandler

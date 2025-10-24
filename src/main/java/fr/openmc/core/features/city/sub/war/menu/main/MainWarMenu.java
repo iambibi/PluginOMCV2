@@ -123,7 +123,7 @@ public class MainWarMenu extends PaginatedMenu {
                     } else if (inventoryClickEvent.getClick() == ClickType.RIGHT) {
                         new WarCityDetailsMenu(player, city).open();
                     }
-                }));
+                }).hide(ItemUtils.getDataComponentType()));
             }
             return items;
     }
