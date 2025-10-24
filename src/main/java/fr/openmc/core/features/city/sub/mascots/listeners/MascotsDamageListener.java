@@ -16,7 +16,6 @@ import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -30,8 +29,6 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Set;
 import java.util.UUID;
-
-import static fr.openmc.core.features.city.sub.mascots.MascotsManager.DEAD_MASCOT_NAME;
 
 public class MascotsDamageListener implements Listener {
     private static final Set<EntityDamageEvent.DamageCause> BLOCKED_CAUSES = Set.of(
@@ -61,30 +58,13 @@ public class MascotsDamageListener implements Listener {
         City city = MascotUtils.getCityFromEntity(entity.getUniqueId());
         if (city == null) return;
 
-        double newHealth = Math.floor(entity.getHealth());
-        entity.setHealth(newHealth);
-        double maxHealth = entity.getAttribute(Attribute.MAX_HEALTH).getValue();
-
         Mascot mascot = city.getMascot();
         if (mascot == null) return;
 
-        if (!city.isInWar()) {
-            e.setCancelled(true);
-            return;
-        }
+        // on return pour eviter d'actualiser 2 fois la vie
+        if (city.isInWar()) return;
 
-        double healthAfterDamage = entity.getHealth() - e.getFinalDamage();
-        if (healthAfterDamage < 0) healthAfterDamage = 0;
-
-        if (!mascot.isAlive()) {
-            entity.customName(Component.text(DEAD_MASCOT_NAME));
-        } else {
-            entity.customName(Component.text(MascotsManager.PLACEHOLDER_MASCOT_NAME.formatted(
-                    city.getName(),
-                    healthAfterDamage,
-                    maxHealth
-            )));
-        }
+        MascotUtils.updateDisplayName(entity, mascot, e.getFinalDamage());
     }
 
     @EventHandler
@@ -192,6 +172,8 @@ public class MascotsDamageListener implements Listener {
 
         LivingEntity mob = (LivingEntity) damageEntity;
         City cityMob = MascotUtils.getCityFromEntity(mob.getUniqueId());
+
+        MascotUtils.updateDisplayName(mob, cityMob.getMascot(), e.getFinalDamage());
 
         try {
             if (MayorManager.phaseMayor != 2) return;
