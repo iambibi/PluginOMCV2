@@ -13,12 +13,12 @@ public enum MemberLimitRewards implements CityRewards {
 
     LEVEL_1(3),
     LEVEL_2(5),
-    LEVEL_3(6),
+    LEVEL_3(7),
     LEVEL_4(null),
-    LEVEL_5(7),
-    LEVEL_6(10),
-    LEVEL_7(15),
-    LEVEL_8(20),
+    LEVEL_5(10),
+    LEVEL_6(15),
+    LEVEL_7(20),
+    LEVEL_8(22),
     LEVEL_9(null),
     LEVEL_10(25);
 
