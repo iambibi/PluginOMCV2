@@ -23,7 +23,7 @@ public class CityClaimAction {
 
     public static int calculatePrice(int chunkCount) {
         double maxValue = 40000;
-        double k = 0.15;
+        double k = 0.015;
 
         double value = maxValue * (1 - Math.exp(-k * chunkCount));
         return (int) (2000 + value);
