@@ -11,9 +11,9 @@ import net.kyori.adventure.text.Component;
 @Getter
 public enum MemberLimitRewards implements CityRewards {
 
-    LEVEL_1(2),
-    LEVEL_2(3),
-    LEVEL_3(5),
+    LEVEL_1(3),
+    LEVEL_2(5),
+    LEVEL_3(6),
     LEVEL_4(null),
     LEVEL_5(7),
     LEVEL_6(10),
