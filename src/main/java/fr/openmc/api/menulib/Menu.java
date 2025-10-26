@@ -177,7 +177,7 @@ public abstract class Menu implements InventoryHolder {
 			}, true);
 		}
 
-		if (item.getType().isAir() && !this.getTakableSlot().contains(slot)) {
+		if ((item.getType().isAir() || item.isBackButton()) && !this.getTakableSlot().contains(slot)) {
 			item = new ItemBuilder(this, ItemUtils.getInvisibleItem());
 		}
 
