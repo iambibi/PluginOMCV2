@@ -26,7 +26,7 @@ import java.util.UUID;
  */
 public class AdminShopManager {
     public static final Map<String, ShopCategory> categories = new HashMap<>();
-    public static final Map<String, Map<String, ShopItem>> items = new HashMap<>();
+    public static final Map<String, Map<String, ShopItem>> items = new HashMap<>(); // Category -> {ShopID -> ShopItem}
     public static final Map<UUID, String> currentCategory = new HashMap<>();
     public static final DecimalFormat priceFormat = new DecimalFormat("#,##0.00");
     private static AdminShopYAML adminShopYAML;
