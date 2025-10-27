@@ -481,8 +481,7 @@ public enum CityLevels {
                                     return Component.text("Gagner 3 guerres");
                                 }
 
-                                return Component.text(
-                                        "Gagner 3 guerres (%s/3)".formatted(
+                                return Component.text("Gagner 3 guerres (%s/3)".formatted(
                                         WarManager.warHistory.get(city.getUniqueId()) != null ? WarManager.warHistory.get(city.getUniqueId()).getNumberWon() : 0
                                 ));
                             }
