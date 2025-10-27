@@ -58,8 +58,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 5 claims");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 5 claims (%d/5)",
+                                return Component.text("Avoir 5 claims (%d/5)".formatted(
                                         city.getChunks().size()
                                 ));
                             }
@@ -95,8 +94,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 10 claims");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 10 claims (%d/10)",
+                                return Component.text("Avoir 10 claims (%d/10)".formatted(
                                         city.getChunks().size()
                                 ));
                             }
@@ -109,8 +107,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 5k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 5k dans la banque (%s/5k)",
+                                return Component.text("Avoir 5k dans la banque (%s/5k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -123,8 +120,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 2 membres");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 2 membres (%d/2)",
+                                return Component.text("Avoir 2 membres (%d/2)".formatted(
                                         city.getMembers().size()
                                 ));
                             }
@@ -167,8 +163,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 2 grades (/city rank)");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 2 grades (%d/2)",
+                                return Component.text("Avoir 2 grades (%d/2)".formatted(
                                         city.getRanks().size()
                                 ));
                             }
@@ -181,8 +176,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 15k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 15k dans la banque (%s/15k)",
+                                return Component.text("Avoir 15k dans la banque (%s/15k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -254,8 +248,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 20k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 20k dans la banque (%s/20k)",
+                                return Component.text("Avoir 20k dans la banque (%s/20k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -268,8 +261,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 23 claims");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 23 claims (%d/23)",
+                                return Component.text("Avoir 23 claims (%d/23)".formatted(
                                         city.getChunks().size()
                                 ));
                             }
@@ -305,8 +297,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 30k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 30k dans la banque (%s/30k)",
+                                return Component.text("Avoir 30k dans la banque (%s/30k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -319,8 +310,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 27 claims");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 27 claims (%d/27)",
+                                return Component.text("Avoir 27 claims (%d/27)".formatted(
                                         city.getChunks().size()
                                 ));
                             }
@@ -364,8 +354,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 40k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 40k dans la banque (%s/40k)",
+                                return Component.text("Avoir 40k dans la banque (%s/40k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -378,8 +367,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 30 claims");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 30 claims (%d/30)",
+                                return Component.text("Avoir 30 claims (%d/30)".formatted(
                                         city.getChunks().size()
                                 ));
                             }
@@ -419,8 +407,7 @@ public enum CityLevels {
                                     return Component.text("Avoir fait 2 guerres");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir fait 2 guerres (%s/2)",
+                                return Component.text("Avoir fait 2 guerres (%s/2)".formatted(
                                         WarManager.warHistory.get(city.getUniqueId()) != null ? WarManager.warHistory.get(city.getUniqueId()).getNumberWar() : 0
                                 ));
                             }
@@ -443,8 +430,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 60k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 60k dans la banque (%s/60k)",
+                                return Component.text("Avoir 60k dans la banque (%s/60k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -457,8 +443,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 50 claims");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 50 claims (%d/50)",
+                                return Component.text("Avoir 50 claims (%d/50)".formatted(
                                         city.getChunks().size()
                                 ));
                             }
@@ -496,8 +481,8 @@ public enum CityLevels {
                                     return Component.text("Gagner 3 guerres");
                                 }
 
-                                return Component.text(String.format(
-                                        "Gagner 3 guerres (%s/3)",
+                                return Component.text(
+                                        "Gagner 3 guerres (%s/3)".formatted(
                                         WarManager.warHistory.get(city.getUniqueId()) != null ? WarManager.warHistory.get(city.getUniqueId()).getNumberWon() : 0
                                 ));
                             }
@@ -515,8 +500,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 80k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 80k dans la banque (%s/80k)",
+                                return Component.text("Avoir 80k dans la banque (%s/80k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -564,8 +548,7 @@ public enum CityLevels {
                                     return Component.text("Avoir fait 10 guerres");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir fait 10 guerres (%s/10)",
+                                return Component.text("Avoir fait 10 guerres (%s/10)".formatted(
                                         WarManager.warHistory.get(city.getUniqueId()) != null ? WarManager.warHistory.get(city.getUniqueId()).getNumberWar() : 0
                                 ));
                             }
@@ -578,8 +561,7 @@ public enum CityLevels {
                                     return Component.text("Avoir 200k dans la banque");
                                 }
 
-                                return Component.text(String.format(
-                                        "Avoir 200k dans la banque (%s/200k)",
+                                return Component.text("Avoir 200k dans la banque (%s/200k)".formatted(
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
