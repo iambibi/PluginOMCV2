@@ -831,6 +831,8 @@ public class City {
     }
 
     public List<CityNotation> getAvailableNotation() {
+        if (NotationManager.cityNotations.get(this.getUniqueId()) == null) return List.of();
+
         return NotationManager.cityNotations.get(this.getUniqueId()).stream()
                 .filter(notation -> notation.getCityUUID().equals(this.getUniqueId()))
                 .filter(notation -> DateUtils.isBefore(notation.getWeekStr(), DateUtils.getWeekFormat()))

@@ -47,7 +47,7 @@ public class DateUtils {
 
     public static boolean isBefore(String weekStr1, String weekStr2) {
         String[] weekParts1 = weekStr1.split("-");
-        String[] weekParts2 = weekStr1.split("-");
+        String[] weekParts2 = weekStr2.split("-");
 
         int year1 = Integer.parseInt(weekParts1[0]);
         int year2 = Integer.parseInt(weekParts2[0]);
@@ -59,7 +59,7 @@ public class DateUtils {
             return true;
         }
 
-        return year1 == year2 && week1 < week2;
+        return year1 == year2 && week1 <= week2;
     }
 
     /**

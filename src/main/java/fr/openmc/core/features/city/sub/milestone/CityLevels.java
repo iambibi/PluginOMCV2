@@ -134,6 +134,9 @@ public enum CityLevels {
                             city -> ItemStack.of(city.getMascot().getMascotEgg()),
                             (city, ignore) -> Component.text("Avoir sa mascotte niveau 2")
                     ),
+                    new ItemDepositRequirement(Material.SPIDER_EYE, 8),
+                    new ItemDepositRequirement(Material.BONE, 16),
+                    new ItemDepositRequirement(Material.CHEST, 16),
                     new ItemDepositRequirement(Material.DIAMOND, 16)
             ),
             List.of(
@@ -171,15 +174,15 @@ public enum CityLevels {
                             }
                     ),
                     new TemplateRequirement(
-                            city -> city.getBalance() >= 7500,
+                            city -> city.getBalance() >= 15000,
                             city -> ItemStack.of(Material.GOLD_BLOCK),
                             (city, level) -> {
                                 if (city.getLevel() != level.ordinal()) {
-                                    return Component.text("Avoir 7,5k dans la banque");
+                                    return Component.text("Avoir 15k dans la banque");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 7,5k dans la banque (%s/7,5k)",
+                                        "Avoir 15k dans la banque (%s/15k)",
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -242,34 +245,36 @@ public enum CityLevels {
                     ),
                     new CommandRequirement("/city mayor", 1),
                     new ItemDepositRequirement(Material.GOLD_BLOCK, 32),
+                    new ItemDepositRequirement(Material.STONE_BRICKS, 200),
                     new TemplateRequirement(
-                            city -> city.getBalance() >= 12000,
+                            city -> city.getBalance() >= 20000,
                             city -> ItemStack.of(Material.GOLD_BLOCK),
                             (city, level) -> {
                                 if (city.getLevel() != level.ordinal()) {
-                                    return Component.text("Avoir 12k dans la banque");
+                                    return Component.text("Avoir 20k dans la banque");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 12k dans la banque (%s/12k)",
+                                        "Avoir 20k dans la banque (%s/20k)",
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
                     new TemplateRequirement(
-                            city -> city.getChunks().size() >= 20,
+                            city -> city.getChunks().size() >= 23,
                             city -> ItemStack.of(Material.OAK_FENCE),
                             (city, level) -> {
                                 if (city.getLevel() != level.ordinal()) {
-                                    return Component.text("Avoir 20 claims");
+                                    return Component.text("Avoir 23 claims");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 20 claims (%d/20)",
+                                        "Avoir 23 claims (%d/23)",
                                         city.getChunks().size()
                                 ));
                             }
-                    )
+                    ),
+                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:the_mixture").getBest(), 32)
             ),
             List.of(
                     FeaturesRewards.LEVEL_5,
@@ -293,29 +298,29 @@ public enum CityLevels {
                             (city, level) -> Component.text("Avoir minimum 20 points sur une des notations")
                     ),
                     new TemplateRequirement(
-                            city -> city.getBalance() >= 20000,
+                            city -> city.getBalance() >= 30000,
                             city -> ItemStack.of(Material.GOLD_BLOCK),
                             (city, level) -> {
                                 if (city.getLevel() != level.ordinal()) {
-                                    return Component.text("Avoir 20k dans la banque");
+                                    return Component.text("Avoir 30k dans la banque");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 20k dans la banque (%s/20k)",
+                                        "Avoir 30k dans la banque (%s/30k)",
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
                     ),
                     new TemplateRequirement(
-                            city -> city.getChunks().size() >= 25,
+                            city -> city.getChunks().size() >= 27,
                             city -> ItemStack.of(Material.OAK_FENCE),
                             (city, level) -> {
                                 if (city.getLevel() != level.ordinal()) {
-                                    return Component.text("Avoir 25 claims");
+                                    return Component.text("Avoir 27 claims");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 25 claims (%d/25)",
+                                        "Avoir 27 claims (%d/27)",
                                         city.getChunks().size()
                                 ));
                             }
@@ -328,7 +333,8 @@ public enum CityLevels {
                     new ItemDepositRequirement(Material.STONE_BRICKS, 400),
                     new ItemDepositRequirement(Material.BLACK_CONCRETE, 184),
                     new ItemDepositRequirement(Material.WHITE_CONCRETE, 64),
-                    new ItemDepositRequirement(Material.DIAMOND, 64)
+                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:courgette").getBest(), 98),
+                    new ItemDepositRequirement(Material.DIAMOND, 128)
             ),
             List.of(
                     PlayerBankLimitRewards.LEVEL_6,
@@ -351,15 +357,15 @@ public enum CityLevels {
                             (city, level) -> Component.text("Avoir minimum 30 points sur une des notations")
                     ),
                     new TemplateRequirement(
-                            city -> city.getBalance() >= 30000,
+                            city -> city.getBalance() >= 40000,
                             city -> ItemStack.of(Material.GOLD_BLOCK),
                             (city, level) -> {
                                 if (city.getLevel() != level.ordinal()) {
-                                    return Component.text("Avoir 30k dans la banque");
+                                    return Component.text("Avoir 40k dans la banque");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 30k dans la banque (%s/30k)",
+                                        "Avoir 40k dans la banque (%s/40k)",
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -385,7 +391,9 @@ public enum CityLevels {
                     ),
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_items:aywenite").getBest(), 400),
                     new ItemDepositRequirement(Material.DIAMOND_SWORD, 10),
-                    new ItemDepositRequirement(Material.TNT, 10)
+                    new ItemDepositRequirement(Material.TNT, 64),
+                    new ItemDepositRequirement(Material.FLINT_AND_STEEL, 16),
+                    new ItemDepositRequirement(Material.NETHERITE_INGOT, 2)
             ),
             List.of(
                     FeaturesRewards.LEVEL_7,
@@ -461,7 +469,8 @@ public enum CityLevels {
                             (city, level) -> Component.text("Avoir la mascotte niveau 7")
                     ),
                     new ItemDepositRequirement(Material.NETHERITE_INGOT, 4),
-                    new ItemDepositRequirement(Material.OBSIDIAN, 128)
+                    new ItemDepositRequirement(Material.OBSIDIAN, 128),
+                    new ItemDepositRequirement(Material.WATER_BUCKET, 16)
             ),
             List.of(
                     FeaturesRewards.LEVEL_8,
@@ -518,6 +527,8 @@ public enum CityLevels {
                             (city, level) -> Component.text("Avoir une mascotte niveau 8")
                     ),
                     new ItemDepositRequirement(Material.DIAMOND, 300),
+                    new ItemDepositRequirement(Material.CYAN_CONCRETE, 200),
+                    new ItemDepositRequirement(Material.DRIED_GHAST, 5),
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_foods:kebab").getBest(), 128)
             ),
             List.of(
@@ -560,15 +571,15 @@ public enum CityLevels {
                             }
                     ),
                     new TemplateRequirement(
-                            city -> city.getBalance() >= 125000,
+                            city -> city.getBalance() >= 200000,
                             city -> ItemStack.of(Material.GOLD_BLOCK),
                             (city, level) -> {
                                 if (city.getLevel() != level.ordinal()) {
-                                    return Component.text("Avoir 125k dans la banque");
+                                    return Component.text("Avoir 200k dans la banque");
                                 }
 
                                 return Component.text(String.format(
-                                        "Avoir 125k dans la banque (%s/125k)",
+                                        "Avoir 200k dans la banque (%s/200k)",
                                         EconomyManager.getFormattedSimplifiedNumber(city.getBalance())
                                 ));
                             }
@@ -578,7 +589,7 @@ public enum CityLevels {
                             city -> ItemStack.of(city.getMascot().getMascotEgg()),
                             (city, level) -> Component.text("Avoir une mascotte niveau 9")
                     ),
-                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_blocks:aywenite_block").getBest(), 32),
+                    new ItemDepositRequirement(CustomItemRegistry.getByName("omc_blocks:aywenite_block").getBest(), 64),
                     new ItemDepositRequirement(CustomItemRegistry.getByName("omc_contest:contest_shell").getBest(), 128),
                     new ItemDepositRequirement(Material.SCULK, 1028)
             ),
