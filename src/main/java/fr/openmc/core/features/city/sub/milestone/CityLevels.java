@@ -152,7 +152,7 @@ public enum CityLevels {
             Component.text("Démocratie"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && !NotationManager.cityNotations.get(city.getUniqueId()).isEmpty(),
+                            city -> !city.getAvailableNotation().isEmpty(),
                             city -> ItemStack.of(Material.DIAMOND),
                             (city, level) -> Component.text("Recevoir une notation")
                     ),
@@ -236,7 +236,7 @@ public enum CityLevels {
                     ),
 
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 10),
+                            city -> city.getAvailableNotation().stream().anyMatch(notation -> notation.getTotalNote() >= 10),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 10 points sur une des notations")
                     ),
@@ -288,7 +288,7 @@ public enum CityLevels {
             Component.text("Capitale"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 20),
+                            city -> city.getAvailableNotation().stream().anyMatch(notation -> notation.getTotalNote() >= 20),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 20 points sur une des notations")
                     ),
@@ -346,7 +346,7 @@ public enum CityLevels {
             Component.text("Royaume ?"),
             List.of(
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 30),
+                            city -> city.getAvailableNotation().stream().anyMatch(notation -> notation.getTotalNote() >= 30),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 30 points sur une des notations")
                     ),
@@ -423,7 +423,7 @@ public enum CityLevels {
                             (city, level) -> Component.text("Gagner une guerre")
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 40) && NotationManager.cityNotations.get(city.getUniqueId()) != null,
+                            city -> city.getAvailableNotation().stream().anyMatch(notation -> notation.getTotalNote() >= 40),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 40 points sur une des notations")
                     ),
@@ -494,7 +494,7 @@ public enum CityLevels {
                             }
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 50),
+                            city -> city.getAvailableNotation().stream().anyMatch(notation -> notation.getTotalNote() >= 50),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 50 points sur une des notations")
                     ),
@@ -541,7 +541,7 @@ public enum CityLevels {
                             (city, level) -> Component.text("Être dans le top 10 des notations sur une des notations")
                     ),
                     new TemplateRequirement(
-                            city -> NotationManager.cityNotations.get(city.getUniqueId()) != null && NotationManager.cityNotations.get(city.getUniqueId()).stream().anyMatch(notation -> notation.getTotalNote() >= 60),
+                            city -> city.getAvailableNotation().stream().anyMatch(notation -> notation.getTotalNote() >= 60),
                             city -> ItemStack.of(Material.DANDELION),
                             (city, level) -> Component.text("Avoir minimum 60 points sur une des notations")
                     ),
