@@ -12,6 +12,7 @@ import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.commands.AdminDreamCommands;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
+import fr.openmc.core.features.dream.enchantements.DreamEnchantementRegistry;
 import fr.openmc.core.features.dream.fishing.CloudFishingManager;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
@@ -72,6 +73,7 @@ public class DreamManager {
         );
 
         // ** MANAGERS **
+        DreamEnchantementRegistry.init();
         DreamDimensionManager.init();
         DreamStructuresManager.init();
         DreamItemRegister.init();

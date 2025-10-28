@@ -2,14 +2,20 @@ package fr.openmc.core.features.dream.blocks.cloudvault;
 
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
+import org.bukkit.Registry;
 import org.bukkit.block.Block;
 import org.bukkit.block.Vault;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseLootEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +51,22 @@ public class CloudVault implements Listener {
             loot.add(rolls.get(random.nextInt(rolls.size())));
         } else if (luck < 75) {
             loot.add(DreamItemRegister.getByName("omc_dream:somnifere").getBest());
-        } else {
+        } else if (luck < 90) {
             loot.add(DreamItemRegister.getByName("omc_dream:cloud_fishing_rod").getBest());
+        } else {
+            ItemStack bookEnchanted = new ItemStack(Material.ENCHANTED_BOOK);
+            EnchantmentStorageMeta meta = (EnchantmentStorageMeta) bookEnchanted.getItemMeta();
+
+            Registry<Enchantment> enchantmentRegistry = RegistryAccess
+                    .registryAccess()
+                    .getRegistry(RegistryKey.ENCHANTMENT);
+
+            Enchantment enchantment = enchantmentRegistry.getOrThrow(
+                    RegistryKey.ENCHANTMENT.typedKey(Key.key("dream:dream_sleeper"))
+            );
+
+            meta.addStoredEnchant(enchantment, 2, false);
+            loot.add(bookEnchanted);
         }
 
         return loot;
