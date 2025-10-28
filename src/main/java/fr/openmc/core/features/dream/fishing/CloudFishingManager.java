@@ -24,6 +24,12 @@ public class CloudFishingManager {
     public static final double Y_CLOUD_FISHING = CloudChunkGenerator.MIN_HEIGHT_CLOUD - 5;
     private static final Set<DreamLoot> FISHING_LOOTS = Set.of(
             new DreamLoot(
+                    DreamItemRegister.getByName("omc_dream:meteo_wand"),
+                    0.1,
+                    1,
+                    1
+            ),
+            new DreamLoot(
                     DreamItemRegister.getByName("omc_dream:poissonion"),
                     0.5,
                     1,
