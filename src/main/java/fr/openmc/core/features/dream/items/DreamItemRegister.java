@@ -22,6 +22,7 @@ import fr.openmc.core.features.dream.items.registry.loots.CorruptedString;
 import fr.openmc.core.features.dream.items.registry.loots.CreakingHeart;
 import fr.openmc.core.features.dream.items.registry.loots.Soul;
 import fr.openmc.core.features.dream.items.registry.orb.*;
+import fr.openmc.core.features.dream.items.registry.tools.MeteoWand;
 import fr.openmc.core.features.dream.items.registry.tools.OldCreakingAxe;
 import fr.openmc.core.features.dream.items.registry.tools.SoulAxe;
 import fr.openmc.core.utils.ItemUtils;
@@ -83,6 +84,7 @@ public class DreamItemRegister {
         registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:cloud_fishing_rod"));
+        registerDreamItem(new MeteoWand("omc_dream:meteo_wand"));
 
         CommandsManager.getHandler().register(
                 new DreamItemCommand()

@@ -19,20 +19,20 @@ public class PlayerEatSomnifere implements Listener {
         System.out.println(dreamItem);
         if (dreamItem == null || !dreamItem.getName().equals("omc_dream:somnifere")) return;
 
-        System.out.println("consume somnifere");
         Player player = event.getPlayer();
 
         if (player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) {
-            DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
-
-            if (dreamPlayer == null) return;
-
-            dreamPlayer.addTime(60L);
             AttributeInstance attribute = player.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
 
             if (attribute == null) return;
 
             player.setHealth(attribute.getValue());
+
+            DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
+
+            if (dreamPlayer == null) return;
+
+            dreamPlayer.addTime(60L);
         } else {
             DBDreamPlayer dbDreamPlayer = DreamManager.getCacheDreamPlayer(player);
 
