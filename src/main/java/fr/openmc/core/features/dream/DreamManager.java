@@ -16,9 +16,7 @@ import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
 import fr.openmc.core.features.dream.listeners.biomes.PlayerEnteredBiome;
-import fr.openmc.core.features.dream.listeners.dream.PlayerChangeWorldListener;
-import fr.openmc.core.features.dream.listeners.dream.PlayerQuitListener;
-import fr.openmc.core.features.dream.listeners.dream.PlayerSleepListener;
+import fr.openmc.core.features.dream.listeners.dream.*;
 import fr.openmc.core.features.dream.listeners.generation.ReplaceBlockListener;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
 import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
@@ -57,7 +55,9 @@ public class DreamManager {
         OMCPlugin.registerEvents(
                 new PlayerChangeWorldListener(),
                 new PlayerQuitListener(),
-                //new PlayerDreamTimeEndListener(),
+                new PlayerDeathListener(),
+                new PlayerCommandListener(),
+                new PlayerDreamTimeEndListener(),
                 new PlayerSleepListener(),
                 new PlayerEnteredBiome(),
                 new PlayerObtainOrb(),

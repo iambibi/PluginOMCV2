@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class PillarPopulator extends FeaturesPopulator {
-    private static final double PILLAR_PROBABILITY = 0.1;
+    private static final double PILLAR_PROBABILITY = 0.02;
 
     public PillarPopulator() {
         super("omc_dream", List.of(
