@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.generation;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.biomes.*;
 import fr.openmc.core.features.dream.generation.populators.glacite.GlaciteGeodePopulator;
 import fr.openmc.core.features.dream.generation.populators.glacite.GroundSpikePopulator;
@@ -140,7 +141,7 @@ public class DreamDimensionManager {
     public static DreamBiome getDreamBiome(Player player) {
         World world = player.getWorld();
 
-        if (!world.getName().equals(DIMENSION_NAME)) return null;
+        if (!DreamUtils.isDreamWorld(world)) return null;
 
         return getDreamBiome(world.getBiome(player.getLocation()));
     }

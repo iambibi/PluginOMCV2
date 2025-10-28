@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.blocks.cloudvault;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -58,7 +58,7 @@ public class CloudVault implements Listener {
 
         if (player == null) return;
 
-        if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isInDreamWorld(player)) return;
 
         if (!(event.getBlock().getState() instanceof Vault)) return;
 

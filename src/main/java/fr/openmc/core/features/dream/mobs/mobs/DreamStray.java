@@ -42,6 +42,7 @@ public class DreamStray extends DreamMob {
 
     public EntitySnapshot createSnapshot() {
         World world = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
+        if (world == null) return null;
         Stray stray = world.createEntity(new Location(world, 0, 0, 0), Stray.class);
 
         stray.customName(Component.text(this.getName()));

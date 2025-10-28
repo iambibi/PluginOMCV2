@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.fishing;
 
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -24,7 +24,7 @@ public class PlayerFishListener implements Listener {
     @EventHandler
     public void onStartFishing(PlayerFishEvent event) {
         Player player = event.getPlayer();
-        if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isInDreamWorld(player)) return;
 
         System.out.println("PlayerFishEvent: " + event.getState());
 

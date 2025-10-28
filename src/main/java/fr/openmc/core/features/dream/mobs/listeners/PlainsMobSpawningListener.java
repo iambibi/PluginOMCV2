@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.mobs.listeners;
 
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.features.dream.mobs.mobs.DreamCreaking;
 import fr.openmc.core.features.dream.mobs.mobs.DreamSpider;
@@ -38,7 +38,7 @@ public class PlainsMobSpawningListener implements Listener {
 
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) return;
         World world = spawningLoc.getWorld();
-        if (!world.getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(world)) return;
         if (!world.getBiome(spawningLoc).equals(DreamBiome.SCULK_PLAINS.getBiome())) return;
 
         if (e.getEntity().getType().equals(EntityType.CREAKING)) {

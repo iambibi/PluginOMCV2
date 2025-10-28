@@ -41,6 +41,7 @@ public class Breezy extends DreamMob {
 
     public EntitySnapshot createSnapshot() {
         World world = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
+        if (world == null) return null;
         Breeze breeze = world.createEntity(new Location(world, 0, 0, 0), Breeze.class);
 
         breeze.customName(Component.text(this.getName()));

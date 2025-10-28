@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.generation.structures;
 
 import com.sk89q.worldedit.math.BlockVector3;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import lombok.Getter;
 import org.bukkit.Location;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
 public record DreamStructure(DreamType type, BlockVector3 min, BlockVector3 max) {
 
     public boolean isInside(Location loc) {
-        if (!Objects.equals(loc.getWorld().getName(), DreamDimensionManager.DIMENSION_NAME)) return false;
+        if (!DreamUtils.isDreamWorld(loc)) return false;
 
         double x = loc.getX();
         double y = loc.getY();

@@ -2,8 +2,8 @@ package fr.openmc.core.features.dream.listeners.biomes;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -49,7 +49,7 @@ public class PlayerEnteredBiome implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isInDream(player)) return;
 
         Biome biome = player.getLocation().getBlock().getBiome();
         int index = BIOME_ORDER.indexOf(biome);

@@ -4,8 +4,8 @@ import fr.openmc.core.features.displays.bossbar.BossbarManager;
 import fr.openmc.core.features.displays.bossbar.BossbarsType;
 import fr.openmc.core.features.displays.scoreboards.ScoreboardManager;
 import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.models.DreamPlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -22,7 +22,7 @@ public class PlayerChangeWorldListener implements Listener {
         Player player = event.getPlayer();
         World world = player.getLocation().getWorld();
 
-        if (!world.getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(world)) return;
 
         ScoreboardManager.removePlayerScoreboard(player);
         ScoreboardManager.createNewScoreboard(player);
@@ -48,7 +48,7 @@ public class PlayerChangeWorldListener implements Listener {
     public void onDreamLeave(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
-        if (!event.getFrom().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(event.getFrom())) return;
 
         ScoreboardManager.removePlayerScoreboard(player);
         ScoreboardManager.createNewScoreboard(player);

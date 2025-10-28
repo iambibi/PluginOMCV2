@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.blocks.cloudspawner;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.mobs.mobs.Breezy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -42,7 +42,7 @@ public class BossCloudSpawner implements Listener {
 
     @EventHandler
     void onEffect(CreatureSpawnEvent event) {
-        if (!event.getLocation().getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(event.getLocation())) return;
         if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.POTION_EFFECT)) return;
 
         event.getEntity().addPotionEffect(new PotionEffect(

@@ -1,11 +1,11 @@
 package fr.openmc.core.features.dream.listeners.generation;
 
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
 import fr.openmc.core.features.dream.blocks.cloudspawner.BossCloudSpawner;
 import fr.openmc.core.features.dream.blocks.cloudspawner.PhantomCloudSpawner;
 import fr.openmc.core.features.dream.blocks.cloudspawner.StrayCloudSpawner;
 import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
 import fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator;
 import org.bukkit.Chunk;
@@ -21,7 +21,7 @@ public class ReplaceBlockListener implements Listener {
     public void onChunkLoad(ChunkLoadEvent event) {
         Chunk chunk = event.getChunk();
 
-        if (!event.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(event.getWorld())) return;
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {

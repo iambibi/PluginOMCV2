@@ -1,10 +1,11 @@
 package fr.openmc.core.features.dream.listeners.orb;
 
 import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.blocks.altar.AltarCraftingEvent;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.items.DreamItem;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
+import fr.openmc.core.features.dream.models.DreamPlayer;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -14,6 +15,12 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.Recipe;
 
 public class PlayerObtainOrb implements Listener {
+    private final int SCULK_PLAINS_ORB = 1;
+    private final int SOUL_FOREST_ORB = 2;
+    private final int CLOUD_CASTLE_ORB = 3;
+    private final int MUD_BEACH_ORB = 4;
+    private final int GLACITE_GROTTO_ORB = 5;
+
     @EventHandler
     public void onCraft(PrepareItemCraftEvent event) {
         Recipe recipe = event.getRecipe();
@@ -22,16 +29,12 @@ public class PlayerObtainOrb implements Listener {
         if (event.getViewers().isEmpty()) return;
         Player player = (Player) event.getViewers().getFirst();
 
-        if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isInDream(player)) return;
 
         if (recipe instanceof Keyed keyed) {
             NamespacedKey key = keyed.getKey();
             if (key.toString().contains("omc_dream") && key.toString().contains("domination_orb")) { // contains beacuse key is ex zzzfake_omc_items:aywenite
-                DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
-                if (cache != null && cache.getProgressionOrb() < 1) {
-                    cache.setProgressionOrb(1);
-                    DreamManager.saveDreamPlayerData(cache);
-                }
+                setProgressionOrb(player, SCULK_PLAINS_ORB);
             }
         }
     }
@@ -43,10 +46,20 @@ public class PlayerObtainOrb implements Listener {
 
         if (!item.getName().equals("omc_dream:ame_orb")) return;
 
-        DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(event.getPlayer());
-        if (cache != null && cache.getProgressionOrb() < 2) {
-            cache.setProgressionOrb(2);
-            DreamManager.saveDreamPlayerData(cache);
+        setProgressionOrb(event.getPlayer(), SOUL_FOREST_ORB);
+    }
+
+    private void setProgressionOrb(Player player, int progressionOrb) {
+        DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
+        if (cache != null) {
+            if (cache.getProgressionOrb() < progressionOrb) {
+                cache.setProgressionOrb(progressionOrb);
+                DreamManager.saveDreamPlayerData(cache);
+            }
+        } else {
+            DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
+            if (dreamPlayer == null) return;
+            DreamManager.saveDreamPlayerData(dreamPlayer);
         }
     }
 }

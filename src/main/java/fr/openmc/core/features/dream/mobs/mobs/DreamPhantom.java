@@ -40,6 +40,7 @@ public class DreamPhantom extends DreamMob {
 
     public EntitySnapshot createSnapshot() {
         World world = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
+        if (world == null) return null;
         Phantom phantom = world.createEntity(new Location(world, 0, 0, 0), Phantom.class);
 
         phantom.customName(Component.text(this.getName()));

@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.listeners.dream;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +12,7 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDead(PlayerDeathEvent event) {
         Player player = event.getPlayer();
 
-        if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isInDreamWorld(player)) return;
 
         event.getDrops().clear();
     }

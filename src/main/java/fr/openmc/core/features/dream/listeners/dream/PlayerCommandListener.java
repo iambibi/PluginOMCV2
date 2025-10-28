@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.listeners.dream;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +15,7 @@ public class PlayerCommandListener implements Listener {
     public void onCommandExecution(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
 
-        if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(player.getWorld())) return;
 
         // todo: activer que les commandes dont le joueur a besoin
         if (player.isOp()) return;
@@ -29,7 +29,7 @@ public class PlayerCommandListener implements Listener {
 
         if (loc == null) return;
 
-        if (!loc.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(loc)) return;
 
         if (event.getSender() instanceof Player player && player.isOp()) return;
 

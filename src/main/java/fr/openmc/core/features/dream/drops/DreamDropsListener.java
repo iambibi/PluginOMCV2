@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.drops;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,7 +14,7 @@ public class DreamDropsListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
 
-        if (!block.getLocation().getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(block.getLocation())) return;
 
         Material type = block.getType();
 

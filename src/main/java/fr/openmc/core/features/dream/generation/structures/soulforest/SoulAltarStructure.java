@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.generation.structures.soulforest;
 
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
 import fr.openmc.core.features.dream.generation.structures.DreamStructurePopulator;
 import fr.openmc.core.utils.structure.SchematicsUtils;
@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class SoulAltarStructure extends DreamStructurePopulator {
 
-    private static final double BASE_CAMP_PROBABILITY = 0.002;
+    private static final double BASE_CAMP_PROBABILITY = 0.005;
     public static final String STRUCTURE_NAME = "soul_altar";
 
     public SoulAltarStructure() {
@@ -24,7 +24,7 @@ public class SoulAltarStructure extends DreamStructurePopulator {
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        if (!world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(world)) return;
         if (random.nextDouble() >= BASE_CAMP_PROBABILITY) return;
 
         int x = (chunk.getX() << 4) + random.nextInt(16);

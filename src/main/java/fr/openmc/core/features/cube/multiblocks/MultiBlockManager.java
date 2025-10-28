@@ -2,6 +2,7 @@ package fr.openmc.core.features.cube.multiblocks;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.cube.Cube;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -54,7 +55,7 @@ public class MultiBlockManager {
             int z = (int) origin.get("z");
 
             int y;
-            if (world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME) && DreamDimensionManager.hasSeedChanged()) {
+            if (DreamUtils.isDreamWorld(world) && DreamDimensionManager.hasSeedChanged()) {
                 plugin.getSLF4JLogger().warn("Changing y pos for '{}' because Dream Dimension seed changed", type);
                 y = world.getHighestBlockYAt(x, z) + 1;
             } else {

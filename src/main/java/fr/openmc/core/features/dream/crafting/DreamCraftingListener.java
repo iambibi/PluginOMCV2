@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.crafting;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.items.DreamItem;
 import fr.openmc.core.features.dream.items.DreamItemRegister;
 import org.bukkit.Keyed;
@@ -23,7 +23,7 @@ public class DreamCraftingListener implements Listener {
         if (event.getViewers().isEmpty()) return;
         Player player = (Player) event.getViewers().getFirst();
 
-        if (!player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isInDreamWorld(player)) return;
 
         if (recipe instanceof Keyed keyed) {
             NamespacedKey key = keyed.getKey();

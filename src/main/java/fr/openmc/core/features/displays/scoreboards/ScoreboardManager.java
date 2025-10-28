@@ -13,8 +13,8 @@ import fr.openmc.core.features.city.sub.war.War;
 import fr.openmc.core.features.city.sub.war.WarManager;
 import fr.openmc.core.features.contest.managers.ContestManager;
 import fr.openmc.core.features.contest.models.Contest;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.displays.DreamScoreboard;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.DirectionUtils;
@@ -72,7 +72,7 @@ public class ScoreboardManager implements Listener {
 
         Component displayName;
 
-        if (canShowLogo && player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) {
+        if (canShowLogo && DreamUtils.isInDream(player)) {
             displayName = Component.text(FontImageWrapper.replaceFontImages(":dream_openmc:"));
         } else if (canShowLogo) {
             displayName = Component.text(FontImageWrapper.replaceFontImages(":openmc:"));
@@ -132,7 +132,7 @@ public class ScoreboardManager implements Listener {
             scoreboard.resetScores(entry);
         }
 
-        if (player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) {
+        if (DreamUtils.isInDream(player)) {
             DreamScoreboard.updateDreamScoreboard(player, scoreboard, objective);
             return;
         }

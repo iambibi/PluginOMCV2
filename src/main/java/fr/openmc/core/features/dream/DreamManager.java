@@ -103,18 +103,18 @@ public class DreamManager {
     private static void loadAllDreamPlayerData() {
         try {
             dreamPlayerData.clear();
-            dreamPlayerDao.queryForAll().forEach(playerData -> {
-                cacheDreamPlayer.put(playerData.getPlayerUUID(), playerData);
-            });
+            dreamPlayerDao.queryForAll().forEach(playerData ->
+                    cacheDreamPlayer.put(playerData.getPlayerUUID(), playerData)
+            );
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static void saveAllDreamPlayerData() {
-        dreamPlayerData.forEach((uuid, dreamPlayer) -> {
-            saveDreamPlayerData(dreamPlayer);
-        });
+        dreamPlayerData.forEach((uuid, dreamPlayer) ->
+                saveDreamPlayerData(dreamPlayer)
+        );
     }
 
     public static void saveDreamPlayerData(DreamPlayer dreamPlayer) {

@@ -1,8 +1,6 @@
 package fr.openmc.core.features.dream.generation.structures.glacite;
 
-import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
-import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator;
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
 import fr.openmc.core.features.dream.generation.structures.DreamStructurePopulator;
@@ -10,10 +8,8 @@ import fr.openmc.core.utils.structure.SchematicsUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.List;
 import java.util.Random;
 
@@ -28,7 +24,7 @@ public class BaseCampStructure extends DreamStructurePopulator {
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        if (!world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(world)) return;
         if (random.nextDouble() >= BASE_CAMP_PROBABILITY) return;
 
         int x = (chunk.getX() << 4) + random.nextInt(16);

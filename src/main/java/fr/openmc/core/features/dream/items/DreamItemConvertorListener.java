@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.items;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -51,7 +51,7 @@ public class DreamItemConvertorListener implements Listener {
 
     @EventHandler
     public void onItemSpawn(ItemSpawnEvent event) {
-        if (!event.getEntity().getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(event.getEntity().getWorld())) return;
 
         Item item = event.getEntity();
         ItemStack converted = tryConvertDreamItem(item.getItemStack());

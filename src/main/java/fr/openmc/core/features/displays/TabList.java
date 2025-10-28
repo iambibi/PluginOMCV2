@@ -10,7 +10,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -31,7 +31,7 @@ public class TabList {
             public void onPacketSending(PacketEvent event) {
                 PacketContainer packet = event.getPacket();
 
-                if (!event.getPlayer().getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME)) return;
+                if (!DreamUtils.isInDreamWorld(event.getPlayer())) return;
 
                 EnumSet<?> actions = packet.getSpecificModifier(EnumSet.class).read(0);
                 if (actions.isEmpty()) return;
@@ -84,7 +84,7 @@ public class TabList {
             }
         }
 
-        boolean isInDream = player.getWorld().getName().equals(DreamDimensionManager.DIMENSION_NAME);
+        boolean isInDream = DreamUtils.isInDream(player);
         String logo;
         if (isInDream) {
             logo = FontImageWrapper.replaceFontImages(":dream_openmc:");

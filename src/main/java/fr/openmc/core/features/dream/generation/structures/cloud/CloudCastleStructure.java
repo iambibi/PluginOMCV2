@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.generation.structures.cloud;
 
-import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
 import fr.openmc.core.features.dream.generation.structures.DreamStructurePopulator;
@@ -24,7 +24,7 @@ public class CloudCastleStructure extends DreamStructurePopulator {
 
     @Override
     public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
-        if (!world.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME)) return;
+        if (!DreamUtils.isDreamWorld(world)) return;
         if (random.nextDouble() >= CLOUD_CASTLE_PROBABILITY) return;
 
         int x = (chunk.getX() << 4) + random.nextInt(16);
