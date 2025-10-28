@@ -7,6 +7,7 @@ import fr.openmc.core.features.dream.generation.populators.glacite.GroundSpikePo
 import fr.openmc.core.features.dream.generation.populators.glacite.VerticalSpikePopulator;
 import fr.openmc.core.features.dream.generation.populators.mud.RockPopulator;
 import fr.openmc.core.features.dream.generation.populators.plains.PlainsTreePopulator;
+import fr.openmc.core.features.dream.generation.populators.soulforest.PillarPopulator;
 import fr.openmc.core.features.dream.generation.populators.soulforest.SoulTreePopulator;
 import fr.openmc.core.features.dream.generation.structures.cloud.CloudCastleStructure;
 import fr.openmc.core.features.dream.generation.structures.glacite.BaseCampStructure;
@@ -50,6 +51,7 @@ public class DreamDimensionManager {
         registrerFeatures(new RockPopulator());
         registrerFeatures(new PlainsTreePopulator());
         registrerFeatures(new SoulTreePopulator());
+        registrerFeatures(new PillarPopulator());
         registrerFeatures(new VerticalSpikePopulator());
         registrerFeatures(new GroundSpikePopulator());
         registrerFeatures(new GlaciteGeodePopulator());
