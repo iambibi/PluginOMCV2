@@ -158,7 +158,7 @@ public class DreamManager {
         return dreamPlayerData.get(player.getUniqueId());
     }
 
-    public static void addDreamPlayer(Player player) throws IOException {
+    public static void addDreamPlayer(Player player, Location oldLocation) throws IOException {
         PlayerInventory playerInv = player.getInventory();
 
         ItemStack[] oldContents = playerInv.getContents().clone();
@@ -177,10 +177,10 @@ public class DreamManager {
 
         PlayerInventory dreamPlayerInv = player.getInventory();
 
-        dreamPlayerData.put(player.getUniqueId(), new DreamPlayer(player, oldInv, player.getLocation(), dreamPlayerInv));
+        dreamPlayerData.put(player.getUniqueId(), new DreamPlayer(player, oldInv, oldLocation, dreamPlayerInv));
     }
 
-    public static void removeDreamPlayer(Player player) {
+    public static void removeDreamPlayer(Player player, Location dreamLocation) {
         DreamPlayer dreamPlayer = dreamPlayerData.remove(player.getUniqueId());
         dreamPlayer.cancelTask();
 
@@ -191,8 +191,19 @@ public class DreamManager {
         String serializedDreamInventory = BukkitSerializer.playerInventoryToBase64(dreamInventory);
         if (cacheDreamPlayer != null) {
             cacheDreamPlayer.setDreamInventory(serializedDreamInventory);
+            cacheDreamPlayer.setDreamX(dreamLocation.getX());
+            cacheDreamPlayer.setDreamY(dreamLocation.getY());
+            cacheDreamPlayer.setDreamZ(dreamLocation.getZ());
         } else {
-            addCacheDreamPlayer(player, new DBDreamPlayer(player.getUniqueId(), dreamPlayer.getMaxDreamTime(), serializedDreamInventory));
+            addCacheDreamPlayer(player, new DBDreamPlayer(
+                    player.getUniqueId(),
+                    dreamPlayer.getMaxDreamTime(),
+                    serializedDreamInventory,
+                    dreamLocation.getX(),
+                    dreamLocation.getY(),
+                    dreamLocation.getZ(),
+                    0
+            ));
         }
 
         oldInventory.restoreOldInventory(player);

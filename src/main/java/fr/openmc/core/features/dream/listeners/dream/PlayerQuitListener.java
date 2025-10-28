@@ -18,6 +18,6 @@ public class PlayerQuitListener implements Listener {
 
         if (!DreamUtils.isDreamWorld(world)) return;
 
-        DreamManager.removeDreamPlayer(player);
+        DreamManager.removeDreamPlayer(player, player.getLocation());
     }
 }

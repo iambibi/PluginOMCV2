@@ -21,10 +21,13 @@ public class DBDreamPlayer {
     @DatabaseField(canBeNull = false, columnName = "dream_inventory", dataType = DataType.LONG_STRING)
     private String dreamInventory;
 
+    @Setter
     @DatabaseField(columnName = "dream_x")
     private Double dreamX;
+    @Setter
     @DatabaseField(columnName = "dream_y")
     private Double dreamY;
+    @Setter
     @DatabaseField(columnName = "dream_z")
     private Double dreamZ;
 

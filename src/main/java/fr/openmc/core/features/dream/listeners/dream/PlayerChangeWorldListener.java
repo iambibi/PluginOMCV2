@@ -7,22 +7,20 @@ import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
 import fr.openmc.core.features.dream.models.DreamPlayer;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.io.IOException;
 
 public class PlayerChangeWorldListener implements Listener {
 
     @EventHandler
-    public void onDreamEntrered(PlayerChangedWorldEvent event) {
+    public void onDreamEntrered(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
-        World world = player.getLocation().getWorld();
 
-        if (!DreamUtils.isDreamWorld(world)) return;
+        if (!DreamUtils.isDreamWorld(event.getTo())) return;
 
         ScoreboardManager.removePlayerScoreboard(player);
         ScoreboardManager.createNewScoreboard(player);
@@ -32,7 +30,7 @@ public class PlayerChangeWorldListener implements Listener {
         }
 
         try {
-            DreamManager.addDreamPlayer(player);
+            DreamManager.addDreamPlayer(player, event.getFrom());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,7 +43,7 @@ public class PlayerChangeWorldListener implements Listener {
     }
 
     @EventHandler
-    public void onDreamLeave(PlayerChangedWorldEvent event) {
+    public void onDreamLeave(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
 
         if (!DreamUtils.isDreamWorld(event.getFrom())) return;
@@ -61,6 +59,6 @@ public class PlayerChangeWorldListener implements Listener {
 
         BossbarManager.removeBossBar(BossbarsType.DREAM, player);
 
-        DreamManager.removeDreamPlayer(player);
+        DreamManager.removeDreamPlayer(player, event.getFrom());
     }
 }
