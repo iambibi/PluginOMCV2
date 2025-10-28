@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseLootEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,35 +39,38 @@ public class CloudVault implements Listener {
 
         List<ItemStack> loot = new ArrayList<>();
 
-        int luck = random.nextInt(100);
+        for (int i = 0; i < 2; i++) {
+            int luck = random.nextInt(100);
 
-        if (luck < 50) {
-            List<ItemStack> rolls = List.of(
-                    DreamItemRegister.getByName("omc_dream:cloud_helmet").getBest(),
-                    DreamItemRegister.getByName("omc_dream:cloud_chestplate").getBest(),
-                    DreamItemRegister.getByName("omc_dream:cloud_leggings").getBest(),
-                    DreamItemRegister.getByName("omc_dream:cloud_boots").getBest()
-            );
+            if (luck < 50) {
+                List<ItemStack> rolls = List.of(
+                        DreamItemRegister.getByName("omc_dream:cloud_helmet").getBest(),
+                        DreamItemRegister.getByName("omc_dream:cloud_chestplate").getBest(),
+                        DreamItemRegister.getByName("omc_dream:cloud_leggings").getBest(),
+                        DreamItemRegister.getByName("omc_dream:cloud_boots").getBest()
+                );
 
-            loot.add(rolls.get(random.nextInt(rolls.size())));
-        } else if (luck < 75) {
-            loot.add(DreamItemRegister.getByName("omc_dream:somnifere").getBest());
-        } else if (luck < 90) {
-            loot.add(DreamItemRegister.getByName("omc_dream:cloud_fishing_rod").getBest());
-        } else {
-            ItemStack bookEnchanted = new ItemStack(Material.ENCHANTED_BOOK);
-            EnchantmentStorageMeta meta = (EnchantmentStorageMeta) bookEnchanted.getItemMeta();
+                loot.add(rolls.get(random.nextInt(rolls.size())));
+            } else if (luck < 75) {
+                loot.add(DreamItemRegister.getByName("omc_dream:somnifere").getBest());
+            } else if (luck < 90) {
+                loot.add(DreamItemRegister.getByName("omc_dream:cloud_fishing_rod").getBest());
+            } else {
+                ItemStack bookEnchanted = new ItemStack(Material.ENCHANTED_BOOK);
+                EnchantmentStorageMeta meta = (EnchantmentStorageMeta) bookEnchanted.getItemMeta();
 
-            Registry<Enchantment> enchantmentRegistry = RegistryAccess
-                    .registryAccess()
-                    .getRegistry(RegistryKey.ENCHANTMENT);
+                Registry<@NotNull Enchantment> enchantmentRegistry = RegistryAccess
+                        .registryAccess()
+                        .getRegistry(RegistryKey.ENCHANTMENT);
 
-            Enchantment enchantment = enchantmentRegistry.getOrThrow(
-                    RegistryKey.ENCHANTMENT.typedKey(Key.key("dream:dream_sleeper"))
-            );
+                Enchantment enchantment = enchantmentRegistry.getOrThrow(
+                        RegistryKey.ENCHANTMENT.typedKey(Key.key("dream:dream_sleeper"))
+                );
 
-            meta.addStoredEnchant(enchantment, 2, false);
-            loot.add(bookEnchanted);
+                meta.addStoredEnchant(enchantment, 2, false);
+                bookEnchanted.setItemMeta(meta);
+                loot.add(bookEnchanted);
+            }
         }
 
         return loot;
