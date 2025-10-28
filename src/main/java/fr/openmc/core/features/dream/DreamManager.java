@@ -4,10 +4,12 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
 import fr.openmc.core.features.dream.blocks.cloudspawner.BossCloudSpawner;
 import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
+import fr.openmc.core.features.dream.commands.AdminDreamCommands;
 import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
 import fr.openmc.core.features.dream.drops.DreamDropsManager;
 import fr.openmc.core.features.dream.fishing.CloudFishingManager;
@@ -52,8 +54,10 @@ public class DreamManager {
     private static Dao<DBDreamPlayer, String> dreamPlayerDao;
 
     public static void init() {
+        // ** LISTENERS **
         OMCPlugin.registerEvents(
                 new PlayerChangeWorldListener(),
+                new PlayerJoinListener(),
                 new PlayerQuitListener(),
                 new PlayerDeathListener(),
                 new PlayerCommandListener(),
@@ -76,6 +80,11 @@ public class DreamManager {
         DreamDropsManager.init();
         DreamCraftingRegister.init();
         CloudFishingManager.init();
+
+        // ** COMMANDS **
+        CommandsManager.getHandler().register(
+                new AdminDreamCommands()
+        );
 
         // ** LOAD DATAS **
         loadAllDreamPlayerData();

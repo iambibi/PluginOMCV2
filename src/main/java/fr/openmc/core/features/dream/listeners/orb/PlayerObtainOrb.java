@@ -49,7 +49,7 @@ public class PlayerObtainOrb implements Listener {
         setProgressionOrb(event.getPlayer(), SOUL_FOREST_ORB);
     }
 
-    private void setProgressionOrb(Player player, int progressionOrb) {
+    public static void setProgressionOrb(Player player, int progressionOrb) {
         DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
         if (cache != null) {
             if (cache.getProgressionOrb() < progressionOrb) {
