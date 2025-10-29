@@ -26,8 +26,6 @@ public class PlayerFishListener implements Listener {
         Player player = event.getPlayer();
         if (!DreamUtils.isInDreamWorld(player)) return;
 
-        System.out.println("PlayerFishEvent: " + event.getState());
-
         FishHook hook = event.getHook();
 
         switch (event.getState()) {

@@ -109,9 +109,19 @@ public class CloudFishingManager {
     private static void onFishBite(Player player, FishHook hook) {
         if (!hook.isValid() || !player.isOnline()) return;
 
-        player.playSound(player.getLocation(), Sound.ENTITY_FISHING_BOBBER_SPLASH, 1f, 1f);
+        player.playSound(player.getLocation(), Sound.ENTITY_FISHING_BOBBER_SPLASH, 0.6F, 1F);
 
-        hook.getWorld().spawnParticle(Particle.DRAGON_BREATH, hook.getLocation().add(0, 1, 0), 35, 0.3, 0.2, 0.3, 0.1);
+        ParticleUtils.sendParticlePacket(
+                player,
+                hook.getLocation().add(0, 1, 0),
+                Particle.DRAGON_BREATH,
+                35,
+                0.3D,
+                0.2D,
+                0.3D,
+                0.1D,
+                (Float) 1.0f
+        );
 
         hookedPlayers.put(player.getUniqueId(), new FishBiteTask(player, hook, 30L));
     }
