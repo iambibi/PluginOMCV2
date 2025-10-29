@@ -182,6 +182,12 @@ public class DreamManager {
 
     public static void removeDreamPlayer(Player player, Location dreamLocation) {
         DreamPlayer dreamPlayer = dreamPlayerData.remove(player.getUniqueId());
+
+        if (dreamPlayer == null) {
+            OMCPlugin.getInstance().getSLF4JLogger().warn("Cannot remove player {}({}) from Dream", player.getName(), player.getUniqueId());
+            return;
+        }
+
         dreamPlayer.cancelTask();
 
         OldInventory oldInventory = dreamPlayer.getOldInventory();
