@@ -16,7 +16,7 @@ public class PlayerEatSomnifere implements Listener {
     @EventHandler
     public void onFoodEated(PlayerItemConsumeEvent event) {
         DreamItem dreamItem = DreamItemRegister.getByItemStack(event.getItem());
-        System.out.println(dreamItem);
+
         if (dreamItem == null || !dreamItem.getName().equals("omc_dream:somnifere")) return;
 
         Player player = event.getPlayer();
