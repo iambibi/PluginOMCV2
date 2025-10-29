@@ -115,6 +115,8 @@ public class DreamDimensionManager {
         dream.setGameRule(GameRule.DO_PATROL_SPAWNING, false);
         dream.setGameRule(GameRule.DO_TRADER_SPAWNING, false);
         dream.setGameRule(GameRule.NATURAL_REGENERATION, false);
+        dream.setGameRule(GameRule.LOCATOR_BAR, false);
+        dream.setGameRule(GameRule.ALLOW_ENTERING_NETHER_USING_PORTALS, false);
 
         dream.setTime(18000);
 
