@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.items;
 
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.commands.DreamItemCommand;
 import fr.openmc.core.features.dream.items.registry.armors.cloud.CloudBoots;
 import fr.openmc.core.features.dream.items.registry.armors.cloud.CloudChestplate;
 import fr.openmc.core.features.dream.items.registry.armors.cloud.CloudHelmet;

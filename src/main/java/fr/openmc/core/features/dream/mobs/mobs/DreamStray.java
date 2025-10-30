@@ -28,7 +28,7 @@ public class DreamStray extends DreamMob {
                 EntityType.STRAY,
                 13.0,
                 4.0,
-                1,
+                0.3,
                 1.2,
                 List.of(),
                 Biome.THE_VOID

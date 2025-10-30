@@ -1,5 +1,8 @@
-package fr.openmc.core.features.dream.items;
+package fr.openmc.core.features.dream.commands;
 
+import fr.openmc.core.features.dream.commands.autocomplete.DreamItemAutoComplete;
+import fr.openmc.core.features.dream.items.DreamItem;
+import fr.openmc.core.features.dream.items.DreamItemRegister;
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Subcommand;

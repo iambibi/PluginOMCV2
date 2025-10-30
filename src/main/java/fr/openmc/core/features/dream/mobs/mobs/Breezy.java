@@ -27,7 +27,7 @@ public class Breezy extends DreamMob {
                 EntityType.BREEZE,
                 100.0,
                 8.0,
-                2,
+                0.7,
                 4.0,
                 List.of(),
                 Biome.THE_VOID

@@ -24,8 +24,8 @@ public class DreamSpider extends DreamMob {
                 "Arraignée Infestée",
                 EntityType.SPIDER,
                 8.0,
-                3.0,
-                RandomUtils.randomBetween(0.6, 0.8),
+                2.0,
+                RandomUtils.randomBetween(0.2, 0.3),
                 RandomUtils.randomBetween(1.5, 2.0),
                 List.of(new DreamLoot(
                         DreamItemRegister.getByName("omc_dream:corrupted_string"),
@@ -39,7 +39,7 @@ public class DreamSpider extends DreamMob {
 
     @Override
     public LivingEntity spawn(Location location) {
-        Spider spider = (Spider) location.getWorld().spawnEntity(location, this.getType(), CreatureSpawnEvent.SpawnReason.CUSTOM);
+        Spider spider = (Spider) location.getWorld().spawnEntity(location.add(0, 1, 0), this.getType(), CreatureSpawnEvent.SpawnReason.CUSTOM);
 
         spider.customName(Component.text(this.getName()));
         spider.setCustomNameVisible(true);

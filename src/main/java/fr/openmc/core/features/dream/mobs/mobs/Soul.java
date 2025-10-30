@@ -19,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -33,7 +32,7 @@ public class Soul extends DreamMob {
                 EntityType.ARMOR_STAND,
                 2,
                 3.0,
-                RandomUtils.randomBetween(0.8, 1),
+                RandomUtils.randomBetween(0.4, 0.5),
                 RandomUtils.randomBetween(0.7, 0.9),
                 List.of(new DreamLoot(
                         DreamItemRegister.getByName("omc_dream:soul"),
