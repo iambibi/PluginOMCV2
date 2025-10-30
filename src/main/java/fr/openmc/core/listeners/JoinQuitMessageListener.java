@@ -27,6 +27,7 @@ import java.util.UUID;
 public class JoinQuitMessageListener implements Listener {
     private final double balanceOnJoin;
 
+    public static final String VANISH_META_KEY = "omcstaff.vanished";
     public static final String JOIN_MESSAGE = "§8[§a§l+§8] §r%s%s";
     public static final String QUIT_MESSAGE = "§8[§c§l-§8] §r%s%s";
 
@@ -73,7 +74,8 @@ public class JoinQuitMessageListener implements Listener {
             }
         });
 
-        event.joinMessage(Component.text(JOIN_MESSAGE.formatted(LuckPermsHook.getFormattedPAPIPrefix(player), player.getName())));
+        if (!player.hasMetadata(VANISH_META_KEY))
+            event.joinMessage(Component.text(JOIN_MESSAGE.formatted(LuckPermsHook.getFormattedPAPIPrefix(player), player.getName())));
 
         // Adjust player's spawn location
         if (!player.hasPlayedBefore()) {
@@ -123,7 +125,8 @@ public class JoinQuitMessageListener implements Listener {
             }
         }
 
-        event.quitMessage(Component.text(QUIT_MESSAGE.formatted(LuckPermsHook.getFormattedPAPIPrefix(player), player.getName())));
+        if (!player.hasMetadata(VANISH_META_KEY))
+            event.quitMessage(Component.text(QUIT_MESSAGE.formatted(LuckPermsHook.getFormattedPAPIPrefix(player), player.getName())));
     }
 
 }
