@@ -14,6 +14,7 @@ public class DreamItemAutoComplete implements SuggestionProvider<BukkitCommandAc
     public @NotNull List<String> getSuggestions(@NotNull ExecutionContext<BukkitCommandActor> context) {
         return DreamItemRegister.getNames()
                 .stream()
+                .map(name -> name.replace("omc_dream:", ""))
                 .toList();
     }
 }

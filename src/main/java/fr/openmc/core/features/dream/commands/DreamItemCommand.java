@@ -9,12 +9,13 @@ import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.annotation.SuggestWith;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-@Command("dream item")
-@CommandPermission("omc.admins.commands.dream.item")
+@Command("admdream")
+@CommandPermission("omc.admins.commands.admndream")
 public class DreamItemCommand {
-    @Subcommand("get")
+    @Subcommand("item get")
+    @CommandPermission("omc.admins.commands.admndream.item.get")
     public void get(Player player, @SuggestWith(DreamItemAutoComplete.class) String name) {
-        DreamItem item = DreamItemRegister.getByName(name);
+        DreamItem item = DreamItemRegister.getByName("omc_dream:" + name);
         if (item == null) {
             player.sendMessage("§cCet item n'existe pas.");
             return;

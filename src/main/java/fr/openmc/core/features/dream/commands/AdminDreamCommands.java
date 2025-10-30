@@ -10,7 +10,7 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 @CommandPermission("omc.admins.commands.admindream")
 public class AdminDreamCommands {
     @Subcommand("setprogressionorb")
-    @CommandPermission("omc.admins.commands.admincity.setprogressionorb")
+    @CommandPermission("omc.admins.commands.admndream.setprogressionorb")
     void setProgressionOrb(
             Player player,
             @Named("joueur") @SuggestWith(OnlinePlayerAutoComplete.class) Player toPlayer,
