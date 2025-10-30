@@ -1,7 +1,7 @@
 package fr.openmc.core.features.city.menu;
 
 import fr.openmc.api.menulib.PaginatedMenu;
-import fr.openmc.api.menulib.defaultmenu.ConfirmMenu;
+import fr.openmc.api.menulib.template.ConfirmMenu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
 import fr.openmc.api.menulib.utils.StaticSlots;
@@ -111,12 +111,18 @@ public class InvitationsMenu extends PaginatedMenu {
 
     @Override
     public Map<Integer, ItemBuilder> getButtons() {
-        Player player = getOwner();
         Map<Integer, ItemBuilder> map = new HashMap<>();
-        map.put(49,
-                new ItemBuilder(this,
-                        Objects.requireNonNull(CustomItemRegistry.getByName("_iainternal:icon_cancel")).getBest(),
-                        itemMeta -> itemMeta.displayName(Component.text("§7Retour au menu précédent")), true));
+        map.put(45, new ItemBuilder(this, Material.ARROW, itemMeta -> {
+            itemMeta.displayName(Component.text("§aRetour"));
+            itemMeta.lore(List.of(Component.text("§7Retourner au menu précédent")));
+        }, true));
+
+        map.put(49, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_cancel").getBest(), itemMeta -> {
+            itemMeta.displayName(Component.text("§7Fermer"));
+        }).setOnClick(inventoryClickEvent ->
+                getOwner().closeInventory()
+        ));
+
         map.put(48,
                 new ItemBuilder(this,
                         Objects.requireNonNull(CustomItemRegistry.getByName("_iainternal:icon_back_orange")).getBest(),

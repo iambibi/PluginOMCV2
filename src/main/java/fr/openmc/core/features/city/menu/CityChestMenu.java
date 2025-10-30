@@ -88,7 +88,10 @@ public class CityChestMenu extends PaginatedMenu {
 
     @Override
     public List<Integer> getTakableSlot() {
-        return Stream.concat(CITY_MENU_ITEM_SLOTS.stream(), MenuUtils.getInventoryItemSlots().stream()).toList();
+        return Stream.concat(
+                CITY_MENU_ITEM_SLOTS.stream(),
+                MenuUtils.getInventoryItemSlots().stream()
+        ).toList();
     }
 
     @Override
@@ -98,6 +101,14 @@ public class CityChestMenu extends PaginatedMenu {
         Player player = getOwner();
 
         Map<Integer, ItemBuilder> map = new HashMap<>();
+
+        map.put(45, new ItemBuilder(this, Material.ARROW, itemMeta -> {
+            itemMeta.displayName(Component.text("§aRetour"));
+            itemMeta.lore(List.of(Component.text("§7Retourner au menu précédent")));
+        }, true).setOnClick(inventoryClickEvent -> {
+            exit(city, getInventory());
+        }));
+
         map.put(49, new ItemBuilder(this, CustomItemRegistry.getByName("_iainternal:icon_cancel").getBest(), itemMeta -> {
             itemMeta.displayName(Component.text("§7Fermer"));
         }).setOnClick(inventoryClickEvent -> {
@@ -187,6 +198,7 @@ public class CityChestMenu extends PaginatedMenu {
 
     @Override
     public void onClose(InventoryCloseEvent event) {
+        if (Restart.isRestarting) return;
         HumanEntity humanEntity = event.getPlayer();
         if (!(humanEntity instanceof Player player)) {
             return;

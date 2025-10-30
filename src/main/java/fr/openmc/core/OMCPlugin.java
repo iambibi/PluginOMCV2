@@ -25,9 +25,11 @@ import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.economy.BankManager;
 import fr.openmc.core.features.economy.EconomyManager;
+import fr.openmc.core.features.events.halloween.managers.HalloweenManager;
 import fr.openmc.core.features.homes.HomesManager;
 import fr.openmc.core.features.homes.icons.HomeIconCacheManager;
 import fr.openmc.core.features.leaderboards.LeaderboardManager;
+import fr.openmc.core.features.mailboxes.MailboxManager;
 import fr.openmc.core.features.mainmenu.MainMenu;
 import fr.openmc.core.features.milestones.MilestonesManager;
 import fr.openmc.core.features.quests.QuestProgressSaveManager;
@@ -128,6 +130,7 @@ public class OMCPlugin extends JavaPlugin {
         AdminShopManager.init();
         BossbarManager.init();
         AnimationsManager.init();
+        HalloweenManager.init();
 
         MotdUtils.init();
         TranslationManager.init(new File(this.getDataFolder(), "translations"), "fr");
@@ -136,6 +139,8 @@ public class OMCPlugin extends JavaPlugin {
         MascotsManager.init();
 
         PlayerSettingsManager.loadAllPlayerSettings();
+
+        MailboxManager.loadLetters();
     }
 
     public void loadWithItemsAdder() {
@@ -168,6 +173,10 @@ public class OMCPlugin extends JavaPlugin {
             HologramLoader.unloadAll();
         }
 
+        // - Mailboxes
+        MailboxManager.saveLetters();
+
+        // - Dimension des Reves
         DreamManager.disable();
 
         // - MultiBlocks

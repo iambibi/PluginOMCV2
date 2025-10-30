@@ -5,14 +5,21 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.api.hooks.ItemsAdderHook;
+import fr.openmc.api.menulib.Menu;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.contest.ContestEndEvent;
 import fr.openmc.core.features.contest.commands.ContestCommand;
 import fr.openmc.core.features.contest.listeners.ContestIntractEvents;
+import fr.openmc.core.features.contest.menu.ContributionMenu;
+import fr.openmc.core.features.contest.menu.MoreInfoMenu;
+import fr.openmc.core.features.contest.menu.TradeMenu;
+import fr.openmc.core.features.contest.menu.VoteMenu;
 import fr.openmc.core.features.contest.models.Contest;
 import fr.openmc.core.features.contest.models.ContestPlayer;
 import fr.openmc.core.features.economy.EconomyManager;
+import fr.openmc.core.features.economy.Transaction;
+import fr.openmc.core.features.economy.TransactionsManager;
 import fr.openmc.core.features.leaderboards.LeaderboardManager;
 import fr.openmc.core.features.mailboxes.MailboxManager;
 import fr.openmc.core.items.CustomItemRegistry;
@@ -22,6 +29,7 @@ import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.ParticleUtils;
 import fr.openmc.core.utils.database.DatabaseManager;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -29,6 +37,8 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
@@ -40,7 +50,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static fr.openmc.core.features.mailboxes.utils.MailboxUtils.getHoverEvent;
-import static fr.openmc.core.features.mailboxes.utils.MailboxUtils.getRunCommand;
 
 public class ContestManager {
 
@@ -56,6 +65,14 @@ public class ContestManager {
             "DARK_GRAY","GRAY","GOLD","DARK_PURPLE","DARK_AQUA","DARK_RED",
             "DARK_GREEN","DARK_BLUE","BLACK"
     );
+    private static final Set<Class<? extends Menu>> contestMenus = new HashSet<>();
+
+    static {
+        contestMenus.add(ContributionMenu.class);
+        contestMenus.add(MoreInfoMenu.class);
+        contestMenus.add(TradeMenu.class);
+        contestMenus.add(VoteMenu.class);
+    }
 
     /**
      * Constructeur du ContestManager :
@@ -247,6 +264,15 @@ public class ContestManager {
         ParticleUtils.color2 = null;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+            InventoryView openInv = player.getOpenInventory();
+            InventoryHolder holder = openInv.getTopInventory().getHolder();
+
+            if (holder instanceof Menu menu) {
+                if (contestMenus.contains(menu.getClass())) {
+                    player.closeInventory();
+                }
+            }
+
             player.playSound(player.getEyeLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 1.0F, 2F);
         }
 
@@ -260,12 +286,6 @@ public class ContestManager {
                         §7
                         §8§m                                                     §r"""
         ));
-        Component messageMail = Component.text("Vous avez reçu la lettre du contest", NamedTextColor.DARK_GREEN)
-                .append(Component.text("\nCliquez ici", NamedTextColor.YELLOW))
-                .clickEvent(getRunCommand("mail"))
-                .hoverEvent(getHoverEvent("Ouvrir la mailbox"))
-                .append(Component.text(" pour ouvrir la mailbox", NamedTextColor.GOLD));
-        Bukkit.broadcast(messageMail);
 
         // GET GLOBAL CONTEST INFORMATION
         String camp1Color = data.getColor1();
@@ -413,6 +433,15 @@ public class ContestManager {
             OfflinePlayer player = CacheOfflinePlayer.getOfflinePlayer(uuid);
             int points = dataPlayer1.getPoints();
 
+            if (player.isOnline() && player instanceof Player onelinePlayer) {
+                Component messageMail = Component.text("Vous avez reçu la lettre du contest", NamedTextColor.DARK_GREEN)
+                        .append(Component.text("\nCliquez ici", NamedTextColor.YELLOW))
+                        .clickEvent(ClickEvent.runCommand("mailbox"))
+                        .hoverEvent(getHoverEvent("Ouvrir la mailbox"))
+                        .append(Component.text(" pour ouvrir la mailbox", NamedTextColor.GOLD));
+                onelinePlayer.sendMessage(messageMail);
+            }
+
             String playerCampName = data.get("camp" + dataPlayer1.getCamp());
             NamedTextColor playerCampColor = ColorUtils.getReadableColor(dataPlayer1.getColor());
             String playerTitleContest = ContestPlayerManager.getTitleWithPoints(points) + playerCampName; // ex. Novice en + Moutarde
@@ -445,6 +474,14 @@ public class ContestManager {
                 Random randomMoney = new Random();
                 money = randomMoney.nextInt(moneyMin, moneyMax);
                 EconomyManager.addBalance(player.getUniqueId(), money);
+                TransactionsManager.registerTransaction(
+                        new Transaction(
+                                "CONSOLE",
+                                player.getUniqueId().toString(),
+                                money,
+                                "Récompense contest - Gagnant"
+                        )
+                );
                 // Gagnant - Aywenite
                 int ayweniteMin = 40;
                 int ayweniteMax = 60;
@@ -465,6 +502,14 @@ public class ContestManager {
                 Random randomMoney = new Random();
                 money = randomMoney.nextInt(moneyMin, moneyMax);
                 EconomyManager.addBalance(player.getUniqueId(), money);
+                TransactionsManager.registerTransaction(
+                        new Transaction(
+                                "CONSOLE",
+                                player.getUniqueId().toString(),
+                                money,
+                                "Récompense contest - Perdant"
+                        )
+                );
 
                 // Perdant - Aywenite
                 int ayweniteMin = 20;
