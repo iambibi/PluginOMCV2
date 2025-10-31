@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+@SuppressWarnings("UnstableApiUsage")
 public class DreamSleeper extends DreamEnchantment implements Listener {
 
     @Override

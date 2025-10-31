@@ -1,5 +1,6 @@
 package fr.openmc.core.features.dream.listeners.dream;
 
+import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,5 +16,6 @@ public class PlayerDeathListener implements Listener {
         if (!DreamUtils.isInDreamWorld(player)) return;
 
         event.getDrops().clear();
+        DreamManager.removeDreamPlayer(player, player.getLocation());
     }
 }
