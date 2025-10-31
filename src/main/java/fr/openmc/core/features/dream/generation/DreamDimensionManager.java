@@ -110,6 +110,7 @@ public class DreamDimensionManager {
 
         // ** SET GAMERULE FOR THE WORLD **
         dream.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        dream.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
         dream.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         dream.setGameRule(GameRule.DISABLE_RAIDS, true);
         dream.setGameRule(GameRule.DO_PATROL_SPAWNING, false);
@@ -120,7 +121,7 @@ public class DreamDimensionManager {
 
         dream.setTime(18000);
 
-        plugin.getLogger().info("Dream Dimension ready!");
+        plugin.getSLF4JLogger().info("Dream Dimension ready!");
     }
 
     // ** STRUCTURE NBT MANAGING **
@@ -164,7 +165,7 @@ public class DreamDimensionManager {
 
     private static void loadSeed() {
         if (!seedFile.exists()) {
-            OMCPlugin.getInstance().getLogger().info("Fichier seed.yml manquant, il sera créé au saveSeed().");
+            OMCPlugin.getInstance().getSLF4JLogger().info("Fichier seed.yml manquant, il sera créé au saveSeed().");
         }
         seedConfig = YamlConfiguration.loadConfiguration(seedFile);
     }

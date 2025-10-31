@@ -47,11 +47,11 @@ public class SchematicsUtils {
 
         try (InputStream in = plugin.getResource("schem/" + nameSchem + ".schem")) {
             if (in == null) {
-                plugin.getLogger().warning("Le fichier '" + nameSchem + ".schem' est introuvable dans les ressources.");
+                plugin.getSLF4JLogger().warn("Le fichier '" + nameSchem + ".schem' est introuvable dans les ressources.");
                 return;
             }
             Files.copy(in, outFile.toPath());
-            plugin.getLogger().info("Fichier '" + nameSchem + ".schem' extrait dans plugins/OpenMC/schem/.");
+            plugin.getSLF4JLogger().info("Fichier '" + nameSchem + ".schem' extrait dans plugins/OpenMC/schem/.");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -69,10 +69,6 @@ public abstract class DreamStructurePopulator extends BlockPopulator {
         );
         DreamStructuresManager.addStructure(type, min, max);
 
-        OMCPlugin.getInstance().getLogger().info(
-                "Structure '" + type.getId() + "' placée entre " +
-                        min.x() + ", " + min.y() + ", " + min.z() + " et " +
-                        max.x() + ", " + max.y() + ", " + max.z()
-        );
+        OMCPlugin.getInstance().getSLF4JLogger().info("Structure '{}' placée entre {}, {}, {} et {}, {}, {}", type.getId(), min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
     }
 }
