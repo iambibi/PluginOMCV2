@@ -60,6 +60,7 @@ public class PlayerObtainOrb implements Listener {
             DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
             if (dreamPlayer == null) return;
             DreamManager.saveDreamPlayerData(dreamPlayer);
+            setProgressionOrb(player, progressionOrb);
         }
     }
 }
