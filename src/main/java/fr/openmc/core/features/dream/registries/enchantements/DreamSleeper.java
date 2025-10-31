@@ -3,10 +3,9 @@ package fr.openmc.core.features.dream.registries.enchantements;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.models.registry.DreamEnchantment;
 import fr.openmc.core.features.dream.registries.DreamEnchantementRegistry;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.TypedKey;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys;
+import io.papermc.paper.registry.tag.TagKey;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.LivingEntity;
@@ -17,8 +16,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Set;
 
 public class DreamSleeper extends DreamEnchantment implements Listener {
 
@@ -33,10 +30,8 @@ public class DreamSleeper extends DreamEnchantment implements Listener {
     }
 
     @Override
-    public Set<TypedKey<ItemType>> getSupportedItems() {
-        return Set.of(
-                TypedKey.create(RegistryKey.ITEM, ItemTypeTagKeys.SWORDS.key())
-        );
+    public TagKey<ItemType> getSupportedItems() {
+        return ItemTypeTagKeys.SWORDS;
     }
 
     @Override

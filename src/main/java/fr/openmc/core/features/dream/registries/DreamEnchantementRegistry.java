@@ -8,7 +8,6 @@ import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
 import io.papermc.paper.registry.event.RegistryComposeEvent;
 import io.papermc.paper.registry.keys.EnchantmentKeys;
-import io.papermc.paper.registry.set.RegistrySet;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
@@ -33,7 +32,7 @@ public class DreamEnchantementRegistry {
             event.registry().register(
                     EnchantmentKeys.create(dreamEnchantment.getKey()),
                     b -> b.description(dreamEnchantment.getName())
-                            .supportedItems(RegistrySet.keySet(RegistryKey.ITEM, dreamEnchantment.getSupportedItems()))
+                            .supportedItems(event.getOrCreateTag(dreamEnchantment.getSupportedItems()))
                             .anvilCost(dreamEnchantment.getAnvilCost())
                             .maxLevel(dreamEnchantment.getMaxLevel())
                             .weight(dreamEnchantment.getWeight())
