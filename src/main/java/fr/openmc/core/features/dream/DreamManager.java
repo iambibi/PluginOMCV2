@@ -23,6 +23,7 @@ import fr.openmc.core.features.dream.listeners.dream.*;
 import fr.openmc.core.features.dream.listeners.generation.ReplaceBlockListener;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
 import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
+import fr.openmc.core.features.dream.listeners.structures.CloudStructureDispenserListener;
 import fr.openmc.core.features.dream.mobs.DreamMobManager;
 import fr.openmc.core.features.dream.models.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.DreamPlayer;
@@ -44,8 +45,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class DreamManager {
-    //TODO: REMPLACE ALL PLUGIN.LOGGER BY getSLF4JLogger
-
     // ** CONSTANTS **
     public static final Long BASE_DREAM_TIME = 300L;
 
@@ -69,7 +68,8 @@ public class DreamManager {
                 new ReplaceBlockListener(),
                 new PlayerEatSomnifere(),
                 new CloudVault(),
-                new BossCloudSpawner()
+                new BossCloudSpawner(),
+                new CloudStructureDispenserListener()
         );
 
         // ** MANAGERS **
