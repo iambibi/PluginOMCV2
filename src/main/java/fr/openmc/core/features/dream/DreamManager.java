@@ -6,28 +6,24 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.blocks.DreamBlocksManager;
-import fr.openmc.core.features.dream.blocks.cloudspawner.BossCloudSpawner;
-import fr.openmc.core.features.dream.blocks.cloudvault.CloudVault;
 import fr.openmc.core.features.dream.commands.AdminDreamCommands;
-import fr.openmc.core.features.dream.crafting.DreamCraftingRegister;
-import fr.openmc.core.features.dream.drops.DreamDropsManager;
-import fr.openmc.core.features.dream.enchantements.DreamEnchantementRegistry;
-import fr.openmc.core.features.dream.fishing.CloudFishingManager;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
+import fr.openmc.core.features.dream.generation.listeners.CloudStructureDispenserListener;
+import fr.openmc.core.features.dream.generation.listeners.ReplaceBlockListener;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
-import fr.openmc.core.features.dream.items.DreamItemRegister;
 import fr.openmc.core.features.dream.listeners.biomes.PlayerEnteredBiome;
 import fr.openmc.core.features.dream.listeners.dream.*;
-import fr.openmc.core.features.dream.listeners.generation.ReplaceBlockListener;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
+import fr.openmc.core.features.dream.listeners.others.CraftingConvertorListener;
 import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
-import fr.openmc.core.features.dream.listeners.structures.CloudStructureDispenserListener;
-import fr.openmc.core.features.dream.mobs.DreamMobManager;
-import fr.openmc.core.features.dream.models.DBDreamPlayer;
-import fr.openmc.core.features.dream.models.DreamPlayer;
-import fr.openmc.core.features.dream.models.OldInventory;
+import fr.openmc.core.features.dream.mecanism.cloudcastle.BossCloudSpawner;
+import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
+import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
+import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
+import fr.openmc.core.features.dream.models.db.DreamPlayer;
+import fr.openmc.core.features.dream.models.db.OldInventory;
+import fr.openmc.core.features.dream.registries.*;
 import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
 import org.bukkit.Bukkit;
@@ -69,18 +65,18 @@ public class DreamManager {
                 new PlayerEatSomnifere(),
                 new CloudVault(),
                 new BossCloudSpawner(),
-                new CloudStructureDispenserListener()
+                new CloudStructureDispenserListener(),
+                new CraftingConvertorListener()
         );
 
         // ** MANAGERS **
         DreamEnchantementRegistry.init();
         DreamDimensionManager.init();
         DreamStructuresManager.init();
-        DreamItemRegister.init();
-        DreamBlocksManager.init();
-        DreamMobManager.init();
-        DreamDropsManager.init();
-        DreamCraftingRegister.init();
+        DreamItemRegistry.init();
+        DreamBlocksRegistry.init();
+        DreamMobsRegistry.init();
+        DreamBlocksDropsRegistry.init();
         CloudFishingManager.init();
 
         // ** COMMANDS **

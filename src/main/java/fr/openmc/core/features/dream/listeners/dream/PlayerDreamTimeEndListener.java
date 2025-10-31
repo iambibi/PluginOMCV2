@@ -2,7 +2,7 @@ package fr.openmc.core.features.dream.listeners.dream;
 
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.events.DreamTimeEndEvent;
-import fr.openmc.core.features.dream.models.DreamPlayer;
+import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

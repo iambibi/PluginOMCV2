@@ -6,7 +6,7 @@ import fr.openmc.core.features.displays.scoreboards.ScoreboardManager;
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
-import fr.openmc.core.features.dream.models.DreamPlayer;
+import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

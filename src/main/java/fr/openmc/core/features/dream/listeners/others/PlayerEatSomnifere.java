@@ -2,10 +2,10 @@ package fr.openmc.core.features.dream.listeners.others;
 
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
-import fr.openmc.core.features.dream.items.DreamItem;
-import fr.openmc.core.features.dream.items.DreamItemRegister;
-import fr.openmc.core.features.dream.models.DBDreamPlayer;
-import fr.openmc.core.features.dream.models.DreamPlayer;
+import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
+import fr.openmc.core.features.dream.models.db.DreamPlayer;
+import fr.openmc.core.features.dream.models.registry.DreamItem;
+import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 public class PlayerEatSomnifere implements Listener {
     @EventHandler
     public void onFoodEated(PlayerItemConsumeEvent event) {
-        DreamItem dreamItem = DreamItemRegister.getByItemStack(event.getItem());
+        DreamItem dreamItem = DreamItemRegistry.getByItemStack(event.getItem());
 
         if (dreamItem == null || !dreamItem.getName().equals("omc_dream:somnifere")) return;
 

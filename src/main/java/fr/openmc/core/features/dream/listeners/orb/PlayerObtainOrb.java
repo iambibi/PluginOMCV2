@@ -2,10 +2,10 @@ package fr.openmc.core.features.dream.listeners.orb;
 
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
-import fr.openmc.core.features.dream.blocks.altar.AltarCraftingEvent;
-import fr.openmc.core.features.dream.items.DreamItem;
-import fr.openmc.core.features.dream.models.DBDreamPlayer;
-import fr.openmc.core.features.dream.models.DreamPlayer;
+import fr.openmc.core.features.dream.mecanism.altar.AltarCraftingEvent;
+import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
+import fr.openmc.core.features.dream.models.db.DreamPlayer;
+import fr.openmc.core.features.dream.models.registry.DreamItem;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
