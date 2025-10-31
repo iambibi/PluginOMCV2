@@ -101,8 +101,10 @@ public class DreamManager {
         if (dreamWorld == null) return;
 
         for (Entity entity : dreamWorld.getEntities()) {
-            if (!(entity instanceof org.bukkit.entity.Player)) {
+            if (!(entity instanceof Player player)) {
                 entity.remove();
+            } else {
+                removeDreamPlayer(player, player.getLocation());
             }
         }
     }
