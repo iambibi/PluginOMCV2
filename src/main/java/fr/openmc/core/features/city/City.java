@@ -215,9 +215,8 @@ public class City {
 
         OfflinePlayer offlinePlayer = CacheOfflinePlayer.getOfflinePlayer(playerUUID);
 
-        if (offlinePlayer.isOnline() && offlinePlayer instanceof Player player) {
+        if (offlinePlayer.isOnline() && offlinePlayer instanceof Player player)
             player.closeInventory();
-        }
 
         members.remove(playerUUID);
         permissions.remove(playerUUID);
