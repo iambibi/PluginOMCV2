@@ -17,11 +17,8 @@ import fr.openmc.core.features.dream.listeners.dream.*;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
 import fr.openmc.core.features.dream.listeners.others.CraftingConvertorListener;
 import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
-import fr.openmc.core.features.dream.listeners.registry.DreamItemInteractListener;
-import fr.openmc.core.features.dream.listeners.registry.DreamMobDamageListener;
-import fr.openmc.core.features.dream.mecanism.cloudcastle.BossCloudSpawner;
-import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
 import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
+import fr.openmc.core.features.dream.mecanism.metaldetector.MetalDetectorManager;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import fr.openmc.core.features.dream.models.db.OldInventory;
@@ -65,12 +62,8 @@ public class DreamManager {
                 new PlayerObtainOrb(),
                 new ReplaceBlockListener(),
                 new PlayerEatSomnifere(),
-                new CloudVault(),
-                new BossCloudSpawner(),
                 new CloudStructureDispenserListener(),
-                new CraftingConvertorListener(),
-                new DreamMobDamageListener(),
-                new DreamItemInteractListener()
+                new CraftingConvertorListener()
         );
 
         // ** MANAGERS **
@@ -82,6 +75,7 @@ public class DreamManager {
         DreamMobsRegistry.init();
         DreamBlocksDropsRegistry.init();
         CloudFishingManager.init();
+        MetalDetectorManager.init();
 
         // ** COMMANDS **
         CommandsManager.getHandler().register(

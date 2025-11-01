@@ -4,6 +4,8 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.listeners.registry.DreamBlocksListeners;
 import fr.openmc.core.features.dream.mecanism.altar.AltarManager;
+import fr.openmc.core.features.dream.mecanism.cloudcastle.BossCloudSpawner;
+import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
 import fr.openmc.core.features.dream.models.registry.DreamBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,7 +27,9 @@ public class DreamBlocksRegistry {
 
     public static void init() {
         OMCPlugin.registerEvents(
-                new DreamBlocksListeners()
+                new DreamBlocksListeners(),
+                new CloudVault(),
+                new BossCloudSpawner()
         );
         file = new File(OMCPlugin.getInstance().getDataFolder() + "/data/dream", "registered_blocks.yml");
         load();

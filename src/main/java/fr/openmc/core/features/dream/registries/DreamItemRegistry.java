@@ -4,6 +4,7 @@ import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.commands.DreamItemCommand;
 import fr.openmc.core.features.dream.listeners.registry.DreamItemConvertorListener;
+import fr.openmc.core.features.dream.listeners.registry.DreamItemInteractListener;
 import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudBoots;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudChestplate;
@@ -25,6 +26,7 @@ import fr.openmc.core.features.dream.registries.items.loots.CorruptedString;
 import fr.openmc.core.features.dream.registries.items.loots.CreakingHeart;
 import fr.openmc.core.features.dream.registries.items.loots.Soul;
 import fr.openmc.core.features.dream.registries.items.orb.*;
+import fr.openmc.core.features.dream.registries.items.tools.MetalDetector;
 import fr.openmc.core.features.dream.registries.items.tools.MeteoWand;
 import fr.openmc.core.features.dream.registries.items.tools.OldCreakingAxe;
 import fr.openmc.core.features.dream.registries.items.tools.SoulAxe;
@@ -88,12 +90,16 @@ public class DreamItemRegistry {
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:cloud_fishing_rod"));
         registerDreamItem(new MeteoWand("omc_dream:meteo_wand"));
+        registerDreamItem(new MetalDetector("omc_dream:metal_detector"));
 
         CommandsManager.getHandler().register(
                 new DreamItemCommand()
         );
 
-        OMCPlugin.registerEvents(new DreamItemConvertorListener());
+        OMCPlugin.registerEvents(
+                new DreamItemConvertorListener(),
+                new DreamItemInteractListener()
+        );
     }
 
     public static void register(String name, DreamItem item) {

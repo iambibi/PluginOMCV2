@@ -63,4 +63,12 @@ public class LocationUtils {
         }
         return null;
     }
+
+    public static boolean isSameLocation(Location a, Location b) {
+        if (a == null || b == null) return false;
+        return a.getWorld().equals(b.getWorld())
+                && a.getBlockX() == b.getBlockX()
+                && a.getBlockY() == b.getBlockY()
+                && a.getBlockZ() == b.getBlockZ();
+    }
 }

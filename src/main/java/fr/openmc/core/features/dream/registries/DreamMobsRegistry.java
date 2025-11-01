@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.registries;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.listeners.registry.DreamMobDamageListener;
 import fr.openmc.core.features.dream.listeners.registry.DreamMobLootListener;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
 import fr.openmc.core.features.dream.registries.mobs.*;
@@ -30,7 +31,8 @@ public class DreamMobsRegistry {
         OMCPlugin.registerEvents(
                 new PlainsMobSpawningListener(),
                 new SoulForestMobSpawningListener(),
-                new DreamMobLootListener()
+                new DreamMobLootListener(),
+                new DreamMobDamageListener()
         );
 
         register(new DreamCreaking());
