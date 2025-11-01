@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.mecanism.altar;
 
-import fr.openmc.core.features.dream.models.registry.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 import fr.openmc.core.features.dream.registries.DreamBlocksRegistry;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import fr.openmc.core.utils.messages.MessageType;

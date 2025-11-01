@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.listeners.others;
 
 import fr.openmc.core.features.dream.DreamUtils;
-import fr.openmc.core.features.dream.models.registry.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import org.bukkit.Keyed;
 import org.bukkit.Material;

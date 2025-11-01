@@ -4,7 +4,7 @@ import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.commands.DreamItemCommand;
 import fr.openmc.core.features.dream.listeners.registry.DreamItemConvertorListener;
-import fr.openmc.core.features.dream.models.registry.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudBoots;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudChestplate;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudHelmet;

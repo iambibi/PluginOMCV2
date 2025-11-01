@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.mecanism.altar;
 
-import fr.openmc.core.features.dream.models.registry.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

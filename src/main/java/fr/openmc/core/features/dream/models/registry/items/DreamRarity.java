@@ -1,4 +1,4 @@
-package fr.openmc.core.features.dream.models.registry;
+package fr.openmc.core.features.dream.models.registry.items;
 
 import lombok.Getter;
 

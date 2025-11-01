@@ -17,6 +17,7 @@ import fr.openmc.core.features.dream.listeners.dream.*;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
 import fr.openmc.core.features.dream.listeners.others.CraftingConvertorListener;
 import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
+import fr.openmc.core.features.dream.listeners.registry.DreamItemInteractListener;
 import fr.openmc.core.features.dream.listeners.registry.DreamMobDamageListener;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.BossCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
@@ -68,7 +69,8 @@ public class DreamManager {
                 new BossCloudSpawner(),
                 new CloudStructureDispenserListener(),
                 new CraftingConvertorListener(),
-                new DreamMobDamageListener()
+                new DreamMobDamageListener(),
+                new DreamItemInteractListener()
         );
 
         // ** MANAGERS **

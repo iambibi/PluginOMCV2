@@ -4,7 +4,7 @@ import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
-import fr.openmc.core.features.dream.models.registry.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;

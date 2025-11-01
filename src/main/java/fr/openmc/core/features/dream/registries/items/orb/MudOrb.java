@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.registries.items.orb;
 
-import fr.openmc.core.features.dream.models.registry.DreamItem;
-import fr.openmc.core.features.dream.models.registry.DreamRarity;
+import fr.openmc.core.features.dream.models.registry.items.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamRarity;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
