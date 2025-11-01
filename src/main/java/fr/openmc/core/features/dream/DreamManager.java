@@ -17,6 +17,7 @@ import fr.openmc.core.features.dream.listeners.dream.*;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
 import fr.openmc.core.features.dream.listeners.others.CraftingConvertorListener;
 import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
+import fr.openmc.core.features.dream.listeners.registry.DreamMobDamageListener;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.BossCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
 import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
@@ -66,7 +67,8 @@ public class DreamManager {
                 new CloudVault(),
                 new BossCloudSpawner(),
                 new CloudStructureDispenserListener(),
-                new CraftingConvertorListener()
+                new CraftingConvertorListener(),
+                new DreamMobDamageListener()
         );
 
         // ** MANAGERS **
@@ -100,11 +102,12 @@ public class DreamManager {
 
         if (dreamWorld == null) return;
 
+        for (Player player : dreamWorld.getPlayers()) {
+            removeDreamPlayer(player, player.getLocation());
+        }
         for (Entity entity : dreamWorld.getEntities()) {
-            if (!(entity instanceof Player player)) {
+            if (!(entity instanceof Player)) {
                 entity.remove();
-            } else {
-                removeDreamPlayer(player, player.getLocation());
             }
         }
     }

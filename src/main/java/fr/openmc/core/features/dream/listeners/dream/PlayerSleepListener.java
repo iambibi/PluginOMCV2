@@ -39,7 +39,7 @@ public class PlayerSleepListener implements Listener {
 
         player.addPotionEffect(new PotionEffect(
                 PotionEffectType.NAUSEA,
-                20 * 5,
+                20 * 10,
                 1,
                 false,
                 false,
@@ -49,6 +49,8 @@ public class PlayerSleepListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                System.out.println("on Sleepe dbDream " + dbDreamPlayer);
+                System.out.println("dbDream X" + dbDreamPlayer);
                 if (dbDreamPlayer == null || (dbDreamPlayer.getDreamX() == null || dbDreamPlayer.getDreamY() == null || dbDreamPlayer.getDreamZ() == null)) {
                     DreamManager.tpPlayerDream(player);
                 } else {

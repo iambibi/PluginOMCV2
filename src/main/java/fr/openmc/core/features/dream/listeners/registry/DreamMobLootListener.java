@@ -18,15 +18,16 @@ public class DreamMobLootListener implements Listener {
         LivingEntity entity = event.getEntity();
 
         DamageSource source = event.getDamageSource();
-        if (!(source.getCausingEntity() instanceof Player)) return;
 
         if (!DreamMobsRegistry.isDreamMob(entity)) return;
 
-        DreamMob dreamMob = DreamMobsRegistry.getFromEntity(entity);
-        if (dreamMob == null) return;
-
         event.getDrops().clear();
         event.setDroppedExp(0);
+
+        if (!(source.getCausingEntity() instanceof Player)) return;
+
+        DreamMob dreamMob = DreamMobsRegistry.getFromEntity(entity);
+        if (dreamMob == null) return;
 
         for (DreamLoot loot : dreamMob.getDreamLoots()) {
             if (Math.random() < loot.chance()) {

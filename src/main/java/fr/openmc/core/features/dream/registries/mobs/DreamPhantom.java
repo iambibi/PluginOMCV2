@@ -23,7 +23,7 @@ public class DreamPhantom extends DreamMob {
     public DreamPhantom() {
         super("dream_phantom",
                 "Phantom Réveillé",
-                EntityType.STRAY,
+                EntityType.PHANTOM,
                 10.0,
                 3.0,
                 0.4,
@@ -38,11 +38,12 @@ public class DreamPhantom extends DreamMob {
         return null;
     }
 
-    public EntitySnapshot createSnapshot() {
+    public EntitySnapshot createSnapshot(Location location) {
         World world = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
         if (world == null) return null;
         Phantom phantom = world.createEntity(new Location(world, 0, 0, 0), Phantom.class);
 
+        phantom.setAnchorLocation(location);
         phantom.customName(Component.text(this.getName()));
         phantom.setCustomNameVisible(true);
 

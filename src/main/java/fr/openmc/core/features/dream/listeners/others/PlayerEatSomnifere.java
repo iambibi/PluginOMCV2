@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerEatSomnifere implements Listener {
     @EventHandler
@@ -20,6 +21,11 @@ public class PlayerEatSomnifere implements Listener {
         if (dreamItem == null || !dreamItem.getName().equals("omc_dream:somnifere")) return;
 
         Player player = event.getPlayer();
+
+        ItemStack item = event.getItem();
+
+        // somnifere se stack par 1, aucun check est nécessaire
+        event.setItem(null);
 
         if (DreamUtils.isInDreamWorld(player)) {
             AttributeInstance attribute = player.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);

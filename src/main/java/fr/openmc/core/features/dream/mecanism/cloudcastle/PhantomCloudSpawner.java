@@ -20,7 +20,7 @@ public class PhantomCloudSpawner implements Listener {
         if (block.getState() instanceof TrialSpawner spawner) {
             TrialSpawnerConfiguration normal = spawner.getNormalConfiguration();
 
-            normal.setSpawnedEntity(new DreamPhantom().createSnapshot());
+            normal.setSpawnedEntity(new DreamPhantom().createSnapshot(block.getLocation()));
 
             NamespacedKey lootKey = new NamespacedKey("openmc", "cloud_castle/mob_spawner");
             LootTable lootTable = Bukkit.getLootTable(lootKey);
