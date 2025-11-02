@@ -27,7 +27,8 @@ public class DreamEnchantementRegistry {
             new Experientastic()
     );
 
-    private final static HashMap<Key, Enchantment> dreamEnchantment = new HashMap<>();
+    private final static HashMap<Key, DreamEnchantment> dreamEnchantments = new HashMap<>();
+    private final static HashMap<Key, Enchantment> enchantments = new HashMap<>();
 
     public static void loadEnchantmentInBootstrap(RegistryComposeEvent<Enchantment, EnchantmentRegistryEntry.@NotNull Builder> event) {
         for (DreamEnchantment dreamEnchantment : DREAM_ENCHANTMENT_REGISTRY) {
@@ -55,7 +56,8 @@ public class DreamEnchantementRegistry {
             Enchantment enchantment = enchantmentRegistry.getOrThrow(
                     RegistryKey.ENCHANTMENT.typedKey(key)
             );
-            dreamEnchantment.put(key, enchantment);
+            dreamEnchantments.put(key, dreamEnchant);
+            enchantments.put(key, enchantment);
 
             if (dreamEnchant instanceof Listener listener) {
                 OMCPlugin.registerEvents(listener);
@@ -63,7 +65,11 @@ public class DreamEnchantementRegistry {
         }
     }
 
-    public static Enchantment getDreamEnchantment(Key key) {
-        return dreamEnchantment.get(key);
+    public static DreamEnchantment getDreamEnchantment(Key key) {
+        return dreamEnchantments.get(key);
+    }
+
+    public static Enchantment getEnchantment(Key key) {
+        return enchantments.get(key);
     }
 }

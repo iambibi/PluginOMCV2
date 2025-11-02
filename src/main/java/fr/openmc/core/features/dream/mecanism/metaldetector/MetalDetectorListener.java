@@ -3,6 +3,7 @@ package fr.openmc.core.features.dream.mecanism.metaldetector;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
+import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
 import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -21,7 +22,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -72,12 +75,17 @@ public class MetalDetectorListener implements Listener {
             MetalDetectorTask task = hiddenChests.remove(uuid);
             task.cancel();
             Location chestLoc = task.getChestLocation();
-            System.out.println(clicked.toString());
-            System.out.println(chestLoc.toString());
+
             if (LocationUtils.isSameLocation(clicked.getLocation(), chestLoc)) {
                 event.setCancelled(true);
                 clicked.setType(Material.MUD);
-                MessagesManager.sendMessage(player, Component.text("Vous avez eu ... a completer deeegeh"), Prefix.DREAM, MessageType.SUCCESS, false);
+                List<ItemStack> rewards = CloudFishingManager.rollFishingLoots();
+
+                for (ItemStack item : rewards) {
+                    player.getInventory().addItem(item);
+                }
+
+                MessagesManager.sendMessage(player, Component.text("Vous avez découvert §e" + rewards.size() + " §fobjet(s) dans tes rêves !"), Prefix.DREAM, MessageType.SUCCESS, false);
                 hiddenChests.replace(uuid, new MetalDetectorTask(player, findRandomChestLocation(player.getLocation())));
             }
         }
