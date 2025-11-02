@@ -3,7 +3,6 @@ package fr.openmc.core.features.dream.mecanism.metaldetector;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
 import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -79,7 +78,7 @@ public class MetalDetectorListener implements Listener {
             if (LocationUtils.isSameLocation(clicked.getLocation(), chestLoc)) {
                 event.setCancelled(true);
                 clicked.setType(Material.MUD);
-                List<ItemStack> rewards = CloudFishingManager.rollFishingLoots();
+                List<ItemStack> rewards = MetalDetectorManager.rollMetalDetectorLoots();
 
                 for (ItemStack item : rewards) {
                     player.getInventory().addItem(item);
