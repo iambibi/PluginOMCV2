@@ -1,6 +1,5 @@
 package fr.openmc.core.features.dream.registries.enchantements;
 
-import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.models.registry.DreamEnchantment;
 import fr.openmc.core.features.dream.registries.DreamEnchantementRegistry;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
@@ -9,26 +8,24 @@ import io.papermc.paper.registry.tag.TagKey;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("UnstableApiUsage")
-public class DreamSleeper extends DreamEnchantment implements Listener {
+public class Experientastic extends DreamEnchantment implements Listener {
 
     @Override
     public Key getKey() {
-        return Key.key("dream:dream_sleeper");
+        return Key.key("dream:experientastic");
     }
 
     @Override
     public Component getName() {
-        return Component.text("Endormant");
+        return Component.text("Experientastic");
     }
 
     @Override
@@ -48,7 +45,7 @@ public class DreamSleeper extends DreamEnchantment implements Listener {
 
     @Override
     public int getAnvilCost() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -62,9 +59,9 @@ public class DreamSleeper extends DreamEnchantment implements Listener {
     }
 
     @EventHandler
-    public void onAttack(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player player)) return;
-        if (!(event.getEntity() instanceof LivingEntity living)) return;
+    public void onAttack(EntityDeathEvent event) {
+        Player player = event.getEntity().getKiller();
+        if (player == null) return;
 
         Enchantment enchant = DreamEnchantementRegistry.getDreamEnchantment(getKey());
         if (enchant == null) return;
@@ -72,17 +69,18 @@ public class DreamSleeper extends DreamEnchantment implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!item.getEnchantments().containsKey(enchant)) return;
 
-        if (player.hasCooldown(item)) return;
-        player.setCooldown(item, 5 * 20);
+        int level = item.getEnchantments().getOrDefault(enchant, 0);
+        if (level <= 0) return;
 
-        living.setAI(false);
-        int level = item.getEnchantments().get(enchant);
+        double multiplier;
+        switch (level) {
+            case 1 -> multiplier = 1.5;
+            case 2 -> multiplier = 2.0;
+            case 3 -> multiplier = 3.0;
+            default -> multiplier = 1.0;
+        }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                living.setAI(true);
-            }
-        }.runTaskLater(OMCPlugin.getInstance(), 15L * level);
+        int newExp = (int) Math.round(event.getDroppedExp() * multiplier);
+        event.setDroppedExp(newExp);
     }
 }

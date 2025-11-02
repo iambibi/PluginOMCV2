@@ -3,6 +3,7 @@ package fr.openmc.core.features.dream.registries;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.models.registry.DreamEnchantment;
 import fr.openmc.core.features.dream.registries.enchantements.DreamSleeper;
+import fr.openmc.core.features.dream.registries.enchantements.Experientastic;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
@@ -22,7 +23,8 @@ import java.util.Set;
 public class DreamEnchantementRegistry {
 
     private final static Set<DreamEnchantment> DREAM_ENCHANTMENT_REGISTRY = Set.of(
-            new DreamSleeper()
+            new DreamSleeper(),
+            new Experientastic()
     );
 
     private final static HashMap<Key, Enchantment> dreamEnchantment = new HashMap<>();
