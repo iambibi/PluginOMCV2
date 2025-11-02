@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.EntitySnapshot;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -30,8 +29,7 @@ public class DreamStray extends DreamMob {
                 3.0,
                 0.2,
                 1.2,
-                List.of(),
-                Biome.THE_VOID
+                List.of()
         );
     }
 

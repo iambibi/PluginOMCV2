@@ -34,6 +34,7 @@ public class SoulForestMobSpawningListener implements Listener {
 
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) return;
         if (!DreamUtils.isDreamWorld(spawningLoc)) return;
+        e.setCancelled(true);
         if (!spawningLoc.getWorld().getBiome(spawningLoc).equals(DreamBiome.SOUL_FOREST.getBiome())) return;
 
         double choice = Math.random();
@@ -41,9 +42,6 @@ public class SoulForestMobSpawningListener implements Listener {
         if (choice < SOUL_PROBABILITY) {
             new Soul().spawn(spawningLoc);
             e.setCancelled(true);
-            return;
         }
-
-        e.setCancelled(true);
     }
 }

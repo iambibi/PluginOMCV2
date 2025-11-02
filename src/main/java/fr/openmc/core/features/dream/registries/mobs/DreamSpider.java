@@ -1,6 +1,5 @@
 package fr.openmc.core.features.dream.registries.mobs;
 
-import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.models.registry.DreamLoot;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
@@ -32,8 +31,7 @@ public class DreamSpider extends DreamMob {
                         0.80,
                         1,
                         3
-                )),
-                DreamBiome.SCULK_PLAINS.getBiome()
+                ))
         );
     }
 

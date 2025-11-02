@@ -18,7 +18,20 @@
       "probability": 0.01
     }
   },
-  "spawners": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 50
+      }
+    ]
+  },
   "spawn_costs": {},
   "carvers": [],
   "features": []

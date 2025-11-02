@@ -1,0 +1,40 @@
+package fr.openmc.core.features.dream.registries.lootttable;
+
+import fr.openmc.core.features.dream.models.registry.DreamLoot;
+import fr.openmc.core.features.dream.models.registry.DreamLootTable;
+import fr.openmc.core.features.dream.registries.DreamEnchantementRegistry;
+import fr.openmc.core.features.dream.registries.DreamItemRegistry;
+import net.kyori.adventure.key.Key;
+
+import java.util.Set;
+
+public class MetalDetectorLootTable extends DreamLootTable {
+    @Override
+    public Key getKey() {
+        return Key.key("dream:metal_detector");
+    }
+
+    @Override
+    public Set<DreamLoot> getLoots() {
+        return Set.of(
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:somnifere"),
+                        0.4,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:mud_orb"),
+                        0.2,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamEnchantementRegistry.getDreamEnchantment(Key.key("dream:experientastic")).getEnchantedBookItem(1),
+                        0.1,
+                        1,
+                        1
+                )
+        );
+    }
+}

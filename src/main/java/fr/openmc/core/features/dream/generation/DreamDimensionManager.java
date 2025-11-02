@@ -100,6 +100,8 @@ public class DreamDimensionManager {
 
         World dream = creator.createWorld();
 
+        dream.getWorldBorder().setSize(25000);
+
         // ** STRUCTURES POPULATORS REGISTER **
         dream.getPopulators().add(new CloudCastleStructure());
         dream.getPopulators().add(new BaseCampStructure());
@@ -130,7 +132,6 @@ public class DreamDimensionManager {
     }
 
     // ** BIOME MANAGING **
-
     public static DreamBiome getDreamBiome(Biome biome) {
         for (DreamBiome dreamBiome : DreamBiome.values()) {
             if (!dreamBiome.getBiome().equals(biome)) continue;
@@ -150,7 +151,6 @@ public class DreamDimensionManager {
     }
 
     // ** SEED MANAGING **
-
     private static long createSeed() {
         Random random = new Random();
 

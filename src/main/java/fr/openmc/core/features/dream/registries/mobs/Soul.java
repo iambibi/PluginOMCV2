@@ -1,7 +1,6 @@
 package fr.openmc.core.features.dream.registries.mobs;
 
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.models.registry.DreamLoot;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
@@ -39,8 +38,7 @@ public class Soul extends DreamMob {
                         0.70,
                         2,
                         3
-                )),
-                DreamBiome.SOUL_FOREST.getBiome()
+                ))
         );
     }
 

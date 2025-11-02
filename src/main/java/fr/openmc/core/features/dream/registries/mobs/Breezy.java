@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Breeze;
 import org.bukkit.entity.EntitySnapshot;
 import org.bukkit.entity.EntityType;
@@ -29,8 +28,7 @@ public class Breezy extends DreamMob {
                 8.0,
                 0.7,
                 4.0,
-                List.of(),
-                Biome.THE_VOID
+                List.of()
         );
     }
 

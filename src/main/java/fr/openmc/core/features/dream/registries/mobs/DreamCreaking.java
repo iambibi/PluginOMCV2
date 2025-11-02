@@ -1,6 +1,5 @@
 package fr.openmc.core.features.dream.registries.mobs;
 
-import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
 import fr.openmc.core.features.dream.registries.DreamMobsRegistry;
 import fr.openmc.core.utils.RandomUtils;
@@ -22,8 +21,7 @@ public class DreamCreaking extends DreamMob {
                 4.0,
                 RandomUtils.randomBetween(0.4, 0.6),
                 RandomUtils.randomBetween(1.2, 1.7),
-                null,
-                DreamBiome.SCULK_PLAINS.getBiome()
+                null
         );
     }
 

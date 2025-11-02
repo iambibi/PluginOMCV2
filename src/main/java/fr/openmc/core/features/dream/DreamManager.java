@@ -73,6 +73,7 @@ public class DreamManager {
         DreamItemRegistry.init();
         DreamBlocksRegistry.init();
         DreamMobsRegistry.init();
+        DreamLootTableRegistry.init();
         DreamBlocksDropsRegistry.init();
         CloudFishingManager.init();
         MetalDetectorManager.init();

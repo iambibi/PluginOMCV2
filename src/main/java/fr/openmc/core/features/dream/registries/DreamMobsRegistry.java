@@ -5,10 +5,12 @@ import fr.openmc.core.features.dream.listeners.registry.DreamMobDamageListener;
 import fr.openmc.core.features.dream.listeners.registry.DreamMobLootListener;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
 import fr.openmc.core.features.dream.registries.mobs.*;
+import fr.openmc.core.features.dream.registries.mobs.listeners.MudBeachMobSpawningListener;
 import fr.openmc.core.features.dream.registries.mobs.listeners.PlainsMobSpawningListener;
 import fr.openmc.core.features.dream.registries.mobs.listeners.SoulForestMobSpawningListener;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -31,6 +33,7 @@ public class DreamMobsRegistry {
         OMCPlugin.registerEvents(
                 new PlainsMobSpawningListener(),
                 new SoulForestMobSpawningListener(),
+                new MudBeachMobSpawningListener(),
                 new DreamMobLootListener(),
                 new DreamMobDamageListener()
         );
@@ -41,9 +44,14 @@ public class DreamMobsRegistry {
         register(new DreamStray());
         register(new Breezy());
         register(new DreamPhantom());
+        register(new CorruptedTadpole());
+        register(new CrazyFrog());
     }
 
     public static void register(DreamMob mob) {
+        if (mob instanceof Listener listener) {
+            OMCPlugin.registerEvents(listener);
+        }
         mobsByName.put(mob.getId(), mob);
     }
 
