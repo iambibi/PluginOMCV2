@@ -1,6 +1,6 @@
 package fr.openmc.core.features.dream.registries;
 
-import fr.openmc.core.features.dream.models.registry.DreamLootTable;
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLootTable;
 import fr.openmc.core.features.dream.registries.lootttable.CloudFishingLootTable;
 import fr.openmc.core.features.dream.registries.lootttable.MetalDetectorLootTable;
 import net.kyori.adventure.key.Key;

@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.mecanism.metaldetector;
 
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.models.registry.DreamLootTable;
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLootTable;
 import fr.openmc.core.features.dream.registries.DreamLootTableRegistry;
 import net.kyori.adventure.key.Key;
 

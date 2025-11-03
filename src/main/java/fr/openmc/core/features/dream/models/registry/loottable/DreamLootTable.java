@@ -1,4 +1,4 @@
-package fr.openmc.core.features.dream.models.registry;
+package fr.openmc.core.features.dream.models.registry.loottable;
 
 import net.kyori.adventure.key.Key;
 import org.bukkit.inventory.ItemStack;

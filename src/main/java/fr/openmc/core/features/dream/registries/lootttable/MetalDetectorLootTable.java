@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.registries.lootttable;
 
-import fr.openmc.core.features.dream.models.registry.DreamLoot;
-import fr.openmc.core.features.dream.models.registry.DreamLootTable;
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLoot;
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLootTable;
 import fr.openmc.core.features.dream.registries.DreamEnchantementRegistry;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import net.kyori.adventure.key.Key;

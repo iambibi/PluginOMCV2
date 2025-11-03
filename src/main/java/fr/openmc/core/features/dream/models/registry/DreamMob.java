@@ -1,5 +1,6 @@
 package fr.openmc.core.features.dream.models.registry;
 
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLoot;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;

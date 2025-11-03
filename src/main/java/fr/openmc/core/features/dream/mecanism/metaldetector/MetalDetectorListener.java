@@ -3,7 +3,7 @@ package fr.openmc.core.features.dream.mecanism.metaldetector;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
-import fr.openmc.core.features.dream.models.registry.DreamLootTable;
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLootTable;
 import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -51,10 +51,8 @@ public class MetalDetectorListener implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        if (hiddenChests.containsKey(uuid)) {
-            hiddenChests.get(uuid).cancel();
-            hiddenChests.remove(uuid);
-        }
+        if (hiddenChests.containsKey(uuid))
+            hiddenChests.remove(uuid).cancel();
     }
 
     @EventHandler
@@ -72,8 +70,7 @@ public class MetalDetectorListener implements Listener {
 
         if (clicked.getType() == Material.CHEST) {
             event.setCancelled(true);
-            MetalDetectorTask task = hiddenChests.remove(uuid);
-            task.cancel();
+            MetalDetectorTask task = hiddenChests.get(uuid);
             Location chestLoc = task.getChestLocation();
 
             if (LocationUtils.isSameLocation(clicked.getLocation(), chestLoc)) {
@@ -88,7 +85,6 @@ public class MetalDetectorListener implements Listener {
                 }
 
                 MessagesManager.sendMessage(player, Component.text("Vous avez découvert §e" + rewards.size() + " §fobjet(s) dans tes rêves !"), Prefix.DREAM, MessageType.SUCCESS, false);
-                hiddenChests.replace(uuid, new MetalDetectorTask(player, findRandomChestLocation(player.getLocation())));
             }
         }
     }
@@ -108,7 +104,7 @@ public class MetalDetectorListener implements Listener {
         }
     }
 
-    private Location findRandomChestLocation(Location origin) {
+    public static Location findRandomChestLocation(Location origin) {
         World world = origin.getWorld();
         Random random = new Random();
 

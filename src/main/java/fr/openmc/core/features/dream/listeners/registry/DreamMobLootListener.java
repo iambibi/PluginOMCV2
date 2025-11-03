@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.listeners.registry;
 
-import fr.openmc.core.features.dream.models.registry.DreamLoot;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLoot;
 import fr.openmc.core.features.dream.registries.DreamMobsRegistry;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.LivingEntity;

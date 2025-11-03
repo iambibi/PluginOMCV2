@@ -1,4 +1,4 @@
-package fr.openmc.core.features.dream.models.registry;
+package fr.openmc.core.features.dream.models.registry.loottable;
 
 import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 

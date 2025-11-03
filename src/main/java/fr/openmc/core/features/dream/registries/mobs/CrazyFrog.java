@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.registries.mobs;
 
-import fr.openmc.core.features.dream.models.registry.DreamLoot;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
+import fr.openmc.core.features.dream.models.registry.loottable.DreamLoot;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import fr.openmc.core.features.dream.registries.DreamMobsRegistry;
 import fr.openmc.core.utils.RandomUtils;
