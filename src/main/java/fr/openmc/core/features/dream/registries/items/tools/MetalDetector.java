@@ -74,6 +74,7 @@ public class MetalDetector extends DreamUsableItem {
         player.setCooldown(item, 15 * 20);
 
         MetalDetectorTask oldTask = hiddenChests.get(playerUUID);
+        oldTask.getChestLocation().getBlock().setType(Material.MUD);
         Location newLoc = findRandomChestLocation(player.getLocation());
         MetalDetectorTask newTask = new MetalDetectorTask(player, newLoc);
         newTask.runTaskTimer(OMCPlugin.getInstance(), 0L, 5L);

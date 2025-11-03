@@ -1,12 +1,16 @@
 package fr.openmc.core.features.dream.models.registry;
 
 import fr.openmc.core.features.dream.models.registry.loottable.DreamLoot;
+import fr.openmc.core.features.dream.registries.DreamMobsRegistry;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
@@ -43,5 +47,30 @@ public abstract class DreamMob {
 
     public DreamMob getMob() {
         return this;
+    }
+
+    public LivingEntity getPreBuildMob(Location spawnLocation) {
+        LivingEntity livingEntity = (LivingEntity) spawnLocation.getWorld().spawnEntity(spawnLocation.add(0, 1, 0), this.getType(), CreatureSpawnEvent.SpawnReason.CUSTOM);
+
+        applyStats(livingEntity);
+
+        return livingEntity;
+    }
+
+    public void applyStats(LivingEntity livingEntity) {
+        livingEntity.customName(Component.text(this.getName()));
+        livingEntity.setCustomNameVisible(true);
+
+        this.setAttributeIfPresent(livingEntity, Attribute.MAX_HEALTH, this.getHealth());
+        livingEntity.setHealth(this.getHealth());
+        this.setAttributeIfPresent(livingEntity, Attribute.ATTACK_DAMAGE, this.getDamage());
+        this.setAttributeIfPresent(livingEntity, Attribute.MOVEMENT_SPEED, this.getSpeed());
+        this.setAttributeIfPresent(livingEntity, Attribute.SCALE, this.getScale());
+
+        livingEntity.getPersistentDataContainer().set(
+                DreamMobsRegistry.mobKey,
+                PersistentDataType.STRING,
+                this.getId()
+        );
     }
 }

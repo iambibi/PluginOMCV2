@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.mecanism.metaldetector;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamUtils;
+import fr.openmc.core.features.dream.events.MetalDetectorLootEvent;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.models.registry.loottable.DreamLootTable;
 import fr.openmc.core.utils.LocationUtils;
@@ -9,6 +10,7 @@ import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -70,7 +72,8 @@ public class MetalDetectorListener implements Listener {
 
         if (clicked.getType() == Material.CHEST) {
             event.setCancelled(true);
-            MetalDetectorTask task = hiddenChests.get(uuid);
+            MetalDetectorTask task = hiddenChests.remove(uuid);
+            task.cancel();
             Location chestLoc = task.getChestLocation();
 
             if (LocationUtils.isSameLocation(clicked.getLocation(), chestLoc)) {
@@ -84,6 +87,9 @@ public class MetalDetectorListener implements Listener {
                     player.getInventory().addItem(item);
                 }
 
+                Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
+                        Bukkit.getServer().getPluginManager().callEvent(new MetalDetectorLootEvent(player, rewards))
+                );
                 MessagesManager.sendMessage(player, Component.text("Vous avez découvert §e" + rewards.size() + " §fobjet(s) dans tes rêves !"), Prefix.DREAM, MessageType.SUCCESS, false);
             }
         }

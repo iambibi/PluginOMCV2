@@ -45,8 +45,6 @@ public class CorruptedTadpole extends DreamMob implements Listener {
         this.setAttributeIfPresent(tadpole, Attribute.MOVEMENT_SPEED, this.getSpeed());
         this.setAttributeIfPresent(tadpole, Attribute.SCALE, this.getScale());
 
-        tadpole.setPersistent(true);
-
         tadpole.getPersistentDataContainer().set(
                 DreamMobsRegistry.mobKey,
                 PersistentDataType.STRING,

@@ -2,16 +2,25 @@ package fr.openmc.core.features.dream.listeners.orb;
 
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
+import fr.openmc.core.features.dream.events.MetalDetectorLootEvent;
+import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.mecanism.altar.AltarCraftingEvent;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import fr.openmc.core.features.dream.models.registry.items.DreamItem;
+import fr.openmc.core.features.dream.registries.DreamItemRegistry;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 public class PlayerObtainOrb implements Listener {
@@ -34,33 +43,82 @@ public class PlayerObtainOrb implements Listener {
         if (recipe instanceof Keyed keyed) {
             NamespacedKey key = keyed.getKey();
             if (key.toString().contains("omc_dream") && key.toString().contains("domination_orb")) { // contains beacuse key is ex zzzfake_omc_items:aywenite
-                setProgressionOrb(player, SCULK_PLAINS_ORB);
+                setProgressionOrb(player, SCULK_PLAINS_ORB, DreamBiome.SOUL_FOREST);
             }
         }
     }
 
     @EventHandler
-    public void onCraft(AltarCraftingEvent event) {
+    public void onAltarCraft(AltarCraftingEvent event) {
         DreamItem item = event.getCraftedItem();
         if (item == null) return;
 
         if (!item.getName().equals("omc_dream:ame_orb")) return;
 
-        setProgressionOrb(event.getPlayer(), SOUL_FOREST_ORB);
+        Player player = event.getPlayer();
+
+        setProgressionOrb(player, SOUL_FOREST_ORB, DreamBiome.CLOUD_LAND);
     }
 
-    public static void setProgressionOrb(Player player, int progressionOrb) {
-        DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
-        if (cache != null) {
-            if (cache.getProgressionOrb() < progressionOrb) {
-                cache.setProgressionOrb(progressionOrb);
-                DreamManager.saveDreamPlayerData(cache);
+    @EventHandler
+    public void onCloudOrbDispense(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        ItemStack dispensed = event.getItem().getItemStack();
+
+        DreamItem dreamItem = DreamItemRegistry.getByItemStack(dispensed);
+        if (dreamItem == null) return;
+
+        if (dreamItem.getName().equals("omc_dream:cloud_orb")) {
+            setProgressionOrb(player, CLOUD_CASTLE_ORB, DreamBiome.MUD_BEACH);
+        }
+    }
+
+    @EventHandler
+    public void onMetalDetectorLoot(MetalDetectorLootEvent event) {
+        Player player = event.getPlayer();
+
+        for (ItemStack item : event.getLoot()) {
+            DreamItem dreamItem = DreamItemRegistry.getByItemStack(item);
+            if (dreamItem == null) continue;
+
+            if (dreamItem.getName().equals("omc_dream:mud_orb")) {
+                setProgressionOrb(player, MUD_BEACH_ORB, DreamBiome.GLACITE_GROTTO);
+                break;
             }
-        } else {
+        }
+    }
+
+    public static void setProgressionOrb(Player player, int progressionOrb, DreamBiome unlocked) {
+        DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
+
+        if (cache == null) {
             DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
             if (dreamPlayer == null) return;
+
             DreamManager.saveDreamPlayerData(dreamPlayer);
-            setProgressionOrb(player, progressionOrb);
+            cache = DreamManager.getCacheDreamPlayer(player);
+            if (cache == null) return;
         }
+
+        int current = cache.getProgressionOrb();
+
+        if (current >= progressionOrb) return;
+
+        cache.setProgressionOrb(progressionOrb);
+        DreamManager.saveDreamPlayerData(cache);
+        sendMessageProgression(player, unlocked);
+    }
+
+    private static void sendMessageProgression(Player player, DreamBiome biome) {
+        String strBiome;
+        switch (biome) {
+            case SOUL_FOREST -> strBiome = "la Forêt des Âmes";
+            case CLOUD_LAND -> strBiome = "le Château dans les Nuages";
+            case MUD_BEACH -> strBiome = "la Plage de Boue";
+            case GLACITE_GROTTO -> strBiome = "la Grotte de Glacite";
+            default -> strBiome = "Inconnu";
+        }
+
+        MessagesManager.sendMessage(player, Component.text("Vous avez débloqué " + strBiome + " !"), Prefix.DREAM, MessageType.SUCCESS, false);
     }
 }

@@ -7,6 +7,8 @@ import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,10 +39,15 @@ public class PlayerChangeWorldListener implements Listener {
         }
 
         DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
-
         if (dreamPlayer == null) return;
 
         DreamBossBar.addDreamBossBarForPlayer(player, (float) dreamPlayer.getDreamTime() / dreamPlayer.getMaxDreamTime());
+
+        player.setFoodLevel(20);
+        player.setSaturation(10.0f);
+        AttributeInstance inst = player.getAttribute(Attribute.MAX_HEALTH);
+        if (inst == null) return;
+        player.setHealth(inst.getBaseValue());
     }
 
     @EventHandler
@@ -62,5 +69,7 @@ public class PlayerChangeWorldListener implements Listener {
         BossbarManager.removeBossBar(BossbarsType.DREAM, player);
 
         DreamManager.removeDreamPlayer(player, event.getFrom());
+
+        System.out.println("end leave");
     }
 }

@@ -60,6 +60,7 @@ public class DreamManager {
                 new PlayerSleepListener(),
                 new PlayerEnteredBiome(),
                 new PlayerObtainOrb(),
+                new PlayerDamageListener(),
                 new ReplaceBlockListener(),
                 new PlayerEatSomnifere(),
                 new CloudStructureDispenserListener(),
@@ -133,6 +134,7 @@ public class DreamManager {
     public static void saveDreamPlayerData(DBDreamPlayer dbDreamPlayer) {
         try {
             dreamPlayerDao.createOrUpdate(dbDreamPlayer);
+            cacheDreamPlayer.replace(dbDreamPlayer.getPlayerUUID(), dbDreamPlayer);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -211,6 +213,7 @@ public class DreamManager {
         }
 
         oldInventory.restoreOldInventory(player);
+        saveDreamPlayerData(cacheDreamPlayer);
     }
 
     public static double calculateDreamProbability(Player player) {

@@ -3,16 +3,11 @@ package fr.openmc.core.features.dream.registries.mobs;
 import fr.openmc.core.features.dream.models.registry.DreamMob;
 import fr.openmc.core.features.dream.models.registry.loottable.DreamLoot;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
-import fr.openmc.core.features.dream.registries.DreamMobsRegistry;
 import fr.openmc.core.utils.RandomUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Frog;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
@@ -37,26 +32,10 @@ public class CrazyFrog extends DreamMob {
 
     @Override
     public LivingEntity spawn(Location location) {
-        Frog frog = (Frog) location.getWorld().spawnEntity(location.add(0, 1, 0), this.getType(), CreatureSpawnEvent.SpawnReason.CUSTOM);
+        Frog frog = (Frog) this.getPreBuildMob(location);
 
         frog.setVariant(Frog.Variant.WARM);
         frog.setVelocity(location.getDirection().multiply(1.3));
-        frog.customName(Component.text(this.getName()));
-        frog.setCustomNameVisible(true);
-
-        this.setAttributeIfPresent(frog, Attribute.MAX_HEALTH, this.getHealth());
-        frog.setHealth(this.getHealth());
-        this.setAttributeIfPresent(frog, Attribute.ATTACK_DAMAGE, this.getDamage());
-        this.setAttributeIfPresent(frog, Attribute.MOVEMENT_SPEED, this.getSpeed());
-        this.setAttributeIfPresent(frog, Attribute.SCALE, this.getScale());
-
-        frog.setPersistent(true);
-
-        frog.getPersistentDataContainer().set(
-                DreamMobsRegistry.mobKey,
-                PersistentDataType.STRING,
-                this.getId()
-        );
 
         return frog;
     }
