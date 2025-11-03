@@ -36,6 +36,20 @@ public class BukkitSerializer {
         }
     }
 
+    public static String playerInventoryToBase64(ItemStack[] contents, ItemStack[] armorContents, ItemStack[] extraContents) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+
+            dataOutput.writeObject(contents);
+            dataOutput.writeObject(armorContents);
+            dataOutput.writeObject(extraContents);
+
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to save player inventory.", e);
+        }
+    }
+
     public static void playerInventoryFromBase64(PlayerInventory inv, String data) throws IOException {
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
              BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {

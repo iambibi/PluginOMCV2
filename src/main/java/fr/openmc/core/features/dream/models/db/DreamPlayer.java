@@ -105,6 +105,10 @@ public class DreamPlayer {
         return new DBDreamPlayer(this.player.getUniqueId(), this.maxDreamTime, BukkitSerializer.playerInventoryToBase64(this.dreamInventory));
     }
 
+    public DBPlayerSave serializeSave() {
+        return new DBPlayerSave(this.player.getUniqueId(), this.oldInventory.getSerialized(), oldLocation);
+    }
+
     public void teleportToOldLocation() {
         if (oldLocation != null) {
             player.teleportAsync(oldLocation);

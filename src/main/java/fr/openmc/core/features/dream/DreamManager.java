@@ -20,6 +20,7 @@ import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
 import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
 import fr.openmc.core.features.dream.mecanism.metaldetector.MetalDetectorManager;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
+import fr.openmc.core.features.dream.models.db.DBPlayerSave;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import fr.openmc.core.features.dream.models.db.OldInventory;
 import fr.openmc.core.features.dream.registries.*;
@@ -42,10 +43,13 @@ public class DreamManager {
     // ** CONSTANTS **
     public static final Long BASE_DREAM_TIME = 300L;
 
+    private static final HashMap<UUID, DBPlayerSave> playerSaveData = new HashMap<>();
+
     private static final HashMap<UUID, DreamPlayer> dreamPlayerData = new HashMap<>();
     public static final HashMap<UUID, DBDreamPlayer> cacheDreamPlayer = new HashMap<>();
 
     private static Dao<DBDreamPlayer, String> dreamPlayerDao;
+    private static Dao<DBPlayerSave, String> savePlayerDao;
 
     public static void init() {
         // ** LISTENERS **
@@ -85,24 +89,59 @@ public class DreamManager {
 
         // ** LOAD DATAS **
         loadAllDreamPlayerData();
+        loadAllPlayerSaveData();
     }
 
     public static void initDB(ConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, DBDreamPlayer.class);
         dreamPlayerDao = DaoManager.createDao(connectionSource, DBDreamPlayer.class);
+
+        TableUtils.createTableIfNotExists(connectionSource, DBPlayerSave.class);
+        savePlayerDao = DaoManager.createDao(connectionSource, DBPlayerSave.class);
     }
 
     public static void disable() {
-        DreamManager.saveAllDreamPlayerData();
-
         World dreamWorld = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
 
         if (dreamWorld == null) return;
 
         for (Player player : dreamWorld.getPlayers()) {
-            removeDreamPlayer(player, player.getLocation());
+            DreamPlayer dreamPlayer = getDreamPlayer(player);
+            if (dreamPlayer == null) continue;
+
+            playerSaveData.put(player.getUniqueId(), dreamPlayer.serializeSave());
+        }
+
+        DreamManager.saveAllPlayerSaveData();
+        DreamManager.saveAllDreamPlayerData();
+    }
+
+    private static void loadAllPlayerSaveData() {
+        try {
+            playerSaveData.clear();
+            savePlayerDao.queryForAll().forEach(playerData -> {
+                playerSaveData.put(playerData.getPlayerUUID(), playerData);
+                try {
+                    savePlayerDao.delete(playerData);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
+    public static void saveAllPlayerSaveData() {
+        playerSaveData.forEach((uuid, playerSave) -> {
+            try {
+                savePlayerDao.createOrUpdate(playerSave);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
 
     private static void loadAllDreamPlayerData() {
         try {
@@ -208,6 +247,53 @@ public class DreamManager {
 
         oldInventory.restoreOldInventory(player);
         saveDreamPlayerData(cacheDreamPlayer);
+    }
+
+    public static void preloadSavePlayer(Player player, Location dreamLocation) throws IOException {
+        DBPlayerSave playerSave = playerSaveData.remove(player.getUniqueId());
+
+        if (playerSave == null) {
+            OMCPlugin.getInstance().getSLF4JLogger().warn("Nothing to load from {}({})", player.getName(), player.getUniqueId());
+            return;
+        }
+        PlayerInventory dreamInventory = player.getInventory();
+        String serializedDreamInventory = BukkitSerializer.playerInventoryToBase64(dreamInventory);
+
+        BukkitSerializer.playerInventoryFromBase64(dreamInventory, playerSave.getInventory());
+        player.updateInventory();
+
+        DBDreamPlayer cacheDreamPlayer = getCacheDreamPlayer(player);
+        if (cacheDreamPlayer != null) {
+            cacheDreamPlayer.setDreamInventory(serializedDreamInventory);
+            cacheDreamPlayer.setDreamX(dreamLocation.getX());
+            cacheDreamPlayer.setDreamY(dreamLocation.getY());
+            cacheDreamPlayer.setDreamZ(dreamLocation.getZ());
+        } else {
+            addCacheDreamPlayer(player, new DBDreamPlayer(
+                    player.getUniqueId(),
+                    DreamManager.BASE_DREAM_TIME,
+                    serializedDreamInventory,
+                    dreamLocation.getX(),
+                    dreamLocation.getY(),
+                    dreamLocation.getZ(),
+                    0
+            ));
+        }
+
+        saveDreamPlayerData(cacheDreamPlayer);
+
+        World oldWorld = Bukkit.getWorld(playerSave.getWorld());
+
+        if (oldWorld == null) return;
+
+        player.teleportAsync(
+                new Location(
+                        oldWorld,
+                        playerSave.getX(),
+                        playerSave.getY(),
+                        playerSave.getZ()
+                )
+        );
     }
 
     public static double calculateDreamProbability(Player player) {
