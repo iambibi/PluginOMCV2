@@ -50,7 +50,6 @@ public class Soul extends DreamMob {
         Vex vex = (Vex) world.spawnEntity(location, EntityType.VEX, CreatureSpawnEvent.SpawnReason.CUSTOM);
         vex.setSilent(true);
         vex.setInvisible(true);
-        vex.setPersistent(true);
 
         vex.getEquipment().clear();
 

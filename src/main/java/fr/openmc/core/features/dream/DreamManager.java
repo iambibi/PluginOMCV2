@@ -29,7 +29,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -102,11 +101,6 @@ public class DreamManager {
 
         for (Player player : dreamWorld.getPlayers()) {
             removeDreamPlayer(player, player.getLocation());
-        }
-        for (Entity entity : dreamWorld.getEntities()) {
-            if (!(entity instanceof Player)) {
-                entity.remove();
-            }
         }
     }
 
