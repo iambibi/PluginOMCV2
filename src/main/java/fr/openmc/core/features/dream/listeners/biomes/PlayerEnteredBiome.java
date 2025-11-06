@@ -5,6 +5,7 @@ import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
+import fr.openmc.core.utils.ParticleUtils;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -99,10 +100,11 @@ public class PlayerEnteredBiome implements Listener {
     }
 
     private void spawnParticles(Player player) {
-        player.getWorld().spawnParticle(
-                Particle.CLOUD,
+        ParticleUtils.sendParticlePacket(
+                player,
                 player.getLocation(),
-                100, 1, 1, 1, 0.1
+                Particle.CLOUD,
+                100, 1.0, 1.0, 1.0, 0.1, null
         );
     }
 }

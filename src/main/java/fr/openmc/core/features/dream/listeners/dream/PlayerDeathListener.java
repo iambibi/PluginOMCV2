@@ -5,12 +5,13 @@ import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class PlayerDeathListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerDead(PlayerDeathEvent event) {
         Player player = event.getPlayer();
 

@@ -1,6 +1,9 @@
 package fr.openmc.core.features.dream.listeners.registry;
 
+import fr.openmc.core.features.dream.DreamUtils;
+import fr.openmc.core.features.dream.models.registry.DreamMob;
 import fr.openmc.core.features.dream.registries.DreamMobsRegistry;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -23,6 +26,23 @@ public class DreamMobDamageListener implements Listener {
         }
 
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+        Entity damaged = event.getEntity();
+        Entity damager = event.getDamager();
+
+        if (!(damaged instanceof Player p)) return;
+        if (!(damager instanceof LivingEntity livingEntity)) return;
+        if (!DreamMobsRegistry.isDreamMob(livingEntity)) return;
+
+        DreamMob dreamMob = DreamMobsRegistry.getFromEntity(livingEntity);
+        if (dreamMob == null) return;
+
+        event.setCancelled(true);
+        p.playSound(p.getEyeLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 1f);
+        DreamUtils.removeDreamTime(p, dreamMob.getDamageTime(), true);
     }
 
 }

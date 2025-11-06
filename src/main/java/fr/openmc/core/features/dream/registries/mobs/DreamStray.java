@@ -22,7 +22,7 @@ public class DreamStray extends DreamMob {
                 "Stray Endormi",
                 EntityType.STRAY,
                 9.0,
-                3.0,
+                3L,
                 0.2,
                 1.2,
                 List.of()

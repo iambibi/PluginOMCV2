@@ -20,7 +20,7 @@ public class DreamPhantom extends DreamMob {
                 "Phantom Réveillé",
                 EntityType.PHANTOM,
                 10.0,
-                3.0,
+                3L,
                 0.4,
                 RandomUtils.randomBetween(0.4, 0.8),
                 List.of()

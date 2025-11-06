@@ -106,7 +106,8 @@ public class PlayerObtainOrb implements Listener {
 
         cache.setProgressionOrb(progressionOrb);
         DreamManager.saveDreamPlayerData(cache);
-        sendMessageProgression(player, unlocked);
+        if (unlocked != null)
+            sendMessageProgression(player, unlocked);
     }
 
     private static void sendMessageProgression(Player player, DreamBiome biome) {

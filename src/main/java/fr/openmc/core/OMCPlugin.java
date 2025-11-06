@@ -169,15 +169,11 @@ public class OMCPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         // SAUVEGARDE
-        if (!OMCPlugin.isUnitTestVersion()) {
-            HologramLoader.unloadAll();
-        }
+        // - Dimension des Reves
+        DreamManager.disable();
 
         // - Mailboxes
         MailboxManager.saveLetters();
-
-        // - Dimension des Reves
-        DreamManager.disable();
 
         // - MultiBlocks
         MultiBlockManager.save();
@@ -217,6 +213,11 @@ public class OMCPlugin extends JavaPlugin {
 
         // - Cooldowns
         DynamicCooldownManager.saveCooldowns();
+
+
+        if (!OMCPlugin.isUnitTestVersion()) {
+            HologramLoader.unloadAll();
+        }
 
         // - Close all inventories
         for (Player player : Bukkit.getOnlinePlayers()) {

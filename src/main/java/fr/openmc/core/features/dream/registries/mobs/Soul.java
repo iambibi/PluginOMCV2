@@ -30,7 +30,7 @@ public class Soul extends DreamMob {
                 "Ame",
                 EntityType.ARMOR_STAND,
                 2,
-                3.0,
+                3L,
                 RandomUtils.randomBetween(0.4, 0.5),
                 RandomUtils.randomBetween(0.7, 0.9),
                 List.of(new DreamLoot(
@@ -50,12 +50,12 @@ public class Soul extends DreamMob {
         Vex vex = (Vex) world.spawnEntity(location, EntityType.VEX, CreatureSpawnEvent.SpawnReason.CUSTOM);
         vex.setSilent(true);
         vex.setInvisible(true);
+        vex.setPersistent(false);
 
         vex.getEquipment().clear();
 
         this.setAttributeIfPresent(vex, Attribute.MAX_HEALTH, this.getHealth());
         vex.setHealth(this.getHealth());
-        this.setAttributeIfPresent(vex, Attribute.ATTACK_DAMAGE, this.getDamage());
         this.setAttributeIfPresent(vex, Attribute.MOVEMENT_SPEED, this.getSpeed());
         this.setAttributeIfPresent(vex, Attribute.SCALE, this.getScale());
 
@@ -70,6 +70,7 @@ public class Soul extends DreamMob {
         stand.setCustomNameVisible(true);
         stand.setInvisible(true);
         stand.setSmall(true);
+        stand.setPersistent(false);
         stand.setGravity(false);
         stand.setMarker(false);
 

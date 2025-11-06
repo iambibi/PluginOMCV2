@@ -39,16 +39,11 @@ public class DBDreamPlayer {
         // Default constructor for ORMLite
     }
 
-    /*
-     * Constructeur qui initialise pour une premiere fois DBDreamPlayer
-     */
     public DBDreamPlayer(UUID playerUUID, Long maxDreamTime, String serializedDreamInv) {
         this.playerUUID = playerUUID;
         this.maxDreamTime = maxDreamTime;
 
         this.dreamInventory = serializedDreamInv;
-
-        this.progressionOrb = 0;
     }
 
     public DBDreamPlayer(UUID playerUUID, Long maxDreamTime, String serializedDreamInv, double dreamX, double dreamY, double dreamZ, int progressionOrb) {

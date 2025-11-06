@@ -20,17 +20,17 @@ public abstract class DreamMob {
     private final String name;
     private final EntityType type;
     private final double health;
-    private final double damage;
+    private final Long damageTime;
     private final double speed;
     private final double scale;
     private final List<DreamLoot> dreamLoots;
 
-    public DreamMob(String id, String name, EntityType type, double health, double damage, double speed, double scale, List<DreamLoot> loots) {
+    public DreamMob(String id, String name, EntityType type, double health, Long damageTime, double speed, double scale, List<DreamLoot> loots) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.health = health;
-        this.damage = damage;
+        this.damageTime = damageTime;
         this.speed = speed;
         this.scale = scale;
         this.dreamLoots = loots;
@@ -63,7 +63,6 @@ public abstract class DreamMob {
 
         this.setAttributeIfPresent(livingEntity, Attribute.MAX_HEALTH, this.getHealth());
         livingEntity.setHealth(this.getHealth());
-        this.setAttributeIfPresent(livingEntity, Attribute.ATTACK_DAMAGE, this.getDamage());
         this.setAttributeIfPresent(livingEntity, Attribute.MOVEMENT_SPEED, this.getSpeed());
         this.setAttributeIfPresent(livingEntity, Attribute.SCALE, this.getScale());
 

@@ -17,7 +17,7 @@ public class DreamSpider extends DreamMob {
                 "Arraignée Infestée",
                 EntityType.SPIDER,
                 8.0,
-                2.0,
+                1L,
                 RandomUtils.randomBetween(0.2, 0.3),
                 RandomUtils.randomBetween(1.5, 2.0),
                 List.of(new DreamLoot(

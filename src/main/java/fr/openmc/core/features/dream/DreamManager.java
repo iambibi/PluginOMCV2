@@ -6,6 +6,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.commands.utils.SpawnManager;
 import fr.openmc.core.features.dream.commands.AdminDreamCommands;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
@@ -101,17 +102,6 @@ public class DreamManager {
     }
 
     public static void disable() {
-        World dreamWorld = Bukkit.getWorld(DreamDimensionManager.DIMENSION_NAME);
-
-        if (dreamWorld == null) return;
-
-        for (Player player : dreamWorld.getPlayers()) {
-            DreamPlayer dreamPlayer = getDreamPlayer(player);
-            if (dreamPlayer == null) continue;
-
-            playerSaveData.put(player.getUniqueId(), dreamPlayer.serializeSave());
-        }
-
         DreamManager.saveAllPlayerSaveData();
         DreamManager.saveAllDreamPlayerData();
     }
@@ -155,9 +145,13 @@ public class DreamManager {
     }
 
     public static void saveAllDreamPlayerData() {
-        dreamPlayerData.forEach((uuid, dreamPlayer) ->
-                saveDreamPlayerData(dreamPlayer)
-        );
+        cacheDreamPlayer.forEach((uuid, dbDreamPlayer) -> {
+            try {
+                dreamPlayerDao.createOrUpdate(dbDreamPlayer);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public static void saveDreamPlayerData(DreamPlayer dreamPlayer) {
@@ -209,12 +203,14 @@ public class DreamManager {
         }
 
         PlayerInventory dreamPlayerInv = player.getInventory();
-
-        dreamPlayerData.put(player.getUniqueId(), new DreamPlayer(player, oldInv, oldLocation, dreamPlayerInv));
+        DreamPlayer newDreamPlayer = new DreamPlayer(player, oldInv, oldLocation, dreamPlayerInv);
+        dreamPlayerData.put(player.getUniqueId(), newDreamPlayer);
+        playerSaveData.put(player.getUniqueId(), newDreamPlayer.serializeSave());
     }
 
     public static void removeDreamPlayer(Player player, Location dreamLocation) {
         DreamPlayer dreamPlayer = dreamPlayerData.remove(player.getUniqueId());
+        playerSaveData.remove(player.getUniqueId());
 
         if (dreamPlayer == null) {
             OMCPlugin.getInstance().getSLF4JLogger().warn("Cannot remove player {}({}) from Dream", player.getName(), player.getUniqueId());
@@ -253,6 +249,7 @@ public class DreamManager {
         DBPlayerSave playerSave = playerSaveData.remove(player.getUniqueId());
 
         if (playerSave == null) {
+            player.teleportAsync(SpawnManager.getSpawnLocation());
             OMCPlugin.getInstance().getSLF4JLogger().warn("Nothing to load from {}({})", player.getName(), player.getUniqueId());
             return;
         }

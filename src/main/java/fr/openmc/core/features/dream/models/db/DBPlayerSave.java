@@ -20,7 +20,7 @@ public class DBPlayerSave {
     private String inventory;
 
     @Setter
-    @DatabaseField(columnName = "x")
+    @DatabaseField(columnName = "world")
     private String world;
 
     @Setter
@@ -44,6 +44,12 @@ public class DBPlayerSave {
      */
     public DBPlayerSave(UUID playerUUID, String serializedInv, Location overworldLocation) {
         this.playerUUID = playerUUID;
+        this.inventory = serializedInv;
+
+        this.world = overworldLocation.getWorld().getName();
+        this.x = overworldLocation.getX();
+        this.y = overworldLocation.getY();
+        this.z = overworldLocation.getZ();
 
     }
 

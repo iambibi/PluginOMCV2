@@ -18,7 +18,7 @@ public class CrazyFrog extends DreamMob {
                 "Grenouille Folle",
                 EntityType.FROG,
                 18.0,
-                0.0,
+                0L,
                 RandomUtils.randomBetween(0.2, 0.4),
                 RandomUtils.randomBetween(3, 2.3),
                 List.of(new DreamLoot(
