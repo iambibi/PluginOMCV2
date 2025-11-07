@@ -25,12 +25,18 @@ public class MetalDetectorLootTable extends DreamLootTable {
                 ),
                 new DreamLoot(
                         DreamItemRegistry.getByName("omc_dream:mud_orb"),
-                        0.2,
+                        0.1,
                         1,
                         1
                 ),
                 new DreamLoot(
                         DreamEnchantementRegistry.getDreamEnchantment(Key.key("dream:experientastic")).getEnchantedBookItem(1),
+                        0.1,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:crystalized_pickaxe"),
                         0.1,
                         1,
                         1

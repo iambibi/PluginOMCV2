@@ -26,10 +26,7 @@ import fr.openmc.core.features.dream.registries.items.loots.CorruptedString;
 import fr.openmc.core.features.dream.registries.items.loots.CreakingHeart;
 import fr.openmc.core.features.dream.registries.items.loots.Soul;
 import fr.openmc.core.features.dream.registries.items.orb.*;
-import fr.openmc.core.features.dream.registries.items.tools.MetalDetector;
-import fr.openmc.core.features.dream.registries.items.tools.MeteoWand;
-import fr.openmc.core.features.dream.registries.items.tools.OldCreakingAxe;
-import fr.openmc.core.features.dream.registries.items.tools.SoulAxe;
+import fr.openmc.core.features.dream.registries.items.tools.*;
 import fr.openmc.core.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 
@@ -86,6 +83,7 @@ public class DreamItemRegistry {
         registerDreamItem(new CloudBoots("omc_dream:cloud_boots"));
 
         // # TOOLS
+        registerDreamItem(new CrystalizedPickaxe("omc_dream:crystalized_pickaxe"));
         registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:cloud_fishing_rod"));
