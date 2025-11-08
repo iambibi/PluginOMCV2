@@ -10,10 +10,18 @@ import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudBoots;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudChestplate;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudHelmet;
 import fr.openmc.core.features.dream.registries.items.armors.cloud.CloudLeggings;
+import fr.openmc.core.features.dream.registries.items.armors.cold.ColdBoots;
+import fr.openmc.core.features.dream.registries.items.armors.cold.ColdChestplate;
+import fr.openmc.core.features.dream.registries.items.armors.cold.ColdHelmet;
+import fr.openmc.core.features.dream.registries.items.armors.cold.ColdLeggings;
 import fr.openmc.core.features.dream.registries.items.armors.creaking.OldCreakingBoots;
 import fr.openmc.core.features.dream.registries.items.armors.creaking.OldCreakingChestplate;
 import fr.openmc.core.features.dream.registries.items.armors.creaking.OldCreakingHelmet;
 import fr.openmc.core.features.dream.registries.items.armors.creaking.OldCreakingLeggings;
+import fr.openmc.core.features.dream.registries.items.armors.dream.DreamBoots;
+import fr.openmc.core.features.dream.registries.items.armors.dream.DreamChestplate;
+import fr.openmc.core.features.dream.registries.items.armors.dream.DreamHelmet;
+import fr.openmc.core.features.dream.registries.items.armors.dream.DreamLeggings;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulBoots;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulChestplate;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulHelmet;
@@ -81,6 +89,16 @@ public class DreamItemRegistry {
         registerDreamItem(new CloudChestplate("omc_dream:cloud_chestplate"));
         registerDreamItem(new CloudLeggings("omc_dream:cloud_leggings"));
         registerDreamItem(new CloudBoots("omc_dream:cloud_boots"));
+
+        registerDreamItem(new ColdHelmet("omc_dream:cold_helmet"));
+        registerDreamItem(new ColdChestplate("omc_dream:cold_chestplate"));
+        registerDreamItem(new ColdLeggings("omc_dream:cold_leggings"));
+        registerDreamItem(new ColdBoots("omc_dream:cold_boots"));
+
+        registerDreamItem(new DreamHelmet("omc_dream:dream_helmet"));
+        registerDreamItem(new DreamChestplate("omc_dream:dream_chestplate"));
+        registerDreamItem(new DreamLeggings("omc_dream:dream_leggings"));
+        registerDreamItem(new DreamBoots("omc_dream:dream_boots"));
 
         // # TOOLS
         registerDreamItem(new CrystalizedPickaxe("omc_dream:crystalized_pickaxe"));
