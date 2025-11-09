@@ -14,8 +14,8 @@ import fr.openmc.core.features.city.sub.notation.listeners.PlayerJoinListener;
 import fr.openmc.core.features.city.sub.notation.models.ActivityTimePlayed;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
 import fr.openmc.core.features.economy.EconomyManager;
-import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.DateUtils;
+import fr.openmc.core.utils.cache.CacheOfflinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
@@ -41,7 +41,7 @@ public class NotationManager {
     /**
      * Jour d'application de la notation.
      */
-    private static final DayOfWeek APPLY_NOTATION_DAY = DayOfWeek.MONDAY;
+    private static final DayOfWeek APPLY_NOTATION_DAY = DayOfWeek.SUNDAY;
 
     /**
      * Map des notations par semaine (clé : chaine de la semaine, valeur : liste de CityNotation).

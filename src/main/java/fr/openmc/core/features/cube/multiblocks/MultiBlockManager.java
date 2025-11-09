@@ -33,7 +33,8 @@ public class MultiBlockManager {
         }
         config = YamlConfiguration.loadConfiguration(file);
 
-        load();
+        if (!OMCPlugin.isUnitTestVersion())
+            load();
     }
 
     public static void load() {

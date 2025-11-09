@@ -18,15 +18,13 @@ import fr.openmc.core.features.contest.menu.VoteMenu;
 import fr.openmc.core.features.contest.models.Contest;
 import fr.openmc.core.features.contest.models.ContestPlayer;
 import fr.openmc.core.features.economy.EconomyManager;
-import fr.openmc.core.features.economy.Transaction;
-import fr.openmc.core.features.economy.TransactionsManager;
 import fr.openmc.core.features.leaderboards.LeaderboardManager;
 import fr.openmc.core.features.mailboxes.MailboxManager;
 import fr.openmc.core.items.CustomItemRegistry;
-import fr.openmc.core.utils.CacheOfflinePlayer;
 import fr.openmc.core.utils.ColorUtils;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.ParticleUtils;
+import fr.openmc.core.utils.cache.CacheOfflinePlayer;
 import fr.openmc.core.utils.database.DatabaseManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -473,15 +471,8 @@ public class ContestManager {
 
                 Random randomMoney = new Random();
                 money = randomMoney.nextInt(moneyMin, moneyMax);
-                EconomyManager.addBalance(player.getUniqueId(), money);
-                TransactionsManager.registerTransaction(
-                        new Transaction(
-                                "CONSOLE",
-                                player.getUniqueId().toString(),
-                                money,
-                                "Récompense contest - Gagnant"
-                        )
-                );
+                EconomyManager.addBalance(player.getUniqueId(), money, "Récompense contest - Gagnant");
+ 
                 // Gagnant - Aywenite
                 int ayweniteMin = 40;
                 int ayweniteMax = 60;
@@ -501,15 +492,7 @@ public class ContestManager {
 
                 Random randomMoney = new Random();
                 money = randomMoney.nextInt(moneyMin, moneyMax);
-                EconomyManager.addBalance(player.getUniqueId(), money);
-                TransactionsManager.registerTransaction(
-                        new Transaction(
-                                "CONSOLE",
-                                player.getUniqueId().toString(),
-                                money,
-                                "Récompense contest - Perdant"
-                        )
-                );
+                EconomyManager.addBalance(player.getUniqueId(), money, "Récompense contest - Perdant");
 
                 // Perdant - Aywenite
                 int ayweniteMin = 20;
