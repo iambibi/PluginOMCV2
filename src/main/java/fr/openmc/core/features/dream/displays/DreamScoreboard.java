@@ -1,52 +1,105 @@
 package fr.openmc.core.features.dream.displays;
 
+import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
+import fr.openmc.api.hooks.LuckPermsHook;
+import fr.openmc.api.scoreboard.SternalBoard;
+import fr.openmc.core.features.displays.scoreboards.BaseScoreboard;
+import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
+import fr.openmc.core.features.dream.models.db.DreamPlayer;
+import fr.openmc.core.utils.DateUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static fr.openmc.core.utils.messages.MessagesManager.textToSmall;
+import static net.kyori.adventure.text.Component.empty;
+import static net.kyori.adventure.text.Component.text;
 
 /**
  * Classe utilitaire pour la mise à jour du Scoreboard dans la Dimension des Rêves.
  *
  * <p>Cette classe met à jour le Scoreboard d'un joueur en fonction du biome associé à la Dimension des Rêves.</p>
  */
-public class DreamScoreboard {
+public class DreamScoreboard extends BaseScoreboard {
 
-    /**
-     * Met à jour le Scoreboard du joueur dans la Dimension des Rêves.
-     *
-     * <p>
-     * Si le biome de rêve n'est pas défini pour le joueur, aucune mise à jour n'est effectuée.
-     * Les scores sont définis pour afficher le nom du joueur et le biome courant.
-     * </p>
-     *
-     * @param player     le joueur dont le Scoreboard est mis à jour
-     * @param scoreboard le Scoreboard du joueur
-     * @param objective  l'Objective à mettre à jour
-     */
-    public static void updateDreamScoreboard(Player player, Scoreboard scoreboard, Objective objective) {
+    @Override
+    public void update(Player player, SternalBoard board) {
+        board.updateTitle(canShowLogo
+                ? Component.text(FontImageWrapper.replaceFontImages(":dream_openmc:"))
+                : Component.text("OPENMC", NamedTextColor.DARK_BLUE));
+
+        Component rank = LuckPermsHook.isHasLuckPerms()
+                ? Component.text(LuckPermsHook.getFormattedPAPIPrefix(player))
+                : Component.text(textToSmall("aucun")).color(TextColor.color(0xFF1FCC));
         DreamBiome dreamBiome = DreamDimensionManager.getDreamBiome(player);
+        DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
 
-        if (dreamBiome == null) return;
+        List<Component> lines = new ArrayList<>();
 
-        objective.getScore("§7").setScore(19);
-        objective.getScore("§8• §fNom: §7" + player.getName()).setScore(18);
-        objective.getScore("   ").setScore(17);
-        objective.getScore("§8• §fBiome: §7" + dreamBiome.getName()).setScore(16);
+        lines.add(empty());
+        lines.add(MiniMessage.miniMessage().deserialize("<gradient:#0011ff:#2556b6>%s</gradient>"
+                .formatted(textToSmall(player.getName()))).decoration(TextDecoration.BOLD, true));
+
+        lines.add(text("  • ", NamedTextColor.DARK_GRAY)
+                .append(text(textToSmall("rang:"), NamedTextColor.GRAY))
+                .appendSpace()
+                .append(rank)
+        );
+
+        lines.add(empty());
+
+        if (dreamPlayer != null) {
+            lines.add(text("  • ", NamedTextColor.DARK_GRAY)
+                    .append(text(textToSmall("temps:"), NamedTextColor.GRAY))
+                    .appendSpace()
+                    .append(text(textToSmall(DateUtils.convertSecondToTime(dreamPlayer.getDreamTime()))).color(TextColor.color(0x00CC34)))
+            );
+
+            // ajout le froid
+
+            lines.add(empty());
+        }
+
+        if (dreamBiome != null) {
+            lines.add(text("  • ", NamedTextColor.DARK_GRAY)
+                    .append(text(textToSmall("biome:"), NamedTextColor.GRAY))
+                    .appendSpace()
+                    .append(Component.text(textToSmall(dreamBiome.getName())))
+            );
+        }
 
         DreamStructure dreamStructure = DreamStructuresManager.getStructureAt(player.getLocation());
         if (dreamStructure != null) {
             String nameLocation = dreamStructure.type().getName();
-
-            objective.getScore("§8• §fLocation: §7" + nameLocation).setScore(15);
+            lines.add(text("  • ", NamedTextColor.DARK_GRAY)
+                    .append(text(textToSmall("location:"), NamedTextColor.GRAY))
+                    .appendSpace()
+                    .append(Component.text(textToSmall(nameLocation)))
+            );
         }
-        // temps
-        // nb orbe
 
-        objective.getScore("   ").setScore(1);
-        objective.getScore("§1      ᴘʟᴀʏ.ᴏᴘᴇɴᴍᴄ.ꜰʀ").setScore(0);
+
+        board.updateLines(lines);
+    }
+
+    @Override
+    public boolean shouldDisplay(Player player) {
+        return DreamUtils.isInDreamWorld(player);
+    }
+
+    @Override
+    public int priority() {
+        return 100;
     }
 }

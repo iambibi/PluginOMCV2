@@ -2,7 +2,6 @@ package fr.openmc.core.features.dream.listeners.dream;
 
 import fr.openmc.core.features.displays.bossbar.BossbarManager;
 import fr.openmc.core.features.displays.bossbar.BossbarsType;
-import fr.openmc.core.features.displays.scoreboards.ScoreboardManager;
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
@@ -24,9 +23,6 @@ public class PlayerChangeWorldListener implements Listener {
 
         if (!DreamUtils.isDreamWorld(event.getTo())) return;
         if (DreamUtils.isDreamWorld(event.getFrom())) return;
-
-        ScoreboardManager.removePlayerScoreboard(player);
-        ScoreboardManager.createNewScoreboard(player);
 
         for (BossbarsType type : BossbarsType.values()) {
             BossbarManager.removeBossBar(type, player);
@@ -56,9 +52,6 @@ public class PlayerChangeWorldListener implements Listener {
 
         if (!DreamUtils.isDreamWorld(event.getFrom())) return;
         if (DreamUtils.isDreamWorld(event.getTo())) return;
-
-        ScoreboardManager.removePlayerScoreboard(player);
-        ScoreboardManager.createNewScoreboard(player);
 
         for (BossbarsType type : BossbarsType.values()) {
             if (type.equals(BossbarsType.DREAM)) continue;
