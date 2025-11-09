@@ -8,26 +8,8 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.displays.scoreboards.sb.CityWarScoreboard;
 import fr.openmc.core.features.displays.scoreboards.sb.MainScoreboard;
 import fr.openmc.core.features.displays.scoreboards.sb.RestartScoreboard;
-import org.bukkit.Bukkit;
-import fr.openmc.core.commands.utils.Restart;
-import fr.openmc.core.features.city.City;
-import fr.openmc.core.features.city.CityManager;
-import fr.openmc.core.features.city.sub.war.War;
-import fr.openmc.core.features.city.sub.war.WarManager;
-import fr.openmc.core.features.contest.managers.ContestManager;
-import fr.openmc.core.features.contest.models.Contest;
-import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.displays.DreamScoreboard;
-import fr.openmc.core.features.economy.EconomyManager;
-import fr.openmc.core.features.events.halloween.managers.HalloweenManager;
-import fr.openmc.core.utils.DateUtils;
-import fr.openmc.core.utils.DirectionUtils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -46,7 +28,8 @@ public class ScoreboardManager implements Listener {
         registerScoreboard(
                 new MainScoreboard(),
                 new RestartScoreboard(),
-                new CityWarScoreboard()
+                new CityWarScoreboard(),
+                new DreamScoreboard()
         );
 
         Bukkit.getScheduler().runTaskTimer(
