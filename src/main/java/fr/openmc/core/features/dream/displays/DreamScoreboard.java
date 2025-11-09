@@ -1,7 +1,6 @@
 package fr.openmc.core.features.dream.displays;
 
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
-import fr.openmc.api.hooks.LuckPermsHook;
 import fr.openmc.api.scoreboard.SternalBoard;
 import fr.openmc.core.features.displays.scoreboards.BaseScoreboard;
 import fr.openmc.core.features.dream.DreamManager;
@@ -34,14 +33,14 @@ import static net.kyori.adventure.text.Component.text;
 public class DreamScoreboard extends BaseScoreboard {
 
     @Override
-    public void update(Player player, SternalBoard board) {
+    protected void updateTitle(Player player, SternalBoard board) {
         board.updateTitle(canShowLogo
                 ? Component.text(FontImageWrapper.replaceFontImages(":dream_openmc:"))
                 : Component.text("OPENMC", NamedTextColor.DARK_BLUE));
+    }
 
-        Component rank = LuckPermsHook.isHasLuckPerms()
-                ? Component.text(LuckPermsHook.getFormattedPAPIPrefix(player))
-                : Component.text(textToSmall("aucun")).color(TextColor.color(0xFF1FCC));
+    @Override
+    public void update(Player player, SternalBoard board) {
         DreamBiome dreamBiome = DreamDimensionManager.getDreamBiome(player);
         DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
 
@@ -51,16 +50,8 @@ public class DreamScoreboard extends BaseScoreboard {
         lines.add(MiniMessage.miniMessage().deserialize("<gradient:#0011ff:#2556b6>%s</gradient>"
                 .formatted(textToSmall(player.getName()))).decoration(TextDecoration.BOLD, true));
 
-        lines.add(text("  • ", NamedTextColor.DARK_GRAY)
-                .append(text(textToSmall("rang:"), NamedTextColor.GRAY))
-                .appendSpace()
-                .append(rank)
-        );
-
-        lines.add(empty());
-
         if (dreamPlayer != null) {
-            lines.add(text("  • ", NamedTextColor.DARK_GRAY)
+            lines.add(text(" • ", NamedTextColor.DARK_GRAY)
                     .append(text(textToSmall("temps:"), NamedTextColor.GRAY))
                     .appendSpace()
                     .append(text(textToSmall(DateUtils.convertSecondToTime(dreamPlayer.getDreamTime()))).color(TextColor.color(0x00CC34)))
@@ -72,7 +63,7 @@ public class DreamScoreboard extends BaseScoreboard {
         }
 
         if (dreamBiome != null) {
-            lines.add(text("  • ", NamedTextColor.DARK_GRAY)
+            lines.add(text(" • ", NamedTextColor.DARK_GRAY)
                     .append(text(textToSmall("biome:"), NamedTextColor.GRAY))
                     .appendSpace()
                     .append(Component.text(textToSmall(dreamBiome.getName())))
@@ -82,14 +73,15 @@ public class DreamScoreboard extends BaseScoreboard {
         DreamStructure dreamStructure = DreamStructuresManager.getStructureAt(player.getLocation());
         if (dreamStructure != null) {
             String nameLocation = dreamStructure.type().getName();
-            lines.add(text("  • ", NamedTextColor.DARK_GRAY)
+            lines.add(text(" • ", NamedTextColor.DARK_GRAY)
                     .append(text(textToSmall("location:"), NamedTextColor.GRAY))
                     .appendSpace()
                     .append(Component.text(textToSmall(nameLocation)))
             );
         }
 
-
+        lines.add(empty());
+        lines.add(MiniMessage.miniMessage().deserialize("    <gradient:#001a66:#1358c9>%s</gradient>".formatted(textToSmall("play.openmc.fr"))));
         board.updateLines(lines);
     }
 
@@ -100,6 +92,11 @@ public class DreamScoreboard extends BaseScoreboard {
 
     @Override
     public int priority() {
-        return 100;
+        return 1000;
+    }
+
+    @Override
+    public int updateInterval() {
+        return 1;
     }
 }

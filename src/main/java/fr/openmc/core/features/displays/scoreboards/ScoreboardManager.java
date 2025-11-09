@@ -68,6 +68,7 @@ public class ScoreboardManager implements Listener {
 
             SternalBoard board = boardCache.find(player.getUniqueId()) == null ? createNewBoard(player) : boardCache.find(player.getUniqueId());
 
+            active.updateTitle(player, board);
             active.update(player, board);
             playerUpdates.put(active, now);
 

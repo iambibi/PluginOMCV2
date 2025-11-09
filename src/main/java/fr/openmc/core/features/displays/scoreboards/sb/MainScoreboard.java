@@ -3,6 +3,7 @@ package fr.openmc.core.features.displays.scoreboards.sb;
 import de.oliver.fancynpcs.api.FancyNpcsPlugin;
 import de.oliver.fancynpcs.api.Npc;
 import de.oliver.fancynpcs.api.NpcManager;
+import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import fr.openmc.api.hooks.LuckPermsHook;
 import fr.openmc.api.hooks.WorldGuardHook;
 import fr.openmc.api.scoreboard.SternalBoard;
@@ -29,6 +30,13 @@ import static fr.openmc.core.utils.messages.MessagesManager.textToSmall;
 import static net.kyori.adventure.text.Component.*;
 
 public class MainScoreboard extends BaseScoreboard {
+    @Override
+    protected void updateTitle(Player player, SternalBoard board) {
+        board.updateTitle(canShowLogo
+                ? Component.text(FontImageWrapper.replaceFontImages(":openmc:"))
+                : Component.text("OPENMC", NamedTextColor.LIGHT_PURPLE));
+    }
+
     @Override
     public void update(Player player, SternalBoard board) {
         List<Component> lines = new ArrayList<>(getDefaultLines(player));
