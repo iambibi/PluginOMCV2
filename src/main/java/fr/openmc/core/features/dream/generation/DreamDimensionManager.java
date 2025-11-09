@@ -3,6 +3,7 @@ package fr.openmc.core.features.dream.generation;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.biomes.*;
+import fr.openmc.core.features.dream.generation.populators.VegetationPopulator;
 import fr.openmc.core.features.dream.generation.populators.glacite.GlaciteGeodePopulator;
 import fr.openmc.core.features.dream.generation.populators.glacite.GroundSpikePopulator;
 import fr.openmc.core.features.dream.generation.populators.glacite.VerticalSpikePopulator;
@@ -101,6 +102,9 @@ public class DreamDimensionManager {
         World dream = creator.createWorld();
 
         dream.getWorldBorder().setSize(25000);
+
+        // ** VEGETATION POPULATORS REGISTER **
+        dream.getPopulators().add(new VegetationPopulator());
 
         // ** STRUCTURES POPULATORS REGISTER **
         dream.getPopulators().add(new CloudCastleStructure());

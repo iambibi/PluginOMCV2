@@ -1,5 +1,6 @@
 package fr.openmc.core.features.dream.generation.listeners;
 
+import dev.lone.itemsadder.api.CustomBlock;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
@@ -28,14 +29,15 @@ public class ReplaceBlockListener implements Listener {
 
         if (!DreamUtils.isDreamWorld(event.getWorld())) return;
 
-        Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
             List<Block> toReplace = new ArrayList<>();
 
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT; y <= CloudChunkGenerator.MIN_HEIGHT_CLOUD; y++) {
                         Block block = chunk.getBlock(x, y, z);
-                        if (block.getType() == Material.GRAY_GLAZED_TERRACOTTA) {
+                        if (block.getType() == Material.GRAY_GLAZED_TERRACOTTA
+                                || block.getType() == Material.TRIPWIRE) {
                             toReplace.add(block);
                         }
                     }
@@ -53,6 +55,10 @@ public class ReplaceBlockListener implements Listener {
             Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
                 for (Block block : toReplace) {
                     switch (block.getType()) {
+                        case TRIPWIRE -> {
+                            System.out.println(block.getLocation());
+                            CustomBlock.place("omc_dream:vegetation_1", block.getLocation());
+                        }
                         case GRAY_GLAZED_TERRACOTTA -> {
                             block.setType(Material.ENCHANTING_TABLE);
                             DreamBlocksRegistry.addDreamBlock("altar", block.getLocation());
