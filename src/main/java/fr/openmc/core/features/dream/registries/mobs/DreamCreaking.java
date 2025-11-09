@@ -13,7 +13,7 @@ public class DreamCreaking extends DreamMob {
         super("dream_creaking",
                 "Creaking Insomiaque",
                 EntityType.CREAKING,
-                0,
+                1,
                 2L,
                 RandomUtils.randomBetween(0.4, 0.6),
                 RandomUtils.randomBetween(1.2, 1.7),
