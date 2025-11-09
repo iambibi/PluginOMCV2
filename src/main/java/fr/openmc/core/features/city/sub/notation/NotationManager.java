@@ -42,7 +42,7 @@ public class NotationManager {
      * Jour d'application de la notation.
      */
     private static final DayOfWeek APPLY_NOTATION_DAY = DayOfWeek.MONDAY;
-
+    private static boolean isApplied;
     /**
      * Map des notations par semaine (clé : chaine de la semaine, valeur : liste de CityNotation).
      */
@@ -362,13 +362,16 @@ public class NotationManager {
     private static void scheduleMidnightTask() {
         long delayInTicks = DateUtils.getSecondsUntilDayOfWeekMidnight(APPLY_NOTATION_DAY) * 20;
         Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
-            String weekStr = DateUtils.getWeekFormat();
-            try {
-                calculateAllCityScore(weekStr);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            if (!isApplied) {
+                String weekStr = DateUtils.getWeekFormat();
+                try {
+                    calculateAllCityScore(weekStr);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                giveReward(weekStr);
             }
-            giveReward(weekStr);
+            isApplied = true;
             scheduleMidnightTask();
         }, delayInTicks);
     }
