@@ -32,9 +32,7 @@ import static net.kyori.adventure.text.Component.text;
 public class CityWarScoreboard extends BaseScoreboard {
     @Override
     protected void updateTitle(Player player, SternalBoard board) {
-        board.updateTitle(canShowLogo
-                ? Component.text(FontImageWrapper.replaceFontImages(":openmc:"))
-                : Component.text("OPENMC", NamedTextColor.LIGHT_PURPLE));
+        board.updateTitle(getTitle());
     }
 
     @Override

@@ -1,6 +1,5 @@
 package fr.openmc.core.features.displays.scoreboards.sb;
 
-import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import fr.openmc.api.scoreboard.SternalBoard;
 import fr.openmc.core.commands.utils.Restart;
 import fr.openmc.core.features.displays.scoreboards.BaseScoreboard;
@@ -19,9 +18,7 @@ import static net.kyori.adventure.text.Component.text;
 public class RestartScoreboard extends BaseScoreboard {
     @Override
     protected void updateTitle(Player player, SternalBoard board) {
-        board.updateTitle(canShowLogo
-                ? Component.text(FontImageWrapper.replaceFontImages(":openmc:"))
-                : Component.text("OPENMC", NamedTextColor.LIGHT_PURPLE));
+        board.updateTitle(getTitle());
     }
 
     @Override
