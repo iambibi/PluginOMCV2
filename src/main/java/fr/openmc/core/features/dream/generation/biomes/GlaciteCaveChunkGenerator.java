@@ -17,9 +17,7 @@ import static fr.openmc.core.features.dream.generation.biomes.MudBeachChunkGener
 public class GlaciteCaveChunkGenerator {
 
     private static final List<Material> MINERALS = Arrays.asList(
-            Material.DEEPSLATE_COAL_ORE,
-            Material.DEEPSLATE_COPPER_ORE,
-            Material.CRYING_OBSIDIAN
+            Material.DEEPSLATE_COAL_ORE
     );
     public static final List<Material> CAVE_MATERIALS = Arrays.asList(
             Material.DEEPSLATE,
@@ -114,6 +112,9 @@ public class GlaciteCaveChunkGenerator {
             }
         } else {
             Material wallMat = CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size()));
+            if (random.nextInt(100) < 5) {
+                wallMat = MINERALS.get(random.nextInt(MINERALS.size()));
+            }
             chunkData.setBlock(x, y, z, wallMat);
         }
     }
