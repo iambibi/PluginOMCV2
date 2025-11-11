@@ -13,6 +13,7 @@ import fr.openmc.core.features.city.sub.notation.commands.NotationCommands;
 import fr.openmc.core.features.city.sub.notation.listeners.PlayerJoinListener;
 import fr.openmc.core.features.city.sub.notation.models.ActivityTimePlayed;
 import fr.openmc.core.features.city.sub.notation.models.CityNotation;
+import fr.openmc.core.features.economy.BankManager;
 import fr.openmc.core.features.economy.EconomyManager;
 import fr.openmc.core.utils.DateUtils;
 import fr.openmc.core.utils.cache.CacheOfflinePlayer;
@@ -266,6 +267,7 @@ public class NotationManager {
         totalMoney += city.getBalance();
 
         for (UUID playerUUID : city.getMembers()) {
+            totalMoney += BankManager.getBalance(playerUUID);
             totalMoney += EconomyManager.getBalance(playerUUID);
         }
 
