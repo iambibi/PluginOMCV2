@@ -1,14 +1,24 @@
 package fr.openmc.core.features.dream.registries.items.armors.cold;
 
-import fr.openmc.core.features.dream.models.registry.items.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamEquipableItem;
 import fr.openmc.core.features.dream.models.registry.items.DreamRarity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class ColdBoots extends DreamItem {
+public class ColdBoots extends DreamEquipableItem {
     public ColdBoots(String name) {
         super(name);
+    }
+
+    @Override
+    public int getAdditionalMaxTime() {
+        return 60;
+    }
+
+    @Override
+    public Integer getColdResistance() {
+        return 2;
     }
 
     @Override

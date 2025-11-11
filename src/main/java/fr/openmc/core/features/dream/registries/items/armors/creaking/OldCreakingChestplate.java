@@ -1,14 +1,24 @@
 package fr.openmc.core.features.dream.registries.items.armors.creaking;
 
-import fr.openmc.core.features.dream.models.registry.items.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamEquipableItem;
 import fr.openmc.core.features.dream.models.registry.items.DreamRarity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class OldCreakingChestplate extends DreamItem {
+public class OldCreakingChestplate extends DreamEquipableItem {
     public OldCreakingChestplate(String name) {
         super(name);
+    }
+
+    @Override
+    public int getAdditionalMaxTime() {
+        return 5;
+    }
+
+    @Override
+    public Integer getColdResistance() {
+        return null;
     }
 
     @Override

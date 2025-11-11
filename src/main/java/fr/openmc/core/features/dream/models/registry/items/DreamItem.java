@@ -69,6 +69,17 @@ public abstract class DreamItem {
         List<Component> lore = baseItem.lore();
         if (lore == null) lore = new ArrayList<>();
 
+        if (this instanceof DreamEquipableItem equipableItem) {
+            lore.add(Component.empty());
+
+            lore.add(Component.text("§7§oTemps maximum: §r§a+" + equipableItem.getAdditionalMaxTime() + "s"));
+
+            Integer coldResistance = equipableItem.getColdResistance();
+            if (coldResistance != null) {
+                lore.add(Component.text("§7§oResistance au froid: §r§b+" + coldResistance));
+            }
+        }
+
         lore.add(Component.empty());
 
         if (isTransferable()) {

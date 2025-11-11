@@ -1,14 +1,24 @@
 package fr.openmc.core.features.dream.registries.items.armors.cloud;
 
-import fr.openmc.core.features.dream.models.registry.items.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamEquipableItem;
 import fr.openmc.core.features.dream.models.registry.items.DreamRarity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class CloudHelmet extends DreamItem {
+public class CloudHelmet extends DreamEquipableItem {
     public CloudHelmet(String name) {
         super(name);
+    }
+
+    @Override
+    public int getAdditionalMaxTime() {
+        return 30;
+    }
+
+    @Override
+    public Integer getColdResistance() {
+        return null;
     }
 
     @Override

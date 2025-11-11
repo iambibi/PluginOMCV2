@@ -1,14 +1,24 @@
 package fr.openmc.core.features.dream.registries.items.armors.soul;
 
-import fr.openmc.core.features.dream.models.registry.items.DreamItem;
+import fr.openmc.core.features.dream.models.registry.items.DreamEquipableItem;
 import fr.openmc.core.features.dream.models.registry.items.DreamRarity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class SoulHelmet extends DreamItem {
+public class SoulHelmet extends DreamEquipableItem {
     public SoulHelmet(String name) {
         super(name);
+    }
+
+    @Override
+    public int getAdditionalMaxTime() {
+        return 15;
+    }
+
+    @Override
+    public Integer getColdResistance() {
+        return null;
     }
 
     @Override
