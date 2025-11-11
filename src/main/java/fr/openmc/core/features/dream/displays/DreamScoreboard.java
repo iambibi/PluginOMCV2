@@ -84,7 +84,7 @@ public class DreamScoreboard extends BaseScoreboard {
             lines.add(text(" • ", NamedTextColor.DARK_GRAY)
                     .append(text(textToSmall("location:"), NamedTextColor.GRAY))
                     .appendSpace()
-                    .append(Component.text(nameLocation))
+                    .append(Component.text(textToSmall(nameLocation)))
             );
         }
 
