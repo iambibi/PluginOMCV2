@@ -5,6 +5,8 @@ import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
 import fr.openmc.core.features.dream.events.DreamTimeEndEvent;
 import fr.openmc.core.features.dream.generation.DreamBiome;
+import fr.openmc.core.features.dream.generation.structures.DreamStructure;
+import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
 import fr.openmc.core.features.dream.mecanism.cold.ColdManager;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
 import lombok.Getter;
@@ -106,21 +108,22 @@ public class DreamPlayer {
     public void scheduleColdTask() {
         final int[] tickCounter = {0};
         this.coldTask = Bukkit.getScheduler().runTaskTimer(OMCPlugin.getInstance(), () -> {
-            System.out.println("tick");
-
             tickCounter[0] += 20;
             boolean nearHeat = ColdManager.isNearHeatSource(player);
+            boolean isInBaseCamp = DreamStructuresManager.isInsideStructure(player.getLocation(), DreamStructure.DreamType.BASE_CAMP);
             double resistance = ColdManager.calculateColdResistance(player);
 
-            if ((!nearHeat && tickCounter[0] % (60 + (int) (resistance * 20)) == 0)
+            if ((!nearHeat && !isInBaseCamp && tickCounter[0] % (60 + (int) (resistance * 20)) == 0)
                     && player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
-                System.out.println("add");
                 cold = Math.min(100, cold + 1);
+            }
+
+            if (isInBaseCamp) {
+                cold = Math.max(0, cold - 15);
             }
 
             if ((nearHeat && tickCounter[0] % 40 == 0)
                     || !player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
-                System.out.println("remove");
                 cold = Math.max(0, cold - 1);
             }
 
@@ -129,7 +132,6 @@ public class DreamPlayer {
                 return;
             }
 
-            System.out.println("cold " + cold);
             ColdManager.applyColdEffects(player, cold);
         }, 0L, 20L);
     }
