@@ -51,13 +51,21 @@ public class DreamScoreboard extends BaseScoreboard {
                 .formatted(textToSmall(player.getName()))).decoration(TextDecoration.BOLD, true));
 
         if (dreamPlayer != null) {
+            Long time = dreamPlayer.getDreamTime();
+            int cold = dreamPlayer.getCold();
+
             lines.add(text(" • ", NamedTextColor.DARK_GRAY)
                     .append(text(textToSmall("temps:"), NamedTextColor.GRAY))
                     .appendSpace()
-                    .append(text(textToSmall(DateUtils.convertSecondToTime(dreamPlayer.getDreamTime()))).color(TextColor.color(0x00CC34)))
+                    .append(text(textToSmall(DateUtils.convertSecondToTime(time))).color(TextColor.color(0x00CC34)))
             );
 
-            // ajout le froid
+            if (cold > 0)
+                lines.add(text(" • ", NamedTextColor.DARK_GRAY)
+                        .append(text(textToSmall("froid:"), NamedTextColor.GRAY))
+                        .appendSpace()
+                        .append(text(String.valueOf(dreamPlayer.getCold())).color(TextColor.color(0x44EBDA)))
+                );
 
             lines.add(empty());
         }
@@ -76,7 +84,7 @@ public class DreamScoreboard extends BaseScoreboard {
             lines.add(text(" • ", NamedTextColor.DARK_GRAY)
                     .append(text(textToSmall("location:"), NamedTextColor.GRAY))
                     .appendSpace()
-                    .append(Component.text(textToSmall(nameLocation)))
+                    .append(Component.text(nameLocation))
             );
         }
 

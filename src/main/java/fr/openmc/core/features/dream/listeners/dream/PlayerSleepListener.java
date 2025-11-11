@@ -49,8 +49,6 @@ public class PlayerSleepListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                System.out.println("on Sleepe dbDream " + dbDreamPlayer);
-                System.out.println("dbDream X" + dbDreamPlayer);
                 if (dbDreamPlayer == null || (dbDreamPlayer.getDreamX() == null || dbDreamPlayer.getDreamY() == null || dbDreamPlayer.getDreamZ() == null)) {
                     DreamManager.tpPlayerDream(player);
                 } else {

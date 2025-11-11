@@ -56,7 +56,6 @@ public class ReplaceBlockListener implements Listener {
                 for (Block block : toReplace) {
                     switch (block.getType()) {
                         case TRIPWIRE -> {
-                            System.out.println(block.getLocation());
                             CustomBlock.place("omc_dream:vegetation_1", block.getLocation());
                         }
                         case GRAY_GLAZED_TERRACOTTA -> {

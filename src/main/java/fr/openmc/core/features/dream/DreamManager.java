@@ -19,6 +19,7 @@ import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
 import fr.openmc.core.features.dream.listeners.others.CraftingConvertorListener;
 import fr.openmc.core.features.dream.listeners.others.PlayerEatSomnifere;
 import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
+import fr.openmc.core.features.dream.mecanism.cold.ColdManager;
 import fr.openmc.core.features.dream.mecanism.metaldetector.MetalDetectorManager;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DBPlayerSave;
@@ -82,6 +83,7 @@ public class DreamManager {
         DreamBlocksDropsRegistry.init();
         CloudFishingManager.init();
         MetalDetectorManager.init();
+        ColdManager.init();
 
         // ** COMMANDS **
         CommandsManager.getHandler().register(
@@ -217,7 +219,8 @@ public class DreamManager {
             return;
         }
 
-        dreamPlayer.cancelTask();
+        dreamPlayer.cancelTimeTask();
+        dreamPlayer.cancelColdTask();
 
         OldInventory oldInventory = dreamPlayer.getOldInventory();
         PlayerInventory dreamInventory = player.getInventory();

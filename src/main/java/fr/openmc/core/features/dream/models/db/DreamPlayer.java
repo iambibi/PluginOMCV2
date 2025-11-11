@@ -4,6 +4,8 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
 import fr.openmc.core.features.dream.events.DreamTimeEndEvent;
+import fr.openmc.core.features.dream.generation.DreamBiome;
+import fr.openmc.core.features.dream.mecanism.cold.ColdManager;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.UUID;
 
 @Getter
 public class DreamPlayer {
@@ -25,9 +25,13 @@ public class DreamPlayer {
     @Setter
     private PlayerInventory dreamInventory;
 
+    @Setter
+    private int cold;
+    private BukkitTask coldTask;
+
     private Long dreamTime;
     private Long maxDreamTime;
-    private BukkitTask task;
+    private BukkitTask timeTask;
 
     public DreamPlayer(Player player, OldInventory oldInv, Location oldLocation, PlayerInventory dreamInv) {
         this.player = player;
@@ -40,19 +44,7 @@ public class DreamPlayer {
         this.maxDreamTime = cacheData == null ? DreamManager.BASE_DREAM_TIME : cacheData.getMaxDreamTime();
         this.dreamTime = maxDreamTime;
 
-        scheduleTask();
-    }
-
-    public UUID getUniqueId() {
-        return player.getUniqueId();
-    }
-
-    public String getName() {
-        return player.getName();
-    }
-
-    public Location getLocation() {
-        return player.getLocation();
+        scheduleTimeTask();
     }
 
     public void addTime(Long additionalTime) {
@@ -81,23 +73,64 @@ public class DreamPlayer {
         this.maxDreamTime -= removedTime;
     }
 
-    public void cancelTask() {
-        if (task != null) task.cancel();
+    public void cancelTimeTask() {
+        if (timeTask != null) timeTask.cancel();
     }
 
-    public void scheduleTask() {
-        this.task = Bukkit.getScheduler().runTaskTimer(OMCPlugin.getInstance(), () -> {
+    public void scheduleTimeTask() {
+        this.timeTask = Bukkit.getScheduler().runTaskTimer(OMCPlugin.getInstance(), () -> {
             this.dreamTime -= 1;
 
             if (dreamTime <= 0) {
                 Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
                         Bukkit.getServer().getPluginManager().callEvent(new DreamTimeEndEvent(this.player))
                 );
-                this.cancelTask();
+                this.cancelTimeTask();
                 return;
             }
 
             DreamBossBar.update(player, (float) this.getDreamTime() / this.getMaxDreamTime());
+        }, 0L, 20L);
+    }
+
+    public void cancelColdTask() {
+        System.out.println("cancel");
+        if (coldTask != null) {
+            coldTask.cancel();
+            cold = 0;
+            ColdManager.applyColdEffects(player, cold);
+            coldTask = null;
+        }
+    }
+
+    public void scheduleColdTask() {
+        final int[] tickCounter = {0};
+        this.coldTask = Bukkit.getScheduler().runTaskTimer(OMCPlugin.getInstance(), () -> {
+            System.out.println("tick");
+
+            tickCounter[0] += 20;
+            boolean nearHeat = ColdManager.isNearHeatSource(player);
+            double resistance = ColdManager.calculateColdResistance(player);
+
+            if ((!nearHeat && tickCounter[0] % (60 + (int) (resistance * 20)) == 0)
+                    && player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
+                System.out.println("add");
+                cold = Math.min(100, cold + 1);
+            }
+
+            if ((nearHeat && tickCounter[0] % 40 == 0)
+                    || !player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
+                System.out.println("remove");
+                cold = Math.max(0, cold - 1);
+            }
+
+            if (cold == 0 && !player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
+                cancelColdTask();
+                return;
+            }
+
+            System.out.println("cold " + cold);
+            ColdManager.applyColdEffects(player, cold);
         }, 0L, 20L);
     }
 
