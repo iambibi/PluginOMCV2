@@ -2,6 +2,7 @@ package fr.openmc.core.features.dream.mecanism.cold;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.utils.ParticleUtils;
+import fr.openmc.core.utils.PlayerUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -30,7 +31,8 @@ public class ColdManager {
     }
 
     public static void applyColdEffects(Player player, int cold) {
-        player.setFreezeTicks(3);
+        int freezeTicks = (int) Math.min(140, (cold / 100.0) * 140);
+        PlayerUtils.showFreezeEffect(player, freezeTicks);
 
         int level = 0;
         if (cold >= 75) {
