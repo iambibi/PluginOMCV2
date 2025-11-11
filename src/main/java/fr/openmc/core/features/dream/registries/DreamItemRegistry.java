@@ -22,17 +22,18 @@ import fr.openmc.core.features.dream.registries.items.armors.dream.DreamBoots;
 import fr.openmc.core.features.dream.registries.items.armors.dream.DreamChestplate;
 import fr.openmc.core.features.dream.registries.items.armors.dream.DreamHelmet;
 import fr.openmc.core.features.dream.registries.items.armors.dream.DreamLeggings;
+import fr.openmc.core.features.dream.registries.items.armors.pyjama.PyjamaBoots;
+import fr.openmc.core.features.dream.registries.items.armors.pyjama.PyjamaChestplate;
+import fr.openmc.core.features.dream.registries.items.armors.pyjama.PyjamaHelmet;
+import fr.openmc.core.features.dream.registries.items.armors.pyjama.PyjamaLeggings;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulBoots;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulChestplate;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulHelmet;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulLeggings;
-import fr.openmc.core.features.dream.registries.items.blocks.CorruptedSculk;
-import fr.openmc.core.features.dream.registries.items.blocks.OldPaleOakWood;
+import fr.openmc.core.features.dream.registries.items.blocks.*;
 import fr.openmc.core.features.dream.registries.items.consumable.Somnifere;
 import fr.openmc.core.features.dream.registries.items.fishes.*;
-import fr.openmc.core.features.dream.registries.items.loots.CorruptedString;
-import fr.openmc.core.features.dream.registries.items.loots.CreakingHeart;
-import fr.openmc.core.features.dream.registries.items.loots.Soul;
+import fr.openmc.core.features.dream.registries.items.loots.*;
 import fr.openmc.core.features.dream.registries.items.orb.*;
 import fr.openmc.core.features.dream.registries.items.tools.*;
 import fr.openmc.core.utils.ItemUtils;
@@ -54,15 +55,19 @@ public class DreamItemRegistry {
         registerDreamItem(new CloudOrb("omc_dream:cloud_orb"));
         registerDreamItem(new GlaciteOrb("omc_dream:glacite_orb"));
 
-        // # BLOCS
-        registerDreamItem(new CorruptedSculk("omc_dream:corrupted_sculk"));
-        registerDreamItem(new OldPaleOakWood("omc_dream:old_pale_oak"));
-
         // # DROPS
         registerDreamItem(new CorruptedString("omc_dream:corrupted_string"));
         registerDreamItem(new CreakingHeart("omc_dream:creaking_heart"));
         registerDreamItem(new Soul("omc_dream:soul"));
         registerDreamItem(new Soul("omc_dream:cloud_key"));
+        registerDreamItem(new CorruptedSculk("omc_dream:corrupted_sculk"));
+        registerDreamItem(new OldPaleOakWood("omc_dream:old_pale_oak"));
+        registerDreamItem(new Glacite("omc_dream:glacite"));
+        registerDreamItem(new BurnCoal("omc_dream:coal_burn"));
+        registerDreamItem(new HardStone("omc_dream:hard_stone"));
+        registerDreamItem(new CraftingTable("omc_dream:crafting_table"));
+        registerDreamItem(new PoweredFurnace("omc_dream:powered_furnace"));
+        registerDreamItem(new EternalCampFire("omc_dream:eternal_campfire"));
 
         // # CONSUMABLES
         registerDreamItem(new Somnifere("omc_dream:somnifere"));
@@ -100,8 +105,14 @@ public class DreamItemRegistry {
         registerDreamItem(new DreamLeggings("omc_dream:dream_leggings"));
         registerDreamItem(new DreamBoots("omc_dream:dream_boots"));
 
+        registerDreamItem(new PyjamaHelmet("omc_dream:pyjama_helmet"));
+        registerDreamItem(new PyjamaChestplate("omc_dream:pyjama_chestplate"));
+        registerDreamItem(new PyjamaLeggings("omc_dream:pyjama_leggings"));
+        registerDreamItem(new PyjamaBoots("omc_dream:pyjama_boots"));
+
         // # TOOLS
         registerDreamItem(new CrystalizedPickaxe("omc_dream:crystalized_pickaxe"));
+        registerDreamItem(new MecanicPickaxe("omc_dream:mecanic_pickaxe"));
         registerDreamItem(new SoulAxe("omc_dream:soul_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:old_creaking_axe"));
         registerDreamItem(new OldCreakingAxe("omc_dream:cloud_fishing_rod"));
