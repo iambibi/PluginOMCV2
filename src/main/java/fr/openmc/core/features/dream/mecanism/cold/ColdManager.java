@@ -1,6 +1,8 @@
 package fr.openmc.core.features.dream.mecanism.cold;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.models.registry.items.DreamEquipableItem;
+import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import fr.openmc.core.utils.ParticleUtils;
 import fr.openmc.core.utils.PlayerUtils;
 import org.bukkit.Location;
@@ -14,6 +16,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.type.Campfire;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
 
 public class ColdManager {
 
@@ -27,7 +31,24 @@ public class ColdManager {
     }
 
     public static int calculateColdResistance(Player player) {
-        return 0;
+        int sommeColdResistance = 0;
+        EntityEquipment equipement = player.getEquipment();
+
+        if (equipement == null) return 0;
+
+        ItemStack[] armorContents = equipement.getArmorContents();
+
+        for (ItemStack item : armorContents) {
+            if (DreamItemRegistry.getByItemStack(item) instanceof DreamEquipableItem dreamEquipableItem) {
+                Integer coldResistance = dreamEquipableItem.getColdResistance();
+
+                if (coldResistance != null) {
+                    sommeColdResistance += coldResistance;
+                }
+            }
+        }
+
+        return sommeColdResistance;
     }
 
     public static void applyColdEffects(Player player, int cold) {

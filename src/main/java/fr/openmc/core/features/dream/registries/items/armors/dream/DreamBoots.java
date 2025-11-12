@@ -18,7 +18,7 @@ public class DreamBoots extends DreamEquipableItem {
 
     @Override
     public Integer getColdResistance() {
-        return 3;
+        return 2;
     }
 
     @Override

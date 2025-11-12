@@ -113,7 +113,7 @@ public class DreamPlayer {
             boolean isInBaseCamp = DreamStructuresManager.isInsideStructure(player.getLocation(), DreamStructure.DreamType.BASE_CAMP);
             double resistance = ColdManager.calculateColdResistance(player);
 
-            if ((!nearHeat && !isInBaseCamp && tickCounter[0] % (60 + (int) (resistance * 20)) == 0)
+            if ((!nearHeat && !isInBaseCamp && tickCounter[0] % (60 + (int) (resistance * 10)) == 0)
                     && player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
                 cold = Math.min(100, cold + 1);
             }

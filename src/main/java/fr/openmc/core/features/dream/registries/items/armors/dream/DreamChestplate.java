@@ -18,7 +18,7 @@ public class DreamChestplate extends DreamEquipableItem {
 
     @Override
     public Integer getColdResistance() {
-        return 3;
+        return 2;
     }
 
     @Override
