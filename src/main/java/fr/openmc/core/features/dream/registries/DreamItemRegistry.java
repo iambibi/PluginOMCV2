@@ -66,7 +66,6 @@ public class DreamItemRegistry {
         registerDreamItem(new BurnCoal("omc_dream:coal_burn"));
         registerDreamItem(new HardStone("omc_dream:hard_stone"));
         registerDreamItem(new CraftingTable("omc_dream:crafting_table"));
-        registerDreamItem(new PoweredFurnace("omc_dream:powered_furnace"));
         registerDreamItem(new EternalCampFire("omc_dream:eternal_campfire"));
 
         // # CONSUMABLES
