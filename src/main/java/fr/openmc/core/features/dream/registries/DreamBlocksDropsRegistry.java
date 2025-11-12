@@ -25,9 +25,8 @@ public class DreamBlocksDropsRegistry implements Listener {
         registerCustomDrop(Material.CREAKING_HEART, DreamItemRegistry.getByName("omc_dream:creaking_heart").getBest());
         registerCustomDrop(Material.BLUE_ICE, DreamItemRegistry.getByName("omc_dream:glacite").getBest());
         registerCustomDrop(Material.DEEPSLATE_COAL_ORE, DreamItemRegistry.getByName("omc_dream:coal_burn").getBest());
-        registerCustomDrop(Material.DEEPSLATE, DreamItemRegistry.getByName("omc_dream:coal_burn").getBest());
-        registerCustomDrop(Material.SMOOTH_BASALT, DreamItemRegistry.getByName("omc_dream:coal_burn").getBest());
-        registerCustomDrop(Material.FURNACE, DreamItemRegistry.getByName("omc_dream:powered_furnace").getBest());
+        registerCustomDrop(Material.DEEPSLATE, DreamItemRegistry.getByName("omc_dream:hard_stone").getBest());
+        registerCustomDrop(Material.SMOOTH_BASALT, DreamItemRegistry.getByName("omc_dream:hard_stone").getBest());
         registerCustomDrop(Material.CRAFTING_TABLE, DreamItemRegistry.getByName("omc_dream:crafting_table").getBest());
         registerCustomDrop(Material.CAMPFIRE, DreamItemRegistry.getByName("omc_dream:eternal_campfire").getBest());
     }
