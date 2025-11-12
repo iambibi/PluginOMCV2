@@ -14,6 +14,7 @@ public class DBDreamPlayer {
     @DatabaseField(id = true, columnName = "uuid")
     private UUID playerUUID;
 
+    @Setter
     @DatabaseField(canBeNull = false, columnName = "max_dream_time")
     private Long maxDreamTime;
 

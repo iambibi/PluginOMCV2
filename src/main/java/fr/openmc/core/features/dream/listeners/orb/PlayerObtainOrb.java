@@ -1,5 +1,6 @@
 package fr.openmc.core.features.dream.listeners.orb;
 
+import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.events.MetalDetectorLootEvent;
@@ -97,7 +98,10 @@ public class PlayerObtainOrb implements Listener {
 
             DreamManager.saveDreamPlayerData(dreamPlayer);
             cache = DreamManager.getCacheDreamPlayer(player);
-            if (cache == null) return;
+            if (cache == null) {
+                OMCPlugin.getInstance().getSLF4JLogger().warn("player ({}) had no cache even after saving it. [PlayerObtainOrb#setProgressionOrb]", player.getUniqueId());
+                return;
+            }
         }
 
         int current = cache.getProgressionOrb();

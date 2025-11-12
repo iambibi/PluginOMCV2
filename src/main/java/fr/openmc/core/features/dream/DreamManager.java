@@ -165,7 +165,12 @@ public class DreamManager {
     public static void saveDreamPlayerData(DBDreamPlayer dbDreamPlayer) {
         try {
             dreamPlayerDao.createOrUpdate(dbDreamPlayer);
-            cacheDreamPlayer.replace(dbDreamPlayer.getPlayerUUID(), dbDreamPlayer);
+            if (cacheDreamPlayer.containsKey(dbDreamPlayer.getPlayerUUID())) {
+                cacheDreamPlayer.replace(dbDreamPlayer.getPlayerUUID(), dbDreamPlayer);
+            } else {
+                cacheDreamPlayer.put(dbDreamPlayer.getPlayerUUID(), dbDreamPlayer);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -296,6 +301,25 @@ public class DreamManager {
                         playerSave.getZ()
                 )
         );
+    }
+
+    public static void setMaxTime(Player player, long maxTime) {
+        DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
+
+        if (cache == null) {
+            DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
+            if (dreamPlayer == null) return;
+
+            DreamManager.saveDreamPlayerData(dreamPlayer);
+            cache = DreamManager.getCacheDreamPlayer(player);
+            if (cache == null) {
+                OMCPlugin.getInstance().getSLF4JLogger().warn("player ({}) had no cache even after saving it. [DreamManager#setMaxTime]", player.getUniqueId());
+                return;
+            }
+        }
+
+        cache.setMaxDreamTime(maxTime);
+        DreamManager.saveDreamPlayerData(cache);
     }
 
     public static double calculateDreamProbability(Player player) {

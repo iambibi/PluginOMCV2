@@ -32,7 +32,6 @@ public class DreamPlayer {
     private BukkitTask coldTask;
 
     private Long dreamTime;
-    private Long maxDreamTime;
     private BukkitTask timeTask;
 
     public DreamPlayer(Player player, OldInventory oldInv, Location oldLocation, PlayerInventory dreamInv) {
@@ -43,8 +42,7 @@ public class DreamPlayer {
 
         DBDreamPlayer cacheData = DreamManager.getCacheDreamPlayer(player);
 
-        this.maxDreamTime = cacheData == null ? DreamManager.BASE_DREAM_TIME : cacheData.getMaxDreamTime();
-        this.dreamTime = maxDreamTime;
+        this.dreamTime = cacheData == null ? DreamManager.BASE_DREAM_TIME : cacheData.getMaxDreamTime();
 
         scheduleTimeTask();
     }
@@ -62,17 +60,12 @@ public class DreamPlayer {
         this.dreamTime -= removedTime;
     }
 
-    public void addMaxTime(Long additionalTime) {
-        this.maxDreamTime += additionalTime;
-    }
+    public long getMaxDreamTime() {
+        DBDreamPlayer cacheData = DreamManager.getCacheDreamPlayer(player);
 
-    public void removeMaxTime(Long removedTime) {
-        if (maxDreamTime - removedTime <= 0L) {
-            this.maxDreamTime = 0L;
-            return;
-        }
+        if (cacheData == null) return DreamManager.BASE_DREAM_TIME;
 
-        this.maxDreamTime -= removedTime;
+        return cacheData.getMaxDreamTime();
     }
 
     public void cancelTimeTask() {
@@ -137,7 +130,7 @@ public class DreamPlayer {
     }
 
     public DBDreamPlayer serialize() {
-        return new DBDreamPlayer(this.player.getUniqueId(), this.maxDreamTime, BukkitSerializer.playerInventoryToBase64(this.dreamInventory));
+        return new DBDreamPlayer(this.player.getUniqueId(), this.getMaxDreamTime(), BukkitSerializer.playerInventoryToBase64(this.dreamInventory));
     }
 
     public DBPlayerSave serializeSave() {

@@ -17,6 +17,7 @@ public class DreamItemEquipListener implements Listener {
     @EventHandler
     public void onArmorEquip(ArmorEquipEvent event) {
         Player player = event.getPlayer();
+        System.out.println("time");
         if (!DreamUtils.isInDream(player)) return;
 
         DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
@@ -27,21 +28,22 @@ public class DreamItemEquipListener implements Listener {
         ItemStack newPiece = event.getNewArmorPiece();
 
         DreamItem oldItem = DreamItemRegistry.getByItemStack(oldPiece);
-        if (oldItem == null) return;
 
-        if (oldItem instanceof DreamEquipableItem oldItemEquipable) {
+        if (oldItem != null && oldItem instanceof DreamEquipableItem oldItemEquipable) {
             long time = oldItemEquipable.getAdditionalMaxTime();
+            long minValue = Math.max(DreamManager.BASE_DREAM_TIME, dreamPlayer.getMaxDreamTime() - time);
+            System.out.println("Removing time: " + time);
 
-            dreamPlayer.removeMaxTime(time);
+            DreamManager.setMaxTime(player, minValue);
         }
 
         DreamItem newItem = DreamItemRegistry.getByItemStack(newPiece);
-        if (newItem == null) return;
 
-        if (newItem instanceof DreamEquipableItem newItemEquipable) {
+        if (newItem != null && newItem instanceof DreamEquipableItem newItemEquipable) {
             long time = newItemEquipable.getAdditionalMaxTime();
 
-            dreamPlayer.addMaxTime(time);
+            System.out.println("Adding time: " + time);
+            DreamManager.setMaxTime(player, dreamPlayer.getMaxDreamTime() + time);
         }
     }
 
