@@ -112,7 +112,7 @@ public class GlaciteCaveChunkGenerator {
             }
         } else {
             Material wallMat = CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size()));
-            if (random.nextInt(100) < 5) {
+            if (random.nextFloat() < 0.01) {
                 wallMat = MINERALS.get(random.nextInt(MINERALS.size()));
             }
             chunkData.setBlock(x, y, z, wallMat);
