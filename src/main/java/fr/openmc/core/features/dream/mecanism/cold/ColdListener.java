@@ -1,12 +1,15 @@
 package fr.openmc.core.features.dream.mecanism.cold;
 
 import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 
@@ -24,6 +27,14 @@ public class ColdListener implements Listener {
                 System.out.println("scheduleTas");
                 dreamPlayer.scheduleColdTask();
             }
+        }
+    }
+
+    @EventHandler
+    public void onFireBurnBlock(BlockFadeEvent event) {
+        Block block = event.getBlock();
+        if (DreamUtils.isDreamWorld(block.getWorld())) {
+            event.setCancelled(true);
         }
     }
 }
