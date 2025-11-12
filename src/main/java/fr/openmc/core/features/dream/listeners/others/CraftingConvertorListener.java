@@ -21,8 +21,7 @@ public class CraftingConvertorListener implements Listener {
         if (recipe == null) return;
 
         if (event.getViewers().isEmpty()) return;
-        Player player = (Player) event.getViewers().getFirst();
-
+        if (!(event.getViewers().getFirst() instanceof Player player)) return;
         if (!DreamUtils.isInDreamWorld(player)) return;
 
         if (recipe instanceof Keyed keyed) {
@@ -32,7 +31,9 @@ public class CraftingConvertorListener implements Listener {
                 String namespace = key.getNamespace();
                 String rawKey = key.getKey();
                 String formatKey = rawKey.replaceAll("_\\d+$", "");
+
                 String formatIaKey = namespace + ":" + formatKey;
+                formatIaKey = formatIaKey.replaceFirst(".*?(omc_dream)", "$1");
 
                 DreamItem dreamItem = DreamItemRegistry.getByName(formatIaKey);
 
@@ -46,5 +47,36 @@ public class CraftingConvertorListener implements Listener {
         }
 
         event.getInventory().setResult(new ItemStack(Material.AIR));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onCraftDreamItemInOverWorld(PrepareItemCraftEvent event) {
+        Recipe recipe = event.getRecipe();
+        if (recipe == null) return;
+
+        if (event.getViewers().isEmpty()) return;
+        if (!(event.getViewers().getFirst() instanceof Player player)) return;
+        if (DreamUtils.isInDreamWorld(player)) return;
+
+        if (recipe instanceof Keyed keyed) {
+            NamespacedKey key = keyed.getKey();
+            String keyStr = key.toString();
+            if (keyStr.contains("omc_dream_overworld")) {
+                String namespace = key.getNamespace();
+                String rawKey = key.getKey();
+                String formatKey = rawKey.replaceAll("_\\d+$", "");
+                String formatIaKey = namespace + ":" + formatKey;
+
+                formatIaKey = formatIaKey.replaceFirst(".*?(omc_dream)", "$1");
+
+                DreamItem dreamItem = DreamItemRegistry.getByName(formatIaKey);
+
+                if (dreamItem != null) {
+                    event.getInventory().setResult(dreamItem.getBest());
+                } else {
+                    event.getInventory().setResult(null);
+                }
+            }
+        }
     }
 }
