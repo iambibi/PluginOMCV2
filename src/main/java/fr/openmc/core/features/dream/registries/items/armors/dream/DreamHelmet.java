@@ -12,7 +12,7 @@ public class DreamHelmet extends DreamEquipableItem {
     }
 
     @Override
-    public int getAdditionalMaxTime() {
+    public long getAdditionalMaxTime() {
         return 120;
     }
 

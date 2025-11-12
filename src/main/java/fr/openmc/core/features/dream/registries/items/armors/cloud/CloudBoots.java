@@ -1,5 +1,6 @@
 package fr.openmc.core.features.dream.registries.items.armors.cloud;
 
+import fr.openmc.core.features.dream.models.registry.items.DreamEquipableItem;
 import fr.openmc.core.features.dream.models.registry.items.DreamRarity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -11,7 +12,7 @@ public class CloudBoots extends DreamEquipableItem {
     }
 
     @Override
-    public int getAdditionalMaxTime() {
+    public long getAdditionalMaxTime() {
         return 30;
     }
 
