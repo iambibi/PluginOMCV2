@@ -13,7 +13,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
-import org.bukkit.block.Furnace;
 import org.bukkit.block.data.type.Campfire;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
@@ -125,9 +124,7 @@ public class ColdManager {
             for (int y = -2; y <= 2; y++) {
                 for (int z = -5; z <= 5; z++) {
                     Block block = loc.clone().add(x, y, z).getBlock();
-                    if (block.getType() == Material.CAMPFIRE && block.getBlockData() instanceof Campfire campfire && campfire.isSignalFire())
-                        return true;
-                    if (block.getType() == Material.FURNACE && block.getState() instanceof Furnace furnace && furnace.getBurnTime() > 0)
+                    if (block.getType() == Material.CAMPFIRE && block.getBlockData() instanceof Campfire campfire && campfire.isLit())
                         return true;
                 }
             }

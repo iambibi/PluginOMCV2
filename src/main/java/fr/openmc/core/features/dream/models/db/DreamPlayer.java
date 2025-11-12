@@ -105,22 +105,22 @@ public class DreamPlayer {
             boolean nearHeat = ColdManager.isNearHeatSource(player);
             boolean isInBaseCamp = DreamStructuresManager.isInsideStructure(player.getLocation(), DreamStructure.DreamType.BASE_CAMP);
             double resistance = ColdManager.calculateColdResistance(player);
+            boolean inColdBiome = player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome());
 
-            if ((!nearHeat && !isInBaseCamp && tickCounter[0] % (60 + (int) (resistance * 10)) == 0)
-                    && player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
-                cold = Math.min(100, cold + 1);
-            }
 
             if (isInBaseCamp) {
                 cold = Math.max(0, cold - 15);
+            } else if (nearHeat) {
+                if (tickCounter[0] % 40 == 0) {
+                    cold = Math.max(0, cold - 1);
+                }
             }
 
-            if ((nearHeat && tickCounter[0] % 40 == 0)
-                    || !player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
-                cold = Math.max(0, cold - 1);
+            if (!nearHeat && !isInBaseCamp && inColdBiome && tickCounter[0] % (60 + (int) (resistance * 10)) == 0) {
+                cold = Math.min(100, cold + 1);
             }
 
-            if (cold == 0 && !player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome())) {
+            if (!inColdBiome && cold == 0) {
                 cancelColdTask();
                 return;
             }
