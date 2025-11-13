@@ -67,6 +67,7 @@ public class DreamItemRegistry {
         registerDreamItem(new HardStone("omc_dream:hard_stone"));
         registerDreamItem(new CraftingTable("omc_dream:crafting_table"));
         registerDreamItem(new EternalCampFire("omc_dream:eternal_campfire"));
+        registerDreamItem(new Ewenite("omc_dream:ewenite"));
 
         // # CONSUMABLES
         registerDreamItem(new Somnifere("omc_dream:somnifere"));
