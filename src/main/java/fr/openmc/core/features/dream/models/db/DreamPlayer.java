@@ -107,13 +107,15 @@ public class DreamPlayer {
             double resistance = ColdManager.calculateColdResistance(player);
             boolean inColdBiome = player.getLocation().getBlock().getBiome().equals(DreamBiome.GLACITE_GROTTO.getBiome());
 
-
             if (isInBaseCamp) {
                 cold = Math.max(0, cold - 15);
             } else if (nearHeat) {
                 if (tickCounter[0] % 40 == 0) {
                     cold = Math.max(0, cold - 1);
                 }
+            }
+            if (!inColdBiome && tickCounter[0] % 40 == 0) {
+                cold = Math.max(0, cold - 1);
             }
 
             if (!nearHeat && !isInBaseCamp && inColdBiome && tickCounter[0] % (60 + (int) (resistance * 10)) == 0) {
