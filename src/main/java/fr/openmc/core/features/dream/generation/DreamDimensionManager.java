@@ -24,6 +24,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SpawnCategory;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,6 +103,15 @@ public class DreamDimensionManager {
         World dream = creator.createWorld();
 
         dream.getWorldBorder().setSize(25000);
+
+        // ** SPAWNING RULES **
+        dream.setSpawnLimit(SpawnCategory.MONSTER, 15);
+        dream.setSpawnLimit(SpawnCategory.AMBIENT, 10);
+        dream.setSpawnLimit(SpawnCategory.ANIMAL, 6);
+
+        dream.setTicksPerSpawns(SpawnCategory.MONSTER, 10);
+        dream.setTicksPerSpawns(SpawnCategory.AMBIENT, 15);
+        dream.setTicksPerSpawns(SpawnCategory.ANIMAL, 30);
 
         // ** VEGETATION POPULATORS REGISTER **
         dream.getPopulators().add(new VegetationPopulator());
