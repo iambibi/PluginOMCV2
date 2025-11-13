@@ -1,4 +1,4 @@
-package fr.openmc.core.features.dream.registries.lootttable;
+package fr.openmc.core.features.dream.registries.loottable;
 
 import fr.openmc.core.features.dream.models.registry.loottable.DreamLoot;
 import fr.openmc.core.features.dream.models.registry.loottable.DreamLootTable;

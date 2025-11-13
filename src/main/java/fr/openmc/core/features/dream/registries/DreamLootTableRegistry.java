@@ -1,8 +1,8 @@
 package fr.openmc.core.features.dream.registries;
 
 import fr.openmc.core.features.dream.models.registry.loottable.DreamLootTable;
-import fr.openmc.core.features.dream.registries.lootttable.CloudFishingLootTable;
-import fr.openmc.core.features.dream.registries.lootttable.MetalDetectorLootTable;
+import fr.openmc.core.features.dream.registries.loottable.CloudFishingLootTable;
+import fr.openmc.core.features.dream.registries.loottable.MetalDetectorLootTable;
 import net.kyori.adventure.key.Key;
 
 import javax.annotation.Nullable;
