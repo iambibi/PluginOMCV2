@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -21,7 +22,7 @@ import org.bukkit.scheduler.BukkitTask;
 public class DreamPlayer {
     private final Player player;
     @Setter
-    private OldInventory oldInventory;
+    private ItemStack[] oldInventory;
     @Setter
     private Location oldLocation;
     @Setter
@@ -34,7 +35,7 @@ public class DreamPlayer {
     private Long dreamTime;
     private BukkitTask timeTask;
 
-    public DreamPlayer(Player player, OldInventory oldInv, Location oldLocation, PlayerInventory dreamInv) {
+    public DreamPlayer(Player player, ItemStack[] oldInv, Location oldLocation, PlayerInventory dreamInv) {
         this.player = player;
         this.oldInventory = oldInv;
         this.oldLocation = oldLocation;
@@ -136,7 +137,7 @@ public class DreamPlayer {
     }
 
     public DBPlayerSave serializeSave() {
-        return new DBPlayerSave(this.player.getUniqueId(), this.oldInventory.getSerialized(), oldLocation);
+        return new DBPlayerSave(this.player.getUniqueId(), BukkitSerializer.playerInventoryToBase64(oldInventory), oldLocation);
     }
 
     public void teleportToOldLocation() {

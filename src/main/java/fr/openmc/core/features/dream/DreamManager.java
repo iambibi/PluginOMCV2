@@ -25,7 +25,6 @@ import fr.openmc.core.features.dream.mecanism.metaldetector.MetalDetectorManager
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DBPlayerSave;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
-import fr.openmc.core.features.dream.models.db.OldInventory;
 import fr.openmc.core.features.dream.registries.*;
 import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
@@ -197,11 +196,7 @@ public class DreamManager {
     public static void addDreamPlayer(Player player, Location oldLocation) throws IOException {
         PlayerInventory playerInv = player.getInventory();
 
-        ItemStack[] oldContents = playerInv.getContents().clone();
-        ItemStack[] oldArmor = playerInv.getArmorContents().clone();
-        ItemStack[] oldExtra = playerInv.getExtraContents().clone();
-
-        OldInventory oldInv = new OldInventory(oldContents, oldArmor, oldExtra);
+        ItemStack[] oldInv = playerInv.getContents().clone();
 
         DBDreamPlayer cacheDreamPlayer = getCacheDreamPlayer(player);
         if (cacheDreamPlayer == null || cacheDreamPlayer.getDreamInventory() == null) {
@@ -229,7 +224,7 @@ public class DreamManager {
         dreamPlayer.cancelTimeTask();
         dreamPlayer.cancelColdTask();
 
-        OldInventory oldInventory = dreamPlayer.getOldInventory();
+        ItemStack[] oldInventory = dreamPlayer.getOldInventory();
         PlayerInventory dreamInventory = player.getInventory();
 
         DBDreamPlayer cacheDreamPlayer = getCacheDreamPlayer(player);
@@ -251,7 +246,8 @@ public class DreamManager {
             ));
         }
 
-        oldInventory.restoreOldInventory(player);
+        player.getInventory().setContents(oldInventory);
+        player.updateInventory();
         saveDreamPlayerData(cacheDreamPlayer);
     }
 

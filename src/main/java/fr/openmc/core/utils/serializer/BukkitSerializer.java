@@ -27,8 +27,6 @@ public class BukkitSerializer {
              BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
 
             dataOutput.writeObject(inv.getContents());
-            dataOutput.writeObject(inv.getArmorContents());
-            dataOutput.writeObject(inv.getExtraContents());
 
             return Base64Coder.encodeLines(outputStream.toByteArray());
         } catch (Exception e) {
@@ -36,13 +34,11 @@ public class BukkitSerializer {
         }
     }
 
-    public static String playerInventoryToBase64(ItemStack[] contents, ItemStack[] armorContents, ItemStack[] extraContents) {
+    public static String playerInventoryToBase64(ItemStack[] contents) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
 
             dataOutput.writeObject(contents);
-            dataOutput.writeObject(armorContents);
-            dataOutput.writeObject(extraContents);
 
             return Base64Coder.encodeLines(outputStream.toByteArray());
         } catch (Exception e) {
@@ -55,12 +51,8 @@ public class BukkitSerializer {
              BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
 
             ItemStack[] contents = (ItemStack[]) dataInput.readObject();
-            ItemStack[] armor = (ItemStack[]) dataInput.readObject();
-            ItemStack[] extra = (ItemStack[]) dataInput.readObject();
 
             inv.setContents(contents);
-            inv.setArmorContents(armor);
-            inv.setExtraContents(extra);
         } catch (ClassNotFoundException e) {
             throw new IOException("Unable to decode class type.", e);
         }
