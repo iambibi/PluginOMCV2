@@ -1,0 +1,163 @@
+package fr.openmc.core.features.dream.mecanism.tradernpc;
+
+import fr.openmc.api.menulib.Menu;
+import fr.openmc.api.menulib.utils.InventorySize;
+import fr.openmc.api.menulib.utils.ItemBuilder;
+import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.models.db.DreamPlayer;
+import fr.openmc.core.features.dream.registries.DreamItemRegistry;
+import fr.openmc.core.utils.ItemUtils;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+
+public class GlaciteTradeMenu extends Menu {
+    public GlaciteTradeMenu(Player owner) {
+        super(owner);
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "Trades du Vagabond";
+    }
+
+    @Override
+    public String getTexture() {
+        return null;
+    }
+
+    @Override
+    public @NotNull InventorySize getInventorySize() {
+        return InventorySize.LARGE;
+    }
+
+    @Override
+    public void onInventoryClick(InventoryClickEvent click) {
+        // empty
+    }
+
+    @Override
+    public @NotNull Map<Integer, ItemBuilder> getContent() {
+        Map<Integer, ItemBuilder> inventory = new HashMap<>();
+        Player player = getOwner();
+
+        List<Integer> tradeSlots = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23);
+        GlaciteTrade[] trades = GlaciteTrade.values();
+
+        for (int i = 0; i < trades.length && i < tradeSlots.size(); i++) {
+            GlaciteTrade trade = trades[i];
+            int slot = tradeSlots.remove(i);
+
+            List<Component> lore = getLoreTrade(trade);
+
+            inventory.put(slot,
+                    new ItemBuilder(this, trade.getResult().getBest(), meta -> {
+                        meta.displayName(trade.getDisplayName());
+                        meta.lore(lore);
+                    }).setOnClick(event -> {
+                        handleTrade(player, trade);
+                    })
+            );
+        }
+        List<Component> loreTime = List.of(
+                Component.text("Achetez du temps pour vous permettre de rester plus longtemps !"),
+                Component.text("§7Coût :"),
+                Component.text(" §51 Ewenite")
+        );
+        inventory.put(tradeSlots.getFirst(),
+                new ItemBuilder(this, Material.EXPERIENCE_BOTTLE, meta -> {
+                    meta.displayName(Component.text("§a1 min de Temps"));
+                    meta.lore(loreTime);
+                }).setOnClick(event -> {
+                    ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:glacite").getBest();
+                    int ewenite = ItemUtils.countItems(player, eweniteItem);
+
+                    if (ewenite < 1) {
+                        MessagesManager.sendMessage(player, Component.text("Vous n'avez pas assez de ressources pour effectuer cet achat !"), Prefix.DREAM, MessageType.ERROR, false);
+                        return;
+                    }
+
+                    ItemUtils.removeItemsFromInventory(player, eweniteItem, 1);
+
+                    DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
+                    if (dreamPlayer == null) return;
+                    dreamPlayer.addTime(60L);
+
+                    MessagesManager.sendMessage(player, Component.text("Vous avez échangé §b1 d'Ewenite contre §a1 minute de temps"), Prefix.DREAM, MessageType.SUCCESS, false);
+
+                })
+        );
+
+        return inventory;
+    }
+
+    @Override
+    public void onClose(InventoryCloseEvent event) {
+    }
+
+    @Override
+    public List<Integer> getTakableSlot() {
+        return List.of();
+    }
+
+    private void handleTrade(Player player, GlaciteTrade trade) {
+        ItemStack glaciteItem = DreamItemRegistry.getByName("omc_dream:glacite").getBest();
+        ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:glacite").getBest();
+        int glacite = ItemUtils.countItems(player, glaciteItem);
+        int ewenite = ItemUtils.countItems(player, eweniteItem);
+
+        int tradeGlacite = trade.getGlaciteCost();
+        int tradeEwenite = trade.getEweniteCost();
+
+        if (glacite < tradeGlacite || ewenite < tradeEwenite) {
+            MessagesManager.sendMessage(player, Component.text("Vous n'avez pas assez de ressources pour effectuer cet achat !"), Prefix.DREAM, MessageType.ERROR, false);
+            return;
+        }
+
+        ItemUtils.removeItemsFromInventory(player, glaciteItem, tradeGlacite);
+        ItemUtils.removeItemsFromInventory(player, eweniteItem, tradeEwenite);
+
+        player.getInventory().addItem(trade.getResult().getBest());
+
+        String sb = "Vous avez échangé ";
+
+        if (tradeGlacite > 0) {
+            sb += " §bde Glacite§f";
+        }
+
+        if (tradeEwenite > 0) {
+            if (tradeGlacite > 0) sb += " et ";
+            sb += " §5d'Ewenite§f";
+        }
+
+        sb += " contre §b" + trade.getResult().getBest().displayName();
+
+        MessagesManager.sendMessage(player, Component.text(sb), Prefix.DREAM, MessageType.SUCCESS, false);
+    }
+
+    private List<Component> getLoreTrade(GlaciteTrade trade) {
+        List<Component> lore = new ArrayList<>();
+
+        lore.add(Component.text("§7Coût :"));
+
+        if (trade.getGlaciteCost() > 0)
+            lore.add(Component.text(" §b" + trade.getGlaciteCost() + " Glacite"));
+
+        if (trade.getEweniteCost() > 0)
+            lore.add(Component.text(" §5" + trade.getEweniteCost() + " Ewenite"));
+
+        lore.add(Component.text(""));
+        lore.add(Component.text("§e§lCLIQUE-GAUCHE POUR ACHETER"));
+
+        return lore;
+    }
+}

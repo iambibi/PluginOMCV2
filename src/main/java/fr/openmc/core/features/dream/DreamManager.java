@@ -22,6 +22,7 @@ import fr.openmc.core.features.dream.listeners.registry.DreamItemEquipListener;
 import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
 import fr.openmc.core.features.dream.mecanism.cold.ColdManager;
 import fr.openmc.core.features.dream.mecanism.metaldetector.MetalDetectorManager;
+import fr.openmc.core.features.dream.mecanism.tradernpc.GlaciteNpcManager;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DBPlayerSave;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
@@ -70,7 +71,8 @@ public class DreamManager {
                 new PlayerEatSomnifere(),
                 new CloudStructureDispenserListener(),
                 new CraftingConvertorListener(),
-                new DreamItemEquipListener()
+                new DreamItemEquipListener(),
+                new GlaciteNpcManager()
         );
 
         // ** MANAGERS **

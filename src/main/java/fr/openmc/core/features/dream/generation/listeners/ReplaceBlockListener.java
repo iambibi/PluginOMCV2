@@ -9,6 +9,7 @@ import fr.openmc.core.features.dream.mecanism.cloudcastle.BossCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.PhantomCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.StrayCloudSpawner;
+import fr.openmc.core.features.dream.mecanism.tradernpc.GlaciteNpcManager;
 import fr.openmc.core.features.dream.registries.DreamBlocksRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -34,6 +35,13 @@ public class ReplaceBlockListener implements Listener {
 
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
+                    for (int y = GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT; y <= GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT; y++) {
+                        Block block = chunk.getBlock(x, y, z);
+                        if (block.getType() == Material.SEA_LANTERN) {
+                            toReplace.add(block);
+                        }
+                    }
+
                     for (int y = GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT; y <= CloudChunkGenerator.MIN_HEIGHT_CLOUD; y++) {
                         Block block = chunk.getBlock(x, y, z);
                         if (block.getType() == Material.GRAY_GLAZED_TERRACOTTA
@@ -55,6 +63,10 @@ public class ReplaceBlockListener implements Listener {
             Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
                 for (Block block : toReplace) {
                     switch (block.getType()) {
+                        case SEA_LANTERN -> {
+                            GlaciteNpcManager.createNPC(block.getLocation());
+                            block.setType(Material.AIR);
+                        }
                         case TRIPWIRE -> {
                             CustomBlock.place("omc_dream:vegetation_1", block.getLocation());
                         }
