@@ -4,6 +4,7 @@ import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.models.registry.DreamEnchantment;
 import fr.openmc.core.features.dream.registries.enchantements.DreamSleeper;
 import fr.openmc.core.features.dream.registries.enchantements.Experientastic;
+import fr.openmc.core.features.dream.registries.enchantements.Soulbound;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
@@ -24,7 +25,8 @@ public class DreamEnchantementRegistry {
 
     private final static Set<DreamEnchantment> DREAM_ENCHANTMENT_REGISTRY = Set.of(
             new DreamSleeper(),
-            new Experientastic()
+            new Experientastic(),
+            new Soulbound()
     );
 
     private final static HashMap<Key, DreamEnchantment> dreamEnchantments = new HashMap<>();
