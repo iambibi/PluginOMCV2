@@ -54,8 +54,7 @@ public class DreamManager {
     private static Dao<DBDreamPlayer, String> dreamPlayerDao;
     private static Dao<DBPlayerSave, String> savePlayerDao;
 
-    public static void init() {
-        // ** LISTENERS **
+    public static void init() {// ** LISTENERS **
         OMCPlugin.registerEvents(
                 new PlayerChangeWorldListener(),
                 new PlayerJoinListener(),
@@ -71,13 +70,13 @@ public class DreamManager {
                 new PlayerEatSomnifere(),
                 new CloudStructureDispenserListener(),
                 new CraftingConvertorListener(),
-                new DreamItemEquipListener(),
-                new GlaciteNpcManager()
+                new DreamItemEquipListener()
         );
 
         // ** MANAGERS **
         DreamEnchantementRegistry.init();
         DreamDimensionManager.init();
+        GlaciteNpcManager.init();
         DreamStructuresManager.init();
         DreamItemRegistry.init();
         DreamBlocksRegistry.init();

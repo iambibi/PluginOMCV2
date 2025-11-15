@@ -3,9 +3,11 @@ package fr.openmc.core.features.dream.listeners.orb;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.DreamUtils;
+import fr.openmc.core.features.dream.events.GlaciteTradeEvent;
 import fr.openmc.core.features.dream.events.MetalDetectorLootEvent;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.mecanism.altar.AltarCraftingEvent;
+import fr.openmc.core.features.dream.mecanism.tradernpc.GlaciteTrade;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import fr.openmc.core.features.dream.models.registry.items.DreamItem;
@@ -86,6 +88,15 @@ public class PlayerObtainOrb implements Listener {
                 setProgressionOrb(player, MUD_BEACH_ORB, DreamBiome.GLACITE_GROTTO);
                 break;
             }
+        }
+    }
+
+    @EventHandler
+    public void onGlaciteTrade(GlaciteTradeEvent event) {
+        Player player = event.getPlayer();
+
+        if (event.getTrade().equals(GlaciteTrade.ORB_GLACITE)) {
+            setProgressionOrb(player, GLACITE_GROTTO_ORB, null);
         }
     }
 

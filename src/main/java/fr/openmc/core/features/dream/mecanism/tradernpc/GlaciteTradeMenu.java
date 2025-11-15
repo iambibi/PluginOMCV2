@@ -3,7 +3,9 @@ package fr.openmc.core.features.dream.mecanism.tradernpc;
 import fr.openmc.api.menulib.Menu;
 import fr.openmc.api.menulib.utils.InventorySize;
 import fr.openmc.api.menulib.utils.ItemBuilder;
+import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamManager;
+import fr.openmc.core.features.dream.events.GlaciteTradeEvent;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import fr.openmc.core.utils.ItemUtils;
@@ -11,6 +13,8 @@ import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -50,35 +54,36 @@ public class GlaciteTradeMenu extends Menu {
         Map<Integer, ItemBuilder> inventory = new HashMap<>();
         Player player = getOwner();
 
-        List<Integer> tradeSlots = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23);
+        List<Integer> tradeSlots = new ArrayList<>(Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23));
         GlaciteTrade[] trades = GlaciteTrade.values();
 
-        for (int i = 0; i < trades.length && i < tradeSlots.size(); i++) {
-            GlaciteTrade trade = trades[i];
-            int slot = tradeSlots.remove(i);
-
-            List<Component> lore = getLoreTrade(trade);
+        for (int i = 1; i <= trades.length && i < tradeSlots.size(); i++) {
+            GlaciteTrade trade = trades[i - 1];
+            int slot = tradeSlots.get(i);
 
             inventory.put(slot,
                     new ItemBuilder(this, trade.getResult().getBest(), meta -> {
                         meta.displayName(trade.getDisplayName());
-                        meta.lore(lore);
-                    }).setOnClick(event -> {
-                        handleTrade(player, trade);
-                    })
+                        meta.lore(this.getLoreTrade(trade));
+                    }).setOnClick(event -> handleTrade(player, trade))
             );
         }
+
+
+        int timeSlot = tradeSlots.getFirst();
+
         List<Component> loreTime = List.of(
-                Component.text("Achetez du temps pour vous permettre de rester plus longtemps !"),
+                Component.text("§7Achetez du temps pour vous permettre de rester plus longtemps !"),
                 Component.text("§7Coût :"),
                 Component.text(" §51 Ewenite")
         );
-        inventory.put(tradeSlots.getFirst(),
+
+        inventory.put(timeSlot,
                 new ItemBuilder(this, Material.EXPERIENCE_BOTTLE, meta -> {
                     meta.displayName(Component.text("§a1 min de Temps"));
                     meta.lore(loreTime);
                 }).setOnClick(event -> {
-                    ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:glacite").getBest();
+                    ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:ewenite").getBest();
                     int ewenite = ItemUtils.countItems(player, eweniteItem);
 
                     if (ewenite < 1) {
@@ -92,8 +97,7 @@ public class GlaciteTradeMenu extends Menu {
                     if (dreamPlayer == null) return;
                     dreamPlayer.addTime(60L);
 
-                    MessagesManager.sendMessage(player, Component.text("Vous avez échangé §b1 d'Ewenite contre §a1 minute de temps"), Prefix.DREAM, MessageType.SUCCESS, false);
-
+                    MessagesManager.sendMessage(player, Component.text("Vous avez échangé §51 d'Ewenite §fcontre §a1 minute de temps"), Prefix.DREAM, MessageType.SUCCESS, false);
                 })
         );
 
@@ -111,7 +115,7 @@ public class GlaciteTradeMenu extends Menu {
 
     private void handleTrade(Player player, GlaciteTrade trade) {
         ItemStack glaciteItem = DreamItemRegistry.getByName("omc_dream:glacite").getBest();
-        ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:glacite").getBest();
+        ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:ewenite").getBest();
         int glacite = ItemUtils.countItems(player, glaciteItem);
         int ewenite = ItemUtils.countItems(player, eweniteItem);
 
@@ -128,19 +132,22 @@ public class GlaciteTradeMenu extends Menu {
 
         player.getInventory().addItem(trade.getResult().getBest());
 
-        String sb = "Vous avez échangé ";
+        String sb = "Vous avez échangé";
 
         if (tradeGlacite > 0) {
             sb += " §bde Glacite§f";
         }
 
         if (tradeEwenite > 0) {
-            if (tradeGlacite > 0) sb += " et ";
+            if (tradeGlacite > 0) sb += " et";
             sb += " §5d'Ewenite§f";
         }
 
-        sb += " contre §b" + trade.getResult().getBest().displayName();
+        sb += " contre §b" + PlainTextComponentSerializer.plainText().serialize(trade.getDisplayName());
 
+        Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
+                Bukkit.getServer().getPluginManager().callEvent(new GlaciteTradeEvent(player, trade))
+        );
         MessagesManager.sendMessage(player, Component.text(sb), Prefix.DREAM, MessageType.SUCCESS, false);
     }
 

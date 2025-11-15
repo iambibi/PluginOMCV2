@@ -1,8 +1,10 @@
 package fr.openmc.core.features.dream.mecanism.tradernpc;
 
 import fr.openmc.core.features.dream.models.registry.items.DreamItem;
+import fr.openmc.core.features.dream.registries.DreamEnchantementRegistry;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
 import lombok.Getter;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 
 @Getter
@@ -12,6 +14,12 @@ public enum GlaciteTrade {
             200,
             15,
             Component.text("§bOrbe de Glacite")
+    ),
+    SOULBOUND_BOOK(
+            DreamEnchantementRegistry.getDreamEnchantment(Key.key("dream:soulbound")).getEnchantedBookItem(2),
+            150,
+            5,
+            Component.text("§bLivre d'enchantement : Soulbound II")
     ),
     SOMNIFERE(
             DreamItemRegistry.getByName("omc_dream:somnifere"),
