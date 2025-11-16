@@ -60,7 +60,7 @@ dependencies {
     compileOnly "de.oliver:FancyNpcs:${fancyNpcsVersion}"
     compileOnly "net.dmulloy2:ProtocolLib:${protocolLibVersion}"
 
-    implementation platform "com.intellectualsites.bom:bom-newest:1.55"
+    implementation platform("com.intellectualsites.bom:bom-newest:1.55")
     // Ref: https://github.com/IntellectualSites/bom
     implementation "com.flowpowered:flow-nbt:1.0.0"
     implementation "org.jetbrains:annotations:${jetbrainsAnnotationsVersion}"
