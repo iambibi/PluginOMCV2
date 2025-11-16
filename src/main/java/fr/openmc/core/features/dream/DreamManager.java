@@ -13,6 +13,7 @@ import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.listeners.CloudStructureDispenserListener;
 import fr.openmc.core.features.dream.generation.listeners.ReplaceBlockListener;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
+import fr.openmc.core.features.dream.listeners.armors.DreamArmorImplListener;
 import fr.openmc.core.features.dream.listeners.biomes.PlayerEnteredBiome;
 import fr.openmc.core.features.dream.listeners.dream.*;
 import fr.openmc.core.features.dream.listeners.orb.PlayerObtainOrb;
@@ -72,7 +73,8 @@ public class DreamManager {
                 new PlayerEatSomnifere(),
                 new CloudStructureDispenserListener(),
                 new CraftingConvertorListener(),
-                new DreamItemEquipListener()
+                new DreamItemEquipListener(),
+                new DreamArmorImplListener()
         );
 
         // ** MANAGERS **

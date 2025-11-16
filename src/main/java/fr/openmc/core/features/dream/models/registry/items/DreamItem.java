@@ -91,6 +91,50 @@ public abstract class DreamItem {
         return lore;
     }
 
+    private List<Component> getGeneratedLoreTransferable() {
+        ItemStack baseItem;
+
+        if (!ItemsAdderHook.isHasItemAdder() || getItemsAdder() == null) {
+            baseItem = getVanilla();
+        } else {
+            baseItem = getItemsAdder();
+        }
+
+        List<Component> lore = baseItem.lore();
+        if (lore == null) lore = new ArrayList<>();
+
+        lore.add(Component.empty());
+
+        if (isTransferable()) {
+            lore.add(Component.text("§9§ko §r§9Dream Transferable §9§ko"));
+        }
+
+        lore.add(Component.text(this.getRarity().getTemplateLore()));
+
+        return lore;
+    }
+
+    /**
+     * Order:
+     * 1. ItemsAdder
+     * 2. Vanilla
+     *
+     * @return Best ItemStack to use for the server
+     */
+    public ItemStack getBestTransferable() {
+        ItemStack item;
+        if (!ItemsAdderHook.isHasItemAdder() || getItemsAdder() == null) {
+            item = getVanilla();
+        } else {
+            item = getItemsAdder();
+        }
+
+        ItemUtils.setTag(item, DreamItemRegistry.customNameKey, this.getName());
+        item.lore(this.getGeneratedLoreTransferable());
+
+        return item;
+    }
+
     /**
      * Order:
      * 1. ItemsAdder

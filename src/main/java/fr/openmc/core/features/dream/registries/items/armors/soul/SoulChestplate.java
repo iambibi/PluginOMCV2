@@ -33,7 +33,7 @@ public class SoulChestplate extends DreamEquipableItem {
 
     @Override
     public ItemStack getTransferableItem() {
-        return this.getBest();
+        return this.getBestTransferable();
     }
 
     @Override

@@ -33,7 +33,7 @@ public class CloudHelmet extends DreamEquipableItem {
 
     @Override
     public ItemStack getTransferableItem() {
-        return this.getBest();
+        return this.getBestTransferable();
     }
 
     @Override
