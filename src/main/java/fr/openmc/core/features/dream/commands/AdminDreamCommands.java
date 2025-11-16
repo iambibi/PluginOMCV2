@@ -13,7 +13,7 @@ import revxrsal.commands.bukkit.annotation.CommandPermission;
 @CommandPermission("omc.admins.commands.admindream")
 public class AdminDreamCommands {
     @Subcommand("setprogressionorb")
-    @CommandPermission("omc.admins.commands.admndream.setprogressionorb")
+    @CommandPermission("omc.admins.commands.admindream.setprogressionorb")
     void setProgressionOrb(
             Player player,
             @Named("joueur") @SuggestWith(OnlinePlayerAutoComplete.class) Player toPlayer,
@@ -21,18 +21,20 @@ public class AdminDreamCommands {
     ) {
         PlayerObtainOrb.setProgressionOrb(toPlayer, orbProgression, null);
         DBDreamPlayer cache = DreamManager.getCacheDreamPlayer(player);
+
         if (cache != null) {
             cache.setProgressionOrb(orbProgression);
             DreamManager.saveDreamPlayerData(cache);
-        } else {
-            DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
-            if (dreamPlayer == null) return;
-            DreamManager.saveDreamPlayerData(dreamPlayer);
-
-            DBDreamPlayer cache1 = DreamManager.getCacheDreamPlayer(player);
-            if (cache1 == null) return;
-            cache1.setProgressionOrb(orbProgression);
-            DreamManager.saveDreamPlayerData(cache1);
+            return;
         }
+
+        DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
+        if (dreamPlayer == null) return;
+        DreamManager.saveDreamPlayerData(dreamPlayer);
+
+        DBDreamPlayer cache1 = DreamManager.getCacheDreamPlayer(player);
+        if (cache1 == null) return;
+        cache1.setProgressionOrb(orbProgression);
+        DreamManager.saveDreamPlayerData(cache1);
     }
 }
