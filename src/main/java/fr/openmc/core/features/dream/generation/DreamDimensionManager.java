@@ -189,7 +189,7 @@ public class DreamDimensionManager {
         try {
             seedConfig.save(seedFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

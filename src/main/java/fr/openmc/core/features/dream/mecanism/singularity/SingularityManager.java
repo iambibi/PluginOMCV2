@@ -36,7 +36,7 @@ public class SingularityManager {
                     singularityContents.put(singularityContent.getPlayerUUID(), singularityContent)
             );
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -46,7 +46,7 @@ public class SingularityManager {
                 singularityContentsDao.createOrUpdate(contents);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

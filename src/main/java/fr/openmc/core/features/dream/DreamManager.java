@@ -138,7 +138,7 @@ public class DreamManager {
                 }
             });
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -160,7 +160,7 @@ public class DreamManager {
                     cacheDreamPlayer.put(playerData.getPlayerUUID(), playerData)
             );
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -188,7 +188,7 @@ public class DreamManager {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

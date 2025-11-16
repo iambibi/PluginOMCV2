@@ -51,9 +51,9 @@ public class SchematicsUtils {
                 return;
             }
             Files.copy(in, outFile.toPath());
-            plugin.getSLF4JLogger().info("Fichier '" + nameSchem + ".schem' extrait dans plugins/OpenMC/schem/.");
+            plugin.getSLF4JLogger().info("Fichier '{}.schem' extrait dans plugins/OpenMC/schem/.", nameSchem);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -89,8 +89,7 @@ public class SchematicsUtils {
                     return new CachedSchematic(clipboard, file, width, height, length, baseBlocks);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-                return null;
+                throw new RuntimeException(e);
             }
         });
     }
@@ -133,7 +132,7 @@ public class SchematicsUtils {
                 Operations.complete(op);
                 session.flushSession();
             } catch (WorldEditException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
 

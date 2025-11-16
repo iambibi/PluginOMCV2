@@ -31,7 +31,7 @@ public class PlayerChangeWorldListener implements Listener {
         try {
             DreamManager.addDreamPlayer(player, event.getFrom());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);

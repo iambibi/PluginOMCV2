@@ -34,7 +34,7 @@ public class PlayerJoinListener implements Listener {
         try {
             DreamManager.preloadSavePlayer(player, player.getLocation());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

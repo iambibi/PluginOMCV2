@@ -69,7 +69,7 @@ public class DreamStructuresManager {
         try {
             config.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
