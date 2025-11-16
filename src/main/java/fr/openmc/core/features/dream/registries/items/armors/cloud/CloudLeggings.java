@@ -40,7 +40,7 @@ public class CloudLeggings extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_LEGGINGS);
 
-        item.getItemMeta().displayName(Component.text("Jambière des Nuages"));
+        item.getItemMeta().itemName(Component.text("Jambière des Nuages"));
         return item;
     }
 }

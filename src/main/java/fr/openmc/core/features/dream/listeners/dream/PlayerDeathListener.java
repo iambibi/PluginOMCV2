@@ -11,7 +11,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class PlayerDeathListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDead(PlayerDeathEvent event) {
         Player player = event.getPlayer();
 

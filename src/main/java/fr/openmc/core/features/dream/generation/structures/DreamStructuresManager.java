@@ -82,6 +82,7 @@ public class DreamStructuresManager {
         for (DreamStructure s : structures) {
             if (s.isInside(loc)) return s;
         }
+
         return null;
     }
 

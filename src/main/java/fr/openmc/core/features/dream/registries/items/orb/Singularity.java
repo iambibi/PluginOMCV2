@@ -33,7 +33,7 @@ public class Singularity extends DreamUsableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.HEART_OF_THE_SEA);
 
-        item.getItemMeta().displayName(Component.text("Singularité"));
+        item.getItemMeta().itemName(Component.text("Singularité"));
         return item;
     }
 

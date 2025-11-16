@@ -30,7 +30,7 @@ public class CraftingTable extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.CRAFTING_TABLE);
 
-        item.getItemMeta().displayName(Component.text("Table de Craft"));
+        item.getItemMeta().itemName(Component.text("Table de Craft"));
         return item;
     }
 }

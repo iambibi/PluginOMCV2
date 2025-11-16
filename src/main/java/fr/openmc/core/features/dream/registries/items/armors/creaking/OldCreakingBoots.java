@@ -40,7 +40,7 @@ public class OldCreakingBoots extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_BOOTS);
 
-        item.getItemMeta().displayName(Component.text("Bottes du Vieux Creaking"));
+        item.getItemMeta().itemName(Component.text("Bottes du Vieux Creaking"));
         return item;
     }
 }

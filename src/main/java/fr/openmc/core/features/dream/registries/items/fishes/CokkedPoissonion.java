@@ -30,7 +30,7 @@ public class CokkedPoissonion extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.PUFFERFISH);
 
-        item.getItemMeta().displayName(Component.text("Poissonion Cuit"));
+        item.getItemMeta().itemName(Component.text("Poissonion Cuit"));
         return item;
     }
 }

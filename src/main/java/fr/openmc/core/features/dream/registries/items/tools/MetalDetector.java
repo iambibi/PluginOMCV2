@@ -45,7 +45,7 @@ public class MetalDetector extends DreamUsableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.STICK);
 
-        item.getItemMeta().displayName(Component.text("Détecteur de métaux"));
+        item.getItemMeta().itemName(Component.text("Détecteur de métaux"));
         return item;
     }
 

@@ -40,7 +40,7 @@ public class CloudHelmet extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_HELMET);
 
-        item.getItemMeta().displayName(Component.text("Casque des Nuages"));
+        item.getItemMeta().itemName(Component.text("Casque des Nuages"));
         return item;
     }
 }

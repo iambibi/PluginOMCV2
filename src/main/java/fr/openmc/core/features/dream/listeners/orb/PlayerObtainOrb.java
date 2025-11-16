@@ -37,25 +37,24 @@ public class PlayerObtainOrb implements Listener {
     public void onCraft(PrepareItemCraftEvent event) {
         Recipe recipe = event.getRecipe();
         if (recipe == null) return;
-
         if (event.getViewers().isEmpty()) return;
+
         Player player = (Player) event.getViewers().getFirst();
 
         if (!DreamUtils.isInDream(player)) return;
+        if (!(recipe instanceof Keyed keyed)) return;
 
-        if (recipe instanceof Keyed keyed) {
-            NamespacedKey key = keyed.getKey();
-            if (key.toString().contains("omc_dream") && key.toString().contains("domination_orb")) { // contains beacuse key is ex zzzfake_omc_items:aywenite
-                setProgressionOrb(player, SCULK_PLAINS_ORB, DreamBiome.SOUL_FOREST);
-            }
+        NamespacedKey key = keyed.getKey();
+        if (key.toString().contains("omc_dream") && key.toString().contains("domination_orb")) { // contains beacuse key is ex zzzfake_omc_items:aywenite
+            setProgressionOrb(player, SCULK_PLAINS_ORB, DreamBiome.SOUL_FOREST);
         }
     }
 
     @EventHandler
     public void onAltarCraft(AltarCraftingEvent event) {
         DreamItem item = event.getCraftedItem();
-        if (item == null) return;
 
+        if (item == null) return;
         if (!item.getName().equals("omc_dream:ame_orb")) return;
 
         Player player = event.getPlayer();
@@ -69,11 +68,11 @@ public class PlayerObtainOrb implements Listener {
         ItemStack dispensed = event.getItem().getItemStack();
 
         DreamItem dreamItem = DreamItemRegistry.getByItemStack(dispensed);
-        if (dreamItem == null) return;
 
-        if (dreamItem.getName().equals("omc_dream:cloud_orb")) {
-            setProgressionOrb(player, CLOUD_CASTLE_ORB, DreamBiome.MUD_BEACH);
-        }
+        if (dreamItem == null) return;
+        if (!dreamItem.getName().equals("omc_dream:cloud_orb")) return;
+
+        setProgressionOrb(player, CLOUD_CASTLE_ORB, DreamBiome.MUD_BEACH);
     }
 
     @EventHandler
@@ -82,12 +81,12 @@ public class PlayerObtainOrb implements Listener {
 
         for (ItemStack item : event.getLoot()) {
             DreamItem dreamItem = DreamItemRegistry.getByItemStack(item);
-            if (dreamItem == null) continue;
 
-            if (dreamItem.getName().equals("omc_dream:mud_orb")) {
-                setProgressionOrb(player, MUD_BEACH_ORB, DreamBiome.GLACITE_GROTTO);
-                break;
-            }
+            if (dreamItem == null) continue;
+            if (!dreamItem.getName().equals("omc_dream:mud_orb")) continue;
+
+            setProgressionOrb(player, MUD_BEACH_ORB, DreamBiome.GLACITE_GROTTO);
+            break;
         }
     }
 
@@ -95,9 +94,9 @@ public class PlayerObtainOrb implements Listener {
     public void onGlaciteTrade(GlaciteTradeEvent event) {
         Player player = event.getPlayer();
 
-        if (event.getTrade().equals(GlaciteTrade.ORB_GLACITE)) {
-            setProgressionOrb(player, GLACITE_GROTTO_ORB, null);
-        }
+        if (!event.getTrade().equals(GlaciteTrade.ORB_GLACITE)) return;
+
+        setProgressionOrb(player, GLACITE_GROTTO_ORB, null);
     }
 
     public static void setProgressionOrb(Player player, int progressionOrb, DreamBiome unlocked) {

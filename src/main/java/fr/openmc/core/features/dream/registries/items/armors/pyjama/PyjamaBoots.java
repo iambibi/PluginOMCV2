@@ -30,7 +30,7 @@ public class PyjamaBoots extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.LEATHER_BOOTS);
 
-        item.getItemMeta().displayName(Component.text("Bottes de Pyjama"));
+        item.getItemMeta().itemName(Component.text("Bottes de Pyjama"));
         return item;
     }
 }

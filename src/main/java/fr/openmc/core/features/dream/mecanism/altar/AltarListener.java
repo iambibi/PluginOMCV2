@@ -38,7 +38,7 @@ public class AltarListener implements Listener {
         }
 
         ItemStack handItem = player.getInventory().getItemInMainHand();
-        if (handItem == null || handItem.getType().isAir()) {
+        if (handItem.getType().isAir()) {
             MessagesManager.sendMessage(player,
                     Component.text("Vous devez tenir un objet dans la main"),
                     Prefix.DREAM, MessageType.ERROR, false);

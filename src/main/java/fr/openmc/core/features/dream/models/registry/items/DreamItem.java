@@ -86,7 +86,7 @@ public abstract class DreamItem {
             lore.add(Component.text("§9§ko §r§9Dream Transferable §9§ko"));
         }
 
-        lore.add(Component.text(this.getRarity().getTemplateLore()));
+        lore.add(this.getRarity().getTemplateLore());
 
         return lore;
     }
@@ -109,7 +109,7 @@ public abstract class DreamItem {
             lore.add(Component.text("§9§ko §r§9Dream Transferable §9§ko"));
         }
 
-        lore.add(Component.text(this.getRarity().getTemplateLore()));
+        lore.add(this.getRarity().getTemplateLore());
 
         return lore;
     }
@@ -129,7 +129,7 @@ public abstract class DreamItem {
             item = getItemsAdder();
         }
 
-        ItemUtils.setTag(item, DreamItemRegistry.customNameKey, this.getName());
+        ItemUtils.setTag(item, DreamItemRegistry.CUSTOM_NAME_KEY, this.getName());
         item.lore(this.getGeneratedLoreTransferable());
 
         return item;
@@ -150,7 +150,7 @@ public abstract class DreamItem {
             item = getItemsAdder();
         }
 
-        ItemUtils.setTag(item, DreamItemRegistry.customNameKey, this.getName());
+        ItemUtils.setTag(item, DreamItemRegistry.CUSTOM_NAME_KEY, this.getName());
         item.lore(this.getGeneratedLore());
 
         return item;

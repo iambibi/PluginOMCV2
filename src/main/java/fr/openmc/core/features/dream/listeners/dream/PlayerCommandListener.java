@@ -28,9 +28,7 @@ public class PlayerCommandListener implements Listener {
         Location loc = event.getLocation();
 
         if (loc == null) return;
-
         if (!DreamUtils.isDreamWorld(loc)) return;
-
         if (event.getSender() instanceof Player player && player.isOp()) return;
 
         event.setCompletions(List.of("milestone dream"));

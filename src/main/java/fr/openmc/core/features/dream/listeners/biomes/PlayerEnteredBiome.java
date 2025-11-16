@@ -59,34 +59,35 @@ public class PlayerEnteredBiome implements Listener {
         DBDreamPlayer cacheData = DreamManager.getCacheDreamPlayer(player);
         int unlocked = cacheData == null ? 0 : cacheData.getProgressionOrb();
 
-        if (index > unlocked) {
-            if (!activeTasks.containsKey(player.getUniqueId())) {
-                BukkitTask task = Bukkit.getScheduler().runTaskTimer(
-                        OMCPlugin.getInstance(),
-                        () -> {
-                            if (!player.isOnline()) {
-                                stopTask(player);
-                                return;
-                            }
-
-                            Biome current = player.getLocation().getBlock().getBiome();
-                            int idx = BIOME_ORDER.indexOf(current);
-                            if (idx == -1 || idx <= unlocked) {
-                                stopTask(player);
-                                return;
-                            }
-
-                            applyFog(player);
-                            spawnParticles(player);
-                        },
-                        0L, 40L
-                );
-
-                activeTasks.put(player.getUniqueId(), task);
-                MessagesManager.sendMessage(player, Component.text("Attention, vous êtes dans un biome que vous avez pas encore débloqué, il vous faut l'§b" + ORB_UNLOCKER.get(index)), Prefix.DREAM, MessageType.WARNING, false);
-            }
-        } else {
+        if (index <= unlocked) {
             stopTask(player);
+            return;
+        }
+
+        if (!activeTasks.containsKey(player.getUniqueId())) {
+            BukkitTask task = Bukkit.getScheduler().runTaskTimer(
+                    OMCPlugin.getInstance(),
+                    () -> {
+                        if (!player.isOnline()) {
+                            stopTask(player);
+                            return;
+                        }
+
+                        Biome current = player.getLocation().getBlock().getBiome();
+                        int index2 = BIOME_ORDER.indexOf(current);
+                        if (index2 == -1 || index2 <= unlocked) {
+                            stopTask(player);
+                            return;
+                        }
+
+                        applyFog(player);
+                        spawnParticles(player);
+                    },
+                    0L, 40L
+            );
+
+            activeTasks.put(player.getUniqueId(), task);
+            MessagesManager.sendMessage(player, Component.text("Attention, vous êtes dans un biome que vous avez pas encore débloqué, il vous faut l'§b" + ORB_UNLOCKER.get(index)), Prefix.DREAM, MessageType.WARNING, false);
         }
     }
 

@@ -30,7 +30,7 @@ public class OldCreakingAxe extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_AXE);
 
-        item.getItemMeta().displayName(Component.text("Hache du Vieux Creaking"));
+        item.getItemMeta().itemName(Component.text("Hache du Vieux Creaking"));
         return item;
     }
 }

@@ -63,7 +63,7 @@ public class GlaciteTradeMenu extends Menu {
 
             inventory.put(slot,
                     new ItemBuilder(this, trade.getResult().getBest(), meta -> {
-                        meta.displayName(trade.getDisplayName());
+                        meta.itemName(trade.getDisplayName());
                         meta.lore(this.getLoreTrade(trade));
                     }).setOnClick(event -> handleTrade(player, trade))
             );
@@ -80,7 +80,7 @@ public class GlaciteTradeMenu extends Menu {
 
         inventory.put(timeSlot,
                 new ItemBuilder(this, Material.EXPERIENCE_BOTTLE, meta -> {
-                    meta.displayName(Component.text("§a1 min de Temps"));
+                    meta.itemName(Component.text("§a1 min de Temps"));
                     meta.lore(loreTime);
                 }).setOnClick(event -> {
                     ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:ewenite").getBest();

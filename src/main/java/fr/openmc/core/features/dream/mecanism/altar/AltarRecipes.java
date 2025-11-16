@@ -10,44 +10,44 @@ public enum AltarRecipes {
 
     SOUL_ORB(
             DreamItemRegistry.getByName("omc_dream:domination_orb"),
-            20,
-            DreamItemRegistry.getByName("omc_dream:ame_orb")
+            DreamItemRegistry.getByName("omc_dream:ame_orb"),
+            20
     ),
     SOUL_HELMET(
             DreamItemRegistry.getByName("omc_dream:old_creaking_helmet"),
-            10,
-            DreamItemRegistry.getByName("omc_dream:soul_helmet")
+            DreamItemRegistry.getByName("omc_dream:soul_helmet"),
+            10
     ),
     SOUL_CHESTPLATE(
             DreamItemRegistry.getByName("omc_dream:old_creaking_chesplate"),
-            10,
-            DreamItemRegistry.getByName("omc_dream:soul_chesplate")
+            DreamItemRegistry.getByName("omc_dream:soul_chesplate"),
+            10
     ),
     SOUL_LEGGINGS(
             DreamItemRegistry.getByName("omc_dream:old_creaking_leggings"),
-            10,
-            DreamItemRegistry.getByName("omc_dream:soul_leggings")
+            DreamItemRegistry.getByName("omc_dream:soul_leggings"),
+            10
     ),
     SOUL_BOOTS(
             DreamItemRegistry.getByName("omc_dream:old_creaking_boots"),
-            10,
-            DreamItemRegistry.getByName("omc_dream:soul_boots")
+            DreamItemRegistry.getByName("omc_dream:soul_boots"),
+            10
     ),
     SOUL_AXE(
             DreamItemRegistry.getByName("omc_dream:old_creaking_axe"),
-            15,
-            DreamItemRegistry.getByName("omc_dream:soul_axe")
+            DreamItemRegistry.getByName("omc_dream:soul_axe"),
+            15
     ),
     ;
 
     private final DreamItem input;
-    private final int soulsRequired;
     private final DreamItem output;
+    private final int soulsRequired;
 
-    AltarRecipes(DreamItem input, int soulsRequired, DreamItem output) {
+    AltarRecipes(DreamItem input, DreamItem output, int soulsRequired) {
         this.input = input;
-        this.soulsRequired = soulsRequired;
         this.output = output;
+        this.soulsRequired = soulsRequired;
     }
 
     public static AltarRecipes match(ItemStack item) {

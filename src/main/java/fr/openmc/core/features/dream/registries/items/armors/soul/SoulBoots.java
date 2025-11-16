@@ -40,7 +40,7 @@ public class SoulBoots extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_BOOTS);
 
-        item.getItemMeta().displayName(Component.text("Bottes des Ames"));
+        item.getItemMeta().itemName(Component.text("Bottes des Ames"));
         return item;
     }
 }

@@ -44,7 +44,6 @@ public class MudBeachMobSpawningListener implements Listener {
         if (choice < CORRUPTED_TADPOLE_PROBABILITY) {
             DreamMobsRegistry.getByName("corrupted_tadpole").spawn(spawningLoc);
             e.setCancelled(true);
-            return;
         }
     }
 }

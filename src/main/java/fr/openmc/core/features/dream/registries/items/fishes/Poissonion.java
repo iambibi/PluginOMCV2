@@ -30,7 +30,7 @@ public class Poissonion extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.PUFFERFISH);
 
-        item.getItemMeta().displayName(Component.text("Poissonion"));
+        item.getItemMeta().itemName(Component.text("Poissonion"));
         return item;
     }
 }

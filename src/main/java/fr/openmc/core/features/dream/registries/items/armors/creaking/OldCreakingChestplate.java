@@ -40,7 +40,7 @@ public class OldCreakingChestplate extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_CHESTPLATE);
 
-        item.getItemMeta().displayName(Component.text("Plastron du Vieux Creaking"));
+        item.getItemMeta().itemName(Component.text("Plastron du Vieux Creaking"));
         return item;
     }
 }

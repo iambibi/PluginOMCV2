@@ -30,7 +30,7 @@ public class Glacite extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.BLUE_ICE);
 
-        item.getItemMeta().displayName(Component.text("Glacite"));
+        item.getItemMeta().itemName(Component.text("Glacite"));
         return item;
     }
 }

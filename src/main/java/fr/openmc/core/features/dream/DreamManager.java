@@ -134,11 +134,11 @@ public class DreamManager {
                 try {
                     savePlayerDao.delete(playerData);
                 } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    OMCPlugin.getInstance().getSLF4JLogger().error("Cannot load player save data", e);
                 }
             });
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            OMCPlugin.getInstance().getSLF4JLogger().error("Cannot load player save data", e);
         }
     }
 
@@ -147,7 +147,7 @@ public class DreamManager {
             try {
                 savePlayerDao.createOrUpdate(playerSave);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                OMCPlugin.getInstance().getSLF4JLogger().error("Cannot save player save data for player {}", uuid, e);
             }
         });
     }
@@ -160,7 +160,7 @@ public class DreamManager {
                     cacheDreamPlayer.put(playerData.getPlayerUUID(), playerData)
             );
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            OMCPlugin.getInstance().getSLF4JLogger().error("Cannot load dream player data", e);
         }
     }
 
@@ -169,7 +169,7 @@ public class DreamManager {
             try {
                 dreamPlayerDao.createOrUpdate(dbDreamPlayer);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                OMCPlugin.getInstance().getSLF4JLogger().error("Cannot save dream player data", e);
             }
         });
     }
@@ -188,7 +188,7 @@ public class DreamManager {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            OMCPlugin.getInstance().getSLF4JLogger().error("Cannot save player save data", e);
         }
     }
 

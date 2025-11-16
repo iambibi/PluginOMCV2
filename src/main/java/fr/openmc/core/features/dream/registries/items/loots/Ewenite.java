@@ -30,7 +30,7 @@ public class Ewenite extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.ANCIENT_DEBRIS);
 
-        item.getItemMeta().displayName(Component.text("Ewenite"));
+        item.getItemMeta().itemName(Component.text("Ewenite"));
         return item;
     }
 }

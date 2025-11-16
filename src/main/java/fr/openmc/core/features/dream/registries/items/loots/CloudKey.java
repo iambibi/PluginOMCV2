@@ -30,7 +30,7 @@ public class CloudKey extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.OMINOUS_TRIAL_KEY);
 
-        item.getItemMeta().displayName(Component.text("Clé nuageuse"));
+        item.getItemMeta().itemName(Component.text("Clé nuageuse"));
         return item;
     }
 }

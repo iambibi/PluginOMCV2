@@ -45,6 +45,5 @@ public class PlayerEatSomnifere implements Listener {
                 DreamManager.tpPlayerToLastDreamLocation(player);
             }
         }
-
     }
 }

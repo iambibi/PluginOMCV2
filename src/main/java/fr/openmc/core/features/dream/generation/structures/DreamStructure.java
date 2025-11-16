@@ -19,14 +19,14 @@ public record DreamStructure(DreamType type, BlockVector3 min, BlockVector3 max)
         this(
                 DreamType.fromId((String) map.get("type")),
                 BlockVector3.at(
-                        (double) map.get("min_x"),
-                        (double) map.get("min_y"),
-                        (double) map.get("min_z")
+                        (int) map.get("min_x"),
+                        (int) map.get("min_y"),
+                        (int) map.get("min_z")
                 ),
                 BlockVector3.at(
-                        (double) map.get("max_x"),
-                        (double) map.get("max_y"),
-                        (double) map.get("max_z")
+                        (int) map.get("max_x"),
+                        (int) map.get("max_y"),
+                        (int) map.get("max_z")
                 )
         );
     }
@@ -47,7 +47,6 @@ public record DreamStructure(DreamType type, BlockVector3 min, BlockVector3 max)
 
         return map;
     }
-
 
     public boolean isInside(Location loc) {
         if (!DreamUtils.isDreamWorld(loc)) return false;

@@ -30,11 +30,11 @@ public class DreamMobLootListener implements Listener {
         if (dreamMob == null) return;
 
         for (DreamLoot loot : dreamMob.getDreamLoots()) {
-            if (Math.random() < loot.chance()) {
-                int amount = loot.minAmount() + (int) (Math.random() * (loot.maxAmount() - loot.minAmount() + 1));
-                ItemStack drop = loot.item().getBest().asQuantity(amount);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), drop);
-            }
+            if (Math.random() >= loot.chance()) return;
+
+            int amount = loot.minAmount() + (int) (Math.random() * (loot.maxAmount() - loot.minAmount() + 1));
+            ItemStack drop = loot.item().getBest().asQuantity(amount);
+            entity.getWorld().dropItemNaturally(entity.getLocation(), drop);
         }
     }
 }

@@ -42,7 +42,7 @@ public class MeteoWand extends DreamUsableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.STICK);
 
-        item.getItemMeta().displayName(Component.text("Meteo Wand"));
+        item.getItemMeta().itemName(Component.text("Meteo Wand"));
         return item;
     }
 

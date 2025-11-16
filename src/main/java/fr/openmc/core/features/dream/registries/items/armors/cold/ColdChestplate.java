@@ -40,7 +40,7 @@ public class ColdChestplate extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DIAMOND_CHESTPLATE);
 
-        item.getItemMeta().displayName(Component.text("Plastron Glacé"));
+        item.getItemMeta().itemName(Component.text("Plastron Glacé"));
         return item;
     }
 }

@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CloudFishingManager {
     @Getter
@@ -34,7 +35,7 @@ public class CloudFishingManager {
 
     public static void simulateDreamFishing(Player player, FishHook hook) {
         World world = hook.getWorld();
-        Random random = new Random();
+        Random random = ThreadLocalRandom.current();
 
         Location hookLoc = hook.getLocation().clone();
 

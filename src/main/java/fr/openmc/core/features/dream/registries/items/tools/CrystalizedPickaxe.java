@@ -30,7 +30,7 @@ public class CrystalizedPickaxe extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE);
 
-        item.getItemMeta().displayName(Component.text("Pioche Crystalisée"));
+        item.getItemMeta().itemName(Component.text("Pioche Crystalisée"));
         return item;
     }
 }

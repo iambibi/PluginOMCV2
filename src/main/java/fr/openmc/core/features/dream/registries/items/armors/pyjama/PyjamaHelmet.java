@@ -30,7 +30,7 @@ public class PyjamaHelmet extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.LEATHER_HELMET);
 
-        item.getItemMeta().displayName(Component.text("Casque de Pyjama"));
+        item.getItemMeta().itemName(Component.text("Casque de Pyjama"));
         return item;
     }
 }

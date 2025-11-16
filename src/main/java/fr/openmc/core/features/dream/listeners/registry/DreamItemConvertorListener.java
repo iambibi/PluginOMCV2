@@ -35,8 +35,6 @@ public class DreamItemConvertorListener implements Listener {
 
     @EventHandler
     public void onInventoryPickup(InventoryPickupItemEvent event) {
-        ItemStack stack = event.getItem().getItemStack();
-
         Item item = event.getItem();
         ItemStack converted = tryConvertDreamItem(item.getItemStack());
         item.setItemStack(converted != null ? converted : item.getItemStack());

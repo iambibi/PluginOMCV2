@@ -30,7 +30,7 @@ public class CloudFishingRod extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.FISHING_ROD);
 
-        item.getItemMeta().displayName(Component.text("Canne à pêche nuageuse"));
+        item.getItemMeta().itemName(Component.text("Canne à pêche nuageuse"));
         return item;
     }
 }

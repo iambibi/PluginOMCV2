@@ -30,7 +30,7 @@ public class DockerFish extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.TROPICAL_FISH);
 
-        item.getItemMeta().displayName(Component.text("Poisson Docker"));
+        item.getItemMeta().itemName(Component.text("Poisson Docker"));
         return item;
     }
 }

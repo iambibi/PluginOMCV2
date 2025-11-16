@@ -40,7 +40,7 @@ public class ColdBoots extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DIAMOND_BOOTS);
 
-        item.getItemMeta().displayName(Component.text("Bottes Glacées"));
+        item.getItemMeta().itemName(Component.text("Bottes Glacées"));
         return item;
     }
 }

@@ -40,7 +40,7 @@ public class OldCreakingHelmet extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_HELMET);
 
-        item.getItemMeta().displayName(Component.text("Casque du Vieux Creaking"));
+        item.getItemMeta().itemName(Component.text("Casque du Vieux Creaking"));
         return item;
     }
 }

@@ -30,7 +30,7 @@ public class BurnCoal extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.CHARCOAL);
 
-        item.getItemMeta().displayName(Component.text("Charbon brulé"));
+        item.getItemMeta().itemName(Component.text("Charbon brulé"));
         return item;
     }
 }

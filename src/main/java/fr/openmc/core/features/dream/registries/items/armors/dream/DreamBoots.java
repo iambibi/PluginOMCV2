@@ -40,7 +40,7 @@ public class DreamBoots extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.NETHERITE_BOOTS);
 
-        item.getItemMeta().displayName(Component.text("Bottes Onirique"));
+        item.getItemMeta().itemName(Component.text("Bottes Onirique"));
         return item;
     }
 }

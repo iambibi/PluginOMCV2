@@ -30,7 +30,7 @@ public class SunFish extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.COOKED_SALMON);
 
-        item.getItemMeta().displayName(Component.text("Poisson-soleil"));
+        item.getItemMeta().itemName(Component.text("Poisson-soleil"));
         return item;
     }
 }

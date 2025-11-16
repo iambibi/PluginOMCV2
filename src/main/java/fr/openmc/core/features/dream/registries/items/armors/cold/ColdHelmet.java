@@ -40,7 +40,7 @@ public class ColdHelmet extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DIAMOND_HELMET);
 
-        item.getItemMeta().displayName(Component.text("Casque Glacé"));
+        item.getItemMeta().itemName(Component.text("Casque Glacé"));
         return item;
     }
 }

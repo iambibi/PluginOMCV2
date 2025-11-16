@@ -30,7 +30,7 @@ public class OldPaleOakWood extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.PALE_OAK_WOOD);
 
-        item.getItemMeta().displayName(Component.text("Vieux Chêne Pale"));
+        item.getItemMeta().itemName(Component.text("Vieux Chêne Pale"));
         return item;
     }
 }

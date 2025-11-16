@@ -30,7 +30,7 @@ public class MoonFish extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.SALMON);
 
-        item.getItemMeta().displayName(Component.text("Poisson-lune"));
+        item.getItemMeta().itemName(Component.text("Poisson-lune"));
         return item;
     }
 }

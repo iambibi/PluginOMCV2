@@ -2,26 +2,38 @@ package fr.openmc.core.features.dream.models.registry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
+import org.jetbrains.annotations.NotNull;
 
-public record DreamBlock(String type, Location location) {
-    public static DreamBlock fromString(String s) {
-        String[] parts = s.split(",");
-        if (parts.length != 5) return null;
-        World w = Bukkit.getWorld(parts[1]);
-        if (w == null) return null;
-        int x = Integer.parseInt(parts[2]);
-        int y = Integer.parseInt(parts[3]);
-        int z = Integer.parseInt(parts[4]);
-        return new DreamBlock(parts[0], new Location(w, x, y, z));
+import java.util.HashMap;
+import java.util.Map;
+
+@SerializableAs("DreamBlock")
+public record DreamBlock(String type, Location location) implements ConfigurationSerializable {
+    public DreamBlock(Map<String, Object> map) {
+        this(
+                (String) map.get("type"),
+                new Location(
+                        Bukkit.getWorld((String) map.get("world_name")),
+                        (int) map.get("x"),
+                        (int) map.get("y"),
+                        (int) map.get("z")
+                )
+        );
     }
 
     @Override
-    public String toString() {
-        return type + "," +
-                location.getWorld().getName() + "," +
-                location.getBlockX() + "," +
-                location.getBlockY() + "," +
-                location.getBlockZ();
+    public @NotNull Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("type", type);
+
+        map.put("world_name", location.getWorld().getName());
+        map.put("x", location.getBlockX());
+        map.put("y", location.getBlockY());
+        map.put("z", location.getBlockZ());
+
+        return map;
     }
 }

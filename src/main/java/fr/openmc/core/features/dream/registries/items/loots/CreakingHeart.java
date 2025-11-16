@@ -30,7 +30,7 @@ public class CreakingHeart extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.RESIN_CLUMP);
 
-        item.getItemMeta().displayName(Component.text("Coeur de Creaking"));
+        item.getItemMeta().itemName(Component.text("Coeur de Creaking"));
         return item;
     }
 }

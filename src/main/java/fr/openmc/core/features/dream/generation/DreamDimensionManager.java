@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DreamDimensionManager {
 
@@ -166,8 +167,7 @@ public class DreamDimensionManager {
 
     // ** SEED MANAGING **
     private static long createSeed() {
-        Random random = new Random();
-
+        Random random = ThreadLocalRandom.current();
         long seed = random.nextLong();
 
         while (seed == 0) {
@@ -189,7 +189,7 @@ public class DreamDimensionManager {
         try {
             seedConfig.save(seedFile);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            OMCPlugin.getInstance().getSLF4JLogger().error("Cannot save seed dream_world", e);
         }
     }
 

@@ -40,7 +40,7 @@ public class CloudChestplate extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_CHESTPLATE);
 
-        item.getItemMeta().displayName(Component.text("Plastron des Nuages"));
+        item.getItemMeta().itemName(Component.text("Plastron des Nuages"));
         return item;
     }
 }

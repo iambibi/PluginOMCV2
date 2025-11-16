@@ -30,7 +30,7 @@ public class CorruptedString extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.STRING);
 
-        item.getItemMeta().displayName(Component.text("Fil corrompu"));
+        item.getItemMeta().itemName(Component.text("Fil corrompu"));
         return item;
     }
 }

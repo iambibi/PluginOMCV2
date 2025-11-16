@@ -2,10 +2,13 @@ package fr.openmc.core.utils;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.HashMap;
@@ -24,12 +27,8 @@ public class SkullUtils {
      */
     public static ItemStack getPlayerSkull(UUID playerUUID) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-        if (skullMeta != null) {
-            PlayerProfile profile = Bukkit.createProfile(playerUUID);
-            skullMeta.setPlayerProfile(profile);
-            skull.setItemMeta(skullMeta);
-        }
+        PlayerProfile profile = Bukkit.createProfile(playerUUID);
+        skull.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile(profile));
         return skull;
     }
 
@@ -53,14 +52,15 @@ public class SkullUtils {
         }
 
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        if (meta == null) return head;
 
         PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
         profile.setProperty(new ProfileProperty("textures", base64));
-        meta.setPlayerProfile(profile);
+
+        head.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile(profile));
+
+        ItemMeta meta = head.getItemMeta();
+        if (meta == null) return null;
         if (name != null && !name.isEmpty()) meta.displayName(Component.text(name));
-        head.setItemMeta(meta);
 
         CACHE.put(base64, head.clone());
         return head;

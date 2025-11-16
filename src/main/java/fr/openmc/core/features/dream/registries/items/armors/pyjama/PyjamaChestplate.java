@@ -30,7 +30,7 @@ public class PyjamaChestplate extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.LEATHER_CHESTPLATE);
 
-        item.getItemMeta().displayName(Component.text("Plastron de Pyjama"));
+        item.getItemMeta().itemName(Component.text("Plastron de Pyjama"));
         return item;
     }
 }

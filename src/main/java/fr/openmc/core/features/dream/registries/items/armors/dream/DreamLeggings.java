@@ -40,7 +40,7 @@ public class DreamLeggings extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.NETHERITE_LEGGINGS);
 
-        item.getItemMeta().displayName(Component.text("Jambière Onirique"));
+        item.getItemMeta().itemName(Component.text("Jambière Onirique"));
         return item;
     }
 }

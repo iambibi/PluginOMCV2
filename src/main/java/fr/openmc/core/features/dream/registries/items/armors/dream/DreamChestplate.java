@@ -40,7 +40,7 @@ public class DreamChestplate extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.NETHERITE_CHESTPLATE);
 
-        item.getItemMeta().displayName(Component.text("Plastron Onirique"));
+        item.getItemMeta().itemName(Component.text("Plastron Onirique"));
         return item;
     }
 }

@@ -30,7 +30,7 @@ public class HardStone extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DEEPSLATE);
 
-        item.getItemMeta().displayName(Component.text("Pierre Dure"));
+        item.getItemMeta().itemName(Component.text("Pierre Dure"));
         return item;
     }
 }

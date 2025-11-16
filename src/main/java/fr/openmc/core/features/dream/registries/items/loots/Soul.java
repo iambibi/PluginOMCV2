@@ -30,7 +30,7 @@ public class Soul extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.PAPER);
 
-        item.getItemMeta().displayName(Component.text("Ame"));
+        item.getItemMeta().itemName(Component.text("Ame"));
         return item;
     }
 }

@@ -29,7 +29,7 @@ public class DreamItemEquipListener implements Listener {
 
         DreamItem oldItem = DreamItemRegistry.getByItemStack(oldPiece);
 
-        if (oldItem != null && oldItem instanceof DreamEquipableItem oldItemEquipable) {
+        if (oldItem instanceof DreamEquipableItem oldItemEquipable) {
             long time = oldItemEquipable.getAdditionalMaxTime();
             long minValue = Math.max(DreamManager.BASE_DREAM_TIME, dreamPlayer.getMaxDreamTime() - time);
             System.out.println("Removing time: " + time);
@@ -39,7 +39,7 @@ public class DreamItemEquipListener implements Listener {
 
         DreamItem newItem = DreamItemRegistry.getByItemStack(newPiece);
 
-        if (newItem != null && newItem instanceof DreamEquipableItem newItemEquipable) {
+        if (newItem instanceof DreamEquipableItem newItemEquipable) {
             long time = newItemEquipable.getAdditionalMaxTime();
 
             System.out.println("Adding time: " + time);

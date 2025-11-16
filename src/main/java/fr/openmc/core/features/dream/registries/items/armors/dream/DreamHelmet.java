@@ -40,7 +40,7 @@ public class DreamHelmet extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.NETHERITE_HELMET);
 
-        item.getItemMeta().displayName(Component.text("Casque Onirique"));
+        item.getItemMeta().itemName(Component.text("Casque Onirique"));
         return item;
     }
 }

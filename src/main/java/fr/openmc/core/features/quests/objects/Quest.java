@@ -490,8 +490,9 @@ public class Quest {
                 Player onlinePlayer = Bukkit.getPlayer(playerUUID);
                 if (onlinePlayer != null
                         && onlinePlayer.isOnline()
-                        && !onlinePlayer.getGameMode().equals(GameMode.SURVIVAL)
-                        && DreamUtils.isInDreamWorld(onlinePlayer)) return;
+                        && (!onlinePlayer.getGameMode().equals(GameMode.SURVIVAL)
+                        || DreamUtils.isInDreamWorld(onlinePlayer))) return;
+
                 int currentProgress = this.progress.getOrDefault(playerUUID, 0);
                 int newProgress = currentProgress + amount;
                 int currentTarget = this.getCurrentTarget(playerUUID);

@@ -23,17 +23,17 @@ public class ColdListener implements Listener {
             DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
             if (dreamPlayer == null) return;
 
-            if (dreamPlayer.getColdTask() == null) {
-                dreamPlayer.scheduleColdTask();
-            }
+            if (dreamPlayer.getColdTask() != null) return;
+
+            dreamPlayer.scheduleColdTask();
         }
     }
 
     @EventHandler
     public void onFireBurnBlock(BlockFadeEvent event) {
         Block block = event.getBlock();
-        if (DreamUtils.isDreamWorld(block.getWorld())) {
-            event.setCancelled(true);
-        }
+        if (!DreamUtils.isDreamWorld(block.getWorld())) return;
+
+        event.setCancelled(true);
     }
 }

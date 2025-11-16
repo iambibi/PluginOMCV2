@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class DreamBlocksRegistry {
                 new CloudVault(),
                 new BossCloudSpawner()
         );
+        ConfigurationSerialization.registerClass(DreamBlock.class);
         file = new File(OMCPlugin.getInstance().getDataFolder() + "/data/dream", "registered_blocks.yml");
         load();
 
@@ -51,29 +53,24 @@ public class DreamBlocksRegistry {
             return;
         }
 
+        dreamBlocks.clear();
         if (dream.getName().equalsIgnoreCase(DreamDimensionManager.DIMENSION_NAME) && DreamDimensionManager.hasSeedChanged()) {
-            dreamBlocks.clear();
             config.set("blocks", new ArrayList<>());
             save();
             return;
         }
 
-        dreamBlocks.clear();
         if (config.contains("blocks")) {
             for (Object obj : config.getList("blocks")) {
-                if (!(obj instanceof String s)) continue;
-                DreamBlock entry = DreamBlock.fromString(s);
-                if (entry != null) dreamBlocks.add(entry);
+                if (obj instanceof DreamBlock dreamBlock) {
+                    dreamBlocks.add(dreamBlock);
+                }
             }
         }
     }
 
     public static void save() {
-        List<String> serialized = new ArrayList<>();
-        for (DreamBlock entry : dreamBlocks) {
-            serialized.add(entry.toString());
-        }
-        config.set("blocks", serialized);
+        config.set("blocks", dreamBlocks);
 
         try {
             config.save(file);

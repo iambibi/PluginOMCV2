@@ -46,7 +46,7 @@ import java.util.HashSet;
 
 public class DreamItemRegistry {
     static final HashMap<String, DreamItem> dreamItems = new HashMap<>();
-    public static final String customNameKey = "dream_item";
+    public static final String CUSTOM_NAME_KEY = "dream_item";
 
     public static void init() {
         // # ORBES
@@ -151,7 +151,7 @@ public class DreamItemRegistry {
 
     @Nullable
     public static DreamItem getByItemStack(ItemStack stack) {
-        String name = ItemUtils.getTag(stack, customNameKey);
+        String name = ItemUtils.getTag(stack, CUSTOM_NAME_KEY);
 
         return name == null ? null : getByName(name);
     }

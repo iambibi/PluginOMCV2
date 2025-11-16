@@ -30,7 +30,7 @@ public class EternalCampFire extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.CAMPFIRE);
 
-        item.getItemMeta().displayName(Component.text("Feu de Camp Éternel"));
+        item.getItemMeta().itemName(Component.text("Feu de Camp Éternel"));
         return item;
     }
 }

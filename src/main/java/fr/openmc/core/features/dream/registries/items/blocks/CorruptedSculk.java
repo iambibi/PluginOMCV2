@@ -30,7 +30,7 @@ public class CorruptedSculk extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.SCULK);
 
-        item.getItemMeta().displayName(Component.text("Sculk Corrompu"));
+        item.getItemMeta().itemName(Component.text("Sculk Corrompu"));
         return item;
     }
 }

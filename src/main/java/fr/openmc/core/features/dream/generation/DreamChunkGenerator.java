@@ -24,13 +24,8 @@ public class DreamChunkGenerator extends ChunkGenerator {
     /* https://www.spigotmc.org/threads/545616/ */
 
     @Override
-    public BiomeProvider getDefaultBiomeProvider(WorldInfo worldInfo) {
+    public BiomeProvider getDefaultBiomeProvider(@NotNull WorldInfo worldInfo) {
         return biomeProvider;
-    }
-
-    @Override
-    public boolean shouldGenerateCaves() {
-        return false;
     }
 
     @Override
@@ -80,9 +75,5 @@ public class DreamChunkGenerator extends ChunkGenerator {
                 }
             }
         }
-    }
-
-    @Override
-    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, ChunkData chunkData) {
     }
 }

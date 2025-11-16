@@ -47,7 +47,7 @@ public class SchematicsUtils {
 
         try (InputStream in = plugin.getResource("schem/" + nameSchem + ".schem")) {
             if (in == null) {
-                plugin.getSLF4JLogger().warn("Le fichier '" + nameSchem + ".schem' est introuvable dans les ressources.");
+                plugin.getSLF4JLogger().warn("Le fichier '{}.schem' est introuvable dans les ressources.", nameSchem);
                 return;
             }
             Files.copy(in, outFile.toPath());
@@ -71,7 +71,6 @@ public class SchematicsUtils {
                     BlockVector3 min = region.getMinimumPoint();
                     BlockVector3 max = region.getMaximumPoint();
 
-                    //pb vient d'ici
                     int width = min.x() - max.y() + 1;
                     int height = min.y() - max.y() + 1;
                     int length = min.z() - max.z() + 1;

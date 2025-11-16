@@ -40,7 +40,7 @@ public class OldCreakingLeggings extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_LEGGINGS);
 
-        item.getItemMeta().displayName(Component.text("Jambière du Vieux Creaking"));
+        item.getItemMeta().itemName(Component.text("Jambière du Vieux Creaking"));
         return item;
     }
 }
