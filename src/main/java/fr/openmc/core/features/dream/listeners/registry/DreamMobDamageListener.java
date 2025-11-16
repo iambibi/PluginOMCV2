@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.util.Vector;
 
 public class DreamMobDamageListener implements Listener {
 
@@ -41,6 +42,14 @@ public class DreamMobDamageListener implements Listener {
         if (dreamMob == null) return;
 
         event.setCancelled(true);
+
+        Vector kb = p.getLocation().toVector()
+                .subtract(livingEntity.getLocation().toVector())
+                .normalize()
+                .multiply(0.9)
+                .setY(0.4);
+
+        p.setVelocity(kb);
         p.playSound(p.getEyeLocation(), Sound.ENTITY_PLAYER_HURT, 1f, 1f);
         DreamUtils.removeDreamTime(p, dreamMob.getDamageTime(), true);
     }
