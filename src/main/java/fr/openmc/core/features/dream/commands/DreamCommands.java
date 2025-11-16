@@ -1,6 +1,7 @@
 package fr.openmc.core.features.dream.commands;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.events.DreamEndEvent;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
@@ -18,6 +19,11 @@ public class DreamCommands {
     @Subcommand("leave")
     @CommandPermission("omc.commands.dream.leave")
     public void get(Player player) {
+        if (!DreamUtils.isInDream(player)) {
+            MessagesManager.sendMessage(player, Component.text("Vous n'êtes pas dans un rêve"), Prefix.DREAM, MessageType.ERROR, false);
+            return;
+        }
+
         Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
                 Bukkit.getServer().getPluginManager().callEvent(new DreamEndEvent(player))
         );
