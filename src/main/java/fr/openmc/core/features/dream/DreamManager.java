@@ -12,6 +12,7 @@ import fr.openmc.core.features.city.CityManager;
 import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
 import fr.openmc.core.features.dream.commands.AdminDreamCommands;
+import fr.openmc.core.features.dream.commands.DreamCommands;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
 import fr.openmc.core.features.dream.generation.listeners.CloudStructureDispenserListener;
@@ -99,7 +100,8 @@ public class DreamManager {
 
         // ** COMMANDS **
         CommandsManager.getHandler().register(
-                new AdminDreamCommands()
+                new AdminDreamCommands(),
+                new DreamCommands()
         );
 
         // ** LOAD DATAS **
