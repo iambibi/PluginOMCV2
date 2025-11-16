@@ -90,7 +90,6 @@ public class DreamPlayer {
     }
 
     public void cancelColdTask() {
-        System.out.println("cancel");
         if (coldTask != null) {
             coldTask.cancel();
             cold = 0;

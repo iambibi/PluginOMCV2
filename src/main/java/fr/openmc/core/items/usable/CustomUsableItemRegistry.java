@@ -1,6 +1,7 @@
 package fr.openmc.core.items.usable;
 
 import dev.lone.itemsadder.api.CustomStack;
+import fr.openmc.core.features.dream.events.CustomUsableItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;

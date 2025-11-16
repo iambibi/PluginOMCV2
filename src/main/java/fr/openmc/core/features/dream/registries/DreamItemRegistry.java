@@ -55,6 +55,7 @@ public class DreamItemRegistry {
         registerDreamItem(new MudOrb("omc_dream:mud_orb"));
         registerDreamItem(new CloudOrb("omc_dream:cloud_orb"));
         registerDreamItem(new GlaciteOrb("omc_dream:glacite_orb"));
+        registerDreamItem(new Singularity("omc_dream:singularity"));
 
         // # DROPS
         registerDreamItem(new CorruptedString("omc_dream:corrupted_string"));

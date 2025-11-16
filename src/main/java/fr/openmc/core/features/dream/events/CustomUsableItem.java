@@ -1,4 +1,4 @@
-package fr.openmc.core.items.usable;
+package fr.openmc.core.features.dream.events;
 
 import fr.openmc.core.items.CustomItem;
 import org.bukkit.entity.Player;

@@ -62,7 +62,5 @@ public class PlayerChangeWorldListener implements Listener {
         BossbarManager.removeBossBar(BossbarsType.DREAM, player);
 
         DreamManager.removeDreamPlayer(player, event.getFrom());
-
-        System.out.println("end leave");
     }
 }

@@ -22,6 +22,7 @@ import fr.openmc.core.features.dream.listeners.registry.DreamItemEquipListener;
 import fr.openmc.core.features.dream.mecanism.cloudfishing.CloudFishingManager;
 import fr.openmc.core.features.dream.mecanism.cold.ColdManager;
 import fr.openmc.core.features.dream.mecanism.metaldetector.MetalDetectorManager;
+import fr.openmc.core.features.dream.mecanism.singularity.SingularityManager;
 import fr.openmc.core.features.dream.mecanism.tradernpc.GlaciteNpcManager;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DBPlayerSave;
@@ -54,7 +55,8 @@ public class DreamManager {
     private static Dao<DBDreamPlayer, String> dreamPlayerDao;
     private static Dao<DBPlayerSave, String> savePlayerDao;
 
-    public static void init() {// ** LISTENERS **
+    public static void init() {
+        // ** LISTENERS **
         OMCPlugin.registerEvents(
                 new PlayerChangeWorldListener(),
                 new PlayerJoinListener(),
@@ -86,6 +88,7 @@ public class DreamManager {
         CloudFishingManager.init();
         MetalDetectorManager.init();
         ColdManager.init();
+        SingularityManager.init();
 
         // ** COMMANDS **
         CommandsManager.getHandler().register(
@@ -103,11 +106,15 @@ public class DreamManager {
 
         TableUtils.createTableIfNotExists(connectionSource, DBPlayerSave.class);
         savePlayerDao = DaoManager.createDao(connectionSource, DBPlayerSave.class);
+
+        SingularityManager.initDB(connectionSource);
     }
 
     public static void disable() {
         DreamManager.saveAllPlayerSaveData();
         DreamManager.saveAllDreamPlayerData();
+
+        SingularityManager.disable();
     }
 
     private static void loadAllPlayerSaveData() {

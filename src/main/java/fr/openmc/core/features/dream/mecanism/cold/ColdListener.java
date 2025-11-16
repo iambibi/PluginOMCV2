@@ -24,7 +24,6 @@ public class ColdListener implements Listener {
             if (dreamPlayer == null) return;
 
             if (dreamPlayer.getColdTask() == null) {
-                System.out.println("scheduleTas");
                 dreamPlayer.scheduleColdTask();
             }
         }
