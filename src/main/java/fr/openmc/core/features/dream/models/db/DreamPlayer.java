@@ -101,7 +101,7 @@ public class DreamPlayer {
                 return;
             }
 
-            DreamBossBar.update(player, (float) this.getDreamTime() / this.getMaxDreamTime());
+            DreamBossBar.update(player, Math.min(1, (float) this.getDreamTime() / this.getMaxDreamTime()));
         }, 0L, 20L);
     }
 

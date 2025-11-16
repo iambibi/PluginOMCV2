@@ -37,7 +37,7 @@ public class PlayerChangeWorldListener implements Listener {
         DreamPlayer dreamPlayer = DreamManager.getDreamPlayer(player);
         if (dreamPlayer == null) return;
 
-        DreamBossBar.addDreamBossBarForPlayer(player, (float) dreamPlayer.getDreamTime() / dreamPlayer.getMaxDreamTime());
+        DreamBossBar.addDreamBossBarForPlayer(player, Math.min(1, (float) dreamPlayer.getDreamTime() / dreamPlayer.getMaxDreamTime()));
 
         player.setFoodLevel(20);
         player.setSaturation(10.0f);
