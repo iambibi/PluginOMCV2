@@ -7,7 +7,7 @@ import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
 import fr.openmc.core.features.city.sub.mayor.perks.Perks;
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
-import fr.openmc.core.features.dream.events.DreamTimeEndEvent;
+import fr.openmc.core.features.dream.events.DreamEndEvent;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
@@ -95,7 +95,7 @@ public class DreamPlayer {
 
             if (dreamTime <= 0) {
                 Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
-                        Bukkit.getServer().getPluginManager().callEvent(new DreamTimeEndEvent(this.player))
+                        Bukkit.getServer().getPluginManager().callEvent(new DreamEndEvent(this.player))
                 );
                 this.cancelTimeTask();
                 return;
@@ -147,11 +147,11 @@ public class DreamPlayer {
         }, 0L, 20L);
     }
 
-    public DBDreamPlayer serialize() {
+    public DBDreamPlayer save() {
         return new DBDreamPlayer(this.player.getUniqueId(), this.getMaxDreamTime(), BukkitSerializer.playerInventoryToBase64(this.dreamInventory));
     }
 
-    public DBPlayerSave serializeSave() {
+    public DBPlayerSave savePlayer() {
         return new DBPlayerSave(this.player.getUniqueId(), BukkitSerializer.playerInventoryToBase64(oldInventory), oldLocation);
     }
 

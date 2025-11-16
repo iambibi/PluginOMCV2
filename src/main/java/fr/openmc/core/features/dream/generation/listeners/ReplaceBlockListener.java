@@ -60,27 +60,25 @@ public class ReplaceBlockListener implements Listener {
                 }
             }
 
-            Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-                for (Block block : toReplace) {
-                    switch (block.getType()) {
-                        case SEA_LANTERN -> {
-                            GlaciteNpcManager.createNPC(block.getLocation());
-                            block.setType(Material.AIR);
-                        }
-                        case TRIPWIRE -> {
-                            CustomBlock.place("omc_dream:vegetation_1", block.getLocation());
-                        }
-                        case GRAY_GLAZED_TERRACOTTA -> {
-                            block.setType(Material.ENCHANTING_TABLE);
-                            DreamBlocksRegistry.addDreamBlock("altar", block.getLocation());
-                        }
-                        case NETHERITE_BLOCK -> BossCloudSpawner.replaceBlockWithBossCloudSpawner(block);
-                        case COAL_BLOCK -> StrayCloudSpawner.replaceBlockWithMobCloudSpawner(block);
-                        case LAPIS_BLOCK -> PhantomCloudSpawner.replaceBlockWithMobCloudSpawner(block);
-                        case DIAMOND_BLOCK -> CloudVault.replaceBlockWithVault(block);
+            for (Block block : toReplace) {
+                switch (block.getType()) {
+                    case SEA_LANTERN -> {
+                        GlaciteNpcManager.createNPC(block.getLocation());
+                        block.setType(Material.AIR);
                     }
+                    case TRIPWIRE -> {
+                        CustomBlock.place("omc_dream:vegetation_1", block.getLocation());
+                    }
+                    case GRAY_GLAZED_TERRACOTTA -> {
+                        block.setType(Material.ENCHANTING_TABLE);
+                        DreamBlocksRegistry.addDreamBlock("altar", block.getLocation());
+                    }
+                    case NETHERITE_BLOCK -> BossCloudSpawner.replaceBlockWithBossCloudSpawner(block);
+                    case COAL_BLOCK -> StrayCloudSpawner.replaceBlockWithMobCloudSpawner(block);
+                    case LAPIS_BLOCK -> PhantomCloudSpawner.replaceBlockWithMobCloudSpawner(block);
+                    case DIAMOND_BLOCK -> CloudVault.replaceBlockWithVault(block);
                 }
-            });
+            }
         });
     }
 }

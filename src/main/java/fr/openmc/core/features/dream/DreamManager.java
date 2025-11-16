@@ -175,7 +175,7 @@ public class DreamManager {
     }
 
     public static void saveDreamPlayerData(DreamPlayer dreamPlayer) {
-        saveDreamPlayerData(dreamPlayer.serialize());
+        saveDreamPlayerData(dreamPlayer.save());
     }
 
     public static void saveDreamPlayerData(DBDreamPlayer dbDreamPlayer) {
@@ -226,7 +226,7 @@ public class DreamManager {
         PlayerInventory dreamPlayerInv = player.getInventory();
         DreamPlayer newDreamPlayer = new DreamPlayer(player, oldInv, oldLocation, dreamPlayerInv);
         dreamPlayerData.put(player.getUniqueId(), newDreamPlayer);
-        playerSaveData.put(player.getUniqueId(), newDreamPlayer.serializeSave());
+        playerSaveData.put(player.getUniqueId(), newDreamPlayer.savePlayer());
     }
 
     public static void removeDreamPlayer(Player player, Location dreamLocation) {

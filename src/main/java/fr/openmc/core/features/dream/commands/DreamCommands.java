@@ -1,7 +1,7 @@
 package fr.openmc.core.features.dream.commands;
 
 import fr.openmc.core.OMCPlugin;
-import fr.openmc.core.features.dream.events.DreamTimeEndEvent;
+import fr.openmc.core.features.dream.events.DreamEndEvent;
 import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
@@ -19,7 +19,7 @@ public class DreamCommands {
     @CommandPermission("omc.commands.dream.leave")
     public void get(Player player) {
         Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
-                Bukkit.getServer().getPluginManager().callEvent(new DreamTimeEndEvent(player))
+                Bukkit.getServer().getPluginManager().callEvent(new DreamEndEvent(player))
         );
 
         MessagesManager.sendMessage(player, Component.text("Vous avez quitté votre rêve avec succès."), Prefix.DREAM, MessageType.SUCCESS, false);

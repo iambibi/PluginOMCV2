@@ -60,9 +60,7 @@ public class GlaciteCaveChunkGenerator {
             if (y > MIN_HEIGHT_MUD) return;
         }
 
-        if (y < MIN_CAVE_HEIGHT || y > MAX_CAVE_HEIGHT) {
-            return;
-        }
+        if (y < MIN_CAVE_HEIGHT || y > MAX_CAVE_HEIGHT) return;
 
         double vA = noiseA.GetNoise(worldX, y, worldZ);
         double vB = noiseB.GetNoise(worldX, y, worldZ);
@@ -71,51 +69,51 @@ public class GlaciteCaveChunkGenerator {
         double threshold = 0.42;
         boolean isCave = (vA * vA + vB * vB) < threshold * threshold;
 
-        if (isCave) {
-            chunkData.setBlock(x, y, z, Material.AIR);
-
-            if (y - 4 >= MIN_CAVE_HEIGHT) {
-                Material below = chunkData.getType(x, y - 1, z);
-                if (below != Material.AIR && below != Material.SNOW && below != SURFACE_MATERIAL) {
-
-                    for (int i = 0; i < NUMBER_SURFACE_BLOCK; i++) {
-                        int snowY = y - 1 + i;
-                        if (snowY <= MAX_CAVE_HEIGHT) {
-                            chunkData.setBlock(x, snowY, z, SURFACE_MATERIAL);
-                        }
-                    }
-
-                    int solidCount = 0;
-                    for (int dx = -1; dx <= 1; dx++) {
-                        for (int dz = -1; dz <= 1; dz++) {
-                            if (dx == 0 && dz == 0) continue;
-                            Material around = chunkData.getType(x + dx, y - 1, z + dz);
-                            if (around.isSolid()) {
-                                solidCount++;
-                            }
-                        }
-                    }
-
-                    int layers;
-                    if (solidCount >= 6) {
-                        layers = 6;
-                    } else if (solidCount >= 3) {
-                        layers = 4;
-                    } else {
-                        layers = 2;
-                    }
-
-                    Snow snowData = (Snow) Material.SNOW.createBlockData();
-                    snowData.setLayers(layers);
-                    chunkData.setBlock(x, y, z, snowData);
-                }
-            }
-        } else {
+        if (!isCave) {
             Material wallMat = CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size()));
             if (random.nextFloat() < 0.01) {
                 wallMat = MINERALS.get(random.nextInt(MINERALS.size()));
             }
             chunkData.setBlock(x, y, z, wallMat);
+            return;
+        }
+
+        chunkData.setBlock(x, y, z, Material.AIR);
+
+        if (y - 4 >= MIN_CAVE_HEIGHT) {
+            Material below = chunkData.getType(x, y - 1, z);
+            if (below != Material.AIR && below != Material.SNOW && below != SURFACE_MATERIAL) {
+
+                for (int i = 0; i < NUMBER_SURFACE_BLOCK; i++) {
+                    int snowY = y - 1 + i;
+                    if (snowY <= MAX_CAVE_HEIGHT) {
+                        chunkData.setBlock(x, snowY, z, SURFACE_MATERIAL);
+                    }
+                }
+
+                int solidCount = 0;
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        if (dx == 0 && dz == 0) continue;
+                        Material around = chunkData.getType(x + dx, y - 1, z + dz);
+                        if (around.isSolid())
+                            solidCount++;
+                    }
+                }
+
+                int layers;
+                if (solidCount >= 6) {
+                    layers = 6;
+                } else if (solidCount >= 3) {
+                    layers = 4;
+                } else {
+                    layers = 2;
+                }
+
+                Snow snowData = (Snow) Material.SNOW.createBlockData();
+                snowData.setLayers(layers);
+                chunkData.setBlock(x, y, z, snowData);
+            }
         }
     }
 }

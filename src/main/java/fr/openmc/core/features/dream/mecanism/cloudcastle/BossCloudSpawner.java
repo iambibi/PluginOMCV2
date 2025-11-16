@@ -44,7 +44,7 @@ public class BossCloudSpawner implements Listener {
     }
 
     @EventHandler
-    void onEffect(CreatureSpawnEvent event) {
+    public void onEffect(CreatureSpawnEvent event) {
         if (!DreamUtils.isDreamWorld(event.getLocation())) return;
         if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.POTION_EFFECT)) return;
 

@@ -35,28 +35,28 @@ public class MudBeachChunkGenerator {
         float currentY = (65 + (noise2 * 15));
 
 
-        if (y < currentY) {
-            float distanceToSurface = Math.abs(y - currentY); // The absolute y distance to the world surface.
-            double function = .1 * Math.pow(distanceToSurface, 2) - 1; // A second grade polynomial offset to the noise max and min (1, -1).
+        if (y >= currentY) return;
 
-            if (noise3 > Math.min(function, -.3)) {
-                if (y <= MAX_HEIGHT_MUD) {
-                    int distance = MAX_HEIGHT_MUD - y;
+        float distanceToSurface = Math.abs(y - currentY); // The absolute y distance to the world surface.
+        double function = .1 * Math.pow(distanceToSurface, 2) - 1; // A second grade polynomial offset to the noise max and min (1, -1).
 
-                    int plainsSurfaceChance = 80 - (distance * 20);
+        if (noise3 > Math.min(function, -.3)) {
+            if (y <= MAX_HEIGHT_MUD) {
+                int distance = MAX_HEIGHT_MUD - y;
 
-                    if (plainsSurfaceChance > 0) {
-                        if (random.nextInt(100) < plainsSurfaceChance) {
-                            chunkData.setBlock(x, y, z, PLAINS_SURFACE_MATERIAL);
-                        } else {
-                            chunkData.setBlock(x, y, z, BEACH_SURFACE_MATERIAL);
-                        }
+                int plainsSurfaceChance = 80 - (distance * 20);
+
+                if (plainsSurfaceChance > 0) {
+                    if (random.nextInt(100) < plainsSurfaceChance) {
+                        chunkData.setBlock(x, y, z, PLAINS_SURFACE_MATERIAL);
                     } else {
                         chunkData.setBlock(x, y, z, BEACH_SURFACE_MATERIAL);
                     }
                 } else {
-                    chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));
+                    chunkData.setBlock(x, y, z, BEACH_SURFACE_MATERIAL);
                 }
+            } else {
+                chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));
             }
         }
     }

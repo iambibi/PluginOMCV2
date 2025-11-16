@@ -15,11 +15,14 @@ public class CloudStructureDispenserListener implements Listener {
         if (event.getClickedBlock() == null) return;
         Block block = event.getClickedBlock();
 
-        if (block.getType() == Material.DISPENSER) {
-            if (DreamStructuresManager.isInsideStructure(block.getLocation(), DreamStructure.DreamType.CLOUD_CASTLE)) {
-                event.setCancelled(true);
-            }
-        }
+        if (block.getType() != Material.DISPENSER) return;
+
+        if (DreamStructuresManager.isInsideStructure(
+                block.getLocation(),
+                DreamStructure.DreamType.CLOUD_CASTLE
+        ))
+            event.setCancelled(true);
+
     }
 
     @EventHandler

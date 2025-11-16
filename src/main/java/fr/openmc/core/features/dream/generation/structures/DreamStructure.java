@@ -4,10 +4,50 @@ import com.sk89q.worldedit.math.BlockVector3;
 import fr.openmc.core.features.dream.DreamUtils;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-public record DreamStructure(DreamType type, BlockVector3 min, BlockVector3 max) {
+@SerializableAs("DreamStructure")
+public record DreamStructure(DreamType type, BlockVector3 min, BlockVector3 max) implements ConfigurationSerializable {
+
+    public DreamStructure(Map<String, Object> map) {
+        this(
+                DreamType.fromId((String) map.get("type")),
+                BlockVector3.at(
+                        (double) map.get("min_x"),
+                        (double) map.get("min_y"),
+                        (double) map.get("min_z")
+                ),
+                BlockVector3.at(
+                        (double) map.get("max_x"),
+                        (double) map.get("max_y"),
+                        (double) map.get("max_z")
+                )
+        );
+    }
+
+    @Override
+    public @NotNull Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("type", type.getId());
+
+        map.put("min_x", min.x());
+        map.put("min_y", min.y());
+        map.put("min_z", min.z());
+
+        map.put("max_x", max.x());
+        map.put("max_y", max.y());
+        map.put("max_z", max.z());
+
+        return map;
+    }
+
 
     public boolean isInside(Location loc) {
         if (!DreamUtils.isDreamWorld(loc)) return false;
@@ -26,35 +66,6 @@ public record DreamStructure(DreamType type, BlockVector3 min, BlockVector3 max)
         return x >= minX && x <= maxX
                 && y >= minY && y <= maxY
                 && z >= minZ && z <= maxZ;
-    }
-
-    public static DreamStructure fromString(String s) {
-        try {
-            String[] split = s.split(";");
-            String typeId = split[0];
-
-            double minX = Double.parseDouble(split[1]);
-            double minY = Double.parseDouble(split[2]);
-            double minZ = Double.parseDouble(split[3]);
-            double maxX = Double.parseDouble(split[4]);
-            double maxY = Double.parseDouble(split[5]);
-            double maxZ = Double.parseDouble(split[6]);
-
-            return new DreamStructure(
-                    DreamType.fromId(typeId),
-                    BlockVector3.at(minX, minY, minZ),
-                    BlockVector3.at(maxX, maxY, maxZ)
-            );
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return type.getId() + ";" +
-                min.x() + ";" + min.y() + ";" + min.z() + ";" +
-                max.x() + ";" + max.y() + ";" + max.z();
     }
 
     @Override

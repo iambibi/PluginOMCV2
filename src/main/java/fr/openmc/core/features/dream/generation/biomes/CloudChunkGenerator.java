@@ -30,11 +30,8 @@ public class CloudChunkGenerator {
 
             if (normalized > 0.5f) {
                 float distToCenter = Math.abs(y - 112.5f);
-
                 float verticalFactor = Math.max(0.2f, 1.5f - (distToCenter / 2f));
-
                 float baseDensity = 0.65f;
-
                 float finalDensity = Math.max(baseDensity, normalized * verticalFactor);
 
                 if (random.nextFloat() < finalDensity) {

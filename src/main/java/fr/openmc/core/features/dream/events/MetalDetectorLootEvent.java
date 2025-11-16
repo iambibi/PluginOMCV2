@@ -16,7 +16,8 @@ public class MetalDetectorLootEvent extends Event {
     private final List<ItemStack> loot;
 
     /**
-     * @param player The player whose dream time has ended
+     * @param player The player who found the loot.
+     *  @param loot  The list of ItemStack representing the loot found.
      */
     public MetalDetectorLootEvent(Player player, List<ItemStack> loot) {
         this.player = player;

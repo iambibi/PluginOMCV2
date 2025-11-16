@@ -31,16 +31,16 @@ public class SoulForestChunkGenerator {
         float noise3 = detailNoise.GetNoise(x + (chunkX * 16), y, z + (chunkZ * 16));
         float currentY = (65 + (noise2 * 15));
 
-        if (y < currentY) {
-            float distanceToSurface = Math.abs(y - currentY); // The absolute y distance to the world surface.
-            double function = .1 * Math.pow(distanceToSurface, 2) - 1; // A second grade polynomial offset to the noise max and min (1, -1).
+        if (y >= currentY) return;
 
-            if (noise3 > Math.min(function, -.3)) {
-                if (distanceToSurface < 3 && y > 63) {
-                    chunkData.setBlock(x, y, z, FOREST_SURFACE_MATERIAL);
-                } else {
-                    chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));
-                }
+        float distanceToSurface = Math.abs(y - currentY); // The absolute y distance to the world surface.
+        double function = .1 * Math.pow(distanceToSurface, 2) - 1; // A second grade polynomial offset to the noise max and min (1, -1).
+
+        if (noise3 > Math.min(function, -.3)) {
+            if (distanceToSurface < 3 && y > 63) {
+                chunkData.setBlock(x, y, z, FOREST_SURFACE_MATERIAL);
+            } else {
+                chunkData.setBlock(x, y, z, CAVE_MATERIALS.get(random.nextInt(CAVE_MATERIALS.size())));
             }
         }
     }

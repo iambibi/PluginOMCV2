@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class DreamStructuresManager {
     private static final List<DreamStructure> structures = new ArrayList<>();
 
     public static void init() {
+        ConfigurationSerialization.registerClass(DreamStructure.class);
         file = new File(OMCPlugin.getInstance().getDataFolder() + "/data/dream", "structures.yml");
         load();
     }
@@ -39,20 +41,19 @@ public class DreamStructuresManager {
             return;
         }
 
+        structures.clear();
         if (DreamDimensionManager.hasSeedChanged()) {
-            structures.clear();
             config.set("structures", new ArrayList<>());
             save();
             OMCPlugin.getInstance().getSLF4JLogger().info("[DreamStructures] Seed changée, reset du fichier structures.yml !");
             return;
         }
 
-        structures.clear();
         if (config.contains("structures")) {
             for (Object obj : config.getList("structures")) {
-                if (!(obj instanceof String s)) continue;
-                DreamStructure structure = DreamStructure.fromString(s);
-                if (structure != null) structures.add(structure);
+                if (obj instanceof DreamStructure ds) {
+                    structures.add(ds);
+                }
             }
         }
 
@@ -60,11 +61,7 @@ public class DreamStructuresManager {
     }
 
     public static void save() {
-        List<String> serialized = new ArrayList<>();
-        for (DreamStructure structure : structures) {
-            serialized.add(structure.toString());
-        }
-        config.set("structures", serialized);
+        config.set("structures", structures);
 
         try {
             config.save(file);
