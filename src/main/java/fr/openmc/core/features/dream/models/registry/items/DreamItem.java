@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public abstract class DreamItem {
@@ -154,5 +155,10 @@ public abstract class DreamItem {
         item.lore(this.getGeneratedLore());
 
         return item;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
