@@ -7,6 +7,10 @@ import com.j256.ormlite.table.TableUtils;
 import fr.openmc.core.CommandsManager;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.commands.utils.SpawnManager;
+import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
+import fr.openmc.core.features.city.sub.mayor.perks.Perks;
 import fr.openmc.core.features.dream.commands.AdminDreamCommands;
 import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.DreamDimensionManager;
@@ -28,6 +32,7 @@ import fr.openmc.core.features.dream.mecanism.tradernpc.GlaciteNpcManager;
 import fr.openmc.core.features.dream.models.db.DBDreamPlayer;
 import fr.openmc.core.features.dream.models.db.DBPlayerSave;
 import fr.openmc.core.features.dream.models.db.DreamPlayer;
+import fr.openmc.core.features.dream.models.registry.items.DreamItem;
 import fr.openmc.core.features.dream.registries.*;
 import fr.openmc.core.utils.LocationUtils;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
@@ -329,10 +334,28 @@ public class DreamManager {
     }
 
     public static double calculateDreamProbability(Player player) {
-        double base = 0.4;
-        // si le joueur porte un pijama proba augmenté / armure ornique
-        // maire ect...
+        double base = 0.2;
+        PlayerInventory inv = player.getInventory();
 
+        ItemStack[] armor = {
+                inv.getHelmet(),
+                inv.getChestplate(),
+                inv.getLeggings(),
+                inv.getBoots()
+        };
+
+        for (ItemStack item : armor) {
+            DreamItem dream = DreamItemRegistry.getByItemStack(item);
+
+            if (dream != null && dream.getName().contains("omc_dream:pyjama")) {
+                base += 0.05;
+            }
+        }
+
+        City city = CityManager.getPlayerCity(player.getUniqueId());
+        if (city != null && PerkManager.hasPerk(city.getMayor(), Perks.GREAT_SLEEPER.getId())) {
+            base += 0.4;
+        }
         return base;
     }
 

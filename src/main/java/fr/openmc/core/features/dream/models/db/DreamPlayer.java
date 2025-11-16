@@ -1,6 +1,10 @@
 package fr.openmc.core.features.dream.models.db;
 
 import fr.openmc.core.OMCPlugin;
+import fr.openmc.core.features.city.City;
+import fr.openmc.core.features.city.CityManager;
+import fr.openmc.core.features.city.sub.mayor.managers.PerkManager;
+import fr.openmc.core.features.city.sub.mayor.perks.Perks;
 import fr.openmc.core.features.dream.DreamManager;
 import fr.openmc.core.features.dream.displays.DreamBossBar;
 import fr.openmc.core.features.dream.events.DreamTimeEndEvent;
@@ -8,9 +12,13 @@ import fr.openmc.core.features.dream.generation.DreamBiome;
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
 import fr.openmc.core.features.dream.generation.structures.DreamStructuresManager;
 import fr.openmc.core.features.dream.mecanism.cold.ColdManager;
+import fr.openmc.core.utils.messages.MessageType;
+import fr.openmc.core.utils.messages.MessagesManager;
+import fr.openmc.core.utils.messages.Prefix;
 import fr.openmc.core.utils.serializer.BukkitSerializer;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -32,7 +40,7 @@ public class DreamPlayer {
     private int cold;
     private BukkitTask coldTask;
 
-    private Long dreamTime;
+    private long dreamTime;
     private BukkitTask timeTask;
 
     public DreamPlayer(Player player, ItemStack[] oldInv, Location oldLocation, PlayerInventory dreamInv) {
@@ -44,6 +52,14 @@ public class DreamPlayer {
         DBDreamPlayer cacheData = DreamManager.getCacheDreamPlayer(player);
 
         this.dreamTime = cacheData == null ? DreamManager.BASE_DREAM_TIME : cacheData.getMaxDreamTime();
+
+        City city = CityManager.getPlayerCity(player.getUniqueId());
+        if (city != null && PerkManager.hasPerk(city.getMayor(), Perks.GREAT_DREAM.getId())) {
+            this.dreamTime = (long) (this.dreamTime * 1.6);
+            MessagesManager.sendMessage(player,
+                    Component.text("Vous avez reçu §360% §fde temps en plus !"), Prefix.MAYOR, MessageType.INFO, false
+            );
+        }
 
         scheduleTimeTask();
     }

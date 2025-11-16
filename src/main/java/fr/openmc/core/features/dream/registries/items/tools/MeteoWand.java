@@ -35,7 +35,7 @@ public class MeteoWand extends DreamUsableItem {
 
     @Override
     public ItemStack getTransferableItem() {
-        return this.getItemsAdder();
+        return this.getBest();
     }
 
     @Override
