@@ -15,7 +15,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
  */
 public class SoulForestMobSpawningListener implements Listener {
 
-    private final double SOUL_PROBABILITY = 0.5;
+    private final double SOUL_PROBABILITY = 0.2;
 
     /**
      * Gère l'événement de spawn de créature.
