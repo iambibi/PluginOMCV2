@@ -8,10 +8,11 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.utils.structure.SchematicsUtils;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public abstract class DreamStructurePopulator extends BlockPopulator {
     }
 
     @Override
-    public abstract void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk);
+    public abstract void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion);
 
     protected SchematicsUtils.CachedSchematic getRandomSchematic(Random random) {
         if (schematics.isEmpty()) return null;
