@@ -100,7 +100,7 @@ public class DreamScoreboard extends BaseScoreboard {
 
     @Override
     public int priority() {
-        return 1000;
+        return 666;
     }
 
     @Override
