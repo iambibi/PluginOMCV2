@@ -10,67 +10,73 @@ import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.PhantomCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.StrayCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.tradernpc.GlaciteNpcManager;
-import fr.openmc.core.features.dream.registries.DreamBlocksRegistry;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ReplaceBlockListener implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        Chunk chunk = event.getChunk();
+        ChunkSnapshot chunkSnapshot = event.getChunk().getChunkSnapshot();
 
         if (!DreamUtils.isDreamWorld(event.getWorld())) return;
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            List<Block> toReplace = new ArrayList<>();
+            Set<ToReplace> toReplaces = new HashSet<>();
 
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT; y <= GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT; y++) {
-                        Block block = chunk.getBlock(x, y, z);
-                        if (block.getType() == Material.SEA_LANTERN) {
-                            toReplace.add(block);
+                        if (chunkSnapshot.getBlockType(x, y, z) == Material.SEA_LANTERN) {
+                            toReplaces.add(new ToReplace(x, y, z, Material.SEA_LANTERN));
                         }
                     }
 
                     for (int y = GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT; y <= CloudChunkGenerator.MIN_HEIGHT_CLOUD; y++) {
-                        Block block = chunk.getBlock(x, y, z);
-                        if (block.getType() == Material.GRAY_GLAZED_TERRACOTTA
-                                || block.getType() == Material.TRIPWIRE) {
-                            toReplace.add(block);
+                        Material mat = chunkSnapshot.getBlockType(x, y, z);
+                        if (mat.equals(Material.GRAY_GLAZED_TERRACOTTA)
+                                || mat.equals(Material.TRIPWIRE)) {
+                            toReplaces.add(new ToReplace(x, y, z, mat));
                         }
                     }
 
                     for (int y = CloudChunkGenerator.MAX_HEIGHT_CLOUD; y <= CloudChunkGenerator.MAX_HEIGHT_CLOUD + 85; y++) {
-                        Block block = chunk.getBlock(x, y, z);
-                        Material type = block.getType();
-                        if (type == Material.NETHERITE_BLOCK || type == Material.COAL_BLOCK || type == Material.LAPIS_BLOCK || type == Material.DIAMOND_BLOCK) {
-                            toReplace.add(block);
+                        Material mat = chunkSnapshot.getBlockType(x, y, z);
+                        if (mat.equals(Material.NETHERITE_BLOCK)
+                                || mat.equals(Material.COAL_BLOCK)
+                                || mat.equals(Material.LAPIS_BLOCK)
+                                || mat.equals(Material.DIAMOND_BLOCK)) {
+                            OMCPlugin.getInstance().getSLF4JLogger().info("y3 yes");
+                            toReplaces.add(new ToReplace(x, y, z, mat));
                         }
                     }
                 }
             }
+
             Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () -> {
-                for (Block block : toReplace) {
-                    switch (block.getType()) {
+                for (ToReplace toReplace : toReplaces) {
+                    Location blockLocation = new Location(
+                            event.getWorld(),
+                            toReplace.x,
+                            toReplace.y,
+                            toReplace.z
+                    );
+                    Block block = blockLocation.getBlock();
+                    switch (toReplace.material) {
                         case SEA_LANTERN -> {
-                            GlaciteNpcManager.createNPC(block.getLocation());
                             block.setType(Material.AIR);
+                            GlaciteNpcManager.createNPC(blockLocation);
                         }
-                        case TRIPWIRE -> CustomBlock.place("omc_dream:vegetation_1", block.getLocation());
-                        case GRAY_GLAZED_TERRACOTTA -> {
-                            block.setType(Material.ENCHANTING_TABLE);
-                            DreamBlocksRegistry.addDreamBlock("altar", block.getLocation());
-                        }
+                        case TRIPWIRE -> CustomBlock.place("omc_dream:vegetation_1", blockLocation);
                         case NETHERITE_BLOCK -> BossCloudSpawner.replaceBlockWithBossCloudSpawner(block);
                         case COAL_BLOCK -> StrayCloudSpawner.replaceBlockWithMobCloudSpawner(block);
                         case LAPIS_BLOCK -> PhantomCloudSpawner.replaceBlockWithMobCloudSpawner(block);
@@ -79,5 +85,8 @@ public class ReplaceBlockListener implements Listener {
                 }
             });
         });
+    }
+
+    public record ToReplace(int x, int y, int z, Material material) {
     }
 }

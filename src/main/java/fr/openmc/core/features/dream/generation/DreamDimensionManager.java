@@ -106,12 +106,10 @@ public class DreamDimensionManager {
         dream.getWorldBorder().setSize(25000);
 
         // ** SPAWNING RULES **
-        dream.setSpawnLimit(SpawnCategory.MISC, 6);
         dream.setSpawnLimit(SpawnCategory.MONSTER, 10);
         dream.setSpawnLimit(SpawnCategory.AMBIENT, 10);
         dream.setSpawnLimit(SpawnCategory.ANIMAL, 6);
 
-        dream.setTicksPerSpawns(SpawnCategory.MISC, 30);
         dream.setTicksPerSpawns(SpawnCategory.MONSTER, 30);
         dream.setTicksPerSpawns(SpawnCategory.AMBIENT, 15);
         dream.setTicksPerSpawns(SpawnCategory.ANIMAL, 30);
