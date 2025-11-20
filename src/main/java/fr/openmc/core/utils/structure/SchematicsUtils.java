@@ -47,13 +47,13 @@ public class SchematicsUtils {
 
         try (InputStream in = plugin.getResource("schem/" + nameSchem + ".schem")) {
             if (in == null) {
-                plugin.getSLF4JLogger().warn("Le fichier '{}.schem' est introuvable dans les ressources.", nameSchem);
+                plugin.getSLF4JLogger().warn("Le fichier '" + nameSchem + ".schem' est introuvable dans les ressources.");
                 return;
             }
             Files.copy(in, outFile.toPath());
-            plugin.getSLF4JLogger().info("Fichier '{}.schem' extrait dans plugins/OpenMC/schem/.", nameSchem);
+            plugin.getSLF4JLogger().info("Fichier '" + nameSchem + ".schem' extrait dans plugins/OpenMC/schem/.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -71,6 +71,7 @@ public class SchematicsUtils {
                     BlockVector3 min = region.getMinimumPoint();
                     BlockVector3 max = region.getMaximumPoint();
 
+                    //pb vient d'ici
                     int width = min.x() - max.y() + 1;
                     int height = min.y() - max.y() + 1;
                     int length = min.z() - max.z() + 1;
@@ -88,7 +89,8 @@ public class SchematicsUtils {
                     return new CachedSchematic(clipboard, file, width, height, length, baseBlocks);
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
+                return null;
             }
         });
     }
@@ -131,7 +133,7 @@ public class SchematicsUtils {
                 Operations.complete(op);
                 session.flushSession();
             } catch (WorldEditException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
 
