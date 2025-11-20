@@ -26,12 +26,11 @@ public class ReplaceBlockListener implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        ChunkSnapshot chunkSnapshot = event.getChunk().getChunkSnapshot();
-
         if (!DreamUtils.isDreamWorld(event.getWorld())) return;
 
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
             Set<ToReplace> toReplaces = new HashSet<>();
+            ChunkSnapshot chunkSnapshot = event.getChunk().getChunkSnapshot();
 
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
