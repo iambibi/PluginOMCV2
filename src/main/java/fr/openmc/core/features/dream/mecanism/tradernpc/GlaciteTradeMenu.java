@@ -13,6 +13,7 @@ import fr.openmc.core.utils.messages.MessageType;
 import fr.openmc.core.utils.messages.MessagesManager;
 import fr.openmc.core.utils.messages.Prefix;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -80,7 +81,7 @@ public class GlaciteTradeMenu extends Menu {
 
         inventory.put(timeSlot,
                 new ItemBuilder(this, Material.EXPERIENCE_BOTTLE, meta -> {
-                    meta.itemName(Component.text("§a1 min de Temps"));
+                    meta.itemName(Component.text("1 min de Temps", NamedTextColor.GREEN));
                     meta.lore(loreTime);
                 }).setOnClick(event -> {
                     ItemStack eweniteItem = DreamItemRegistry.getByName("omc_dream:ewenite").getBest();

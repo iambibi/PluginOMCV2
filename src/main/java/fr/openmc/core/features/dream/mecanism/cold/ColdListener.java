@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 
 public class ColdListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onGlaciteGrottoEntered(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Location loc = player.getLocation();
@@ -29,7 +29,7 @@ public class ColdListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onFireBurnBlock(BlockFadeEvent event) {
         Block block = event.getBlock();
         if (!DreamUtils.isDreamWorld(block.getWorld())) return;
