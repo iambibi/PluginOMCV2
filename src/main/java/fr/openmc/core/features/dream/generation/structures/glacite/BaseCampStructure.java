@@ -5,10 +5,9 @@ import fr.openmc.core.features.dream.generation.biomes.GlaciteCaveChunkGenerator
 import fr.openmc.core.features.dream.generation.structures.DreamStructure;
 import fr.openmc.core.features.dream.generation.structures.DreamStructurePopulator;
 import fr.openmc.core.utils.structure.SchematicsUtils;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -24,13 +23,12 @@ public class BaseCampStructure extends DreamStructurePopulator {
     }
 
     @Override
-    public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion) {
-        World world = limitedRegion.getWorld();
+    public void populate(@NotNull World world, @NotNull Random random, @NotNull Chunk chunk) {
         if (!DreamUtils.isDreamWorld(world)) return;
         if (random.nextDouble() >= BASE_CAMP_PROBABILITY) return;
 
-        int x = (chunkX << 4) + random.nextInt(16);
-        int z = (chunkZ << 4) + random.nextInt(16);
+        int x = (chunk.getX() << 4) + random.nextInt(16);
+        int z = (chunk.getZ() << 4) + random.nextInt(16);
         int y = GlaciteCaveChunkGenerator.MIN_CAVE_HEIGHT + 1;
 
         Location loc = new Location(world, x, y, z);
