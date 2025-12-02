@@ -54,7 +54,6 @@ public class ReplaceBlockListener implements Listener {
                                 || mat.equals(Material.COAL_BLOCK)
                                 || mat.equals(Material.LAPIS_BLOCK)
                                 || mat.equals(Material.DIAMOND_BLOCK)) {
-                            OMCPlugin.getInstance().getSLF4JLogger().info("y3 yes");
                             toReplaces.add(new ToReplace(x, y, z, mat));
                         }
                     }
