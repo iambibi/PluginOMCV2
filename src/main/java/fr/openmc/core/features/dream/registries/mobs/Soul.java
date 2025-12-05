@@ -27,7 +27,7 @@ public class Soul extends DreamMob {
 
     public Soul() {
         super("soul",
-                "Ame",
+                "Âme",
                 EntityType.ARMOR_STAND,
                 2,
                 3L,

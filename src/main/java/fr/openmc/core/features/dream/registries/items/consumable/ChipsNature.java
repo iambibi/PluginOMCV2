@@ -30,7 +30,7 @@ public class ChipsNature extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DRIED_KELP);
 
-        item.getItemMeta().itemName(Component.text("Chips Gout Nature"));
+        item.getItemMeta().itemName(Component.text("Chips goût Nature"));
         return item;
     }
 }

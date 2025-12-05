@@ -30,7 +30,7 @@ public class SoulAxe extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_AXE);
 
-        item.getItemMeta().itemName(Component.text("Hache des Ames"));
+        item.getItemMeta().itemName(Component.text("Hache des Âmes"));
         return item;
     }
 }

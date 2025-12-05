@@ -45,7 +45,7 @@ public class MetalDetector extends DreamUsableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.STICK);
 
-        item.getItemMeta().itemName(Component.text("Détecteur de métaux"));
+        item.getItemMeta().itemName(Component.text("Détecteur à métaux"));
         return item;
     }
 
@@ -55,7 +55,7 @@ public class MetalDetector extends DreamUsableItem {
 
         World world = player.getWorld();
         if (!DreamUtils.isDreamWorld(world)) {
-            MessagesManager.sendMessage(player, Component.text("Vous devez être dans la dimension des reves pour reset la position du coffre"), Prefix.DREAM, MessageType.ERROR, false);
+            MessagesManager.sendMessage(player, Component.text("Vous devez être dans la dimension des rêves pour reset la position du coffre"), Prefix.DREAM, MessageType.ERROR, false);
             return;
         }
 

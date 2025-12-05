@@ -90,7 +90,7 @@ public class MetalDetectorListener implements Listener {
                 Bukkit.getScheduler().runTask(OMCPlugin.getInstance(), () ->
                         Bukkit.getServer().getPluginManager().callEvent(new MetalDetectorLootEvent(player, rewards))
                 );
-                MessagesManager.sendMessage(player, Component.text("Vous avez découvert §e" + rewards.size() + " §fobjet(s) dans tes rêves !"), Prefix.DREAM, MessageType.SUCCESS, false);
+                MessagesManager.sendMessage(player, Component.text("Vous avez découvert §e" + rewards.size() + " §fobjet(s) dans vos rêves !"), Prefix.DREAM, MessageType.SUCCESS, false);
             }
         }
     }

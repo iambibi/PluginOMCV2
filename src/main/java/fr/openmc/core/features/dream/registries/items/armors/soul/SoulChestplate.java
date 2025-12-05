@@ -40,7 +40,7 @@ public class SoulChestplate extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.IRON_CHESTPLATE);
 
-        item.getItemMeta().itemName(Component.text("Plastron des Ames"));
+        item.getItemMeta().itemName(Component.text("Plastron des Âmes"));
         return item;
     }
 }

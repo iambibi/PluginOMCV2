@@ -30,7 +30,7 @@ public class Somnifere extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DRIED_KELP);
 
-        item.getItemMeta().itemName(Component.text("Somnifere"));
+        item.getItemMeta().itemName(Component.text("Somnifère"));
         return item;
     }
 }

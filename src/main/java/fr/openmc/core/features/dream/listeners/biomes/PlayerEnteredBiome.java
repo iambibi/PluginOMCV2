@@ -39,7 +39,7 @@ public class PlayerEnteredBiome implements Listener {
     private static final List<String> ORB_UNLOCKER = List.of(
             "",
             "Orbe de Domination",
-            "Orbe des Ames",
+            "Orbe des Âmes",
             "Orbe des Nuages",
             "Orbe de Boue"
     );

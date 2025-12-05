@@ -40,7 +40,7 @@ public class ColdLeggings extends DreamEquipableItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DIAMOND_LEGGINGS);
 
-        item.getItemMeta().itemName(Component.text("Jambière Glacée"));
+        item.getItemMeta().itemName(Component.text("Jambières Glacées"));
         return item;
     }
 }

@@ -19,7 +19,7 @@ public enum DreamBiome {
             NamespacedKey.fromString("openmc:sculk_plains")
     ),
     SOUL_FOREST(
-            Component.text(textToSmall("§5Forêt des Ames")),
+            Component.text(textToSmall("§5Forêt des Âmes")),
             NamespacedKey.fromString("openmc:soul_forest")
     ),
     MUD_BEACH(

@@ -30,7 +30,7 @@ public class ChipsAywen extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DRIED_KELP);
 
-        item.getItemMeta().itemName(Component.text("Chips Gout Aywen"));
+        item.getItemMeta().itemName(Component.text("Chips goût Aywen"));
         return item;
     }
 }

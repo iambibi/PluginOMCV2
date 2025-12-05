@@ -136,12 +136,12 @@ public class GlaciteTradeMenu extends Menu {
         String sb = "Vous avez échangé";
 
         if (tradeGlacite > 0) {
-            sb += " §bde Glacite§f";
+            sb += glacite + " §bde Glacite§f";
         }
 
         if (tradeEwenite > 0) {
             if (tradeGlacite > 0) sb += " et";
-            sb += " §5d'Ewenite§f";
+            sb += ewenite + " §5d'Ewenite§f";
         }
 
         sb += " contre §b" + PlainTextComponentSerializer.plainText().serialize(trade.getDisplayName());

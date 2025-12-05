@@ -94,7 +94,7 @@ public class AltarManager {
         int required = recipe.getSoulsRequired();
 
         if (!ItemUtils.hasEnoughItems(player, soulOrb.getBest(), required)) {
-            MessagesManager.sendMessage(player, Component.text("Vous n’avez pas assez d’§5âmes ! §f(§5" + required + " Ames §fnéccessaire)"), Prefix.DREAM, MessageType.ERROR, false);
+            MessagesManager.sendMessage(player, Component.text("Vous n’avez pas assez d’§5Âmes nécessaires ! §f(§5" + required + " Ames §fnéccessaire)"), Prefix.DREAM, MessageType.ERROR, false);
             return;
         }
 

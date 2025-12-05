@@ -30,7 +30,7 @@ public class ChipsLait2Margouta extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DRIED_KELP);
 
-        item.getItemMeta().itemName(Component.text("Chips Gout Lait de Margouta"));
+        item.getItemMeta().itemName(Component.text("Chips goût Lait de Margouta"));
         return item;
     }
 }

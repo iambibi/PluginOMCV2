@@ -128,7 +128,7 @@ public class PlayerObtainOrb implements Listener {
         String strBiome;
         switch (biome) {
             case SOUL_FOREST -> strBiome = "la Forêt des Âmes";
-            case CLOUD_LAND -> strBiome = "le Château dans les Nuages";
+            case CLOUD_LAND -> strBiome = "le Château des Nuages";
             case MUD_BEACH -> strBiome = "la Plage de Boue";
             case GLACITE_GROTTO -> strBiome = "la Grotte de Glacite";
             default -> strBiome = "Inconnu";

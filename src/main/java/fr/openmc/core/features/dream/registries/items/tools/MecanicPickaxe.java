@@ -30,7 +30,7 @@ public class MecanicPickaxe extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.NETHERITE_PICKAXE);
 
-        item.getItemMeta().itemName(Component.text("Pioche Mécanisé"));
+        item.getItemMeta().itemName(Component.text("Pioche Mécanisée"));
         return item;
     }
 }

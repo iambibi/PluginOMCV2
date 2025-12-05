@@ -30,7 +30,7 @@ public class ChipsSansPlomb extends DreamItem {
     public ItemStack getVanilla() {
         ItemStack item = new ItemStack(Material.DRIED_KELP);
 
-        item.getItemMeta().itemName(Component.text("Chips Gout Sans Plomb"));
+        item.getItemMeta().itemName(Component.text("Chips goût Sans Plomb 95"));
         return item;
     }
 }

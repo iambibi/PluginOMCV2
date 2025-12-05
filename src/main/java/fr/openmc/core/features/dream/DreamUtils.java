@@ -35,7 +35,7 @@ public class DreamUtils {
         if (dreamPlayer == null) return;
         dreamPlayer.addTime(timeToAdd);
         if (sendMessage)
-            MessagesManager.sendMessage(player, Component.text("Vous avez perdu §a" + DateUtils.convertSecondToTime(timeToAdd) + " §fcar vous avez pris des dégats!"), Prefix.DREAM, MessageType.WARNING, false);
+            MessagesManager.sendMessage(player, Component.text("Vous avez perdu §a" + DateUtils.convertSecondToTime(timeToAdd) + " §fcar vous avez pris des dégats !"), Prefix.DREAM, MessageType.WARNING, false);
 
     }
 
@@ -44,7 +44,7 @@ public class DreamUtils {
         if (dreamPlayer == null) return;
         dreamPlayer.removeTime(timeToRemove);
         if (sendMessage)
-            MessagesManager.sendMessage(player, Component.text("Vous avez perdu §a" + DateUtils.convertSecondToTime(timeToRemove) + " §fcar vous avez pris des dégats!"), Prefix.DREAM, MessageType.WARNING, false);
+            MessagesManager.sendMessage(player, Component.text("Vous avez perdu §a" + DateUtils.convertSecondToTime(timeToRemove) + " §fcar vous avez pris des dégats !"), Prefix.DREAM, MessageType.WARNING, false);
 
     }
 }
