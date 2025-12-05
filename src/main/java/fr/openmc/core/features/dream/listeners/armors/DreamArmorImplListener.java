@@ -2,7 +2,9 @@ package fr.openmc.core.features.dream.listeners.armors;
 
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.events.ArmorEquipEvent;
+import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.registries.DreamItemRegistry;
+import fr.openmc.core.items.CustomItemRegistry;
 import fr.openmc.core.utils.ArmorType;
 import fr.openmc.core.utils.ItemUtils;
 import org.bukkit.Bukkit;
@@ -11,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,19 +47,18 @@ public class DreamArmorImplListener implements Listener {
         ArmorType type = event.getType();
         if (type == null || !dreamPieces.containsKey(type)) return;
 
-        DreamArmorInfo info = dreamPieces.get(type);
-        ItemStack dreamItem = DreamItemRegistry.getByName(info.namespace).getBest();
-
-        boolean wasWearing = ItemUtils.isSimilar(dreamItem, event.getOldArmorPiece());
-        boolean isWearing = ItemUtils.isSimilar(dreamItem, event.getNewArmorPiece());
-
         Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> {
-            if (isWearing && !player.hasPotionEffect(info.effect.getType())) {
+            ItemStack pieceNow = getEquippedArmor(player, type);
+            DreamArmorInfo info = dreamPieces.get(type);
+            ItemStack dreamItem = DreamItemRegistry.getByName(info.namespace).getBest();
+            boolean hasPieceNow = ItemUtils.isSimilar(dreamItem, pieceNow);
+
+            if (hasPieceNow && !player.hasPotionEffect(info.effect.getType())) {
                 player.addPotionEffect(info.effect);
-            } else if (!isWearing && wasWearing) {
+            } else if (!ItemUtils.isSimilar(CustomItemRegistry.getByName("omc_items:aywen_cap").getBest(), pieceNow)) {
                 player.removePotionEffect(info.effect.getType());
             }
-        }, 1L);
+        }, 2L);
     }
 
     @EventHandler
@@ -77,6 +79,35 @@ public class DreamArmorImplListener implements Listener {
         Player player = event.getPlayer();
         dreamPieces.values().forEach(info ->
                 player.removePotionEffect(info.effect.getType()));
+    }
+
+    @EventHandler
+    public void onDreamTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+
+        boolean entering = !DreamUtils.isDreamWorld(event.getFrom()) && DreamUtils.isDreamWorld(event.getTo());
+        boolean leaving = DreamUtils.isDreamWorld(event.getFrom()) && !DreamUtils.isDreamWorld(event.getTo());
+
+        if (!entering && !leaving) return;
+
+        Bukkit.getScheduler().runTaskLater(OMCPlugin.getInstance(), () -> recalcEffects(player), 20L);
+    }
+
+    private void recalcEffects(Player player) {
+        for (DreamArmorInfo info : dreamPieces.values()) {
+            if (info.type.equals(ArmorType.HELMET) &&
+                    ItemUtils.isSimilar(CustomItemRegistry.getByName("omc_items:aywen_cap").getBest(), player.getEquipment().getHelmet()))
+                continue;
+
+            ItemStack equipped = getEquippedArmor(player, info.type);
+            ItemStack dreamItem = DreamItemRegistry.getByName(info.namespace).getBest();
+
+            if (ItemUtils.isSimilar(dreamItem, equipped)) {
+                player.addPotionEffect(info.effect);
+            } else {
+                player.removePotionEffect(info.effect.getType());
+            }
+        }
     }
 
     private ItemStack getEquippedArmor(Player player, ArmorType type) {
