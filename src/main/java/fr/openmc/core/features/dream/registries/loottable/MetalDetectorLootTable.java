@@ -18,6 +18,48 @@ public class MetalDetectorLootTable extends DreamLootTable {
     public Set<DreamLoot> getLoots() {
         return Set.of(
                 new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:chips_dihydrogene"),
+                        0.4,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:chips_jimmy"),
+                        0.4,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:chips_terre"),
+                        0.4,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:chips_sans_plomb"),
+                        0.4,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:chips_nature"),
+                        0.4,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:chips_aywen"),
+                        0.3,
+                        1,
+                        1
+                ),
+                new DreamLoot(
+                        DreamItemRegistry.getByName("omc_dream:chips_lait_2_margouta"),
+                        0.2,
+                        1,
+                        1
+                ),
+                new DreamLoot(
                         DreamItemRegistry.getByName("omc_dream:somnifere"),
                         0.4,
                         1,
