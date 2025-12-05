@@ -32,7 +32,7 @@ import fr.openmc.core.features.dream.registries.items.armors.soul.SoulChestplate
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulHelmet;
 import fr.openmc.core.features.dream.registries.items.armors.soul.SoulLeggings;
 import fr.openmc.core.features.dream.registries.items.blocks.*;
-import fr.openmc.core.features.dream.registries.items.consumable.Somnifere;
+import fr.openmc.core.features.dream.registries.items.consumable.*;
 import fr.openmc.core.features.dream.registries.items.fishes.*;
 import fr.openmc.core.features.dream.registries.items.loots.*;
 import fr.openmc.core.features.dream.registries.items.orb.*;
@@ -73,6 +73,13 @@ public class DreamItemRegistry {
 
         // # CONSUMABLES
         registerDreamItem(new Somnifere("omc_dream:somnifere"));
+        registerDreamItem(new ChipsAywen("omc_dream:chips_aywen"));
+        registerDreamItem(new ChipsDihydrogene("omc_dream:chips_dihydrogene"));
+        registerDreamItem(new ChipsJimmy("omc_dream:chips_jimmy"));
+        registerDreamItem(new ChipsLait2Margouta("omc_dream:lait_2_margouta"));
+        registerDreamItem(new ChipsNature("omc_dream:chips_nature"));
+        registerDreamItem(new ChipsSansPlomb("chips_sans_plomb"));
+        registerDreamItem(new ChipsTerre("omc_dream:chips_terre"));
 
         // # FISHES
         registerDreamItem(new CokkedPoissonion("omc_dream:cooked_poissonion"));
