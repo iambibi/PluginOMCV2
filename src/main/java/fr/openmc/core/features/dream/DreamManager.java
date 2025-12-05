@@ -298,6 +298,7 @@ public class DreamManager {
                     dreamLocation.getZ(),
                     0
             ));
+            cacheDreamPlayer = getCacheDreamPlayer(player);
         }
 
         saveDreamPlayerData(cacheDreamPlayer);
