@@ -79,19 +79,21 @@ public class Soulbound extends DreamEnchantment implements Listener {
         if (enchant == null) return;
 
         int maxSoulboundLevel = 0;
+        boolean hasEnchantment = false;
 
         for (ItemStack item : player.getInventory().getContents()) {
             if (item == null) continue;
             if (!item.getEnchantments().containsKey(enchant)) continue;
 
             if (DynamicCooldownManager.isReady(uuid, "player:soulbound")) {
+                hasEnchantment = true;
                 maxSoulboundLevel = Math.max(maxSoulboundLevel, item.getEnchantmentLevel(enchant));
                 event.getItemsToKeep().add(item);
                 event.getDrops().remove(item);
             }
         }
 
-        if (DynamicCooldownManager.isReady(uuid, "player:soulbound")) {
+        if (hasEnchantment && DynamicCooldownManager.isReady(uuid, "player:soulbound")) {
             event.setShouldDropExperience(false);
             DynamicCooldownManager.use(uuid, "player:soulbound", getCooldown(maxSoulboundLevel));
             MessagesManager.sendMessage(player, Component.text("Votre enchantement Soulbound a fait effet ! Prochaine utilisation dans " + DateUtils.convertMillisToTime(getCooldown(maxSoulboundLevel))), Prefix.DREAM, MessageType.SUCCESS, false);
