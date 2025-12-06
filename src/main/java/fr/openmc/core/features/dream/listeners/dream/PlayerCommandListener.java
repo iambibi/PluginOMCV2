@@ -1,36 +1,54 @@
 package fr.openmc.core.features.dream.listeners.dream;
 
 import fr.openmc.core.features.dream.DreamUtils;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.TabCompleteEvent;
+import org.bukkit.event.player.PlayerCommandSendEvent;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 public class PlayerCommandListener implements Listener {
-    @EventHandler
+    private final Set<String> allowedCommands = Set.of(
+            "/crafts",
+            "/leave",
+            "/ia omc_dream"
+    );
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandExecution(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
 
         if (!DreamUtils.isDreamWorld(player.getWorld())) return;
-
-        // todo: activer que les commandes dont le joueur a besoin
         if (player.isOp()) return;
+
+        String msg = event.getMessage().toLowerCase().trim();
+        System.out.println(msg);
+        for (String cmd : allowedCommands) {
+            if (msg.equals(cmd)) {
+                System.out.println("return for commande " + msg);
+                return;
+            }
+        }
 
         event.setCancelled(true);
     }
 
-    @EventHandler
-    public void onCommandAutocomplete(TabCompleteEvent event) {
-        Location loc = event.getLocation();
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onCommandSend(PlayerCommandSendEvent event) {
+        Player player = event.getPlayer();
 
-        if (loc == null) return;
-        if (!DreamUtils.isDreamWorld(loc)) return;
-        if (event.getSender() instanceof Player player && player.isOp()) return;
+        if (!DreamUtils.isDreamWorld(player.getWorld())) return;
+        if (player.isOp()) return;
 
-        event.setCompletions(List.of("milestone dream"));
+        Collection<String> commands = event.getCommands();
+
+        commands.clear();
+        for (String cmd : allowedCommands) {
+            commands.add(cmd.substring(1));
+        }
     }
 }

@@ -10,15 +10,13 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-@Command("dream")
-@CommandPermission("omc.commands.dream")
+
 public class DreamCommands {
-    @Subcommand("leave")
+    @Command("leave")
     @CommandPermission("omc.commands.dream.leave")
-    public void get(Player player) {
+    public void leave(Player player) {
         if (!DreamUtils.isInDream(player)) {
             MessagesManager.sendMessage(player, Component.text("Vous n'êtes pas dans un rêve"), Prefix.DREAM, MessageType.ERROR, false);
             return;
@@ -29,5 +27,11 @@ public class DreamCommands {
         );
 
         MessagesManager.sendMessage(player, Component.text("Vous avez quitté votre rêve avec succès."), Prefix.DREAM, MessageType.SUCCESS, false);
+    }
+
+    @Command("crafts")
+    @CommandPermission("omc.commands.dream.crafts")
+    public void crafts(Player player) {
+        Bukkit.dispatchCommand(player, "itemsadder:ia omc_dream");
     }
 }
