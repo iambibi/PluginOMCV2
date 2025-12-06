@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Creaking;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
@@ -30,7 +31,7 @@ public class PlainsMobSpawningListener implements Listener {
      *
      * @param e l'événement de spawn de créature
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     void onCreatureSpawn(CreatureSpawnEvent e) {
         if (DreamMobsRegistry.isDreamMob(e.getEntity())) return;
 
@@ -43,6 +44,7 @@ public class PlainsMobSpawningListener implements Listener {
         if (!world.getBiome(spawningLoc).equals(DreamBiome.SCULK_PLAINS.getBiome())) return;
 
         if (e.getEntity().getType().equals(EntityType.CREAKING)) {
+            e.setCancelled(false);
             new DreamCreaking().apply((Creaking) e.getEntity());
             return;
         }

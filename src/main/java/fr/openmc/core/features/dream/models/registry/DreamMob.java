@@ -7,7 +7,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.entity.Creaking;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -63,9 +62,8 @@ public abstract class DreamMob {
         livingEntity.setCustomNameVisible(true);
 
         this.setAttributeIfPresent(livingEntity, Attribute.MAX_HEALTH, this.getHealth());
+        livingEntity.setHealth(this.getHealth());
 
-        if (!(livingEntity instanceof Creaking))
-            livingEntity.setHealth(this.getHealth());
 
         this.setAttributeIfPresent(livingEntity, Attribute.MOVEMENT_SPEED, this.getSpeed());
         this.setAttributeIfPresent(livingEntity, Attribute.SCALE, this.getScale());
