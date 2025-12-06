@@ -9,6 +9,7 @@ import fr.openmc.core.features.dream.mecanism.cloudcastle.CloudVault;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.PhantomCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.cloudcastle.StrayCloudSpawner;
 import fr.openmc.core.features.dream.mecanism.tradernpc.GlaciteNpcManager;
+import fr.openmc.core.features.dream.registries.DreamBlocksRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
@@ -68,6 +69,10 @@ public class ReplaceBlockListener implements Listener {
                     Block block = blockLocation.getBlock();
 
                     switch (toReplace.material) {
+                        case GRAY_GLAZED_TERRACOTTA -> {
+                            block.setType(Material.ENCHANTING_TABLE);
+                            DreamBlocksRegistry.addDreamBlock("altar", block.getLocation());
+                        }
                         case SEA_LANTERN -> {
                             block.setType(Material.AIR);
                             GlaciteNpcManager.createNPC(blockLocation);
