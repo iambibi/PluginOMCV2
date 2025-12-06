@@ -1,6 +1,5 @@
 package fr.openmc.core.features.dream.generation.listeners;
 
-import dev.lone.itemsadder.api.CustomBlock;
 import fr.openmc.core.OMCPlugin;
 import fr.openmc.core.features.dream.DreamUtils;
 import fr.openmc.core.features.dream.generation.biomes.CloudChunkGenerator;
@@ -27,9 +26,8 @@ public class ReplaceBlockListener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if (!DreamUtils.isDreamWorld(event.getWorld())) return;
-
+        Set<ToReplace> toReplaces = new HashSet<>();
         Bukkit.getScheduler().runTaskAsynchronously(OMCPlugin.getInstance(), () -> {
-            Set<ToReplace> toReplaces = new HashSet<>();
             ChunkSnapshot chunkSnapshot = event.getChunk().getChunkSnapshot();
 
             for (int x = 0; x < 16; x++) {
@@ -42,8 +40,7 @@ public class ReplaceBlockListener implements Listener {
 
                     for (int y = GlaciteCaveChunkGenerator.MAX_CAVE_HEIGHT; y <= CloudChunkGenerator.MIN_HEIGHT_CLOUD; y++) {
                         Material mat = chunkSnapshot.getBlockType(x, y, z);
-                        if (mat.equals(Material.GRAY_GLAZED_TERRACOTTA)
-                                || mat.equals(Material.TRIPWIRE)) {
+                        if (mat.equals(Material.GRAY_GLAZED_TERRACOTTA)) {
                             toReplaces.add(new ToReplace(x, y, z, mat));
                         }
                     }
@@ -64,17 +61,17 @@ public class ReplaceBlockListener implements Listener {
                 for (ToReplace toReplace : toReplaces) {
                     Location blockLocation = new Location(
                             event.getWorld(),
-                            toReplace.x,
+                            (chunkSnapshot.getX() << 4) + toReplace.x,
                             toReplace.y,
-                            toReplace.z
+                            (chunkSnapshot.getZ() << 4) + toReplace.z
                     );
                     Block block = blockLocation.getBlock();
+
                     switch (toReplace.material) {
                         case SEA_LANTERN -> {
                             block.setType(Material.AIR);
                             GlaciteNpcManager.createNPC(blockLocation);
                         }
-                        case TRIPWIRE -> CustomBlock.place("omc_dream:vegetation_1", blockLocation);
                         case NETHERITE_BLOCK -> BossCloudSpawner.replaceBlockWithBossCloudSpawner(block);
                         case COAL_BLOCK -> StrayCloudSpawner.replaceBlockWithMobCloudSpawner(block);
                         case LAPIS_BLOCK -> PhantomCloudSpawner.replaceBlockWithMobCloudSpawner(block);
