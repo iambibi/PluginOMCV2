@@ -133,14 +133,14 @@ public class GlaciteTradeMenu extends Menu {
 
         player.getInventory().addItem(trade.getResult().getBest());
 
-        String sb = "Vous avez échangé";
+        String sb = "Vous avez échangé ";
 
         if (tradeGlacite > 0) {
             sb += glacite + " §bde Glacite§f";
         }
 
         if (tradeEwenite > 0) {
-            if (tradeGlacite > 0) sb += " et";
+            if (tradeGlacite > 0) sb += " et ";
             sb += ewenite + " §5d'Ewenite§f";
         }
 
