@@ -26,10 +26,8 @@ public class PlayerCommandListener implements Listener {
         if (player.isOp()) return;
 
         String msg = event.getMessage().toLowerCase().trim();
-        System.out.println(msg);
         for (String cmd : allowedCommands) {
             if (msg.equals(cmd)) {
-                System.out.println("return for commande " + msg);
                 return;
             }
         }
