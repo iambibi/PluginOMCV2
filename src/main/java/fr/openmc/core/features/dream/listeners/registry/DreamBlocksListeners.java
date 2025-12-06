@@ -35,6 +35,8 @@ public class DreamBlocksListeners implements Listener {
 
     @EventHandler
     public void onPistonExtend(BlockPistonExtendEvent event) {
+        if (event.getBlocks().isEmpty()) return;
+
         if (!DreamUtils.isDreamWorld(event.getBlocks().getFirst().getLocation()))
             return;
 
@@ -48,6 +50,8 @@ public class DreamBlocksListeners implements Listener {
 
     @EventHandler
     public void onPistonRetract(BlockPistonRetractEvent event) {
+        if (event.getBlocks().isEmpty()) return;
+
         if (!DreamUtils.isDreamWorld(event.getBlocks().getFirst().getLocation()))
             return;
 
