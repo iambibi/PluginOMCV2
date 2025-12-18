@@ -29,9 +29,7 @@ public class PlayerSleepListener implements Listener {
 
         if (playersDreaming.contains(player.getUniqueId())) return;
 
-        playersDreaming.add(player.getUniqueId());
         Random random = new Random();
-
         double randomValue = random.nextDouble();
 
         if (randomValue < DreamManager.calculateDreamProbability(player)) return;
@@ -44,6 +42,8 @@ public class PlayerSleepListener implements Listener {
                 false,
                 false
         ));
+        playersDreaming.add(player.getUniqueId());
+         
 
     }
 
